@@ -46,6 +46,7 @@ int main(int argc, char *argv[]){
   map<unsigned long,unsigned long> class_B_matched;
   map<unsigned long,unsigned long>::iterator m_iterator;
 
+  char *filename;
   // read in the network
   unsigned long a,b,w;
   while(cin >> a >> b >> w){
@@ -102,14 +103,15 @@ int main(int argc, char *argv[]){
         }
     }
 
+
     // if we didn't double match any nodes and we've got the target matched weight
     if(!failed && ww == w){
         // code to print out the details of the combination (i.e., which links were matched)
-        printf ("{");
+        printf("{");
         //for(i = 0; i < k; i++)
         //    printf(" %zi", gsl_combination_get (c, i));
         gsl_combination_fprintf (stdout, c, " %u");
-        printf (" }\n");
+        printf(" }\n");
     }
   }
   while (gsl_combination_next (c) == GSL_SUCCESS);

@@ -2,8 +2,8 @@
 complete_network<-read.csv("Bartomeus_Ntw_nceas.txt",sep="\t")
 
 # put a prefix (i for insects, p for plants) in front of the ID columns to distinguish them
-complete_network$Insect_id <- paste("i",complete_network$Insect_id,sep="_")
-complete_network$Plant_id <- paste("p",complete_network$Plant_id,sep="_")
+# complete_network$Insect_id <- paste("i",complete_network$Insect_id,sep="_")
+# complete_network$Plant_id <- paste("p",complete_network$Plant_id,sep="_")
 
 # make a list to store the info about the interactions (nets) and the results of the analysis (matchings)
 nets<-list()
@@ -46,10 +46,12 @@ for(site in levels(complete_network$Site)){
 }
 
 main_info_matchings<-data.frame("site"=character(12), "matching_size"=numeric(12), "matching_weight"=numeric(12), stringsAsFactors=FALSE)
-line_number<-0
+line_number<-1
 for(site in levels(complete_network$Site)){
 	main_info_matchings[line_number,1]<-site
 	main_info_matchings[line_number,2]<-attr(matchings,site)$matching_size
 	main_info_matchings[line_number,3]<-attr(matchings,site)$matching_weight
 	line_number<-line_number+1
 }
+
+write.table(main_info_matchings, file = "matchings_info", quote = FALSE, row.names = FALSE)
