@@ -40,4 +40,16 @@ for(site in levels(complete_network$Site)){
 
 	# save the results in the "matchings" list
 	attr(matchings,name)<-match_results
+
+	# write the edge list to a file to be used in C++
+	write.table(edge_list, file = name, quote = FALSE, sep = " ", row.names = FALSE, col.names = FALSE)
+}
+
+main_info_matchings<-data.frame("site"=character(12), "matching_size"=numeric(12), "matching_weight"=numeric(12), stringsAsFactors=FALSE)
+line_number<-0
+for(site in levels(complete_network$Site)){
+	main_info_matchings[line_number,1]<-site
+	main_info_matchings[line_number,2]<-attr(matchings,site)$matching_size
+	main_info_matchings[line_number,3]<-attr(matchings,site)$matching_weight
+	line_number<-line_number+1
 }
