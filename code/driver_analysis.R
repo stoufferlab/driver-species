@@ -10,6 +10,7 @@ complete_network$Links<- paste(complete_network$Insect_id,complete_network$Plant
 # make a list to store the info about the interactions (nets) and the results of the analysis (matchings)
 nets<-list()
 matchings<-list()
+interactions<-list()
 
 # run through each site
 for(site in levels(complete_network$Site)){
@@ -37,12 +38,15 @@ for(site in levels(complete_network$Site)){
 	#save the interactions and weights (edge_list) in nets
 	attr(nets,site)<-edge_list
 
+	# count the number of interactions
+	attr(interactions, site)<-nrow(edge_list)
+
 	# print a file of the edge list
-	write.table(edge_list, file = site, quote = FALSE, row.names = FALSE)
+	write.table(edge_list, file = site, quote = FALSE, row.names = FALSE, col.names = FALSE)
 
 	# put prefixes in front of the plant and insect IDs to distinguish them
-	edge_list$Insect_id <- paste("i",edge_list$Insect_id,sep="_")
-	edge_list$Plant_id <- paste("p",edge_list$Plant_id,sep="_")
+	edge_list$insects <- paste("i",edge_list$insects,sep="_")
+	edge_list$plants <- paste("p",edge_list$plants,sep="_")
 
 	# make a graph from the edge list
 	interaction_graph<-graph.data.frame(edge_list)
@@ -68,12 +72,13 @@ for(site in levels(complete_network$Site)){
 	#write.table(edge_list, file = name, quote = FALSE, sep = " ", row.names = FALSE, col.names = FALSE)
 }
 
-main_info_matchings<-data.frame("site"=character(12), "matching_size"=numeric(12), "matching_weight"=numeric(12), stringsAsFactors=FALSE)
+main_info_matchings<-data.frame("site"=character(12), "number_links"=numeric(12), "matching_size"=numeric(12), "matching_weight"=numeric(12), stringsAsFactors=FALSE)
 line_number<-1
 for(site in levels(complete_network$Site)){
 	main_info_matchings[line_number,1]<-site
-	main_info_matchings[line_number,2]<-attr(matchings,site)$matching_size
-	main_info_matchings[line_number,3]<-attr(matchings,site)$matching_weight
+	main_info_matchings[line_number,2]<-attr(interactions, site)
+	main_info_matchings[line_number,3]<-attr(matchings,site)$matching_size
+	main_info_matchings[line_number,4]<-attr(matchings,site)$matching_weight
 	line_number<-line_number+1
 }
 
