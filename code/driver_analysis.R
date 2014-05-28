@@ -1,9 +1,11 @@
-# read in the network data
-complete_network<-read.csv("Bartomeus_Ntw_nceas.txt",sep="\t")
+# load the igraph package
+require(igraph)
 
-# put a prefix (i for insects, p for plants) in front of the ID columns to distinguish them
-# complete_network$Insect_id <- paste("i",complete_network$Insect_id,sep="_")
-# complete_network$Plant_id <- paste("p",complete_network$Plant_id,sep="_")
+# read in the network data
+complete_network<-read.csv("data/Bartomeus_Ntw_nceas.txt",sep="\t")
+
+# make a new column showing each link so we can determine which are not unique.
+complete_network$Links<- paste(complete_network$Insect_id,complete_network$Plant_id,sep="_")
 
 # make a list to store the info about the interactions (nets) and the results of the analysis (matchings)
 nets<-list()
@@ -16,10 +18,31 @@ for(site in levels(complete_network$Site)){
 	site_subset<-subset(complete_network,Site==site)
 
 	# make an "edge list" with the details of the interactions and their weights
-	edge_list<-data.frame(plants=site_subset$Plant_id,insects=site_subset$Insect_id,weight=site_subset$Number_of_visits_per6min)
+	edge_list<-data.frame(plants=numeric(0),insects=numeric(0),weight=numeric(0))
 	
+	# start at row 1
+	row_number<-1
+
+	# subset out each interaction
+	for(level in levels(as.factor(site_subset$Links)))
+	{
+		links_subset<-subset(site_subset,Links==level)
+		total_weight<-sum(links_subset$Number_of_visits_per6min)
+		edge_list[row_number,"plants"]<-links_subset[1,"Plant_id"]
+		edge_list[row_number,"insects"]<-links_subset[1,"Insect_id"]
+		edge_list[row_number,"weight"]<-total_weight
+		row_number<-row_number+1
+	}
+
 	#save the interactions and weights (edge_list) in nets
 	attr(nets,site)<-edge_list
+
+	# print a file of the edge list
+	write.table(edge_list, file = site, quote = FALSE, row.names = FALSE)
+
+	# put prefixes in front of the plant and insect IDs to distinguish them
+	edge_list$Insect_id <- paste("i",edge_list$Insect_id,sep="_")
+	edge_list$Plant_id <- paste("p",edge_list$Plant_id,sep="_")
 
 	# make a graph from the edge list
 	interaction_graph<-graph.data.frame(edge_list)
@@ -42,7 +65,7 @@ for(site in levels(complete_network$Site)){
 	attr(matchings,name)<-match_results
 
 	# write the edge list to a file to be used in C++
-	write.table(edge_list, file = name, quote = FALSE, sep = " ", row.names = FALSE, col.names = FALSE)
+	#write.table(edge_list, file = name, quote = FALSE, sep = " ", row.names = FALSE, col.names = FALSE)
 }
 
 main_info_matchings<-data.frame("site"=character(12), "matching_size"=numeric(12), "matching_weight"=numeric(12), stringsAsFactors=FALSE)
