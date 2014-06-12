@@ -41,7 +41,7 @@ for(site in levels(complete_network$Site)){
 	attr(interactions, site)<-nrow(edge_list)
 
 	# print a file of the edge list
-	write.table(edge_list, file = paste0(site,"_binary" quote = FALSE, row.names = FALSE, col.names = FALSE)
+	write.table(edge_list, file = paste0(site,"_binary"), quote = FALSE, row.names = FALSE, col.names = FALSE)
 
 	# put prefixes in front of the plant and insect IDs to distinguish them
 	edge_list$insects <- paste("i",edge_list$insects,sep="_")
