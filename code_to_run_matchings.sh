@@ -10,5 +10,3 @@ qsub qsub-find-matchings.sh MED4CA 11 33 MED4CA_matchings.dat
 
 qsub qsub-find-matchings.sh MED4CA_binary 11 11 MED4CA_binary_matchings.dat
 
-
-
