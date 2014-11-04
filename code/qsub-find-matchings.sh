@@ -18,5 +18,5 @@ n_links=$2
 target_links=$3
 file_name=$4
 
-cat data/$network | ./code/a.out $n_links $target_links > data/$file_name
+cat ../data/network_data/$network | ./weighted_bipartite_matching $n_links $target_links > ../data/matching_results/$file_name
 
