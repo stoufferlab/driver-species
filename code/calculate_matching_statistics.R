@@ -11,8 +11,7 @@
 datadir <- "../data/"
 
 # TODO: update this list when the final results are in
-networks <- c("BAT1CA","BAT2CA","FRA1OP","FRA2OP","MED1CA","MED3CA","MED4CA","MIQ1OP","MIQ2OP","SEL1OP","SEL2OP")
-#networks <- c("BAT1CA","BAT2CA","FRA1OP","FRA2OP","MED1CA","MED2CA","MED3CA","MED4CA","MIQ1OP","MIQ2OP","SEL1OP","SEL2OP")
+networks <- c("BAT1CA","BAT2CA","FRA1OP","FRA2OP","MED1CA","MED2CA","MED3CA","MED4CA","MIQ1OP","MIQ2OP","SEL1OP","SEL2OP")
 
 # look at all of the data files
 for(network in networks){
