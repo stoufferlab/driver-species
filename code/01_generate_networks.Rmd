@@ -12,7 +12,7 @@ library(knitr)
 
 opts_knit$set (root.dir=normalizePath('../'))
 opts_chunk$set (fig.path = "./figures/01/")
-opts_chunk$set (cache.path = "./cache/02/")
+opts_chunk$set (cache.path = "./cache/01/")
 opts_chunk$set (fig.width = 11, 
                 fig.height = 9,
                 out.width = "858px")
@@ -61,6 +61,9 @@ plyr::ldply(m_match, function(x){
 						 n_int = length(igraph::E(x$net)$weight),
 						 matching_weight = x$match$matching_weight,
 						 sum_weight = sum(igraph::E(x$net)$weight))
-}) %>% kable
+}) %>% 
+	dplyr::mutate(n_comb = choose(n_int, matching_size)) %>%
+	kable
 ```
 
+The matching size and number of interactions doesn't coincide with the ones previously used for the bipartite matching.
