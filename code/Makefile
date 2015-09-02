@@ -13,6 +13,3 @@ example_matchings: 02_example_maximum_matching.Rmd
 generate_networks: 01_generate_networks.Rmd
 	Rscript cpRmd.R $<
 
-weighted_bipartite_matching: weighted_bipartite_matching.cpp
-	$(CC) -o $@ $< -lm -lcblas -lgsl -lgslcblas 
-
