@@ -1,0 +1,102 @@
+---
+title: "Calculating all possible maximum matchings"
+author: "Fernando Cagua"
+date: "2 September 2015"
+output: html_document
+---
+
+```{r, echo = FALSE, message=FALSE, warning=FALSE}
+library(dplyr)
+library(magrittr)
+library(igraph)
+library(ggplot2)
+library(knitr)
+
+opts_knit$set (root.dir=normalizePath('../'))
+opts_chunk$set (fig.path = "./figures/02/")
+opts_chunk$set (cache.path = "./cache/02/")
+opts_chunk$set (fig.width = 11, 
+                fig.height = 6,
+                out.width = "858px")
+```
+
+```{r, echo = FALSE, results = "hide", message=FALSE, warning=FALSE}
+list.files("./code/functions", full.names = TRUE) %>% lapply(source)
+```
+
+
+Here I show how to calculate the bipartite maximum matchings of an arbitrary bipartite graph.
+
+### 1. Create the graph
+
+```{r, warning = FALSE}
+g <- graph_from_literal( a-b-c-d-e-f-a, a-d, g-f, h, i-f, j-k-h)
+V(g)$type <- c(FALSE,TRUE)
+g %>%	add_layout_(as_bipartite()) %>%	plot()
+```
+
+### 2. Calculate a maximum bipartite matching
+
+```{r}
+match <- max_bipartite_match(g) 
+print(match)
+```
+
+This give use the size of the matching, this is how many nodes can be matched on each side. 
+
+### 3. Make the line graph of the bipartite network
+
+Which is the an alternative representation in which edges become nodes and there is a link between them if they share a node in the original network
+
+```{r}
+h <- g %>% igraph::make_line_graph() %T>% plot
+```
+
+### 4. Get the complementer graph of the line graph
+
+Which is equivalent of changing all 0s for 1s and all 1s for 0s in the adjacency matrix
+
+```{r}
+h <- h %>% igraph::complementer() %T>% plot
+```
+
+### 5. Find all the cliques that have the same size as the maximum matching found before
+
+```{r}
+cli <- h %>% igraph::max_cliques(min = match$matching_size)
+cli <- unlist(cli) %>% matrix(ncol = match$matching_size, byrow = TRUE)
+print(cli)
+```
+
+### 6. Let's have a look!!!
+
+At five of them...
+
+```{r, fig.height= 5}
+matchings <- apply(cli, 1, function(x) {
+	y <- rep(1, length(E(g)))
+	y[x] <- 2
+	y
+})
+
+plyr::a_ply(matchings[, round(seq(1,20, length.out = 5))], 2, function(x){
+	p <- g %>%	add_layout_(as_bipartite()) %>%	plot.igraph(edge.color = x)
+})
+```
+
+### 7. Let's see the proportion of unmatched 
+
+On posibility is to rank nodes by how many times they act as driver nodes in all maximum matchings in the network. Here we assume that we only want to match the nodes on "top"
+
+```{r}
+get_matched_vertex(g, choosen_type = FALSE, 
+									 matchings = cli, output = "data.frame") %>%
+	dplyr::filter(matched == FALSE) %>%
+	ggplot() +
+	geom_histogram(aes(x = v)) +
+	xlab("vertex") +
+	ylab("frequency of acting as a driver node") +
+	theme_minimal()
+```
+
+
