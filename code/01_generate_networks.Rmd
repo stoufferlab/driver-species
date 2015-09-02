@@ -45,7 +45,7 @@ m_match <- plyr::dlply(ntw, "Site", function(x){
 		dplyr::distinct() %>%
 		dplyr::select(name, type)
 	
-	net <- igraph::graph.data.frame(edg, directed = F, vertices = ver)
+	net <- igraph::graph_from_data_frame(edg, directed = F, vertices = ver)
 	list(net = net,
 			 match = igraph::maximum.bipartite.matching(net))
 })
