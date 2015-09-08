@@ -85,3 +85,4 @@ networks <- plyr::dlply(ntw, "Site", function(x){
 
 saveRDS(networks, "./data/bartomeus/networks.dat", ascii = TRUE, compress = FALSE)
 ```
+
