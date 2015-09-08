@@ -27,7 +27,7 @@ bipartite_digraph <- function(net,
 	# if it's by weight
 	else if (type[1] == "weight") {
 		# get adjancecy matrix
-		adj <- as_adjacency_matrix(net, attr = "weight", sparse = F)
+		adj <- igraph::as_adjacency_matrix(net, attr = "weight", sparse = F)
 		# calculate dependencies
 		adj <- apply(adj, 1, function(x){x / sum(x)}) %>% t()
 		
