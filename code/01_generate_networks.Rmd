@@ -21,7 +21,7 @@ opts_chunk$set (fig.width = 11,
 First I read the data. Here I'm assuming that the different sites are independent, that the `Round` column corresponds to different samplings days and that it's OK to estimate the total weight by adding `Number_of_visits_per6min` across `Round`
 
 ```{r}
-data <- read.csv("./data/network_data/Bartomeus_Ntw_nceas.txt",sep="\t") %>%
+data <- read.csv("./data/bartomeus/Bartomeus_Ntw_nceas.txt",sep="\t") %>%
 	tbl_df() %T>% print(width = Inf)
 
 ntw <- data %>%
