@@ -67,3 +67,21 @@ plyr::ldply(m_match, function(x){
 ```
 
 The matching size and number of interactions doesn't coincide with the ones previously used for the bipartite matching.
+
+## Save networks for later use
+
+```{r}
+networks <- plyr::dlply(ntw, "Site", function(x){
+	edg <- x %>% 
+		dplyr::select(-Site)
+	ver <- edg %>%
+		dplyr::select(-weight) %>%
+		tidyr::gather(type, name, pla, pol) %>%
+		dplyr::distinct() %>%
+		dplyr::select(name, type)
+	
+	igraph::graph_from_data_frame(edg, directed = F, vertices = ver)
+})
+
+saveRDS(networks, "./data/bartomeus/networks.dat", ascii = TRUE, compress = FALSE)
+```
