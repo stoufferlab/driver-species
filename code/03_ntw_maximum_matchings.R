@@ -4,7 +4,6 @@ setwd("~/github/controlling-pollination-networks/")
 
 # which network
 i <- as.integer(commandArgs(trailingOnly = TRUE)[1])
-i <- 3
 # load libraries
 library(magrittr)
 # load functions
