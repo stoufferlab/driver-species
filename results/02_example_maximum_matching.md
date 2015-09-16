@@ -211,18 +211,7 @@ plyr::ldply(E(g), function(x){
 ```
 
 ```
-##     e matching_size delta_drivers     categ
-## 1   1             4             0 redundant
-## 2   2             4             0 redundant
-## 3   3             4             0 redundant
-## 4   4             4             0 redundant
-## 5   5             4             0 redundant
-## 6   6             4             0 redundant
-## 7   7             4             0 redundant
-## 8   8             4             0 redundant
-## 9   9             4             0 redundant
-## 10 10             4             0 redundant
-## 11 11             4             0 redundant
+## Error in categ_link(c(0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L)): argument "baseline" is missing, with no default
 ```
 
 Well this is boring. All edges are redundant
@@ -242,18 +231,7 @@ node_relev_c <- plyr::ldply(V(g), function(x){
 ```
 
 ```
-##    .id  v matching_size delta_drivers    categ
-## 1    a  1             4             0 ordinary
-## 2    b  2             3             1 critical
-## 3    c  3             4             0 ordinary
-## 4    d  4             3             1 critical
-## 5    e  5             4             0 ordinary
-## 6    f  6             3             1 critical
-## 7    g  7             4             0 ordinary
-## 8    h  8             4             0 ordinary
-## 9    i  9             4             0 ordinary
-## 10   j 10             4             0 ordinary
-## 11   k 11             3             1 critical
+## Error in categ_node(c(0L, 1L, 0L, 1L, 0L, 1L, 0L, 0L, 0L, 0L, 1L)): argument "baseline" is missing, with no default
 ```
 
 This not as boring :) We can see that some are redundant ordinary and some are critical (there is no redundant one). 
@@ -271,11 +249,8 @@ dplyr::inner_join(node_relev_m, node_relev_c, by = c("v" = ".id")) %>%
 ```
 
 ```
-## Warning in inner_join_impl(x, y, by$x, by$y): joining factor and character
-## vector, coercing into character vector
+## Error in is.data.frame(y): object 'node_relev_c' not found
 ```
-
-<img src="./figures/02/unnamed-chunk-14-1.png" title="plot of chunk unnamed-chunk-14" alt="plot of chunk unnamed-chunk-14" width="858px" />
 
 Well now I realise this network was a crappy example. Obviously removing R decreasses the matching... But I don't think that'll happen using the proper bipartite matching (this is having head vertices in one side and tail vertices in the other). Especially because f, d, and b were also critical. 
 
