@@ -11,7 +11,7 @@ First I read the data. Here I'm assuming that the different sites are independen
 
 
 ```r
-data <- read.csv("./data/network_data/Bartomeus_Ntw_nceas.txt",sep="\t") %>%
+data <- read.csv("./data/Bartomeus_Ntw_nceas.txt",sep="\t") %>%
 	tbl_df() %T>% print(width = Inf)
 ```
 
@@ -124,3 +124,27 @@ plyr::ldply(m_match, function(x){
 |SEL2OP |             8|     9|    28|    42|              23|         77| 1.180302e+08|
 
 The matching size and number of interactions doesn't coincide with the ones previously used for the bipartite matching.
+
+## Save networks for later use
+
+
+```r
+networks <- plyr::dlply(ntw, "Site", function(x){
+	edg <- x %>% 
+		dplyr::select(-Site)
+	ver <- edg %>%
+		dplyr::select(-weight) %>%
+		tidyr::gather(type, name, pla, pol) %>%
+		dplyr::distinct() %>%
+		dplyr::select(name, type)
+	
+	igraph::graph_from_data_frame(edg, directed = F, vertices = ver)
+})
+
+for(i in 1:length(networks)){
+	saveRDS(networks[[i]],
+					paste0("./data/networks/", names(networks)[i], ".dat"),
+					ascii = TRUE, compress = FALSE)
+}
+```
+
