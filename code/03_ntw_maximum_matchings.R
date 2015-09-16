@@ -17,8 +17,10 @@ space <- expand.grid(type = c("bi", "weight", "AB", "BA"),
 															 keep = c("all", "A", "B", "A", "B")))
 # select the corresponding one for this computation
 p <- space[i,]
-# transform the network into the bipartite format we need
 m_net <- net[[p$net]] %>%
+	# select only the largest connected component of the network
+	keep_largest_component() %>%
+	# transform the network into the bipartite format we need
 	bipartite_digraph(type = p$type, keep = p$keep) %>%
 	digraph_bipartite() %>%
 	igraph::add_layout_(igraph::as_bipartite())
@@ -32,6 +34,8 @@ filename <- paste0("./data/bartomeus/maximum_matchings/", filename, ".dat")
 # actually calculate all the maximum matchings for the network
 igraph::make_line_graph(m_net) %>%
 	igraph::complementer() %>% 
+	igraph::count_max_cliques(min = matching$matching_size, 
+														max = matching$matching_size)
 	igraph::max_cliques(min = matching$matching_size, 
 											max = matching$matching_size, 
 											file = filename)
