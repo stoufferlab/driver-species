@@ -103,6 +103,8 @@ check_double_links <- function(x, keep){
 		}
 	}
 	
+	if(nrow(df)==0) return(x)
+	
 	out <- plyr::dlply(df, "rep", function(d, keep){
 		if (keep == "A") ind <- 1
 		else if (keep == "B") ind <- 2
