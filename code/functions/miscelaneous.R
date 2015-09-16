@@ -1,4 +1,5 @@
-categ_node <- function(x){
+categ_node <- function(this, baseline){
+	x <- this - baseline
 	x[x < 0] <- -1
 	x[x > 0] <- 1
 	plyr::mapvalues(x, 
@@ -7,7 +8,8 @@ categ_node <- function(x){
 									warn_missing = FALSE)
 }
 
-categ_link <- function(x){
+categ_link <- function(this, baseline){
+	x <- this - baseline
 	x[x < 0] <- -1
 	x[x > 0] <- 1
 	plyr::mapvalues(x, 
