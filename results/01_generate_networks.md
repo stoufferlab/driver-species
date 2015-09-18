@@ -19,6 +19,7 @@ data <- read.csv("./data/Bartomeus_Ntw_nceas.txt",sep="\t") %>%
 ## Source: local data frame [785 x 10]
 ## 
 ##      Site Round Plant_id Plant_Family          Plant_Gen_Sp Insect_id
+##    (fctr) (int)    (int)       (fctr)                (fctr)     (int)
 ## 1  BAT1CA     3       31    Asteracea Urospermum_picrioides       125
 ## 2  BAT1CA     4       32    Asteracea    Sonchus_tenerrinus        11
 ## 3  BAT1CA     4       32    Asteracea    Sonchus_tenerrinus       105
@@ -31,6 +32,7 @@ data <- read.csv("./data/Bartomeus_Ntw_nceas.txt",sep="\t") %>%
 ## 10 BAT1CA     1       24      Labiada    Lavandula_stoechas       184
 ## ..    ...   ...      ...          ...                   ...       ...
 ##    Insect_Order Insect_Family       Insect_Gen_Sp Number_of_visits_per6min
+##          (fctr)        (fctr)              (fctr)                    (int)
 ## 1    Coleoptera   Oedemeridae   Oedemera_flavipes                        1
 ## 2   Hymenoptera  Megachilidae Anthidium_sticticum                        1
 ## 3    Coleoptera   Oedemeridae     Oedemera_lurida                        1
@@ -57,18 +59,19 @@ ntw <- data %>%
 ```
 ## Source: local data frame [577 x 4]
 ## 
-##      Site  pla   pol weight
-## 1  BAT1CA  p_1  i_11      1
-## 2  BAT1CA  p_1 i_125      1
-## 3  BAT1CA p_13 i_105      1
-## 4  BAT1CA p_13 i_112      1
-## 5  BAT1CA p_21  i_45      1
-## 6  BAT1CA p_24  i_11     12
-## 7  BAT1CA p_24  i_13      1
-## 8  BAT1CA p_24 i_175      1
-## 9  BAT1CA p_24 i_181      3
-## 10 BAT1CA p_24 i_182      4
-## ..    ...  ...   ...    ...
+##      Site   pla   pol weight
+##    (fctr) (chr) (chr)  (int)
+## 1  BAT1CA   p_1  i_11      1
+## 2  BAT1CA   p_1 i_125      1
+## 3  BAT1CA  p_13 i_105      1
+## 4  BAT1CA  p_13 i_112      1
+## 5  BAT1CA  p_21  i_45      1
+## 6  BAT1CA  p_24  i_11     12
+## 7  BAT1CA  p_24  i_13      1
+## 8  BAT1CA  p_24 i_175      1
+## 9  BAT1CA  p_24 i_181      3
+## 10 BAT1CA  p_24 i_182      4
+## ..    ...   ...   ...    ...
 ```
 
 Now let's convert it to an `igraph` network and calculate a bipartite maximal matching.
