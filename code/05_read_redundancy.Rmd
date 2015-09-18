@@ -1,0 +1,129 @@
+---
+title: "Read redundancies"
+author: "Fernando Cagua"
+date: "12 September 2015"
+output: html_document
+---
+
+```{r, echo = FALSE, message=FALSE, warning=FALSE}
+library(dplyr)
+library(magrittr)
+library(knitr)
+library(ggplot2)
+library(ggtern)
+
+opts_knit$set (root.dir=normalizePath('../'))
+opts_chunk$set (fig.path = "./figures/05/")
+opts_chunk$set (cache.path = "./cache/05/")
+opts_chunk$set (fig.width = 11, 
+                fig.height = 9,
+                out.width = "858px")
+```
+
+```{r}
+# load utility functions
+nn <- list.files("./code/functions", full.names = TRUE) %>% lapply(source)
+# load netw
+net <- list.files("./data/networks/", full.names = TRUE) %>%
+	lapply(readRDS)
+names(net) <- list.files("./data/networks/", full.names = FALSE) %>%
+	stringr::str_split("\\.") %>% lapply(`[`, 1) %>% unlist ()
+```
+
+Let's have a look at the diferences in number of driver nodes of the different methods.
+
+```{r, warning = FALSE}
+# generate parameter space
+space <- expand.grid(type = c("bi", "weight", "AB", "BA"), 
+										 net = 1:length(net)) %>%
+	dplyr::inner_join(data.frame(type = c("bi", "AB", "BA", "weight", "weight"),
+															 keep = c("all", "A", "B", "A", "B")))
+# select the corresponding one for this computation
+
+driver_nodes <- 1:nrow(space) %>%
+	plyr::laply(function(i){
+		p <- space[i,]
+		net[[p$net]] %>%
+			keep_largest_component() %>%
+			bipartite_digraph(type = p$type, keep = p$keep) %>%
+			n_unmatched_vertex()
+	})
+
+space %<>%
+	dplyr::mutate(n_driver = driver_nodes,
+								type = interaction(type, keep))
+
+net_names <- plyr::ldply(net, function(x){
+	length(igraph::V(x))
+}) %>%
+	dplyr::mutate(net = 1:nrow(.)) %>%
+	dplyr::rename(n_species = V1,
+								net_name = `.id`)
+
+space <- dplyr::inner_join(space, net_names) %>%
+	dplyr::mutate(n_no_driver = n_species - n_driver)
+
+glm(cbind(n_driver, n_no_driver) ~ type,  data = space, family = "binomial") %>% summary
+
+```
+
+
+This means, 
+
+ * ~ 52% of the species for Pla-Pol or Pol-Pla 
+ * ~ 43% of the species for weighted (regardless of priority)
+ * ~ 15% of the species for bi-directional 
+
+Which is quite an improvement.
+
+# Node redundancy
+
+Now let's have a look at the proportion of critical, redundant and ordinary nodes in each class. 
+
+```{r, warning = FALSE}
+folder <- "./data/redundancy/node/"
+
+node_redundancy <- list.files(folder, full.names = TRUE) %>%
+	plyr::ldply(function(x, name){
+		y <- read.csv(x) 
+		info <- basename(x) %>% 
+			stringr::str_sub(end = -5) %>% 
+			stringr::str_split("_") %>% 
+			unlist()
+		y %>%
+			dplyr::mutate(net = info[[1]],
+										type = info[2],
+										keep = info[3])
+	}) 
+
+ggplot(node_redundancy) +
+	geom_bar(aes(x = interaction(type, keep), fill = robustness)) +
+	facet_wrap(~ net, scales = "free", nrow = 2) +
+	scale_fill_brewer(palette = "Set1")
+
+node_redundancy %>%
+	dplyr::mutate(type = interaction(type, keep)) %>%
+	dplyr::group_by(net, type, robustness) %>%
+	dplyr::summarise(n = n()) %>%
+	tidyr::spread(robustness, n) %>%
+	dplyr::mutate(critical = replace(critical, is.na(critical), 0)) %>%
+	ggplot(aes(x = ordinary, z = redundant, y = critical)) +
+	geom_point(aes(fill = type), shape = 21, size = 5, alpha = 0.7) + 
+	facet_wrap(~ net) +
+	coord_tern() + 
+	scale_fill_brewer(palette = "Set1")
+
+```
+
+In both  representations we can see that there is little variation among configurations with the same phylosophy. 
+
+* For pla-pol or pol-pla all species are either redundant or ordinary
+* There are some critical species in the weight configuration but most of them are redundant and ordinary to a lesser degree
+* The bidirectional configuration makes a larger proportion of species critical species critical and almost all the other are redundant
+
+# Save results
+
+```{r}
+write.csv(node_redundancy, file = "./data/node_redundancy.dat", row.names = F)
+```
+
