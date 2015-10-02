@@ -26,7 +26,7 @@ space <- expand.grid(type = c("z-bi", "weight", "AB", "BA"),
 	dplyr::arrange(type, n_int)
 # select the corresponding one for this computation
 p <- space[i,]
-m_net <- net[[p$net]] %>%
+m_net <- net[[as.numeric(p$net)]] %>%
 	# select only the largest connected component of the network
 	keep_largest_component() %>%
 	# transform the network into the bipartite format we need
