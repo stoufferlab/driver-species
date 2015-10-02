@@ -11,10 +11,16 @@ list.files("./code/functions", full.names = TRUE) %>% lapply(source)
 # load networksnano
 net <- readRDS("./data/bartomeus/networks.dat")
 # generate parameter space
-space <- expand.grid(type = c("bi", "weight", "AB", "BA"), 
-										 net = 1:length(net)) %>%
-	dplyr::inner_join(data.frame(type = c("bi", "AB", "BA", "weight", "weight"),
-															 keep = c("all", "A", "B", "A", "B")))
+space <- expand.grid(type = c("z-bi", "weight", "AB", "BA"), 
+										 net = as.character(1:length(net))) %>%
+	dplyr::inner_join(data.frame(type = c("z-bi", "AB", "BA", "weight", "weight"),
+															 keep = c("all", "A", "B", "A", "B"))) %>%
+	dplyr::inner_join(plyr::ldply(net, function(x) length(igraph::E(x))) %>%
+											dplyr::add_rownames() %>%
+											dplyr::rename(net = rowname, 
+																		name = Site,
+																		n_int = V1)) %>%
+	dplyr::arrange(type, n_int)
 # select the corresponding one for this computation
 p <- space[i,]
 m_net <- net[[p$net]] %>%
@@ -29,7 +35,7 @@ matching <- igraph::max_bipartite_match(m_net)
 
 # set the filename where the matchings will be saved
 filename <- paste(names(net)[p$net], p$type, p$keep, sep = "_")
-filename <- paste0("./data/bartomeus/maximum_matchings/", filename, ".dat")
+filename <- paste0("./data/maximum_matchings/", filename, ".dat")
 
 # actually calculate all the maximum matchings for the network
 igraph::make_line_graph(m_net) %>%

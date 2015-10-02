@@ -4,7 +4,7 @@
 #$ -cwd
 #$ -j y
 #$ -S /bin/bash
-#$ -t 1-60
+#$ -t 1-57 
 #$ -m a
 #$ -M efc29@uclive.ac.nz
 #$ -r yes
