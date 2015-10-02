@@ -9,7 +9,10 @@ library(magrittr)
 # load functions
 list.files("./code/functions", full.names = TRUE) %>% lapply(source)
 # load networksnano
-net <- readRDS("./data/bartomeus/networks.dat")
+net <- list.files("./data/networks/", full.names = TRUE) %>%
+	lapply(readRDS)
+names(net) <- list.files("./data/networks/", full.names = FALSE) %>%
+	stringr::str_split("\\.") %>% lapply(`[`, 1) %>% unlist ()
 # generate parameter space
 space <- expand.grid(type = c("z-bi", "weight", "AB", "BA"), 
 										 net = as.character(1:length(net))) %>%
@@ -18,7 +21,7 @@ space <- expand.grid(type = c("z-bi", "weight", "AB", "BA"),
 	dplyr::inner_join(plyr::ldply(net, function(x) length(igraph::E(x))) %>%
 											dplyr::add_rownames() %>%
 											dplyr::rename(net = rowname, 
-																		name = Site,
+																		name = .id,
 																		n_int = V1)) %>%
 	dplyr::arrange(type, n_int)
 # select the corresponding one for this computation
