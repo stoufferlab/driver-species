@@ -1,8 +1,6 @@
 setwd("~/github/controlling-pollination-networks/")
 library(magrittr)
-library(foreach)
-library(doMC)
-registerDoMC(cores = 4)
+
 i <- as.integer(commandArgs(trailingOnly = T)[1])
 
 # load functions
