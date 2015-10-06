@@ -1,13 +1,6 @@
-#!/bin/bash
+#! /bin/bash
 
-#$ -V
-#$ -cwd
-#$ -j y
-#$ -S /bin/bash
-#$ -t 1-57 
-#$ -m a
-#$ -M efc29@uclive.ac.nz
-#$ -r yes
-
-Rscript --no-save --no-restore 03_ntw_maximum_matchings.R $SGE_TASK_ID 
-exit 0
+for i in `seq $1`
+do
+	Rscript 03_ntw_maximum_matchings.R $i
+done
