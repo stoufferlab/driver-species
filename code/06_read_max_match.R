@@ -47,7 +47,7 @@ f <- scan(file.path(folder, p$file), nlines = 100000, skip = p$line-1) %>%
 	}) %>%
 	apply(1, sum)
 
-dplyr::data_frame(node = igraph::V(net_bi)[igraph::V(net_bi)$type]$name,
+out <- dplyr::data_frame(node = igraph::V(net_bi)[igraph::V(net_bi)$type]$name,
 									freq = f) %>%
 	dplyr::rowwise() %>%
 	dplyr::mutate(node = stringr::str_split(node, "\\.") %>% 
@@ -56,4 +56,4 @@ dplyr::data_frame(node = igraph::V(net_bi)[igraph::V(net_bi)$type]$name,
 filename <- p$file %>% stringr::str_split("\\.") %>% unlist() %>% magrittr::extract(1) %>%
 	paste(p$line, sep = "_")
 
-write.csv(file = file.path("./data/maximum_matchings_summary", filename), row.names = F)
+write.csv(out, file = file.path("./data/maximum_matchings_summary", filename), row.names = F)
