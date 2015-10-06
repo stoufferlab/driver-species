@@ -7,25 +7,30 @@ i <- as.integer(commandArgs(trailingOnly = TRUE)[1])
 # load libraries
 library(magrittr)
 # load functions
-list.files("./code/functions", full.names = TRUE) %>% lapply(source)
+a <- list.files("./code/functions", full.names = TRUE) %>% lapply(source)
 # load networksnano
 net <- list.files("./data/networks/", full.names = TRUE) %>%
 	lapply(readRDS)
 names(net) <- list.files("./data/networks/", full.names = FALSE) %>%
 	stringr::str_split("\\.") %>% lapply(`[`, 1) %>% unlist ()
 # generate parameter space
-space <- expand.grid(type = c("z-bi", "weight", "AB", "BA"), 
-										 net = as.character(1:length(net))) %>%
-	dplyr::inner_join(data.frame(type = c("z-bi", "AB", "BA", "weight", "weight"),
-															 keep = c("all", "A", "B", "A", "B"))) %>%
-	dplyr::inner_join(plyr::ldply(net, function(x) length(igraph::E(x))) %>%
-											dplyr::add_rownames() %>%
-											dplyr::rename(net = rowname, 
-																		name = .id,
-																		n_int = V1)) %>%
-	dplyr::arrange(type, n_int)
+suppressWarnings({
+	suppressMessages({
+		space <- expand.grid(type = c("z-bi", "weight", "AB", "BA"), 
+												 net = as.character(1:length(net))) %>%
+			dplyr::inner_join(data.frame(type = c("z-bi", "AB", "BA", "weight", "weight"),
+																	 keep = c("all", "A", "B", "A", "B"))) %>%
+			dplyr::inner_join(plyr::ldply(net, function(x) length(igraph::E(x))) %>%
+													dplyr::add_rownames() %>%
+													dplyr::rename(net = rowname, 
+																				name = .id,
+																				n_int = V1)) %>%
+			dplyr::arrange(type, n_int)
+	})
+})
 # select the corresponding one for this computation
 p <- space[i,]
+message("Max Matching Index ", i, " Working on net ", p$net, "; type ", p$type)
 m_net <- net[[as.numeric(p$net)]] %>%
 	# select only the largest connected component of the network
 	keep_largest_component() %>%
@@ -37,14 +42,14 @@ m_net <- net[[as.numeric(p$net)]] %>%
 matching <- igraph::max_bipartite_match(m_net)
 
 # set the filename where the matchings will be saved
-filename <- paste(names(net)[p$net], p$type, p$keep, sep = "_")
+filename <- paste(names(net)[as.numeric(p$net)], p$type, p$keep, sep = "_")
 filename <- paste0("./data/maximum_matchings/", filename, ".dat")
 
 # actually calculate all the maximum matchings for the network
 igraph::make_line_graph(m_net) %>%
 	igraph::complementer() %>% 
-	igraph::count_max_cliques(min = matching$matching_size, 
-														max = matching$matching_size)
+# 	igraph::count_max_cliques(min = matching$matching_size, 
+# 														max = matching$matching_size) %>%
 	igraph::max_cliques(min = matching$matching_size, 
 											max = matching$matching_size, 
 											file = filename)
