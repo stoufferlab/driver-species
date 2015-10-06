@@ -8,7 +8,7 @@ i <- as.integer(commandArgs(trailingOnly = TRUE)[1])
 # load libraries
 library(magrittr)
 # load utility functions
-list.files("./code/functions", full.names = TRUE) %>% lapply(source)
+a <- list.files("./code/functions", full.names = TRUE) %>% lapply(source)
 
 # load networks
 net <- list.files("./data/networks/", full.names = TRUE) %>%
@@ -16,13 +16,20 @@ net <- list.files("./data/networks/", full.names = TRUE) %>%
 names(net) <- list.files("./data/networks/", full.names = FALSE) %>%
 	stringr::str_split("\\.") %>% lapply(`[`, 1) %>% unlist ()
 
-# generate parameter space
-space <- expand.grid(type = c("bi", "weight", "AB", "BA"), 
-										 net = 1:length(net)) %>%
-	dplyr::inner_join(data.frame(type = c("bi", "AB", "BA", "weight", "weight"),
-															 keep = c("all", "A", "B", "A", "B")))
+# generate parameter spaces
+suppressWarnings({
+	suppressMessages({
+		space <- expand.grid(type = c("z-bi", "weight", "AB", "BA"), 
+												 net = 1:length(net)) %>%
+			dplyr::inner_join(data.frame(type = c("z-bi", "AB", "BA", "weight", "weight"),
+																	 keep = c("all", "A", "B", "A", "B")))
+	})
+})
+
 # select the corresponding one for this computation
 p <- space[i,]
+
+message("Critical Elements Index ", i, " Working on net ", p$net, "; type ", p$type)
 
 # get baseline network
 m_net <- net[[p$net]] %>%
@@ -40,7 +47,8 @@ node_redundancy <- plyr::ldply(igraph::V(m_net), function(x){
 						 	n_unmatched_vertex())
 }) %>%
 	dplyr::select(-`.id`) %>%
-	dplyr::mutate(robustness = categ_node(n_unm, base_n_unm)) %>%
+	dplyr::mutate(robustness = categ_node(n_unm, base_n_unm),
+								d_driver = n_unm - base_n_unm) %>%
 	dplyr::select(-n_unm)
 
 # delete each edge in turn
@@ -49,7 +57,8 @@ link_redundancy <- plyr::ldply(igraph::E(m_net), function(x){
 						 n_unm = m_net %>% igraph::delete_edges(x) %>%
 						 	n_unmatched_vertex())
 }) %>%
-	dplyr::mutate(robustness = categ_link(n_unm, base_n_unm)) %>%
+	dplyr::mutate(robustness = categ_link(n_unm, base_n_unm),
+								d_driver = n_unm - base_n_unm) %>%
 	dplyr::select(-n_unm)
 	
 # set the filename where the matchings will be saved
