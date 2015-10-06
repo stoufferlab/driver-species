@@ -2,6 +2,6 @@
 
 for i in `seq $1`
 do
-	RScript 04_critical_elements.R $i
+	Rscript 04_critical_elements.R $i
 done
 	
