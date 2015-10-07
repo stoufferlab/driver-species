@@ -23,9 +23,9 @@ Let's have a look at the diferences in number of driver nodes of the different m
 
 ```r
 # generate parameter space
-space <- expand.grid(type = c("bi", "weight", "AB", "BA"), 
+space <- expand.grid(type = c("z-bi", "weight", "AB", "BA"), 
 										 net = 1:length(net)) %>%
-	dplyr::inner_join(data.frame(type = c("bi", "AB", "BA", "weight", "weight"),
+	dplyr::inner_join(data.frame(type = c("z-bi", "AB", "BA", "weight", "weight"),
 															 keep = c("all", "A", "B", "A", "B")))
 ```
 
@@ -76,13 +76,13 @@ glm(cbind(n_driver, n_no_driver) ~ type,  data = space, family = "binomial") %>%
 ## 
 ## Deviance Residuals: 
 ##      Min        1Q    Median        3Q       Max  
-## -1.57081  -0.54087   0.05258   0.38084   2.19885  
+## -1.57081  -0.50186   0.06414   0.35813   1.75956  
 ## 
 ## Coefficients:
 ##              Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)   1.07556    0.10706  10.046  < 2e-16 ***
+## (Intercept)   1.07556    0.10706  10.046   <2e-16 ***
 ## typeweight.A -0.35950    0.14602  -2.462   0.0138 *  
-## typebi.all   -0.90996    0.14219  -6.400 1.56e-10 ***
+## typez-bi.all  0.02306    0.15184   0.152   0.8793    
 ## typeBA.B      0.02306    0.15184   0.152   0.8793    
 ## typeweight.B -0.31979    0.14649  -2.183   0.0290 *  
 ## ---
@@ -90,9 +90,9 @@ glm(cbind(n_driver, n_no_driver) ~ type,  data = space, family = "binomial") %>%
 ## 
 ## (Dispersion parameter for binomial family taken to be 1)
 ## 
-##     Null deviance: 104.831  on 59  degrees of freedom
-## Residual deviance:  46.064  on 55  degrees of freedom
-## AIC: 290.7
+##     Null deviance: 55.012  on 59  degrees of freedom
+## Residual deviance: 40.656  on 55  degrees of freedom
+## AIC: 282.15
 ## 
 ## Number of Fisher Scoring iterations: 4
 ```
