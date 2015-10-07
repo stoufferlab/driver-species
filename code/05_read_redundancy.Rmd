@@ -34,9 +34,9 @@ Let's have a look at the diferences in number of driver nodes of the different m
 
 ```{r, warning = FALSE}
 # generate parameter space
-space <- expand.grid(type = c("bi", "weight", "AB", "BA"), 
+space <- expand.grid(type = c("z-bi", "weight", "AB", "BA"), 
 										 net = 1:length(net)) %>%
-	dplyr::inner_join(data.frame(type = c("bi", "AB", "BA", "weight", "weight"),
+	dplyr::inner_join(data.frame(type = c("z-bi", "AB", "BA", "weight", "weight"),
 															 keep = c("all", "A", "B", "A", "B")))
 # select the corresponding one for this computation
 
