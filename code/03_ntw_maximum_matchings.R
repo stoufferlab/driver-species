@@ -40,16 +40,26 @@ m_net <- net[[as.numeric(p$net)]] %>%
 	igraph::add_layout_(igraph::as_bipartite())
 # calculate a maximum matching (so we know the size)
 matching <- igraph::max_bipartite_match(m_net)
+# this igraph function is wrong
 
 # set the filename where the matchings will be saved
 filename <- paste(names(net)[as.numeric(p$net)], p$type, p$keep, sep = "_")
 filename <- paste0("./data/maximum_matchings/", filename, ".dat")
 
-# actually calculate all the maximum matchings for the network
-igraph::make_line_graph(m_net) %>%
-	igraph::complementer() %>% 
-# 	igraph::count_max_cliques(min = matching$matching_size, 
-# 														max = matching$matching_size) %>%
-	igraph::max_cliques(min = matching$matching_size, 
-											max = matching$matching_size, 
-											file = filename)
+# actually calculate all the maximum matchings for the network, but because we don't really know the size of the maximum matching, we'll loop over and see if the cliques algorithm can find more
+for (j in (matching$matching_size + 10):matching$matching_size){
+	
+	igraph::make_line_graph(m_net) %>%
+		igraph::complementer() %>% 
+		# 	igraph::count_max_cliques(min = matching$matching_size, 
+		# 														max = matching$matching_size) %>%
+		igraph::max_cliques(min = j, 
+												max = j, 
+												file = filename)
+	
+	if (length(scan(filename, nmax = 1)) != 0){
+		if (j == matching$matching_size + 10) waring("matching size is the top")
+		break
+	}
+	
+}
