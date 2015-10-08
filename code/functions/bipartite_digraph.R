@@ -10,7 +10,7 @@
 #' 
 #' @examples
 bipartite_digraph <- function(net,
-											type = c("bi", "weight", "AB", "BA"),
+											type = c("z-bi", "weight", "AB", "BA"),
 											keep = c("all", "A", "B", "random")){
 	
 	# sanity checks
@@ -22,7 +22,7 @@ bipartite_digraph <- function(net,
 	)
 	
 	# if its bidirectional just make an easy convertion
-	if (type[1] == "bi") y <- igraph::as.directed(net)
+	if (type[1] == "z-bi") y <- igraph::as.directed(net)
 	
 	# if it's by weight
 	else if (type[1] == "weight") {

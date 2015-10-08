@@ -1,0 +1,84 @@
+---
+title: "redundancy vs maximum matchings"
+author: "Fernando Cagua"
+date: "5 October 2015"
+output: html_document
+---
+
+```{r, echo = FALSE, message=FALSE, warning=FALSE}
+library(dplyr)
+library(magrittr)
+library(knitr)
+library(ggplot2)
+library(ggtern)
+
+opts_knit$set (root.dir=normalizePath('../'))
+opts_chunk$set (fig.path = "./figures/07/")
+opts_chunk$set (cache.path = "./cache/07/")
+opts_chunk$set (fig.width = 11, 
+                fig.height = 9,
+                out.width = "858px")
+```
+
+```{r}
+# load utility functions
+nn <- list.files("./code/functions", full.names = TRUE) %>% lapply(source)
+# load netw
+net <- list.files("./data/networks/", full.names = TRUE) %>%
+    lapply(readRDS)
+names(net) <- list.files("./data/networks/", full.names = FALSE) %>%
+    stringr::str_split("\\.") %>% lapply(`[`, 1) %>% unlist ()
+```
+
+
+Let's check if the redundancy matches the maximum matching results.
+
+## Read redundancy
+
+```{r}
+node_redundancy <- read.csv(file = "./data/node_redundancy.dat")
+
+node_re <- node_redundancy %>% 
+	plyr::ddply("net", function(x){
+		this_net <- net[[first(x$net)]] %>%
+	# select only the largest connected component of the network
+			keep_largest_component()
+		nodes <- igraph::V(this_net)[x$n]$name
+		x %>%
+			dplyr::mutate(node = nodes)
+	}) %>% dplyr::tbl_df()
+```
+
+## Read maximum matchings
+
+```{r}
+folder <- "./data/maximum_matchings_summary/" 
+files <- list.files(folder)
+node_mm <- plyr::adply(files, 1, function(x){
+	read.csv(file.path(folder, x)) %>%
+		dplyr::mutate(net = unlist(stringr::str_split(x, "_"))[1],
+									type = unlist(stringr::str_split(x, "_"))[2], 
+									keep = unlist(stringr::str_split(x, "_"))[3],
+									batch = unlist(stringr::str_split(x, "_"))[4])
+}) %>%
+	dplyr::select(-X1) %>%
+	dplyr::group_by(net, type, keep, node) %>%
+	dplyr::summarise(freq = sum(freq))
+
+```
+
+## Join them 
+
+```{r}
+dplyr::full_join(node_mm, node_re) %>%
+	dplyr::filter(!is.na(freq)) %>%
+	dplyr::group_by(net, type, keep) %>%
+	dplyr::mutate(r = rank(freq, ties.method = "first"),
+								f_f = freq/max(freq)) %>% 
+
+
+	ggplot() +
+	geom_point(aes(x = r, y = f_f, fill = robustness), shape = 21) +
+	facet_wrap(type ~ net, scales = "free")
+```
+
