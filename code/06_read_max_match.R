@@ -24,7 +24,7 @@ if(!file.exists("./data/maximum_matchings_space.dat")){
 	space <- space %>% dplyr::group_by(file) %>% dplyr::mutate(m = max(line)) %>% 
 		dplyr::group_by() %>%	dplyr::arrange(m, line)
 	
-	write.csv(space, file = file.path("./data/maximum_matchings_space.dat", filename), row.names = F)
+	write.csv(space, file = "./data/maximum_matchings_space.dat", row.names = F)
 } else {
 	space <- read.csv("./data/maximum_matchings_space.dat")
 }
