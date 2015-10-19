@@ -9,17 +9,26 @@ a <- list.files("./code/functions", full.names = TRUE) %>% lapply(source)
 folder <- "./data/maximum_matchings"
 filenames <- list.files(folder)
 
-space <- plyr::ldply(filenames, function(x){
-	n_lines <- file.path(folder, x) %>% paste("wc -l", .) %>%
-		system(intern = T) %>%
-		stringr::str_split(" ") %>% 
-		unlist() %>%
-		magrittr::extract(1) %>%
-		as.numeric()
+if(!file.exists("./data/maximum_matchings_space.dat")){
+	space <- plyr::ldply(filenames, function(x){
+		n_lines <- file.path(folder, x) %>% paste("wc -l", .) %>%
+			system(intern = T) %>%
+			stringr::str_split(" ") %>% 
+			unlist() %>%
+			magrittr::extract(1) %>%
+			as.numeric()
+		
+		data.frame(file = x, line = seq(1, n_lines, by = 100000)) 
+	}, .progress = "text") 
 	
+	space <- space %>% dplyr::group_by(file) %>% dplyr::mutate(m = max(line)) %>% 
+		dplyr::group_by() %>%	dplyr::arrange(m, line)
 	
-	data.frame(file = x, line = seq(1, n_lines, by = 100000)) 
-}) 
+	write.csv(space, file = file.path("./data/maximum_matchings_space.dat", filename), row.names = F)
+} else {
+	space <- read.csv("./data/maximum_matchings_space.dat")
+}
+
 p <- space[i, ]
 
 m_size <- scan(file.path(folder, p$file), nlines = 1) %>% length()
