@@ -76,9 +76,9 @@
 75,"redundant",0
 76,"critical",1
 77,"critical",1
-78,"redundant",0
-79,"ordinary",-1
-80,"redundant",0
+78,"critical",1
+79,"redundant",0
+80,"critical",1
 81,"critical",1
 82,"redundant",0
 83,"critical",1

@@ -11,9 +11,9 @@
 10,"redundant",0
 11,"redundant",0
 12,"redundant",0
-13,"redundant",0
-14,"ordinary",-1
-15,"redundant",0
+13,"critical",1
+14,"redundant",0
+15,"critical",1
 16,"redundant",0
 17,"redundant",0
 18,"redundant",0
@@ -26,7 +26,7 @@
 25,"redundant",0
 26,"redundant",0
 27,"redundant",0
-28,"ordinary",-1
+28,"redundant",0
 29,"redundant",0
 30,"redundant",0
 31,"redundant",0
@@ -34,7 +34,7 @@
 33,"redundant",0
 34,"redundant",0
 35,"redundant",0
-36,"redundant",0
+36,"critical",1
 37,"redundant",0
 38,"redundant",0
 39,"redundant",0

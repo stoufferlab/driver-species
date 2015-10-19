@@ -7,7 +7,7 @@
 6,"redundant",0
 7,"redundant",0
 8,"redundant",0
-9,"ordinary",-1
+9,"redundant",0
 10,"redundant",0
 11,"redundant",0
 12,"redundant",0
@@ -70,7 +70,7 @@
 69,"redundant",0
 70,"redundant",0
 71,"redundant",0
-72,"redundant",0
+72,"critical",1
 73,"redundant",0
 74,"redundant",0
 75,"redundant",0

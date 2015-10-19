@@ -35,6 +35,7 @@ message("Critical Elements Index ", i, " Working on net ", p$net, "; type ", p$t
 m_net <- net[[p$net]] %>%
 	keep_largest_component() %>%
 	bipartite_digraph(type = p$type, keep = p$keep)
+igraph::E(m_net)$weight <- 1
 
 # get baseline number of unmatched vertices
 base_n_unm <- n_unmatched_vertex(m_net)

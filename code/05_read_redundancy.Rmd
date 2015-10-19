@@ -106,7 +106,8 @@ node_redundancy %>%
 	dplyr::group_by(net, type, robustness) %>%
 	dplyr::summarise(n = n()) %>%
 	tidyr::spread(robustness, n) %>%
-	dplyr::mutate(critical = replace(critical, is.na(critical), 0)) %>%
+	dplyr::mutate(critical = replace(critical, is.na(critical), 0),
+								ordinary = replace(ordinary, is.na(ordinary), 0)) %>%
 	ggplot(aes(x = ordinary, z = redundant, y = critical)) +
 	geom_point(aes(fill = type), shape = 21, size = 5, alpha = 0.7) + 
 	facet_wrap(~ net) +

@@ -1,5 +1,5 @@
 "l","robustness","d_driver"
-1,"ordinary",-1
+1,"redundant",0
 2,"redundant",0
 3,"redundant",0
 4,"redundant",0
@@ -20,7 +20,7 @@
 19,"redundant",0
 20,"redundant",0
 21,"redundant",0
-22,"redundant",0
+22,"critical",1
 23,"redundant",0
 24,"redundant",0
 25,"redundant",0
