@@ -43,9 +43,11 @@ space <- expand.grid(type = c("z-bi", "weight", "AB", "BA"),
 driver_nodes <- 1:nrow(space) %>%
 	plyr::laply(function(i){
 		p <- space[i,]
-		net[[p$net]] %>%
+		n <- net[[p$net]] %>%
 			keep_largest_component() %>%
-			bipartite_digraph(type = p$type, keep = p$keep) %>%
+			bipartite_digraph(type = p$type, keep = p$keep)
+		igraph::E(n)$weight <- 1
+		n %>%
 			n_unmatched_vertex()
 	})
 
@@ -70,9 +72,9 @@ glm(cbind(n_driver, n_no_driver) ~ type,  data = space, family = "binomial") %>%
 
 This means, 
 
- * ~ 52% of the species for Pla-Pol or Pol-Pla 
- * ~ 43% of the species for weighted (regardless of priority)
- * ~ 15% of the species for bi-directional 
+ * ~ 74% of the species for Pla-Pol or Pol-Pla 
+ * ~ 67% of the species for weighted (regardless of priority)
+ * ~ 50% of the species for bi-directional 
 
 Which is quite an improvement.
 
