@@ -46,21 +46,23 @@ inv <- dplyr::data_frame(net_name = unique(node_redundancy$net) %>% as.character
 
 ```{r}
 # generate parameter space
-space <- expand.grid(type = c("bi", "weight", "AB", "BA"), 
+space <- expand.grid(type = c("z-bi", "weight", "AB", "BA"), 
                                          net = 1:length(net)) %>%
-    dplyr::inner_join(data.frame(type = c("bi", "AB", "BA", "weight", "weight"),
+    dplyr::inner_join(data.frame(type = c("z-bi", "AB", "BA", "weight", "weight"),
                                                              keep = c("all", "A", "B", "A", "B")))
 
 # select the corresponding one for this computation
 
 driver_nodes <- 1:nrow(space) %>%
-    plyr::laply(function(i){
-        p <- space[i,]
-        net[[p$net]] %>%
-            keep_largest_component() %>%
-            bipartite_digraph(type = p$type, keep = p$keep) %>%
-            n_unmatched_vertex()
-    })
+	plyr::laply(function(i){
+		p <- space[i,]
+		n <- net[[p$net]] %>%
+			keep_largest_component() %>%
+			bipartite_digraph(type = p$type, keep = p$keep)
+		igraph::E(n)$weight <- 1
+		n %>%
+			n_unmatched_vertex()
+	})
 
 space %<>%
     dplyr::mutate(n_driver = driver_nodes,
@@ -117,4 +119,17 @@ No. No differences on the proportion of driver nodes between invaded and un-inva
 
 ## Composition differences
 
-Let's look at the number of 
+Let's look at the number of critical/redundant species
+
+```{r}
+node_redundancy %>%
+	dplyr::mutate(type = paste(type, keep, sep = ".")) %>%
+	dplyr::rename(net_name = net) %>%
+	dplyr::group_by(net_name, type, robustness) %>%
+	dplyr::summarise(n = n()) %>%
+	dplyr::group_by() %>%
+	dplyr::left_join(space)
+
+
+```
+
