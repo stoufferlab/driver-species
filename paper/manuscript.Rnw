@@ -66,6 +66,7 @@ ggplot(n_driver, aes(x = type, y = n_driver/n_species)) +
 
 Dividing the nodes and links among critical, ordinary and redundant we can have an idea of ``control profiles'' of the networks. 
 
+<<<<<<< HEAD
 <<>>=
 folder <- "../data/redundancy/node/"
 node_redundancy <- list.files(folder, full.names = TRUE) %>%
@@ -83,6 +84,8 @@ node_redundancy <- list.files(folder, full.names = TRUE) %>%
 
 g
 @
+=======
+>>>>>>> dae39575e8330116cb6ef2af3122f9ed16ae6384
 
 
 \subsubsection*{Profiles of internal/external dilation}
@@ -101,7 +104,7 @@ Strongly interacting species (interaction heterogeneity)
  
 \section*{Acknowledgmenets}
 
-Takeuki Uno for the insight provided to find the set of all maximum matching algorithms.
+The authors thank Takeuki Uno for the insight provided to find the set of all maximum matching algorithms. EFC acknowledges the support from the University of Canterbury Doctoral Scholarship, the UC Meadow Mushroooms Postgraduate Scholarship, a travel grant from the European Space Agency and a Rutherford Discovery Fellowship (to DBS). DBS ackloledges the support of a Rutherford Discovery Scholarship, administered by the Royal Society of New Zealand.
 
 
 \end{document}
