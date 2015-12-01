@@ -85,7 +85,7 @@ glm(cbind(n_driver, n_no_driver) ~ type,  data = space, family = "binomial") %>%
 ## (Intercept)   1.019e+00  1.056e-01   9.648  < 2e-16 ***
 ## typeweight.A -3.128e-01  1.448e-01  -2.160   0.0308 *  
 ## typez-bi.all -1.002e+00  1.409e-01  -7.109 1.17e-12 ***
-## typeBA.B     -3.414e-16  1.494e-01   0.000   1.0000    
+## typeBA.B      3.414e-16  1.494e-01   0.000   1.0000    
 ## typeweight.B -2.732e-01  1.453e-01  -1.880   0.0601 .  
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -154,6 +154,94 @@ node_redundancy %>%
 
 <img src="./figures/05/unnamed-chunk-4-2.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" width="858px" />
 
+```r
+inv <- dplyr::data_frame(net = unique(node_redundancy$net) %>% as.character(),
+												 inv = grepl("2", net) | grepl("4", net)) %>% 
+	dplyr::mutate(site = rep(c("BAT", "FRA", "MED", "FAR", "MIQ", "SEL"), each =2),
+								invader = rep(c("car", "op", "car", "op"),  c(2, 2, 4, 4)))
+
+nr <- node_redundancy %>%
+	dplyr::mutate(type = interaction(type, keep)) %>%
+	dplyr::group_by(net, type, robustness) %>%
+	dplyr::summarise(n = n()) %>%
+	tidyr::spread(robustness, n) %>%
+	dplyr::mutate(critical = replace(critical, is.na(critical), 0),
+								ordinary = replace(ordinary, is.na(ordinary), 0)) %>%
+	dplyr::filter(type == "weight.A") %>%
+	dplyr::inner_join(inv) 
+```
+
+```
+## Joining by: "net"
+```
+
+```r
+points <- 
+	rbind(c(1, 0, 0, 100), 
+				c(2, 100, 0, 0),
+				c(3, 0, 100, 0),
+				c(4, 100/3, 100/3, 100/3),
+				c(5, 50, 0, 50), 
+				c(6, 0, 50, 50),
+				c(7, 50, 50, 0)) %>%
+	data.frame() %>%
+	`colnames<-`(c("id", "o", "c", "r")) %T>% {
+		ggtern(data = ., aes(o, c, r)) +
+			geom_text(aes(label = id))
+	}
+
+polygons <- 
+	rbind(c(1, 1),
+				c(1, 5),
+				c(1, 4),
+				c(1, 6),
+				c(2, 2),
+				c(2, 7),
+				c(2, 4),
+				c(2, 5),
+				c(3, 3),
+				c(3, 6),
+				c(3, 4),
+				c(3, 7)) %>%
+	data.frame() %>%
+	`colnames<-`(c("lab", "id")) %>%
+	inner_join(points)
+```
+
+```
+## Joining by: "id"
+```
+
+```r
+pdf("./presentation_figures/tern_net_poster.pdf", width = 14.5, height = 5.5)
+ggplot() + 
+		geom_polygon(data = polygons, aes(x = o, y = c, z = r,  fill = as.factor(lab)), colour = "black", size = 1) +
+	geom_point(data = nr, aes(x = ordinary, z = redundant, y = critical), size = 8, shape = 21, fill = "white") +
+	coord_tern()	 + scale_fill_manual(values = c("#4daf4a", "#377eb8", "#e41a1c")) +
+	theme(text = element_blank())
+dev.off()
+```
+
+```
+## quartz_off_screen 
+##                 2
+```
+
+```r
+pdf("./presentation_figures/tern_net_pres.pdf", width = 8, height = 5.5)
+ggplot() + 
+		geom_polygon(data = polygons, aes(x = o, z = c, y = r,  fill = as.factor(lab)), colour = "black", size = 1) +
+	geom_point(data = nr, aes(x = ordinary, y = redundant, z = critical), size = 5, shape = 21, fill = "white", alpha = 0.9) +
+	coord_tern()	 + scale_fill_manual(values = c("#4daf4a", "#377eb8", "#e41a1c")) +
+	theme(text = element_blank())
+dev.off()
+```
+
+```
+## quartz_off_screen 
+##                 2
+```
+
 In both  representations we can see that there is little variation among configurations with the same phylosophy. 
 
 * For pla-pol or pol-pla all species are either redundant or ordinary
@@ -167,4 +255,46 @@ In both  representations we can see that there is little variation among configu
 write.csv(space, file = "./data/n_driver_species.dat", row.names = F)
 write.csv(node_redundancy, file = "./data/node_redundancy.dat", row.names = F)
 ```
+
+
+# Link redundancy
+
+
+```r
+folder <- "./data/redundancy/edge/"
+
+link_redundancy <- list.files(folder, full.names = TRUE) %>%
+	plyr::ldply(function(x, name){
+		y <- read.csv(x) 
+		info <- basename(x) %>% 
+			stringr::str_sub(end = -5) %>% 
+			stringr::str_split("_") %>% 
+			unlist()
+		y %>%
+			dplyr::mutate(net = info[[1]],
+										type = info[2],
+										keep = info[3])
+	}) 
+
+
+link_redundancy %>%
+	dplyr::mutate(type = interaction(type, keep)) %>%
+	dplyr::group_by(net, type, robustness) %>%
+	dplyr::summarise(n = n()) %>%
+	tidyr::spread(robustness, n) %>%
+	dplyr::mutate(critical = replace(critical, is.na(critical), 0),
+								ordinary = replace(ordinary, is.na(ordinary), 0)) %>%
+	dplyr::filter(type == "AB.A") %>%
+	dplyr::inner_join(inv) %>%
+	ggplot(aes(x = ordinary, z = redundant, y = critical)) +
+	geom_point(aes(fill = inv), shape = 21, size = 5, alpha = 0.7) + 
+	coord_tern() + 
+	scale_fill_brewer(palette = "Set1")
+```
+
+```
+## Joining by: "net"
+```
+
+<img src="./figures/05/unnamed-chunk-6-1.png" title="plot of chunk unnamed-chunk-6" alt="plot of chunk unnamed-chunk-6" width="858px" />
 
