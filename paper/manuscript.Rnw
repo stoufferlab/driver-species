@@ -66,6 +66,25 @@ ggplot(n_driver, aes(x = type, y = n_driver/n_species)) +
 
 Dividing the nodes and links among critical, ordinary and redundant we can have an idea of ``control profiles'' of the networks. 
 
+<<>>=
+folder <- "../data/redundancy/node/"
+node_redundancy <- list.files(folder, full.names = TRUE) %>%
+    plyr::ldply(function(x, name){
+        y <- read.csv(x) 
+        info <- basename(x) %>% 
+            stringr::str_sub(end = -5) %>% 
+            stringr::str_split("_") %>% 
+            unlist()
+        y %>%
+            dplyr::mutate(net = info[[1]],
+                                        type = info[2],
+                                        keep = info[3])
+    }) 
+
+g
+@
+
+
 \subsubsection*{Profiles of internal/external dilation}
 
 \subsection*{Ranking species}
