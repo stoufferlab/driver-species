@@ -82,7 +82,7 @@ Strongly interacting species (interaction heterogeneity)
  
 \section*{Acknowledgmenets}
 
-Takeuki Uno for the insight provided to find the set of all maximum matching algorithms.
+Takeuki Uno for the insight provided to find the set of all maximum matching algorithms. Fernando acknowledges the support from the University of Canterbury Doctoral Scholarship and the UC Meadow Mushroooms Postgraduate Scholarship
 
 
 \end{document}
