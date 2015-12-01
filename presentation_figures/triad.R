@@ -1,6 +1,7 @@
 library(ggplot2)
 library(ggtern)
 library(magrittr)
+library(dplyr)
 
 points <- 
 	rbind(c(1, 0, 0, 100), 
@@ -33,10 +34,10 @@ polygons <-
 	`colnames<-`(c("lab", "id")) %>%
 	inner_join(points)
 
+pdf("./presentation_figures/tern_empty.pdf", width = 8, height = 5.5)
 ggtern(polygons,aes(o,r,c)) +
-	geom_polygon(aes(fill = as.factor(lab)), colour = "black", size = 2) +
+	geom_polygon(aes(fill = as.factor(lab)), colour = "black", size = 1) +
 	scale_fill_manual(values = c("#4daf4a", "#377eb8", "#e41a1c")) +
 	theme(text = element_blank(), 
-				line = element_blank(), 
-				legend.position = "top")
-
+				line = element_blank())
+dev.off()
