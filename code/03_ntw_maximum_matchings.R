@@ -1,6 +1,6 @@
 # This script calculates all the possible maximum matchings for each of the
 # networks. It is designed to run in the cluster
-setwd("~/github/controlling-pollination-networks/")
+setwd("~/github/driver-species/")
 
 # which network
 i <- as.integer(commandArgs(trailingOnly = TRUE)[1])

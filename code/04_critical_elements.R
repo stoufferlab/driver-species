@@ -1,6 +1,6 @@
 # This script detects which nodes and which links are critical or redundant for
 # controling the whole network dynamics
-setwd("~/github/controlling-pollination-networks/")
+setwd("~/github/driver-species/")
 
 # which network
 i <- as.integer(commandArgs(trailingOnly = TRUE)[1])

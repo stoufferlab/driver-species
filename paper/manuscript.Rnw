@@ -1,8 +1,7 @@
 \input{preamble} % See preamble.tex to edit the overall layout
 
-\usepackage{Sweave}
 \begin{document}
-\input{figures/fig--concordance}
+\SweaveOpts{concordance=TRUE,prefix.string=figures/fig-}
 \setkeys{Gin}{width=1\textwidth}
 
 % title
@@ -22,6 +21,10 @@
 
 \onehalfspacing
 
+<<libraries and preparatory stuff, echo = FALSE>>=
+library(ggplot2)
+library(magrittr)
+@
 
 % Main Text
 \section*{Introduction}
@@ -46,13 +49,22 @@ Using maximum matching to control all species in the network. We found that depe
 
 \begin{figure}
 \centering
-\includegraphics{figures/fig--002}
+<<fig = T, echo = F, width = 6, height = 3>>=
+n_driver <- read.csv("../data/n_driver_species.dat")
+
+ggplot(n_driver, aes(x = type, y = n_driver/n_species)) +
+	geom_violin(colour = "grey") +
+	geom_line(aes(colour = as.factor(net),group = as.factor(net))) +
+	geom_point(aes(fill = as.factor(net)), shape = 21) +
+	xlab("link structure scheme") + ylab("proportion of driver species") + 
+	theme_classic() + theme(legend.position = "none", text = element_text(family = "Times"), axis.title.x = element_text(vjust = -0.7), axis.title.y = element_text(vjust = 1.5)) 
+@
 \caption{\label{fig:n_species} Proportion of species that needs to be controled for all twelve networks under different link assumptions. AB indicates that the links go from plants to pollinators; BA that the links go from pollinator to plants; ``weight'' that the direction of control is chosen by dependency (ties are resolved by giving priority to plants in weight.A and to pollinators in weight.B); z-bi indicates that the links go in both directions}
 \end{figure}
 
 \subsubsection*{Profiles of critical and redundant species}
 
-Dividing the nodes and links among critical, ordinary and redundant we can have an idea of which 
+Dividing the nodes and links among critical, ordinary and redundant we can have an idea of ``control profiles'' of the networks. 
 
 \subsubsection*{Profiles of internal/external dilation}
 

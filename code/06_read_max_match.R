@@ -1,4 +1,4 @@
-setwd("~/github/controlling-pollination-networks/")
+setwd("~/github/driver-species/")
 library(magrittr)
 
 i <- as.integer(commandArgs(trailingOnly = T)[1])

@@ -39,9 +39,11 @@ space <- expand.grid(type = c("z-bi", "weight", "AB", "BA"),
 driver_nodes <- 1:nrow(space) %>%
 	plyr::laply(function(i){
 		p <- space[i,]
-		net[[p$net]] %>%
+		n <- net[[p$net]] %>%
 			keep_largest_component() %>%
-			bipartite_digraph(type = p$type, keep = p$keep) %>%
+			bipartite_digraph(type = p$type, keep = p$keep)
+		igraph::E(n)$weight <- 1
+		n %>%
 			n_unmatched_vertex()
 	})
 
@@ -76,23 +78,23 @@ glm(cbind(n_driver, n_no_driver) ~ type,  data = space, family = "binomial") %>%
 ## 
 ## Deviance Residuals: 
 ##      Min        1Q    Median        3Q       Max  
-## -1.57081  -0.50186   0.06414   0.35813   1.75956  
+## -1.60210  -0.35225   0.09048   0.25338   2.20382  
 ## 
 ## Coefficients:
-##              Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)   1.07556    0.10706  10.046   <2e-16 ***
-## typeweight.A -0.35950    0.14602  -2.462   0.0138 *  
-## typez-bi.all  0.02306    0.15184   0.152   0.8793    
-## typeBA.B      0.02306    0.15184   0.152   0.8793    
-## typeweight.B -0.31979    0.14649  -2.183   0.0290 *  
+##                Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)   1.019e+00  1.056e-01   9.648  < 2e-16 ***
+## typeweight.A -3.128e-01  1.448e-01  -2.160   0.0308 *  
+## typez-bi.all -1.002e+00  1.409e-01  -7.109 1.17e-12 ***
+## typeBA.B     -3.414e-16  1.494e-01   0.000   1.0000    
+## typeweight.B -2.732e-01  1.453e-01  -1.880   0.0601 .  
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
 ## (Dispersion parameter for binomial family taken to be 1)
 ## 
-##     Null deviance: 55.012  on 59  degrees of freedom
-## Residual deviance: 40.656  on 55  degrees of freedom
-## AIC: 282.15
+##     Null deviance: 110.457  on 59  degrees of freedom
+## Residual deviance:  38.798  on 55  degrees of freedom
+## AIC: 284.6
 ## 
 ## Number of Fisher Scoring iterations: 4
 ```
@@ -100,9 +102,9 @@ glm(cbind(n_driver, n_no_driver) ~ type,  data = space, family = "binomial") %>%
 
 This means, 
 
- * ~ 52% of the species for Pla-Pol or Pol-Pla 
- * ~ 43% of the species for weighted (regardless of priority)
- * ~ 15% of the species for bi-directional 
+ * ~ 74% of the species for Pla-Pol or Pol-Pla 
+ * ~ 67% of the species for weighted (regardless of priority)
+ * ~ 50% of the species for bi-directional 
 
 Which is quite an improvement.
 
@@ -141,7 +143,8 @@ node_redundancy %>%
 	dplyr::group_by(net, type, robustness) %>%
 	dplyr::summarise(n = n()) %>%
 	tidyr::spread(robustness, n) %>%
-	dplyr::mutate(critical = replace(critical, is.na(critical), 0)) %>%
+	dplyr::mutate(critical = replace(critical, is.na(critical), 0),
+								ordinary = replace(ordinary, is.na(ordinary), 0)) %>%
 	ggplot(aes(x = ordinary, z = redundant, y = critical)) +
 	geom_point(aes(fill = type), shape = 21, size = 5, alpha = 0.7) + 
 	facet_wrap(~ net) +
@@ -161,6 +164,7 @@ In both  representations we can see that there is little variation among configu
 
 
 ```r
+write.csv(space, file = "./data/n_driver_species.dat", row.names = F)
 write.csv(node_redundancy, file = "./data/node_redundancy.dat", row.names = F)
 ```
 

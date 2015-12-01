@@ -127,6 +127,7 @@ In both  representations we can see that there is little variation among configu
 # Save results
 
 ```{r}
+write.csv(space, file = "./data/n_driver_species.dat", row.names = F)
 write.csv(node_redundancy, file = "./data/node_redundancy.dat", row.names = F)
 ```
 

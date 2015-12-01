@@ -1,0 +1,37 @@
+\documentclass[a4paper,10pt]{article}
+
+% abstract + title + authors
+\usepackage{abstract}
+\renewcommand{\abstractnamefont}{\normalfont\bfseries}
+\renewcommand{\abstracttextfont}{\normalfont\small\itshape} 
+\usepackage{titlesec}
+\usepackage{authblk}
+\usepackage{datetime}
+\newdateformat{usvardate}{
+\monthname[\THEMONTH] \ordinal{DAY}, \THEYEAR}
+
+% keywords
+\providecommand{\keywords}[1]{\textbf{\textit{Keywords---}} #1}
+
+% math
+\usepackage{amssymb}
+\usepackage{newtxmath}
+
+% manuscript looking document
+\usepackage{setspace}
+\usepackage{lineno,xcolor}
+\setlength{\parskip}{0.5em}
+
+% comments
+
+% graphics
+\usepackage{graphicx}
+\usepackage{float}
+
+% references & links
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    citecolor=magenta,
+    linkcolor=magenta
+}
