@@ -29,9 +29,23 @@
 \usepackage{float}
 
 % references & links
+%\usepackage[
+%backend=bibtex,
+%style= numeric,
+%citestyle = numeric,
+%url=false,
+%doi=true,
+%isbn=false
+%]{biblatex}
+%\addbibresource{references.bib}
+%\urlstyle{rm}
+\usepackage{natbib}
+\bibliographystyle{abbrvnat}
+\setcitestyle{authoryear, open={(},close={)}}
 \usepackage{hyperref}
 \hypersetup{
     colorlinks=true,
     citecolor=magenta,
     linkcolor=magenta
 }
+\usepackage{doi}

@@ -24,6 +24,8 @@
 <<libraries and preparatory stuff, echo = FALSE>>=
 library(ggplot2)
 library(magrittr)
+
+my_theme <- theme_classic() + theme(legend.position = "none", text = element_text(family = "Times"), axis.title.x = element_text(vjust = -0.7), axis.title.y = element_text(vjust = 1.5)) 
 @
 
 % Main Text
@@ -56,18 +58,23 @@ ggplot(n_driver, aes(x = type, y = n_driver/n_species)) +
 	geom_violin(colour = "grey") +
 	geom_line(aes(colour = as.factor(net),group = as.factor(net))) +
 	geom_point(aes(fill = as.factor(net)), shape = 21) +
-	xlab("link structure scheme") + ylab("proportion of driver species") + 
-	theme_classic() + theme(legend.position = "none", text = element_text(family = "Times"), axis.title.x = element_text(vjust = -0.7), axis.title.y = element_text(vjust = 1.5)) 
+	xlab("link structure scheme") + ylab("proportion of driver species") +
+	my_theme
 @
-\caption{\label{fig:n_species} Proportion of species that needs to be controled for all twelve networks under different link assumptions. AB indicates that the links go from plants to pollinators; BA that the links go from pollinator to plants; ``weight'' that the direction of control is chosen by dependency (ties are resolved by giving priority to plants in weight.A and to pollinators in weight.B); z-bi indicates that the links go in both directions}
+\caption{
+\label{fig:n_species} 
+Proportion of species that needs to be controled for all twelve networks under different link assumptions. AB indicates that the links go from plants to pollinators; BA that the links go from pollinator to plants; ``weight'' that the direction of control is chosen by dependency (ties are resolved by giving priority to plants in weight.A and to pollinators in weight.B); z-bi indicates that the links go in both directions}
 \end{figure}
+
+There is no significant difference between the number of species needed to control the system in an invaded and an uninvaded ecosystem. 
 
 \subsubsection*{Profiles of critical and redundant species}
 
-Dividing the nodes and links among critical, ordinary and redundant we can have an idea of ``control profiles'' of the networks. 
+Dividing the nodes and links among critical, ordinary and redundant we can have an idea of ``control profiles'' of the networks. Both species and interactions can be classified as redundant, ordinary and critical depending on the number of species that need to be controled to gain full control over the network once the species has been removed (\autoref{fig:s_crit_prop} and \ref{fig:i_crit_prop}). 
 
-<<<<<<< HEAD
-<<>>=
+\begin{figure}[tp]
+\centering
+<<fig = T, echo = F, width = 6, height = 2.5>>=
 folder <- "../data/redundancy/node/"
 node_redundancy <- list.files(folder, full.names = TRUE) %>%
     plyr::ldply(function(x, name){
@@ -82,29 +89,109 @@ node_redundancy <- list.files(folder, full.names = TRUE) %>%
                                         keep = info[3])
     }) 
 
-g
+nr_sum <- node_redundancy %>%
+	dplyr::mutate(type = interaction(type, keep)) %>%
+	dplyr::group_by(net, type, robustness) %>%
+	dplyr::summarise(freq = n()) %>%
+	dplyr::group_by(net, type) %>%
+	dplyr::mutate(n_species = sum (freq)) %>%
+	dplyr::group_by() %>%
+	dplyr::mutate(prop = freq / n_species, 
+								type = as.character(type), 
+								robustness = as.character(robustness))
+	
+ggplot(nr_sum) +
+	geom_boxplot(aes(x = type, y = prop, fill = robustness)) +
+	geom_vline(xintercept = seq(1.5, 5.5), linetype = 2) +
+	xlab("link structure scheme") +
+	ylab("species proportion") +
+	my_theme + theme(legend.position = "right")
 @
-=======
->>>>>>> dae39575e8330116cb6ef2af3122f9ed16ae6384
+\caption{\label{fig:s_crit_prop} Proportion of species that are ordinary (when removed the number of species needed to control the network doesn't change), redundant (when removed less species are needed) and critical (when removed the number of species needed to control the network increasses). Schemes same as in \autoref{fig:n_species}}
+\end{figure}
 
+\begin{figure}[tp]
+\centering
+<<fig = T, echo = F, width = 6, height = 2.5>>=
+folder <- "../data/redundancy/edge/"
+link_redundancy <- list.files(folder, full.names = TRUE) %>%
+    plyr::ldply(function(x, name){
+        y <- read.csv(x) 
+        info <- basename(x) %>% 
+            stringr::str_sub(end = -5) %>% 
+            stringr::str_split("_") %>% 
+            unlist()
+        y %>%
+            dplyr::mutate(net = info[[1]],
+                                        type = info[2],
+                                        keep = info[3])
+    }) 
+
+lr_sum <- link_redundancy %>%
+	dplyr::mutate(type = interaction(type, keep)) %>%
+	dplyr::group_by(net, type, robustness) %>%
+	dplyr::summarise(freq = n()) %>%
+	dplyr::group_by(net, type) %>%
+	dplyr::mutate(n_species = sum (freq)) %>%
+	dplyr::group_by() %>%
+	dplyr::mutate(prop = freq / n_species, 
+								type = as.character(type), 
+								robustness = as.character(robustness))
+	
+ggplot(lr_sum) +
+	geom_boxplot(aes(x = type, y = prop, fill = robustness)) +
+	geom_vline(xintercept = seq(1.5, 5.5), linetype = 2) +
+	xlab("link structure scheme") +
+	ylab("interactions proportion") +
+	my_theme + theme(legend.position = "right")
+@
+\caption{\label{fig:i_crit_prop} Proportion of interactions that are ordinary (when removed the number of species needed to control is reduced), redundant (when removed the number of species needed to control doesn't change) and critical (when removed the number of species needed to control the network increasses). Schemes same as in \autoref{fig:n_species}}
+\end{figure}
+
+On the species redundancy profile (\autoref{fig:s_crit_prop}), the profiles are also highly dependent on the chosen directionality scheme. For instance, in the case in which species have links in both directions there are not ordinary species and the number of critical species is relatively high, this is not surprising because under this scheme, there is a much smaller set of species that needs to be controled and therefore removing one of these can increase the minimum set of species needed to control the network. 
+
+However, there appears to be a relatively small variability between networks analysed using this approach. Again, as in the previous section, I think there is little that can be understood by using just this data-set. Again I think it would be most interesting to see if there are systemic differences between different types of networks where a larger variation in the profiles is expected. 
+
+On the interaction redundancy profile (\autoref{fig:i_crit_prop}) things seem a bit more interesting because the variation across networks and across link directionality schemes is pretty small. For instance for the bidirectional scheme, although the total number of links is doubled, the relative proportion of links that are critical and redundant is mantained. 
 
 \subsubsection*{Profiles of internal/external dilation}
 
+\citet{Ruths2014} proposed another clever way to characterise the control profile of a network by charactering the number of nodes that need to be controled among the ``mechanism'' that originates it. 
+
+\begin{figure}
+\centering
+<<fig = T, echo = F, width = 6, height = 3>>=
+library(ggtern)
+dilation <- read.csv(file = "../data/dilation_profiles.dat")
+
+ggplot(dilation, aes(x = eta_s, z = eta_e, y = eta_i)) +
+	geom_point(aes(fill = type.keep), shape = 21, size = 5, alpha = 0.7) +
+	coord_tern() + theme_classic() + theme(text =  element_text(family = "Times"))
+
+detach("package:ggtern", unload = TRUE)
+@
+\caption{\label{fig:dilation} Control profiles of pollination networks. Control nodes are split among nodes that need to be controled because they are a source node, some that are control nodes because they respond to internal dilations (cycles) and some that are control nodes because they repsond to external dilations (sink nodes not matched)}
+\end{figure}
+
 \subsection*{Ranking species}
 
-By frequency in control sets
+\subsubsection*{By frequency in control sets}
 
-Strongly interacting species (interaction heterogeneity)
+\subsubsection*{By redundancy}
+
+\subsubsection*{Strongly interacting species (interaction heterogeneity)}
 
 \section*{Discussion}
 
- For instance, restoration projects that aim to drive an invasive species out of the community, to reestablish a particular ecosystem service or in general modify the ecosystem state have had a limited amount of success. We argue that quantifying the relative dynamic importance of species the set of key species is the first step to evaluate current management efforts as well as to design targeted and informed 
+For instance, restoration projects that aim to drive an invasive species out of the community, to reestablish a particular ecosystem service or in general modify the ecosystem state have had a limited amount of success. We argue that quantifying the relative dynamic importance of species the set of key species is the first step to evaluate current management efforts as well as to design targeted and informed 
  
- Dynamic system approach
+Dynamic system approach
+
+
  
 \section*{Acknowledgmenets}
 
-The authors thank Takeuki Uno for the insight provided to find the set of all maximum matching algorithms. EFC acknowledges the support from the University of Canterbury Doctoral Scholarship, the UC Meadow Mushroooms Postgraduate Scholarship, a travel grant from the European Space Agency and a Rutherford Discovery Fellowship (to DBS). DBS ackloledges the support of a Rutherford Discovery Scholarship, administered by the Royal Society of New Zealand.
+The authors thank Dr. Takeuki Uno for the insight provided to find the set of all maximum matching algorithms. EFC acknowledges the support from the University of Canterbury Doctoral Scholarship, the University of Canterbury Meadow Mushroooms Postgraduate Scholarship, a travel grant from the European Space Agency and a Rutherford Discovery Fellowship (to DBS). DBS ackloledges the support of a Rutherford Discovery Scholarship, administered by the Royal Society of New Zealand.
 
-
+\bibliography{references}
 \end{document}
