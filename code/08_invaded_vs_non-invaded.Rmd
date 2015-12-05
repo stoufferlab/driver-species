@@ -42,6 +42,18 @@ inv <- dplyr::data_frame(net_name = unique(node_redundancy$net) %>% as.character
 												 inv = grepl("2", net_name) | grepl("4", net_name)) %>% 
 	dplyr::mutate(site = rep(c("BAT", "FRA", "MED", "FAR", "MIQ", "SEL"), each =2),
 								invader = rep(c("car", "op", "car", "op"),  c(2, 2, 4, 4)))
+
+inv <- plyr::ldply(net, function(x){
+	data.frame(n_pla = sum(igraph::V(x)$type == "pla"),
+						 n_pol = sum(igraph::V(x)$type == "pol"))
+}) %>% dplyr::add_rownames() %>%
+	dplyr::rename(net = rowname, 
+								net_name = .id) %>% dplyr::full_join(inv)
+```
+
+Save ntw metadata
+```{r}
+write.csv(inv, "./data/ntw_info.csv", row.names = F)
 ```
 
 ```{r}
