@@ -1,0 +1,168 @@
+---
+title: "Comparing n_drivers with random networks"
+author: "Fernando Cagua"
+date: "3 December 2015"
+output: html_document
+---
+
+```{r, echo = FALSE, message=FALSE, warning=FALSE}
+library(dplyr)
+library(magrittr)
+library(knitr)
+library(ggplot2)
+library(ggtern)
+
+opts_knit$set (root.dir=normalizePath('../'))
+opts_chunk$set (fig.path = "./figures/10/")
+opts_chunk$set (cache.path = "./cache/10/")
+opts_chunk$set (fig.width = 11, 
+                fig.height = 9,
+                out.width = "858px")
+```
+
+```{r}
+# load utility functions
+nn <- list.files("./code/functions", full.names = TRUE) %>% lapply(source)
+# load netw
+net <- list.files("./data/networks/", full.names = TRUE) %>%
+	lapply(readRDS)
+names(net) <- list.files("./data/networks/", full.names = FALSE) %>%
+	stringr::str_split("\\.") %>% lapply(`[`, 1) %>% unlist ()
+```
+
+Get number of controls
+
+```{r}
+# generate parameter space
+space <- expand.grid(type = c("z-bi", "weight", "AB", "BA"), 
+                                         net = 1:length(net)) %>%
+    dplyr::inner_join(data.frame(type = c("z-bi", "AB", "BA", "weight", "weight"),
+                                                             keep = c("all", "A", "B", "A", "B")))
+
+# select the corresponding one for this computation
+
+driver_nodes <- 1:nrow(space) %>%
+	plyr::laply(function(i){
+		p <- space[i,]
+		n <- net[[p$net]] %>%
+			keep_largest_component() %>%
+			bipartite_digraph(type = p$type, keep = p$keep)
+		igraph::E(n)$weight <- 1
+		n %>%
+			n_unmatched_vertex()
+	})
+
+space %<>%
+    dplyr::mutate(n_driver = driver_nodes,
+                                type.keep = interaction(type, keep))
+
+net_names <- plyr::ldply(net, function(x){
+    length(igraph::V(x))
+}) %>%
+    dplyr::mutate(net = 1:nrow(.)) %>%
+    dplyr::rename(n_species = V1,
+                                net_name = `.id`)
+
+n_control <- dplyr::inner_join(space, net_names) %>%
+    dplyr::mutate(n_no_driver = n_species - n_driver)
+```
+
+
+Generate a random network and calculate the number of no drivers
+
+```{r}
+library(foreach)
+library(doMC)
+registerDoMC(cores = 4)
+
+# generate parameter space
+space <- expand.grid(type = c("z-bi", "weight", "AB", "BA"), 
+										 net = 1:length(net), 
+										 method = c("r0", "c0", "quasiswap")) %>%
+	dplyr::inner_join(data.frame(type = c("z-bi", "AB", "BA", "weight", "weight"),
+															 keep = c("all", "A", "B", "A", "B")))
+
+# number of desired permutations
+nperm <- 999
+
+random_n <- space %>%
+	# for each network and randomisation type
+	plyr::ddply(c("net", "method"), function(p){
+		nn <- net[[p$net[1]]] %>%
+			keep_largest_component() %>%
+			bipartite_digraph(type = p$type, keep = p$keep)
+		igraph::E(nn)$weight <- 1
+		
+		# generate a set of random networks
+		random_net <- get_random_net(nn, as.character(p$method[1]), nperm)
+		
+		# for each of the networks
+		plyr::ldply(random_net, function(x){
+			1:nrow(p) %>%
+				# for each of the directionality schemes
+				plyr::ldply(function(i){
+					p <- p[i,]
+					# calculate number of control nodes
+					x %<>% keep_largest_component() %>%
+						bipartite_digraph(p$type, p$keep)
+					data.frame(type = p$type, keep = p$keep, 
+										 n_driver = x %>%
+										 	n_unmatched_vertex())
+				})
+			# make it pararell
+		}, .parallel = T)
+	}, .progress = "text")
+
+```
+
+let's have a quick view
+
+```{r}
+ggplot(random_n) + 
+	geom_boxplot(aes(x = as.character(interaction(type, keep)), y = n_driver, fill = method), colour = "grey10") + 
+	geom_point(data = n_control, 
+						 aes(x = interaction(type, keep), y = n_driver), colour = "red") +
+	facet_wrap(~ net, scales = "free") +
+	theme_classic()
+```
+
+Save the resulys
+```{r}
+write.csv(random_n, "./data/random_n_driver.csv", row.names = FALSE)
+```
+
+Calculate z scores
+
+```{r}
+random_n_z <- random_n %>% 
+	dplyr::group_by(net, type, keep, method) %>%
+	dplyr::summarise(n_driver_u = mean(n_driver, na.rm = T),
+									 n_driver_sd = sd(n_driver, na.rm = T)) %>%
+	dplyr::full_join(n_control) %>% 
+	dplyr::group_by() %>%
+	dplyr::mutate(n_driver_z_score = (n_driver - n_driver_u)/n_driver_sd) 
+
+random_n_z %>% 
+	ggplot(aes(x  = type, y = n_driver_z_score)) +
+	geom_hline(yintercept = c(-2, 2), linetype = 2) +
+	geom_boxplot(aes(fill = method)) +
+	theme_classic()
+```
+
+Diversity ratio and z scores
+
+```{r}
+net_info <- read.csv("./data/ntw_info.csv")
+
+net_info %<>%
+	dplyr::mutate(ratio_pol_pla = n_pol/n_pla)
+
+random_n_z %>%
+	dplyr::full_join(net_info) %>%
+	dplyr::filter(method == "c0") %>%
+	ggplot(aes(x = n_driver_z_score, y = ratio_pol_pla, colour = as.character(interaction(type, keep)))) +
+	geom_point() +
+	geom_smooth(method = "lm")
+
+```
+
