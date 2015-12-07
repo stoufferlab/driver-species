@@ -70,16 +70,27 @@ node_mm <- plyr::adply(files, 1, function(x){
 
 ```{r}
 ranked_mm <- dplyr::full_join(node_mm, node_re) %>%
-	dplyr::filter(!is.na(freq),
-								type == "weight") %>%
+	dplyr::filter(!is.na(freq)) %>%
 	dplyr::group_by(net, type, keep) %>%
-	dplyr::mutate(r = rank(freq, ties.method = "min"),
+	dplyr::mutate(r = rank(freq, ties.method = "random"),
 								f_f = freq/max(freq))
 
-
-	ggplot(ranked_mm) +
-	geom_point(aes(x = r, y = f_f, fill = robustness), shape = 21) +
+ranked_mm %>%
+	dplyr::filter(type == "weight") %>%
+	ggplot() +
+	geom_line(aes(x = r, y = f_f, linetype = keep)) +
+	
+	geom_point(aes(x = r, y = f_f, fill = robustness), shape = 21, size = 3.5) +
 	facet_wrap(type ~ net, scales = "free")
+
+ranked_mm %>%
+	dplyr::filter(net == "MED3CA") %>%
+	ggplot(aes(x = r, y = f_f)) +
+	geom_line(aes(group = keep), linetype = 2) +
+	geom_point(aes(fill = robustness), shape = 21, size = 3.5) +
+	facet_wrap(~type)
+
+
 ```
 
 

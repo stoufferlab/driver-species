@@ -1,7 +1,7 @@
 all: manuscript.pdf
 
 manuscript.tex : manuscript.Rnw
-	R CMD Sweave manuscript.Rnw; R CMD Stangle manuscript.Rnw
+	R CMD Sweave manuscript.Rnw
 	
 manuscript.pdf : manuscript.tex
 	R CMD pdflatex manuscript.tex; biber manuscript; R CMD pdflatex manuscript.tex; make clean

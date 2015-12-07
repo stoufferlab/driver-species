@@ -22,6 +22,7 @@
 \setlength{\parskip}{0.5em}
 
 % comments
+\usepackage[draft]{todonotes}
 
 % graphics
 \usepackage{graphicx}
@@ -84,6 +85,8 @@ my_theme <- theme_classic() + theme(legend.position = "none", text = element_tex
 
 % Main Text
 \section*{Introduction}
+
+\todo[inline]{This intro was written when I though that the paper was mainly gonna be about the relative importance of species and how invasives fit there. Read with caution as I don't think that's the case anymore}
 
 Ecological communities are formed by the interconnection of several species. Therefore, changes in the abundances of one species can potentially alter the abundances of the species they interact with. For instance, in a classic example of ecosystem cascades, a reduction on the abundance of sea otters, an important predator or sea urchins, can drive a dramatic reduction on kelp abundances because the sea urchins that consume kelp are released from predation. It has been long established that some species, like the sea otter, have a disproportionate large effect in their environment relative to their abundance. 
 
@@ -295,16 +298,112 @@ ggplot(dilation, aes(x = eta_s, z = eta_e, y = eta_i)) +
 	geom_point(aes(fill = type.keep), shape = 21, size = 5, alpha = 0.7) +
 	coord_tern() + theme_classic() + theme(text =  element_text(family = "Times"))
 
-detach("package:ggtern", unload = TRUE)
+detach("package:ggtern", unload = TRUE, character.only = TRUE)
+detach("package:ggplot2", unload = TRUE, character.only = TRUE)
+library(ggplot2)
 @
 \caption{\label{fig:dilation} Control profiles of pollination networks. Control nodes are split among nodes that need to be controled because they are a source node, some that are control nodes because they respond to internal dilations (cycles) and some that are control nodes because they repsond to external dilations (sink nodes not matched)}
 \end{figure}
 
 \subsection*{Ranking species}
 
-
-
 \subsubsection*{By frequency in control sets}
+
+There are multiple sets of species with which is structurally possible to control network dynamics. An initial posibility os to relate the importance of a species for network dynamics to the frequency at which a species is present in the control sets. 
+
+Turns out unsurprisingly that the importance of particular species and its distribution over a networks dependends on the scheme chosen for the directionality of the links (\autoref{fig:n_control_dist}). 
+When pollinators control plants (AB) no plant must be controled and most pollinators have an importance close to one. 
+On the other hand when plants control pollinators (BA) presumably because the pollinator diversity is larger than the plant diversity, the pattern is less "bimodal" and intermediate levels of importance are allowed. 
+
+\begin{figure}
+\centering
+<<echo = F, cache = T>>=
+folder <- "../data/maximum_matchings_summary/" 
+files <- list.files(folder)
+node_mm <- plyr::adply(files, 1, function(x){
+	read.csv(file.path(folder, x)) %>%
+		dplyr::mutate(net = unlist(stringr::str_split(x, "_"))[1],
+									type = unlist(stringr::str_split(x, "_"))[2], 
+									keep = unlist(stringr::str_split(x, "_"))[3],
+									batch = unlist(stringr::str_split(x, "_"))[4])
+}) %>%
+	dplyr::select(-X1) %>%
+	dplyr::group_by(net, type, keep, node) %>%
+	dplyr::summarise(freq = sum(freq))
+@
+
+<<fig = T, echo = F, width = 6, height = 4>>=
+ranked_mm <- node_mm %>%
+	dplyr::filter(!is.na(freq)) %>%
+	dplyr::group_by(net, type, keep) %>%
+	dplyr::mutate(r = rank(freq, ties.method = "random"),
+								f_f = freq/max(freq), 
+								type.keep = as.character(interaction(type, keep)))  %>%
+	dplyr::rename(net_name = net)
+
+invasive_sp <- data.frame(node = c("p_4", "p_25"), invs.species = TRUE)
+
+ranked_with_inv <- 
+	ranked_mm %>% 
+	dplyr::group_by() %>%
+	dplyr::full_join(invasive_sp) %>% 
+	dplyr::full_join(net_info)
+
+ggplot(ranked_with_inv, aes(x = f_f, fill = net_name)) +
+	geom_density(alpha = 0.025, adjust = 1, colour = "grey20") +
+	geom_point(data = ranked_with_inv %>%
+						 	dplyr::filter(invs.species), aes(y = scale(net) + 2),
+						 shape = 21, fill = "grey") +
+	facet_wrap(~type, ncol = 2) +
+	my_theme +	
+	xlab("species frequency in control sets") +
+	theme(strip.background = element_blank(),
+				axis.text.x = element_text(angle = 90))
+@
+\caption{\label{fig:n_control_dist} Distribution of the relative frequency a species is present in the set of control species among the networks. The frequency of invasive species in each of the six invaded networks is denoted with a circle. Results for the bidirectional liks (z-bi) were obatined only for the nine smallest networks, which included 3 invaded ecosystems}
+\end{figure}
+
+Among the weighted versions there was little difference if dependency ties were resolved for plants of for pollinators (\autoref{fig:n_control_dist_ntw}), again there are more species with intermediate levels of importance. Even more spread out are things when we consider bidirectional links. I imagine that this pattern is partly because there are many many more ways to control the network in the bidirectional scheme than in the others. 
+
+In both AB and BA the relative importance of different species is almost fully constrained by the scheme. In the weighted scheme, invasive species are in all cases among the most important ones. Interestingly the pattern is opposite for when the direction can go both ways. It would be good to see then whether these patterns are a reflection of the fact that invasive species are actually dominant or an artifact arising from the fact that all invasive species are plants and that all networks are dominated by pollinators. An initial inspection on the distributrion of plants and pollinators per network for these schemes suggest that that might be the case for the bidirectional scheme but not for the weighted one (\autoref{fig:n_control_dist_guild} and \ref{fig:n_control_dist_per_net}). 
+
+\begin{figure}
+\centering
+<<fig = T, echo = F, width = 6, height = 4>>=
+ranked_with_inv %>%
+	tidyr::separate(node, into = c("categ", "number"), sep = "_", remove = F) %>%
+	ggplot(aes(x = f_f)) + 
+	geom_density(aes(fill = categ), 
+							 alpha = 0.5, adjust = 0.5, colour = "grey20") +
+	geom_point(data = ranked_with_inv %>%
+						 	dplyr::filter(invs.species), aes(y = scale(net) + 2), 
+						 shape = 21, fill = "red") +
+	facet_wrap(~type, ncol = 2) +
+	scale_fill_grey(name = "", labels = c("pollinators", "plants")) +
+	my_theme +	
+	xlab("species frequency in control sets") +
+	theme(strip.background = element_blank(),
+				axis.text.x = element_text(angle = 90), legend.position = "right")
+@
+\caption{\label{fig:n_control_dist_guild} Distribution of the relative frequency a species is present in the set of control species by guild.}
+\end{figure}
+
+We explored that option by
+
+<<>>=
+ranked_with_inv  %>%
+	tidyr::separate(node, into = c("categ", "number"), sep = "_", remove = F) %>%
+	dplyr::group_by(net, type.keep, categ) %>%
+	dplyr::summarise(f_f = median(f_f), 
+									 ratio_pol_pla = mean(ratio_pol_pla)) %>%
+	dplyr::group_by(net, type.keep) %>%
+	dplyr::mutate(f_sum = f_f - lead(f_f)) %>%
+	ggplot(aes(x = ratio_pol_pla, y = f_sum)) +
+	geom_point() +
+	geom_smooth(method = "lm")+ 
+	facet_wrap(~type.keep)
+@
+
 
 \subsubsection*{By redundancy}
 
@@ -324,4 +423,51 @@ The authors thank Dr. Takeuki Uno for the insight provided to find the set of al
 
 % \bibliography{references}
 \printbibliography
+
+\newpage
+\section*{Supplementary Information}
+\makeatletter 
+\renewcommand{\thefigure}{S\@arabic\c@figure}
+\makeatother
+\setcounter{figure}{0}
+
+\begin{figure}[h!]
+\centering
+<<fig = T, echo = F, width = 6, height = 4>>=
+ggplot(ranked_mm, aes(x = net_name, y = f_f, fill = type.keep)) +
+	geom_boxplot()+
+# 	geom_jitter(shape = 21, 
+# 							position = position_jitter(height = 0), 
+# 							alpha = 0.2, size = 1) +
+	facet_wrap(~type) +
+	my_theme +	
+	theme(strip.background = element_blank(),
+				axis.text.x = element_text(angle = 90))
+@
+\caption{\label{fig:n_control_dist_ntw} Distribution of the relative frequency a species is present in the set of control species among by network}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+<<fig = T, echo = F, width = 6, height = 9.5>>=
+bb <- ranked_with_inv %>%
+	tidyr::separate(node, into = c("categ", "number"), sep = "_", remove = F) %>%
+	dplyr::filter(type == "weight" | type == "z-bi") 
+
+bb %>%
+	ggplot(aes(x = f_f)) + 
+	geom_density(aes(fill = categ), 
+							 alpha = 0.5, adjust = 0.5, colour = "grey20") +
+	geom_point(data = bb %>%
+						 	dplyr::filter(invs.species), aes(y = scale(net) + 2), 
+						 shape = 21, fill = "red") +
+	facet_grid(net_name ~ type.keep, scales = "free_y") +
+	scale_fill_grey(name = "", labels = c("pollinators", "plants")) +
+	my_theme +	
+	xlab("species frequency in control sets") +
+	theme(strip.background = element_blank(),
+				axis.text.x = element_text(angle = 90), legend.position = "top")
+@
+\caption{\label{fig:n_control_dist_per_net} Distribution of the relative frequency a species is present in the set of control species among by network partitioned by plant or pollinators. Invasive species is depicted with a red dot.}
+\end{figure}
 \end{document}
