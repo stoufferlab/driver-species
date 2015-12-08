@@ -79,6 +79,8 @@ isbn=false
 <<libraries and preparatory stuff, echo = FALSE>>=
 library(ggplot2)
 library(magrittr)
+# load utility functions
+nn <- list.files("../code/functions", full.names = TRUE) %>% lapply(source)
 
 my_theme <- theme_classic() + theme(legend.position = "none", text = element_text(family = "Times"), axis.title.x = element_text(vjust = -0.7), axis.title.y = element_text(vjust = 1.5)) 
 @
@@ -388,9 +390,11 @@ ranked_with_inv %>%
 \caption{\label{fig:n_control_dist_guild} Distribution of the relative frequency a species is present in the set of control species by guild.}
 \end{figure}
 
-We explored that option by
+We explored that option by comparing the relationship between the ratio of pollinator to plant diversity and the difference between mean imporance of pollinators and the mean importance of plants (\autoref{fig:ratio_pla_pol_importance}). Although there was a positive relationship it doesn't seem to be significative. However when removing one of the uninvaded networks in which plants were in average more important than the pollinators for the bidirectional scheme (MED4CA, \autoref{fig:n_control_dist_per_net}) the relationship between the ratio an the relative importance of pollinators and plants becomes significant in the bidirectional scheme. 
 
-<<>>=
+\begin{figure}
+\centering
+<<fig = T, echo = F, width = 6, height = 2>>=
 ranked_with_inv  %>%
 	tidyr::separate(node, into = c("categ", "number"), sep = "_", remove = F) %>%
 	dplyr::group_by(net, type.keep, categ) %>%
@@ -400,13 +404,69 @@ ranked_with_inv  %>%
 	dplyr::mutate(f_sum = f_f - lead(f_f)) %>%
 	ggplot(aes(x = ratio_pol_pla, y = f_sum)) +
 	geom_point() +
-	geom_smooth(method = "lm")+ 
-	facet_wrap(~type.keep)
+	geom_smooth(method = "lm", colour = "grey10")+ 
+	facet_wrap(~type.keep, ncol = 5, scales = "free_y") + 
+	xlab("ratio of number of pollinators to plants") +
+	ylab("difference between mean\nimportance of pollinators\nand plants") +
+	my_theme +
+	theme(strip.background = element_blank())
 @
-
+\caption{\label{fig:ratio_pla_pol_importance} Distribution of the relative frequency a species is present in the set of control species by guild.}
+\end{figure}
 
 \subsubsection*{By redundancy}
 
+To understand what the redundancy characterisation (splitting nodes and links between critical, ordinary and redundant) means an initial step would be to relate it to the importance given by their frequency on the control sets. However this comparison can only be done among nodes, not links. 
+
+Because I think there is enough indication that the unidirectional schemes are crap, we'll focus on the weighted and the bidirectional schemes. There doesn't seem to be a direct relationship between the frequency of a species as a control node and it's characterisation as critical, ordinary or redundant for the weighted scheme (\autoref{fig:redundancy_n_control_weight}). However critical species in the bidirectional scheme tend to cluster towards the bottom of the frequency (\autoref{fig:redundancy_n_control_bi}).
+
+Given that as we saw in \autoref{fig:ratio_pla_pol_importance} plants tend to cluster as well in the bottom of the frequency scale, it's conceivable to think that there is a difference between the profiles of plants and polinators. We explored that difference (\autoref{fig:redundancy_pol_pla}) and indeed there there are marked differences bewteeen plants an pollinators. 
+
+In the bidirectional scheme, most polinators are redundant, which means that removing that species from the system reduces the number of control nodes. Which could be explained if we take into account that there are more pollinators than plants. In the weighted scheme things are a bit more interesting, most plants are ordinary in the sense that removing them doesn't change the number of nodes that has to be controled. Wile some are critical in the sense that removing them means that one needs one more node to control the network. All invasive species were categorised as ordinary. 
+
+\begin{figure}
+\centering
+<<echo = F>>=
+net <- list.files("../data/networks/", full.names = TRUE) %>%
+    lapply(readRDS)
+names(net) <- list.files("../data/networks/", full.names = FALSE) %>%
+    stringr::str_split("\\.") %>% lapply(`[`, 1) %>% unlist ()
+
+node_redundancy %<>% 
+	plyr::ddply("net", function(x){
+		this_net <- net[[dplyr::first(x$net)]] %>%
+	# select only the largest connected component of the network
+			keep_largest_component()
+		nodes <- igraph::V(this_net)[x$n]$name
+		x %>%
+			dplyr::mutate(node = nodes)
+	}) %>% dplyr::tbl_df()
+@
+
+<<fig = T, echo = F, width = 6, height = 2.5>>=
+node_redundancy %>%
+	tidyr::separate(node, c("categ", "number")) %>%
+	dplyr::rename(net_name = net) %>%
+	dplyr::mutate(type.keep = as.character(interaction(type, keep))) %>%
+	dplyr::group_by(type.keep, robustness, categ) %>%
+	dplyr::summarise(n_sp = n()) %>%
+	ggplot() +
+	geom_bar(aes(x = categ, y = n_sp, fill = robustness), 
+					 stat = "identity", 
+					 position = "fill",
+					 colour = "grey10") +
+	facet_grid(~type.keep) +
+	scale_fill_discrete(name = "species") + 
+	scale_x_discrete(labels = c("pollinators", "plants")) +
+	xlab("") +
+	ylab("proportion") +
+	my_theme +
+	theme(legend.position = "right", 
+				strip.background = element_blank(), 
+				axis.text.x = element_text(angle = 45))
+@
+\caption{\label{fig:redundancy_pol_pla} Proportion of pollinators and plants that are ordinary, redundant or critical among different schemes. See \autoref{fig:s_crit_prop} for details about this characterisation.}
+\end{figure}
 \subsubsection*{Strongly interacting species (interaction heterogeneity)}
 
 \section*{Discussion}
@@ -470,4 +530,49 @@ bb %>%
 @
 \caption{\label{fig:n_control_dist_per_net} Distribution of the relative frequency a species is present in the set of control species among by network partitioned by plant or pollinators. Invasive species is depicted with a red dot.}
 \end{figure}
+
+\begin{figure}[h!]
+\centering
+<<fig = T, echo = F, width = 6, height = 9.5>>=
+node_redundancy %>%
+	dplyr::rename(net_name = net) %>%
+	dplyr::full_join(ranked_with_inv) %>%
+	dplyr::filter(type == "weight", !is.na(f_f)) %>%
+	dplyr::mutate(net_name = as.character(net_name)) %>%
+	ggplot() +
+	geom_line(aes(x = r, y = f_f, linetype = keep)) +
+	geom_point(aes(x = r, y = f_f, fill = robustness), shape = 21, size = 2) +
+	facet_wrap( ~ net_name, scales = "free", ncol = 3) +
+	ylab("species frequency in control sets") +
+	xlab("rank") +
+	my_theme +
+	theme(legend.position = "top", strip.background = element_blank())
+@
+\caption{\label{fig:redundancy_n_control_weight} Relationship between species' frequency in the control sets and the redundancy categories for the weighted scheme.}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+<<fig = T, echo = F, width = 6, height = 7>>=
+node_redundancy %>%
+	dplyr::rename(net_name = net) %>%
+	dplyr::full_join(ranked_with_inv) %>%
+	dplyr::filter(type == "z-bi", !is.na(f_f)) %>%
+	dplyr::mutate(net_name = as.character(net_name)) %>%
+	ggplot() +
+	geom_line(aes(x = r, y = f_f, linetype = keep)) +
+	geom_point(aes(x = r, y = f_f, fill = robustness), shape = 21, size = 2) +
+	facet_wrap( ~ net_name, scales = "free") +
+	ylab("species frequency in control sets") + 
+	xlab("rank") +
+	my_theme +
+	theme(legend.position = "top", strip.background = element_blank())
+@
+\caption{\label{fig:redundancy_n_control_bi} Relationship between species' frequency in the control sets and the redundancy categories for the bidirectional scheme.}
+\end{figure}
+
+
+
+
+
 \end{document}
