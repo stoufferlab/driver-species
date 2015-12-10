@@ -191,6 +191,40 @@ random_n_z %>%
 When considering only randomisations that mantain the degree distribution of plants, there seems to be a possitive relationship between the ratio of pollinators to plants and the Z-score of randomisations. The pattern is, however, not significant for the weighted schemes. The z-scores are identical for the AB.A and the BA.B schemes. Schemes same as in \autoref{fig:n_species}}
 \end{figure}
 
+To understand the effects of the directionality imposed by the dependencies (only for the weighted method), I randomised the direction of the links. I compared the number on control species in the weighted scheme with a randomisation that mantain the interacting species but randomise the direction of dependency (\autoref{fig:zscore_dir_ratio}). In pretty much all cases, the number of control nodes is significantly larger in the observed networks. 
+
+\begin{figure}[h]
+\centering
+<<fig = T, echo = F, width = 6, height = 2.5>>=
+random_dir_n <- read.csv("../data/random_dir_n_driver.csv") 
+
+random_dir_n %>% 
+	dplyr::mutate(type = "weight") %>%
+	dplyr::group_by(net, type, keep) %>%
+	dplyr::summarise(n_driver_u = mean(n_driver, na.rm = T),
+									 n_driver_sd = sd(n_driver, na.rm = T)) %>%
+	dplyr::inner_join(n_control) %>% 
+	dplyr::group_by() %>%
+	dplyr::mutate(n_driver_z_score = (n_driver - n_driver_u)/n_driver_sd) %>% 
+	ggplot(aes(x  = as.character(interaction(type, keep)), y = n_driver_z_score)) +
+	geom_rect(ymin = -2, ymax = 2, xmin = -1, xmax = 10, fill = "grey90") +
+	geom_hline(yintercept = 0, size = 0.4) +
+	geom_vline(xintercept = seq(1.5, 2.5), linetype = 2) +
+	geom_jitter(position = position_jitter(height = 0), shape = 21) +
+	geom_boxplot(fill = "white", alpha = 0.5) +
+	scale_fill_discrete(name = "randomisations\nmantain\ndegree of", labels= c("plants", "pollinators", "both")) + 
+	my_theme + 
+	xlab("link structure scheme") +
+	ylab("standard score") +
+	theme(legend.position = "right",
+				axis.line.x = element_blank(), axis.ticks.x = element_blank())
+
+@
+\caption{
+\label{fig:zscore_dir_ratio} 
+In the weighted case, we compared randomisations that maintain the network structure but shuffle the directionality of the dependency. Observed networks need a significanly larger number of control nodes than randomisations. The difference is more marked when there is a preference to assign dependency from plants to pollinators when dependency is equal in both directions. Z scores are based on 999 network randomisations.}
+\end{figure}
+
 \subsubsection*{Profiles of critical and redundant species}
 
 Dividing the nodes and links among critical, ordinary and redundant we can have an idea of ``control profiles'' of the networks. Both species and interactions can be classified as redundant, ordinary and critical depending on the number of species that need to be controled to gain full control over the network once the species has been removed (\autoref{fig:s_crit_prop} and \ref{fig:i_crit_prop}). 
@@ -422,8 +456,6 @@ Because I think there is enough indication that the unidirectional schemes are c
 
 Given that as we saw in \autoref{fig:ratio_pla_pol_importance} plants tend to cluster as well in the bottom of the frequency scale, it's conceivable to think that there is a difference between the profiles of plants and polinators. We explored that difference (\autoref{fig:redundancy_pol_pla}) and indeed there there are marked differences bewteeen plants an pollinators. 
 
-In the bidirectional scheme, most polinators are redundant, which means that removing that species from the system reduces the number of control nodes. Which could be explained if we take into account that there are more pollinators than plants. In the weighted scheme things are a bit more interesting, most plants are ordinary in the sense that removing them doesn't change the number of nodes that has to be controled. Wile some are critical in the sense that removing them means that one needs one more node to control the network. All invasive species were categorised as ordinary. 
-
 \begin{figure}
 \centering
 <<echo = F>>=
@@ -467,19 +499,170 @@ node_redundancy %>%
 @
 \caption{\label{fig:redundancy_pol_pla} Proportion of pollinators and plants that are ordinary, redundant or critical among different schemes. See \autoref{fig:s_crit_prop} for details about this characterisation.}
 \end{figure}
-\subsubsection*{Strongly interacting species (interaction heterogeneity)}
+
+In the bidirectional scheme, most polinators are redundant, which means that removing that species from the system reduces the number of control nodes. Which could be explained if we take into account that there are more pollinators than plants. In the weighted scheme things are a bit more interesting, most plants are ordinary in the sense that removing them doesn't change the number of nodes that has to be controled. Wile some are critical in the sense that removing them means that one needs one more node to control the network. All invasive species were categorised as ordinary. 
+
+The redundancy is capturing different variability than the frequency in the control sets. However they also show a clear distiction between the role of plants and pollinators.
+
+\subsubsection*{Interaction heterogeneity}
+
+\textcite{Liu2011} suggest that the controlability of a network and specifically the number of control nodes is strongly correlated to the degree distribution of the network, it is not unreasonable to think then that species with a high degree would play a special role. More recently \textcite{Gibson} showed that what really matters is the interaction strength of the species and that strongly interacting species (those that influence other the most), and not necessarely the most abbundant, are the ones that can drive the community from one state into another. Here we explore the relationship betweeen the two metrics of species controlability, the degree and the mean interaction strength of species.
+
+First we start by recognising that mean interaction strength is correlated with the degree of a species in a network (\autoref{fig:degree_strength}). The effect is not terribly strong, particularly for pollinators, but suggest that species that interact with lots of species also tend to visit them a lot. Sadly there is no data on relative abbundances to investigate if both degree but particularly interaction strength (as infered from visitation frequency) is a consequence of mass action. 
+
+\begin{figure}
+\centering
+<<fig = T, echo = F, width = 6, height = 2.5, cache = TRUE>>=
+
+deg_strength <- plyr::ldply(net,function(x){
+	degree <- igraph::degree(x)
+	m <- igraph::as_adjacency_matrix(x, attr = "weight", sparse = F)
+	m[m == 0] <- NA 
+	m_int_strength <- apply(m, 1, mean, na.rm = T)
+	s_int_strength <- apply(m, 1, sum, na.rm = T)
+	ncont <- igraph::as_incidence_matrix(x, 
+														types = igraph::V(x)$type == "pla") %>%
+		nestedcontribution() %>% dplyr::add_rownames("node")
+	data.frame(node = names(degree), 
+						 degree = degree, 
+						 m_int_strength = m_int_strength,
+						 s_int_strength = s_int_strength) %>%
+		dplyr::full_join(ncont)
+}) %>% dplyr::rename_("net_name" = ".id")
+	
+
+imp <- ranked_with_inv %>%
+	dplyr::full_join(deg_strength) %>%
+	dplyr::filter(!is.na(type.keep), 
+								type == "weight",
+								keep == "A" | keep == "all") %>%
+	tidyr::separate(node, into = c("categ", "number"), sep = "_", remove = F)
+
+inv <- imp %>% dplyr::filter(!is.na(invs.species))
+
+imp %>%
+	ggplot(aes(y = degree, x = m_int_strength, fill = categ)) + 
+	geom_jitter(position = position_jitter(height = 0.25, width = 0.5),
+							shape = 21, alpha = 0.5) +
+	geom_smooth(method = "gam", colour = "grey10") +
+	xlab("mean interaction strength (visitation frequency)") +
+	scale_fill_discrete(name = "", labels = c("pollinators", "plants")) +
+	geom_point(data = inv, fill = "red", size = 2.5, shape = 21) +
+	my_theme +
+	theme(legend.position = "right")
+@
+\caption{\label{fig:degree_strength} Relationship between the mean visitation frequency per species (as a surrogate of interaction strength) and its degree in a particular network. Invasive plants are depicted with a red circle.}
+\end{figure}
+
+Here we only look at the effect on the weighted scheme. We can see in \autoref{fig:degree_strength_importance} that the patterns are different for plants and polinators. For plants importancy in controling the network is positively related to both the mean interaction strengt and the degree of the species. However for pollinators that's not the case: the relationship between importance and mean interaction strengt is pretty weak, but there is a significant negative relationship between the degree and the importancy.
+
+\begin{figure}
+\centering
+<<fig = T, echo = F, width = 6, height = 7>>=
+library(grid)
+library(gridExtra)
+
+p1 <- imp %>%
+	ggplot(aes(x = m_int_strength, y = f_f)) +
+	geom_point(aes(fill = categ),
+						 shape = 21, 
+						 alpha = 0.5) +
+	scale_shape_manual(values = c(21, 22)) +
+	facet_wrap(~type) +
+	geom_smooth(aes(colour = categ, fill = categ), 
+							family = "binomial", method = "gam", colour = "grey10") +
+	geom_point(data = inv, fill = "red", size = 2.5, shape = 21) +
+	my_theme +
+	xlab("mean interaction strength") +
+	ylab("species frequency\nin control sets") +
+	scale_color_discrete(name = "", labels = c("pollinators", "plants")) +
+	scale_fill_discrete(name = "", labels = c("pollinators", "plants")) +
+	theme(legend.position = "right", strip.background = element_blank())
+
+p2 <- imp %>%
+	ggplot(aes(x = degree, y = f_f)) +
+	geom_point(aes(fill = categ),
+						 shape = 21, 
+						 alpha = 0.5) +
+	scale_shape_manual(values = c(21, 22)) +
+	facet_wrap(~type) +
+	geom_smooth(aes(colour = categ, fill = categ), 
+							family = "binomial", method = "gam", colour = "grey10") +
+	geom_point(data = inv, fill = "red", size = 2.5, shape = 21) +
+	my_theme +
+	xlab("degree") +
+	ylab("species frequency\nin control sets") +
+	scale_color_discrete(name = "", labels = c("pollinators", "plants")) +
+	scale_fill_discrete(name = "", labels = c("pollinators", "plants")) +
+	theme(legend.position = "right", strip.background = element_blank())
+
+
+p3 <- imp %>%
+	ggplot(aes(x = nestedcontribution, y = f_f)) +
+	geom_point(aes(fill = categ),
+						 shape = 21, 
+						 alpha = 0.5) +
+	scale_shape_manual(values = c(21, 22)) +
+	facet_wrap(~type) +
+	geom_smooth(aes(colour = categ, fill = categ), 
+							family = "binomial", method = "gam", colour = "grey10") +
+	geom_point(data = inv, fill = "red", size = 2.5, shape = 21) +
+	my_theme +
+	xlab("contribution to nestedness") +
+	ylab("species frequency\nin control sets") +
+	scale_color_discrete(name = "", labels = c("pollinators", "plants")) +
+	scale_fill_discrete(name = "", labels = c("pollinators", "plants")) +
+	theme(legend.position = "right", strip.background = element_blank())
+
+grid.arrange(p1, p2, p3, ncol = 1)
+@
+\caption{\label{fig:degree_strength_importance} Relationship between the mean visitation frequency per species (as a surrogate of interaction strength) and its degree in a particular network with its presence in the control sets. Invasive plants are depicted with a red circle. Contribution to nestedness were calculated using 99 network randomisations.}
+\end{figure}
+
+As expected plants tend to have a larger degree than polinators. But regardless of the guild one would expect that as the degree of a species increases so does the likelyhood of it being less dependent than its counterpart and hence have more outer links, which in theory should increase its importance as driver node. The fact that this happens with plants but doesn't happen with pollinators is another part of how plants and pollinators play a distinct role in teh controlability of the networks. This might happen in part because of the nested structure of the mutualistic networks. A generalist polinator will still be "nested" within a set of generalist plants, in other words a generalist plant will have more partners than a generalist polinator which drives the arrows from plants to polinators anyways. (yeah fer this doesn't make sense...)
+
+We therefore explored the posibility that the importance is related to the contribution to nestedness. Voila! In this case both plants and polinators have a clear positive relationship (\autoref{fig:degree_strength_importance}c)! That's pretty cool but I don't know how to interpret this. Daniel help please!
+
+Because the profiling of nodes proposed by \textcite{Guimera2005} captures a lot of the connectivity of nodes we explore the relationship with the roles as well. 
+
+\subsection*{Link redundancy and species}
+
+We got some links that are redundant and other that are critical from the control point of view. I wanted to have a look at what drives that. I haven't done the formal analysis yet but a visual inspection of the network is reveals a pretty strong pattern. 
+
+Critical links tend to occur predominantly when control direction goes from pollinators to plants, this is when the plant is more dependent in the pollinator than the pollinator is on the plant (which is much less common than the other way around), and generaly involve specialist plants (\autoref{fig:link_n_example}).
+
+\begin{figure}
+\centering
+<<fig = T, echo = F, width = 6, height = 6>>=
+mnet <- "MED1CA"
+mtype <- "weight"
+mkeep <- "A"
+
+rob <- link_redundancy %>%
+	dplyr::filter(net == mnet, type == mtype , keep == mkeep) %$%
+	robustness
+
+m_net <- net[[mnet]] %>%
+	# select only the largest connected component of the network
+	keep_largest_component() %>%
+	# transform the network into the bipartite format we need
+	bipartite_digraph(type = mtype , keep = mkeep)
+
+igraph::plot.igraph(m_net, edge.arrow.size = .4, edge.color = as.integer(rob) +6, vertex.size = 10, vertex.color = as.integer(as.factor(igraph::V(m_net)$type)) -1, vertex.label = NA)
+
+@
+\caption{\label{fig:link_n_example} Example network. Plants and polinators are shown as white and yellow circles respectively. Redundant links are shown on grey and critical links are shown on purple.}
+\end{figure}
 
 \section*{Discussion}
  
 For instance, restoration projects that aim to drive an invasive species out of the community, to reestablish a particular ecosystem service or in general modify the ecosystem state have had a limited amount of success. We argue that quantifying the relative dynamic importance of species the set of key species is the first step to evaluate current management efforts as well as to design targeted and informed 
  
-Dynamic system approach
-
 
  
 \section*{Acknowledgmenets}
 
-The authors thank Dr. Takeuki Uno for the insight provided to find the set of all maximum matching algorithms. EFC acknowledges the support from the University of Canterbury Doctoral Scholarship, the University of Canterbury Meadow Mushroooms Postgraduate Scholarship, a travel grant from the European Space Agency and a Rutherford Discovery Fellowship (to DBS). DBS ackloledges the support of a Rutherford Discovery Scholarship, administered by the Royal Society of New Zealand.
+The authors thank Dr. Takeuki Uno for the insight provided to find the set of all maximum matching algorithms, and Bernat Bramon and Marilia Gaiarsa for feedback in early stages of the project. EFC acknowledges the support from the University of Canterbury Doctoral Scholarship, the University of Canterbury Meadow Mushroooms Postgraduate Scholarship, a travel grant from the European Space Agency and a Rutherford Discovery Fellowship (to DBS). DBS ackloledges the support of a Rutherford Discovery Scholarship, administered by the Royal Society of New Zealand.
 
 % \bibliography{references}
 \printbibliography
