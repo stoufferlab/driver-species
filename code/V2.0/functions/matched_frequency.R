@@ -1,6 +1,6 @@
 # find the times a species is present in the maximum matching set
 
-matched_frequency <- function(n, matching_size, type = "weight", keep = "all", batch = 10000){
+matched_frequency <- function(n, matching_size, type = "weight", keep = "all", batch = 1000000){
 	
 	# transform network
 	m <- n %>%
@@ -10,7 +10,7 @@ matched_frequency <- function(n, matching_size, type = "weight", keep = "all", b
 	
 	temporary_file <- tempfile()
 	
-	# find all possible maximum matchings
+	# find all possible maximum matchingsm
 	matched_links <- m %>%
 		igraph::make_line_graph() %>%
 		igraph::complementer() %>% 
@@ -19,39 +19,56 @@ matched_frequency <- function(n, matching_size, type = "weight", keep = "all", b
 												file = temporary_file)
 	
 	# given the list of matched links return a vector of driver species (TRUE/FALSE)
-	is_matched <- function(x, net){
-		m_n <- igraph::ends(m, igraph::E(net)[x + 1])[,2]
-		nam <- igraph::V(net)[igraph::V(net)$type]$name
-		!(nam %in% m_n)
+	is_matched <- function(x, m){
+		m_n <- igraph::ends(m, igraph::E(m)[x + 1])[,2]
+		nam <- igraph::V(m)[igraph::V(m)$type]$name
+		nam %in% m_n
 	}
 
-	i <- 0
-	tot_n_matchings <- 0
-	freq_matching <- NULL
+	# estimate number of lines in file
+	onelinefile <- tempfile()
+	readLines(temporary_file, 1) %>% write(onelinefile)
+	nlines <- file.size(temporary_file) %>% 
+		magrittr::divide_by(file.size(onelinefile)) %>%
+		ceiling()
 	
-	repeat{
+	blocks <- seq(1, nlines, batch)
+	
+	freq_matching <- 
+		plyr::llply(blocks, function(i){
+		
 		matchings <- scan(temporary_file, 
 											nlines = batch, 
-											skip = i * batch, 
-											quiet = F)
-		i <- i + 1
-		n_matchings <- length(matchings) / matching_size
-		if (n_matchings == 0) break
+											skip = i-1, 
+											quiet = T)
 
-		this_freq_matchings <- matchings %>% 
-			matrix(ncol = matching_size, byrow = T) %>%
-			plyr::aaply(1, is_matched, net = m) %>%
-			plyr::aaply(2, sum)
+		list(n_matchings = length(matchings) / matching_size,
+				 matched_vertex = dplyr::data_frame(
+				 	ve = igraph::ends(m, igraph::E(m))[,2],
+				 	ma = (matchings + 1) %>% tabulate(nbins = length(igraph::E(m)))) %>%
+				 	dplyr::group_by(ve) %>%
+				 	dplyr::summarise(ma = sum(ma)))
 		
-		freq_matching %<>%
-			rbind(this_freq_matchings)
-		
-		tot_n_matchings %<>% add(n_matchings)
-	}
+	}, .parallel = T)
+
+	#new
+	tot_matched <- freq_matching %>%
+		plyr::ldply(function(x) x$matched_vertex) %>%
+		dplyr::group_by(ve) %>%
+		dplyr::summarise(ma = sum(ma)) %>%
+		dplyr::full_join(dplyr::data_frame(ve = igraph::V(m)[igraph::V(m)$type]$name),
+										 by = "ve") %>% 
+		dplyr::mutate(ma = replace(ma, is.na(ma), 0),
+									ve = substr(ve, 1, nchar(ve)-3)) %$% {
+										as.vector(ma) %>%
+											magrittr::set_names(ve)
+									}
 	
-	freq_matching %>%
-		plyr::aaply(2, sum) %>% 
-		magrittr:set_names(igraph::V(m)[igraph::V(m)$type]$name %>% substr(1, nchar(.)-3))
+	tot_n_matchings <- freq_matching %>%
+		plyr::laply(function(x) x$n_matchings) %>% sum()
+	
+	`attr<-`(tot_matched, "n_matchings", tot_n_matchings)
+	
 }
 
 

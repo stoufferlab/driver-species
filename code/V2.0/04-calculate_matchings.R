@@ -12,7 +12,7 @@ setwd("~/github/driver-species/")
 net <- "./data/V2.0/networks" %>%
 	read_networks()
 
-# read metadata only keep ballantyne data
+# read metadata
 meta <- readr::read_csv("data/ntw_info.csv") %>% dplyr::tbl_df()
 
 # Calculate maximum matchings 
@@ -23,7 +23,7 @@ matched <- net %>%
 # calculate the frequency of species matchings
 m_freq <- 1:length(net) %>%
 	plyr::mlply(function(x) matched_frequency(net[[x]], matched$n_matched[x]),
-							.parallel = T)
+							.progress = "text")
 
 # save data
 saveRDS(matched, file = "./data/V2.0/n_matched.rds", ascii = T, compress = F)
