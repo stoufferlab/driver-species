@@ -4,7 +4,7 @@
 # ARGUMENTS: 
 #			1: the number of cores to be used
 #			2: the number of randomisations per matrix 
-
+ 
 
 library(magrittr)
 library(foreach)
@@ -38,7 +38,7 @@ null_methods <- c(
 	"r00_both",
 	"r0_both",
 	"c0_both"
-)
+) 
 
 # for each network
 plyr::ldply(net, function(n){	
