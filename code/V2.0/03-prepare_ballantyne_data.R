@@ -19,16 +19,19 @@ deposition <- data %>%
 																 na.rm = T))
 
 efficacy <- data %>% 
-	dplyr::summarise(weight = sum(conspecific_pollen_deposited, 
-																 na.rm = T))
+	dplyr::summarise(weight = round(mean(conspecific_pollen_deposited, 
+																 na.rm = T)))
 
 importance <- data %>%
-	dplyr::summarise(weight = sum(conspecific_pollen_deposited, 
+	dplyr::summarise(weight = mean(conspecific_pollen_deposited, 
 																 na.rm = T) * n())
+unweighted <- importance %>%
+  dplyr::mutate(weight = 1)
 
 ntw <- list(bal_vis = visitation,
 						bal_eff = efficacy,
-						bal_imp = importance)
+						bal_imp = importance,
+						bal_bin = unweighted)
 
 net <- plyr::llply(ntw, function(x){
 	edg <- x 
