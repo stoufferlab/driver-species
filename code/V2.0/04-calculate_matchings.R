@@ -1,13 +1,13 @@
 library(magrittr)
 library(foreach)
-library(doMC)
+library(doMC) 
 registerDoMC(cores = as.numeric(commandArgs(trailingOnly = T)[1]))
 setwd("~/github/driver-species/")
 
 "./code/V2.0/functions" %>% 
 	list.files(full.names = T) %>%
 	plyr::l_ply(source)
-
+  
 # read networks
 net <- "./data/V2.0/networks" %>%
 	read_networks()
@@ -24,6 +24,8 @@ matched <- net %>%
 m_freq <- 1:length(net) %>%
 	plyr::mlply(function(x) matched_frequency(net[[x]], matched$n_matched[x]),
 							.progress = "text")
+
+names(m_freq) <- names(net)
 
 # save data
 saveRDS(matched, file = "./data/V2.0/n_matched.rds", ascii = T, compress = F)
