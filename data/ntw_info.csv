@@ -14,3 +14,4 @@ net,net_name,n_pla,n_pol,inv,site,invader,study,method
 13,bal_vis,5,16,NA,BRI,NA,ballantyne,visitation
 14,bal_eff,5,16,NA,BRI,NA,ballantyne,deposition
 15,bal_imp,5,16,NA,BRI,NA,ballantyne,importance
+16,bal_bin,5,16,NA,BRI,NA,ballantyne,binary
