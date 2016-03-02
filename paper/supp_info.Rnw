@@ -1,0 +1,386 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[margin=22.5mm]{geometry}
+\usepackage{titlesec}
+
+% abstract + title + authors
+\usepackage{abstract}
+\renewcommand{\abstractnamefont}{\normalfont\bfseries}
+\renewcommand{\abstracttextfont}{\normalfont\small\itshape} 
+\usepackage{titlesec}
+\usepackage{authblk}
+\usepackage{datetime}
+\newdateformat{usvardate}{
+\monthname[\THEMONTH] \ordinal{DAY}, \THEYEAR}
+
+% math
+\usepackage{amssymb}
+\usepackage{newtxmath}
+
+% manuscript looking document
+\usepackage{setspace}
+\usepackage{lineno,xcolor}
+\setlength{\parskip}{0.5em} 
+
+% comments
+\usepackage[draft]{todonotes}
+
+% colorbox
+\usepackage{tcolorbox}
+
+% graphics
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{sidecap}
+\sidecaptionvpos{figure}{t}
+\usepackage[font=small]{caption}
+
+% table
+\usepackage{booktabs}
+
+% references & links
+\usepackage[
+backend=bibtex,
+style= authoryear,
+citestyle = authoryear,
+url=false,
+doi=true,
+isbn=false
+]{biblatex}
+\addbibresource{references.bib}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    citecolor=magenta,
+    linkcolor=magenta
+}
+\usepackage{doi}
+
+\begin{document}
+
+<<libraries, echo = FALSE, warning = F, message = F>>=
+library(magrittr)
+library(knitr)
+library(ggplot2)
+library(glmulti)
+opts_knit$set (root.dir=normalizePath('../'))
+@
+
+<<auxiliary functions, echo = FALSE, warning = F, message = F>>=
+"./code/V2.0/functions" %>% 
+	list.files(full.names = T) %>%
+	plyr::l_ply(source)
+
+# figure counter
+fig_count <- dplyr::data_frame(ref = "NA", count = 0)
+fig_n <- function(ref) {
+  fig_count <<- rbind(fig_count,
+                      dplyr::data_frame(ref = ref,
+                                        count = dplyr::last(fig_count$count) + 1))
+  return(dplyr::last(fig_count$count))
+}
+fig_r <- function(ref) fig_count$count[fig_count$ref == ref]
+
+# table counter
+tbl_count <- dplyr::data_frame(ref = "NA", count = 0)
+tbl_n <- function(ref) {
+  tbl_count <<- rbind(tbl_count,
+                      dplyr::data_frame(ref = ref,
+                                        count = dplyr::last(tbl_count$count) + 1))
+  return(dplyr::last(tbl_count$count))
+}
+tbl_r <- function(ref) tbl_count$count[tbl_count$ref == ref]
+@
+
+<<plot theme, echo = FALSE, warning = F, message = F>>=
+fer_theme <- theme_bw() +
+	theme(text = element_text(family = "Times"),
+	      title = element_text(size = 7.5, hjust = 0),
+	      legend.title = element_text(size = 9),
+	      legend.text = element_text(size = 8),
+				axis.text = element_text(size = 8),
+				axis.title = element_text(size = 9, hjust = 0.5), 
+				strip.text = element_text(size = 9, hjust = 0), 
+				strip.background = element_blank(),
+				plot.margin = grid::unit(c(5, 0, 2, 0), "mm"))
+@
+
+<<read data and results, echo = FALSE, warning = F, message = F>>=
+net <- "./data/V2.0/networks" %>%
+	read_networks()
+meta <- readr::read_csv("data/ntw_info.csv") %>% dplyr::tbl_df() %>%
+	dplyr::rename(count = method)
+n_matched <- readRDS("./data/V2.0/n_matched.rds")
+m_f <- readRDS("./data/V2.0/matching_frequency.rds")
+a_m <- readRDS("./data/V2.0/n_matched_all_types.rds")
+s_p <- readRDS("./data/V2.0/species_properties.rds") %>% dplyr::tbl_df()
+mod <- readRDS("./data/V2.0/species_models.rds")
+
+@
+
+% title
+\title{
+	{\LARGE \textsc{Structural controlability of pollination networks}}\\
+	{\normalsize Supplementary Information} }
+	% Authors and Affiliations
+  \author{\large E. Fernando Cagua}
+  \author{\large Kate Wooton}
+  \author{\large Johanna Voinopol-Sassu}
+  \author{\large Daniel B. Stouffer}
+  \affil{\normalsize Center of Integrative Ecology, School of Biological Sciences, University of Canterbury}
+\date{}
+\maketitle
+
+\renewcommand{\thefigure}{S\arabic{figure}}
+\renewcommand{\thetable}{S\arabic{table}}
+
+\onehalfspacing
+
+\section{Number of driver species}
+
+We calculated the number of driver species neccessary to control the whole community under the assumption that a species that depends more strongly on an interaction partner is controlled by the partner (\autoref{table:n_driver}). We tested the robustness of this assumption by comparing the relative number of driver species assuming that a) the dependency assymetry does not imply an unidirectional control direction, rather a species could control all its interaction partners and viceversa, b) that plants depend on pollinators and c) that pollinators depend on plants. Our results using the direction of the largest dependency are consistent with the proposed alternatives: although we obtained different absolute numbers of driver species (\autoref{fig:alternative_assumptions}),  their relative numbers are maintained (\autoref{table:corr_driver}). 
+
+\begin{table}[h]
+\centering
+\small
+<<table n_driver, echo = FALSE, warning = F, message = F, results = "asis">>=
+# find n_driver
+n_driver <- n_matched %>%
+  dplyr::inner_join(meta) %>%
+  dplyr::filter(!is.na(inv)) %>%
+  dplyr::mutate(n_dr = n_pla + n_pol - n_matched,
+                n_dr_p = 1 - n_matched / (n_pla + n_pol))
+
+n_driver %>%
+  dplyr::select(site, inv, n_pla, n_pol, n_dr, n_dr_p) %>%
+  dplyr::mutate(site = as.numeric(as.factor(site)),
+                inv = plyr::mapvalues(inv, c(TRUE, FALSE), c("yes", "no")),
+                n_dr_p = paste0(round(n_dr_p * 100), "%")) %>%
+  dplyr::rename_("invaded" = "inv",
+                 "No. plants" = "n_pla",
+                 "No. polinators" = "n_pol",
+                 "No. driver spp." = "n_dr",
+                 "prop. driver spp." = "n_dr_p") %>%
+  dplyr::arrange(site) %>%
+  kable(align = "c", booktabs = T, 
+        linesep = c("", "\\addlinespace"))
+@
+\caption{\label{table:n_driver} Minimum number and proportion of driver species necessary to control the full pollination network}
+\end{table}
+
+
+\begin{figure}[h]
+\centering
+<<fig alternative assumptions, echo = FALSE, warning = F, message = F, fig.height=1.5, fig.width=4.3>>=
+a_m_driver <- a_m %>% 
+  dplyr::full_join(meta) %>%
+  dplyr::filter(study != "ballantyne") %>% 
+  dplyr::mutate(type = factor(type, 
+                              levels =  c("AB", "BA", "weight", "z-bi"),
+                              labels = c("pla. to pol.", "pol. to pla.", "dependency", "bidirectional")),
+                type_l  = as.character(type)) %>%
+  dplyr::mutate(n_driver = n_pla + n_pol - n_matched, 
+                n_driver_rel = 1 - n_matched / (n_pla + n_pol)) 
+
+type_l <- unique(a_m_driver$type_l)
+
+a_m_driver %>%
+  ggplot(aes(x = type, y = n_driver_rel), parse = T) +
+  geom_boxplot(size = 0.25, colour = "grey10",
+							 outlier.shape = 21, outlier.size = 1) +
+  coord_flip() + 
+  xlab("") +
+  ylab("proportion of driver species") + 
+  fer_theme + 
+  theme(plot.margin = grid::unit(c(0,1,2,0), "mm"))
+
+@
+\caption{\label{fig:alternative_assumptions} Proportion of driver species necessary to control the full pollination network under four different assumptions of the direction of control}
+\end{figure}
+
+\begin{table}[h]
+\centering
+\small
+<<table alternative assumptions, echo = FALSE, warning = F, message = F, results = "asis">>=
+
+corr_matrix <- a_m_driver %>%
+  dplyr::select(net_name, type, n_driver) %>%
+  tidyr::spread(type, n_driver) %>%
+  dplyr::select(-net_name) %>%
+  as.matrix() %>%
+  cor(method = "spearman") %>%
+  round(digits = 2)
+
+corr_matrix[lower.tri(corr_matrix, diag = T)] <- ""
+corr_matrix <- corr_matrix[, -1]
+corr_matrix <- corr_matrix[-(nrow(corr_matrix)), ]
+kable(corr_matrix, align = "c", format = "latex", booktabs = T)
+
+@
+\caption{\label{table:corr_driver} Spearman correlation coefficients of the number of driver species necessary to control the full pollination network.}
+\end{table}
+
+\section{Visitation frequency vs. pollen deposition}
+
+The number of driver species in a pollination community and the relative importance of each species depend both of the strength of mutual dependencies between plant pollinators and the structure of the pollination network. Traditionally pollination networks have been represented using visitation frequency, but a flower visitor is not necessarely a pollinator. It has been shown that wether pollination networks are represented using visitation or actual pollen deposition can have effects on the network structure and presumably on the strength of mutuial dependency. 
+
+We investigated the effects of using visitation, pollen deposition (effective pollination) and pollinator importance (the product of visitation frequency and effective single visit pollen deposition). We used available data collected by \textcite{Ballantyne2015} from a low diversity pollination community at a dry lowland heathland in Dorset, UK (50° 43.7'N 2° 07.2'W).
+
+Deposition networks, a proxy pollinator efficiency, were quantified using the mean Single Visit Deposition---the number of conspecific pollen grains effectively deposited on a virgin stigma during a single visit by a particular animal \autocite{NeEman2010,King2013,Ballantyne2015}. Visitation networks were constructed counting the visits to flowers during Single Visit Depositions. Pollinator importance networks were consrtucted as the product of pollinator efficiency and visit frequency. 
+
+<<get n_driver, echo = FALSE, warning = F, message = F>>=
+n_driver <- meta %>%
+  dplyr::inner_join(n_matched) %>% 
+  dplyr::mutate(n_driver = 1 - n_matched / (n_pla + n_pol))
+@
+
+We first investigated the effects at a network scale. Despite marked differences in the distribution of weights of the three networks (\autoref{fig:ballantyne-ntw}), the minimum number of driver species to control the whole community was consistent among the three different approaches \Sexpr{round(n_driver$n_driver[n_driver$net_name == "bal_eff"]*100)}\% for deposition, \Sexpr{round(n_driver$n_driver[n_driver$net_name == "bal_vis"]*100)}\% for the visitation, and \Sexpr{round(n_driver$n_driver[n_driver$net_name == "bal_imp"]*100)}\% for the pollinator importance network).
+
+The choice of weighting used can also have an impact on the realtive importance of species. Therefore we calculated the frequency that each species is present in the possible sets of driver species under the three schemes. Although visitation and deposition produce strikingly different results, we found a very strong agreement between the order produced by visitation and importance (\autoref{table:corr_weights}). Arguably, visitation best reflects the dependency of animals to plants, as usually animals forage for pollen or nectar regardless of wether effective pollination occurs or not. Contrastingly, importance, the product between visit frequency and pollinator effectiveness, best relefect the dependency of plants to animals. 
+
+Finally, we investigated whether the asymmetry of mutual dependency, which defines the direction of control, was consistent among the three posible weighting schemes. We found again that the direction of the dominant dependency was mantained was consistent for 95\% of the interactions weighted by visitation or importance (\autoref{table:corr_weights}), the two most appropriate metrics for pollinator and plant dependency.
+
+All together, evidence supports the idea that visitation is a suitable metric to estimate the mutual dependency of species pairs. First it is directly related to pollinator foraging. Second it produces results consistent, at least within our controllability framework, with plant reproductive success (as estimated by the importance metric).
+
+\begin{figure}[h]
+\centering
+<<matrix representation, echo = FALSE, warning = F, message = F, fig.height=4, fig.width=5.5>>=
+p <- net[meta$net_name[meta$study == "ballantyne" & meta$count != "binary"]] %>%
+	plyr::ldply(function(x) {
+		data.frame(vname = igraph::E(net[[1]]) %>% attr("vnames"), 
+							weight = igraph::E(x)$weight)
+	}) %>%
+	dplyr::rename_("net_name" = ".id") %>%
+	dplyr::mutate(net_name_f = factor(net_name,  
+																		levels = c( 'bal_eff','bal_vis','bal_imp'),
+																		labels = c("a) Deposition", "b) Visitation", "c) Importance")), 
+	              pla = stringr::str_split_fixed(vname, "\\|", 2)[, 1],
+	              pol = stringr::str_split_fixed(vname, "\\|", 2)[, 2]) %>%
+  plyr::dlply("net_name_f", function(x){
+    p1 <- x %>%
+      ggplot(aes(x = pol, y = pla)) +
+      geom_tile(aes(fill = weight, width = 0.9, height = 0.9)) + 
+      coord_fixed() +
+      scale_fill_gradient(low = "#f0f0f0", high = "#525252") +
+      ylab("plants") +
+      xlab("pollinators") + 
+      fer_theme +
+      theme(axis.text = element_blank(), 
+            axis.ticks = element_blank(), 
+            legend.position = "right", 
+            legend.title = element_blank(), 
+            plot.margin = grid::unit(c(6,0,2,5), "mm"),
+            panel.grid = element_blank(),
+            legend.key.width = grid::unit(4, "mm"),
+            legend.key.height = grid::unit(4, "mm"))
+    p2 <- x %>% ggplot(aes(x = weight)) +
+      scale_x_log10() +
+      stat_density(aes(y =..density..), geom = "line") +
+      xlab("link weight") + 
+      ylab("density") +
+      ggtitle(x$net_name_f[1]) +
+      fer_theme +
+      theme(plot.margin = grid::unit(c(2,2,0,0), "mm"))
+    list(p1, p2)
+  }) 
+
+multiplot(p[[1]][[2]], p[[1]][[1]], p[[2]][[2]], p[[2]][[1]], p[[3]][[2]], p[[3]][[1]], layout = matrix(c(1,2,2,3,4,4,5,6,6), ncol = 3, byrow = T))  
+@
+\caption{\label{fig:ballantyne-ntw} Distribution of interaction weights for the pollen deposition, visitation and pollinator importance networks. Note that the \textit{x} axis in the density plots have been log-transformed}
+\end{figure}
+
+\begin{table}[h]
+\centering
+\small
+<<table correlations, echo = FALSE, warning = F, message = F, results = "asis">>=
+drivers_b <- m_f[meta$net_name[meta$study == "ballantyne"]] %>%
+	plyr::ldply(function(x){
+	  dplyr::data_frame(species = names(x),
+	                    d_freq = attr(x, "n_matchings") - x,
+	                    d_reim = 1 - x / attr(x, "n_matchings"),
+	                    d_rank = rank(d_reim, ties.method = "average"))
+	}) %>%
+	dplyr::rename_("net_name" = ".id")
+
+correlations <- drivers_b %>%
+  dplyr::select(net_name, species, d_freq) %>%
+  tidyr::spread(net_name, d_freq) %>%
+  dplyr::select(-species) %>%
+  as.matrix() %>%
+  Hmisc::rcorr(type = "spearman")
+
+
+my_paste <- function(x, y){
+  if(is.na(y)) return ("-")
+  b <- ""
+  if(y < 0.05) b <- ""
+  paste0(b, round(x, digits = 2), " (", round(y, digits = 4), ")", b)
+}
+
+dir_net_b <- net[meta$net_name[meta$study == "ballantyne"]] %>%
+  lapply(function(x){
+    x %>% 
+      bipartite_digraph(type = "weight", keep = "all") %>%
+      igraph::ends(igraph::E(.)) %>% 
+      apply(1, function(y) paste(y[1], y[2]))
+  })
+
+# same order as the correlations 
+dir_net_b <- dir_net_b[colnames(correlations$P)]
+
+lt <- combn(length(dir_net_b), 2) %>%
+  apply(2, function(x){
+    length(intersect(dir_net_b[[x[1]]], dir_net_b[[x[2]]])) /
+      length(igraph::E(net[[1]]))
+  }) %>%
+  magrittr::multiply_by(100) %>% round() %>% paste0("%")
+
+nam <- c("unweighted","deposition", "importance", "visitation")
+
+mapply(my_paste, correlations$r, correlations$P) %>%
+  matrix(ncol = length(dir_net_b)) %>% magrittr::set_colnames(nam) %>%
+  magrittr::set_rownames(nam) %>% `[<-`(lower.tri(.), lt) %>% 
+  kable(align = "c", format = "latex", booktabs = T)
+@
+\caption{\label{table:corr_weights} Spearman correlation coefficients (with p-value) of the relative importance of species and the percentage of interactions that share the direction of dependency obtained using the three weighting schemes and an unweighted scheme. Significant correlations are highlighted in bold.}
+\end{table}
+
+\begin{figure}[h]
+\centering
+<<fig species, echo = FALSE, warning = F, message = F, fig.height=2.2, fig.width=6.49>>=
+data_pol <- mod[[1]]@objects[[1]]$data
+data_pla <- mod[[2]]@objects[[1]]$data
+
+expand.grid(d = seq(min(data_pol$d), max(data_pol$d), by = 1),
+            S_d = seq(min(data_pol$S_d), max(data_pol$S_d), length = 20), 
+            n = seq(min(data_pol$n), max(data_pol$n), length = 3), 
+            S_v = mean(data_pol$S_v)) %>%
+  dplyr::mutate(q = predict.glmulti(mod[[1]], 
+                                    select = 0.95, 
+                                    newdata = .)$averages %>%
+                  as.vector(), 
+                p = plogis(q)) %>%
+  dplyr::mutate(n = factor(n, 
+                           levels = seq(min(data_pol$n), max(data_pol$n), length = 3),
+                           labels = c("low", "mean", "high"))) %>%
+  ggplot(aes(x = d, y = S_d, z = p)) +
+  geom_tile(aes(fill = p)) +
+  scale_fill_gradient(name = "relative\nimportance", high = "#f0f0f0", low = "#525252") +
+  scale_x_continuous(expand = c(0,0)) +
+  scale_y_continuous(expand = c(0,0)) +
+  facet_wrap(~n) +
+  xlab("degree") +
+  ylab("strength of dependencies") +
+  stat_contour(colour = "black", size = 0.25) +
+  fer_theme
+
+@
+\caption{\label{fig:prediction} aSS }
+\end{figure}
+
+\section{Relative importance of species}
+
+First we assessed the impotance of each explanatory variable individually. We included the most relevant subset into a more detailed analysis that included first order interactions between them. 
+
+\printbibliography
+
+\end{document}
