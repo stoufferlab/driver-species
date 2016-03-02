@@ -15,3 +15,11 @@ net,net_name,n_pla,n_pol,inv,site,invader,study,method
 14,bal_eff,5,16,NA,BRI,NA,ballantyne,deposition
 15,bal_imp,5,16,NA,BRI,NA,ballantyne,importance
 16,bal_bin,5,16,NA,BRI,NA,ballantyne,binary
+17,AC_ctl,8,49,TRUE,AC,imp,lopezaraiza,visitation
+18,AC_exp,6,31,FALSE,AC,imp,lopezaraiza,visitation
+19,CD_ctl,15,72,TRUE,CD,imp,lopezaraiza,visitation
+20,CD_exp,5,43,FALSE,CD,imp,lopezaraiza,visitation
+21,RF_ctl,11,75,TRUE,RF,imp,lopezaraiza,visitation
+22,RF_exp,12,43,FALSE,RF,imp,lopezaraiza,visitation
+23,SA_ctl,6,48,TRUE,SA,imp,lopezaraiza,visitation
+24,SA_exp,3,16,FALSE,SA,imp,lopezaraiza,visitation
