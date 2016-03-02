@@ -22,8 +22,19 @@ bipartite_digraph <- function(net,
 	)
 	
 	# if its bidirectional just make an easy convertion
-	if (type[1] == "z-bi") y <- igraph::as.directed(net)
-	
+	if (type[1] == "z-bi") {
+	  # get dependencies
+	  dependencies <- net %>% 
+	    igraph::as_adjacency_matrix(sparse = 0, attr = "weight") %>%
+	    apply(1, function(x){x / sum(x)}) %>% t()
+	  
+	  y <- igraph::graph_from_adjacency_matrix(dependencies, mode = "directed",
+	                                      weighted = TRUE) %>%
+	    igraph::set_vertex_attr(name = "type", 
+	                            value = igraph::vertex_attr(net, "type"))
+	  
+	}
+  
 	# if it's by weight
 	else if (type[1] == "weight") {
 		# get adjancecy matrix
