@@ -1,0 +1,65 @@
+Rubus fruticosus	Byturus tomentosus	1	8	1	19	19	8
+Heracleum sphondylium	Strangalia maculata	2	8	2	1	1	8
+Heracleum sphondylium	Epuraea aestiva	3	8	3	1	1	8
+Apium nodiflorum	Meligethes aeneus	4	8	4	1	49	8
+Heracleum sphondylium	Meligethes aeneus	4	8	4	24	49	8
+Anthriscus sylvestris	Meligethes aeneus	4	8	4	7	49	8
+Geranium robertianum	Meligethes aeneus	4	8	4	4	49	8
+Filipendula ulmaria	Meligethes aeneus	4	8	4	12	49	8
+Rubus fruticosus	Meligethes aeneus	4	8	4	1	49	8
+Geranium robertianum	Meligethes kunzei	5	8	5	2	2	8
+Apium nodiflorum	Anisopus fenestralis	6	4	6	1	1	4
+Heracleum sphondylium	Bellardia pandia	7	4	7	1	1	4
+Apium nodiflorum	Elachiptera magaspis	8	4	8	2	2	4
+Mentha aquatica	Campsicnemus sp.	9	4	9	1	1	4
+Apium nodiflorum	Parascaptomyza pallida	10	4	10	1	1	4
+Heracleum sphondylium	Lyciella rorida	11	4	11	1	1	4
+Heracleum sphondylium	Graphomya maculata	12	4	12	1	1	4
+Heracleum sphondylium	Morellia aenescens	13	4	13	1	1	4
+Heracleum sphondylium	Sciara thomae	14	4	14	3	3	4
+Circaea lutetiana	Baccha elongata	15	4	15	1	1	4
+Heracleum sphondylium	Cheilosia illustrata	16	4	16	2	2	4
+Angelica sylvestris	Cheilosia scutellata	17	4	17	1	1	4
+Angelica sylvestris	Chrysogaster solstitialis	18	4	18	1	6	4
+Heracleum sphondylium	Chrysogaster solstitialis	18	4	18	4	6	4
+Anthriscus sylvestris	Chrysogaster solstitialis	18	4	18	1	6	4
+Heracleum sphondylium	Epistrophe grassulariae	19	4	19	7	7	4
+Apium nodiflorum	Episyrphus balteatus	20	4	20	1	9	4
+Heracleum sphondylium	Episyrphus balteatus	20	4	20	4	9	4
+Silene dioica	Episyrphus balteatus	20	4	20	1	9	4
+Geranium robertianum	Episyrphus balteatus	20	4	20	1	9	4
+Rubus fruticosus	Episyrphus balteatus	20	4	20	2	9	4
+Heracleum sphondylium	Eristalis pertinax	21	4	21	11	11	4
+Angelica sylvestris	Leucozona glaucia	22	4	22	2	4	4
+Heracleum sphondylium	Leucozona glaucia	22	4	22	2	4	4
+Heracleum sphondylium	Melanostoma scalare	23	4	23	4	7	4
+Geranium robertianum	Melanostoma scalare	23	4	23	1	7	4
+Epilobium sp.	Melanostoma scalare	23	4	23	1	7	4
+Rubus fruticosus	Melanostoma scalare	23	4	23	1	7	4
+Heracleum sphondylium	Neoascia podagrica	24	4	24	1	1	4
+Geranium robertianum	Platycheirus ?ambiguus	25	4	25	1	1	4
+Geranium robertianum	Platycheirus albimanus	26	4	26	1	3	4
+Epilobium sp.	Platycheirus albimanus	26	4	26	1	3	4
+Rubus fruticosus	Platycheirus albimanus	26	4	26	1	3	4
+Geranium robertianum	Rhingia rostrata	27	4	27	1	1	4
+Apium nodiflorum	Sphegina clunipes	28	4	28	1	5	4
+Mentha aquatica	Sphegina clunipes	28	4	28	1	5	4
+Stachys sylvatica	Sphegina clunipes	28	4	28	1	5	4
+Rubus fruticosus	Sphegina clunipes	28	4	28	2	5	4
+Apium nodiflorum	Sphegina verecunda	29	4	29	1	1	4
+Heracleum sphondylium	Syrphus vitripennis	30	4	30	1	1	4
+Heracleum sphondylium	Volucella pellucens	31	4	31	1	1	4
+Heracleum sphondylium	Solieria pacifica	32	4	32	1	1	4
+Angelica sylvestris	Miridae 1	33	6	33	4	14	6
+Heracleum sphondylium	Miridae 1	33	6	33	10	14	6
+Heracleum sphondylium	Anthocoridae	34	6	34	2	2	6
+Apium nodiflorum	Hemiptera	35	6	35	2	2	6
+Heracleum sphondylium	Orthotylus/Lygocorus	36	6	36	18	19	6
+Rubus fruticosus	Orthotylus/Lygocorus	36	6	36	1	19	6
+Apium nodiflorum	Apis mellifera	37	1	37	1	1	1
+Rubus fruticosus	Bombus hortorum	38	1	38	1	1	1
+Silene dioica	Bombus pascuorum	39	1	39	3	3	1
+Epilobium sp.	Lasioglossum calceatum	40	1	40	1	1	1
+Heracleum sphondylium	Lasioglossum pauxillum	41	1	41	2	2	1
+Heracleum sphondylium	Parasitica	42	1	42	3	3	1
+Anthriscus sylvestris	Athalia circularis	43	1	43	1	1	1

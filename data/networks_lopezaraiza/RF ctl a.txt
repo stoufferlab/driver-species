@@ -1,0 +1,15 @@
+Heracleum sphondylium	1	1	133	10
+Hedera helix	2	2	39	10
+Impatiens glandulifera	3	3	9614	5
+Symphytum sp.	4	4	393	10
+Silene dioica	5	5	334	10
+Calystegia sepium	6	6	1	10
+Dipsacus pilosus	7	7	13	10
+Stachys sylvatica	8	8	20	10
+Lythrum salicaria	9	9	143	10
+Circaea lutetiana	10	10	2125	10
+Ranunculus sp.	11	11	6	10
+Filipendula ulmaria	12	12	88	10
+Geum urbanum	13	13	38	10
+Rubus fruticosus	14	14	882	10
+Galium aparine	15	15	87	10

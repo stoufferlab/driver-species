@@ -1,0 +1,77 @@
+Heracleum sphondylium	Byturus tomentosus	1	8	1	1	6	8
+Rubus fruticosus	Byturus tomentosus	1	8	1	5	6	8
+Angelica sylvestris	Epuraea aestiva	2	8	2	1	1	8
+Ranunculus sp.	Meligethes aeneus	3	8	3	1	3	8
+Rubus fruticosus	Meligethes aeneus	3	8	3	2	3	8
+Impatiens glandulifera	Eusphalerum luteum	4	8	4	2	23	8
+Ranunculus sp.	Eusphalerum luteum	4	8	4	1	23	8
+Rubus fruticosus	Eusphalerum luteum	4	8	4	20	23	8
+Ranunculus sp.	Tachyporus solutus	5	8	5	1	1	8
+Heracleum sphondylium	Botanophila fugax	6	4	6	1	2	4
+Impatiens glandulifera	Botanophila fugax	6	4	6	1	2	4
+Heracleum sphondylium	Calliphora vomitoria	7	4	7	2	3	4
+Impatiens glandulifera	Calliphora vomitoria	7	4	7	1	3	4
+Angelica sylvestris	Cecidomyid	8	4	8	1	1	4
+Angelica sylvestris	Chlorops hypostigma	9	4	9	2	2	4
+Rubus fruticosus	Empis (s.s.) sp. nr. pennipes	10	4	10	1	1	4
+Heracleum sphondylium	Holoclera flava	11	4	11	1	1	4
+Rubus fruticosus	Fannia sp.	12	4	12	1	1	4
+Angelica sylvestris	Lyciella rorida	13	4	13	1	2	4
+Heracleum sphondylium	Lyciella rorida	13	4	13	1	2	4
+Impatiens glandulifera	Coenosia tigrina	14	4	14	1	1	4
+Angelica sylvestris	Limnophora triangula	15	4	15	1	1	4
+Angelica sylvestris	Morellia aenescens	16	4	16	1	1	4
+Angelica sylvestris	Phaonia basalis	17	4	17	4	11	4
+Heracleum sphondylium	Phaonia basalis	17	4	17	1	11	4
+Impatiens glandulifera	Phaonia basalis	17	4	17	6	11	4
+Heracleum sphondylium	Thricops semicinereus	18	4	18	1	1	4
+Angelica sylvestris	Palloptera trimacula	19	4	19	2	2	4
+Heracleum sphondylium	Heteronychia dissimilis	20	4	20	1	1	4
+Heracleum sphondylium	Heteronychia sp.	21	4	21	1	1	4
+Impatiens glandulifera	Sarcophaga sp.	22	4	22	1	1	4
+Heracleum sphondylium	Sciara thomae	23	4	23	1	1	4
+Impatiens glandulifera	Baccha elongata	24	4	24	1	2	4
+Geranium robertianum	Baccha elongata	24	4	24	1	2	4
+Heracleum sphondylium	Cheilosia soror	25	4	25	1	1	4
+Angelica sylvestris	Chrysogaster solstitialis	26	4	26	1	1	4
+Heracleum sphondylium	Episyrphus balteatus	27	4	27	3	12	4
+Arctium sp.	Episyrphus balteatus	27	4	27	2	12	4
+Impatiens glandulifera	Episyrphus balteatus	27	4	27	3	12	4
+Circaea lutetiana	Episyrphus balteatus	27	4	27	1	12	4
+Rubus fruticosus	Episyrphus balteatus	27	4	27	3	12	4
+Angelica sylvestris	Eristalis pertinax	28	4	28	2	4	4
+Heracleum sphondylium	Eristalis pertinax	28	4	28	2	4	4
+Rubus fruticosus	Helophilus pendulus	29	4	29	1	1	4
+Angelica sylvestris	Leucozona glaucia	30	4	30	1	3	4
+Heracleum sphondylium	Leucozona glaucia	30	4	30	2	3	4
+Heracleum sphondylium	Melanostoma scalare	31	4	31	1	5	4
+Geranium robertianum	Melanostoma scalare	31	4	31	1	5	4
+Ranunculus sp.	Melanostoma scalare	31	4	31	1	5	4
+Rubus fruticosus	Melanostoma scalare	31	4	31	2	5	4
+Angelica sylvestris	Meliscaeva cinctella	32	4	32	1	2	4
+Heracleum sphondylium	Meliscaeva cinctella	32	4	32	1	2	4
+Impatiens glandulifera	Platycheirus ?amplus	33	4	33	1	1	4
+Impatiens glandulifera	Platycheirus albimanus	34	4	34	11	15	4
+Ranunculus sp.	Platycheirus albimanus	34	4	34	1	15	4
+Rubus fruticosus	Platycheirus albimanus	34	4	34	3	15	4
+Impatiens glandulifera	Rhingia campestris	35	4	35	1	1	4
+Angelica sylvestris	Miridae 1	36	6	36	3	4	6
+Heracleum sphondylium	Miridae 1	36	6	36	1	4	6
+Rubus fruticosus	Anthocoridae	37	6	37	1	1	6
+Angelica sylvestris	Miridae	38	6	38	3	3	6
+Rubus fruticosus	Orthotylus/Lygocorus	39	6	39	1	1	6
+Impatiens glandulifera	Apis mellifera	40	1	40	63	64	1
+Rubus fruticosus	Apis mellifera	40	1	40	1	64	1
+Impatiens glandulifera	Bombus hortorum	41	1	41	4	4	1
+Impatiens glandulifera	Bombus lucorum	42	1	42	1	1	1
+Arctium sp.	Bombus pascuorum	43	1	43	1	45	1
+Impatiens glandulifera	Bombus pascuorum	43	1	43	44	45	1
+Impatiens glandulifera	Bombus pratorum	44	1	44	2	2	1
+Impatiens glandulifera	Bombus terrestris	45	1	45	2	3	1
+Rubus fruticosus	Bombus terrestris	45	1	45	1	3	1
+Impatiens glandulifera	Lasioglossum calceatum	46	1	46	2	2	1
+Angelica sylvestris	Parasitica	47	1	47	5	5	1
+Angelica sylvestris	Ectemnius lituratus	48	1	48	2	9	1
+Heracleum sphondylium	Ectemnius lituratus	48	1	48	7	9	1
+Impatiens glandulifera	Vespula vulgaris	49	1	49	2	3	1
+Rubus fruticosus	Vespula vulgaris	49	1	49	1	3	1

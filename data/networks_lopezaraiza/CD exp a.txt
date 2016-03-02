@@ -1,0 +1,12 @@
+Heracleum sphondylium	1	1	165	10
+Senecio sp.	2	2	13	10
+Symphytum sp.	3	3	334	10
+Calystegia sepium	4	4	73	10
+Rorippa microphylla	5	5	2	10
+Stachys sylvatica	6	6	24	10
+Circaea lutetiana	7	7	20	10
+Epilobium hirsutum	8	8	71	10
+Ranunculus sp.	9	9	1	10
+Geum urbanum	10	10	2	10
+Rubus fruticosus	11	11	132	10
+Galium aparine	12	12	105	10
