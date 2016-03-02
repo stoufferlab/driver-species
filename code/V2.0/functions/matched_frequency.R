@@ -9,8 +9,10 @@ matched_frequency <- function(n, matching_size, type = "weight", keep = "all", b
 		digraph_bipartite()
 	
 	temporary_file <- tempfile()
+	message("file is ", temporary_file)
 	
-	# find all possible maximum matchingsm
+	message("finding all possible maximum matchings")
+	# find all possible maximum matchings
 	matched_links <- m %>%
 		igraph::make_line_graph() %>%
 		igraph::complementer() %>% 
@@ -34,6 +36,7 @@ matched_frequency <- function(n, matching_size, type = "weight", keep = "all", b
 	
 	blocks <- seq(1, nlines, batch)
 	
+	message("reading maximum matching file")
 	freq_matching <- 
 		plyr::llply(blocks, function(i){
 		
