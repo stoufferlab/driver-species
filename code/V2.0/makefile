@@ -6,12 +6,12 @@ n_perm = 999
 
 prepare_data: $(d_f)networks/*
 
-$(d_f)networks/*: 01-prepare_bartomeus_data.R 02-prepare_lopezaraiza_data.R 03-prepare_ballantyne_data.R
+$(d_f)networks/*: 01-prepare_bartomeus_data.R 02-prepare_lopezaraiza_data.R 03-prepare_ballantyne_data.R ../../data/networks_lopezaraiza/* ../../data/Ballantyne-2015-raw_data.csv ../../data/Bartomeus_Ntw_nceas.txt
 	Rscript 01-prepare_bartomeus_data.R; \
 	Rscript 02-prepare_lopezaraiza_data.R; \
 	Rscript 03-prepare_ballantyne_data.R
 
-matching: dependency_matching bidirectional_matching
+matching: dependency_matching ../../data/ntw_info.csv
 
 dependency_matching: $(d_f)n_matched.rds $(d_f)matching_frequency.rds $(d_f)networks/*
 
@@ -44,4 +44,4 @@ $(d_f)species_properties.rds: 08-species_properties.R
 models: $(d_f)species_models.rds
 
 $(d_f)species_models.rds: 10-species_models.R
-	Rscript $< 
+	Rscript $<
