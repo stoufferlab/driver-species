@@ -15,7 +15,7 @@
 % math
 \usepackage{amssymb}
 \usepackage{newtxmath}
-
+ 
 % manuscript looking document
 \usepackage{setspace}
 \usepackage{lineno,xcolor}
@@ -111,7 +111,7 @@ meta <- readr::read_csv("data/ntw_info.csv") %>% dplyr::tbl_df() %>%
 	dplyr::rename(count = method)
 n_matched <- readRDS("./data/V2.0/n_matched.rds")
 m_f <- readRDS("./data/V2.0/matching_frequency.rds")
-a_m <- readRDS("./data/V2.0/n_matched_all_types.rds")
+a_m <- readRDS("./data/V2.0/n_matched_all_types.rds") 
 s_p <- readRDS("./data/V2.0/species_properties.rds") %>% dplyr::tbl_df()
 mod <- readRDS("./data/V2.0/species_models.rds")
 
@@ -145,28 +145,32 @@ We calculated the number of driver species neccessary to control the whole commu
 <<table n_driver, echo = FALSE, warning = F, message = F, results = "asis">>=
 # find n_driver
 n_driver <- n_matched %>%
-  dplyr::inner_join(meta) %>%
+  dplyr::full_join(meta) %>% 
   dplyr::filter(!is.na(inv)) %>%
   dplyr::mutate(n_dr = n_pla + n_pol - n_matched,
                 n_dr_p = 1 - n_matched / (n_pla + n_pol))
 
 n_driver %>%
-  dplyr::select(site, inv, n_pla, n_pol, n_dr, n_dr_p) %>%
-  dplyr::mutate(site = as.numeric(as.factor(site)),
+  dplyr::select(site, inv, n_pla, n_pol, n_dr, n_dr_p, study) %>%
+  dplyr::arrange(study, site) %>%
+  dplyr::mutate(site = rep(1:dplyr::n_distinct(site), each = 2),
                 inv = plyr::mapvalues(inv, c(TRUE, FALSE), c("yes", "no")),
-                n_dr_p = paste0(round(n_dr_p * 100), "%")) %>%
+                n_dr_p = paste0(round(n_dr_p * 100), "%"),
+                study = plyr::mapvalues(study, 
+                                        c("bartomeus", "lopezaraiza"),
+                                        c("Bartomeus et al. (2008)",
+                                          "Lopezaraiza-Mikel et al. (2007)"))) %>%
   dplyr::rename_("invaded" = "inv",
-                 "No. plants" = "n_pla",
-                 "No. polinators" = "n_pol",
+                 "No. pla." = "n_pla",
+                 "No. pol." = "n_pol",
                  "No. driver spp." = "n_dr",
-                 "prop. driver spp." = "n_dr_p") %>%
-  dplyr::arrange(site) %>%
+                 "prop. driver spp." = "n_dr_p",
+                 "source" = "study") %>%
   kable(align = "c", booktabs = T, 
         linesep = c("", "\\addlinespace"))
 @
-\caption{\label{table:n_driver} Minimum number and proportion of driver species necessary to control the full pollination network}
+\caption{\label{table:n_driver} Properties of the analysed plant-pollinator communities.}
 \end{table}
-
 
 \begin{figure}[h]
 \centering
@@ -216,7 +220,49 @@ corr_matrix <- corr_matrix[-(nrow(corr_matrix)), ]
 kable(corr_matrix, align = "c", format = "latex", booktabs = T)
 
 @
-\caption{\label{table:corr_driver} Spearman correlation coefficients of the number of driver species necessary to control the full pollination network.}
+\caption{\label{table:corr_driver} Spearman correlation coefficients of the number of driver species necessary to control the full pollination network under the four different assumptions of the direction of control.}
+\end{table}
+
+We built a set of three generalised linear models with a logistic error structure to investigate the variables that influence the set of driver species. We found that the proportion of driver species is largely independent of the study site but highly dependent on the ratio of plant to pollinator diveristy (\autoref{table:n_driver_explanatory}).
+
+\begin{table}[h]
+\centering
+\small
+<<table explaining n_driver, echo = FALSE, warning = F, message = F, results = "asis">>=
+
+m_nr <- glm(cbind(n_dr, n_matched) ~ I(n_pla/n_pol) + study, 
+          data = n_driver, 
+          family = "binomial")
+m1 <- glm(cbind(n_dr, n_matched) ~ I(n_pla/n_pol), 
+          data = n_driver, 
+          family = "binomial")
+m2 <- glm(cbind(n_dr, n_matched) ~ study, 
+          data = n_driver, 
+          family = "binomial")
+
+ms <- MuMIn::model.sel(m_nr, m1, m2)
+
+i <- 1:3 # indices of columns with model terms
+response <- "p_d"
+
+res <- as.data.frame(ms)
+v <- names(ms)[i]
+v[v == "(Intercept)"] <- 1
+
+# create formula-like model names:
+mnames <- apply(res[, i], 1, function(x) 
+     deparse(MuMIn::simplify.formula(reformulate(v[!is.na(x)], response = response)))) %>%
+  sub("study", "s", .) %>%
+  sub("I(n_pla/n_pol)", "r_{p/a}", ., fixed = T) %>%
+  sub("~", '\\\\sim', .) %>%
+  paste0("$", ., "$")
+
+res <- dplyr::rename_(res, "$\\Delta$AIC" = "delta")
+
+cbind(model = mnames, res[, -i]) %>%
+  knitr::kable(align = "c", booktabs = T, digits = 2, escape = F, row.names = F, linesep = "")
+@
+\caption{\label{table:n_driver_explanatory} The proportion of species needed to control the network ($p_d$) is largaly influenced by the ratio of plant to pollinator species richness ($r_{p/a}$) but not the location of the community ($s$).}
 \end{table}
 
 \section{Visitation frequency vs. pollen deposition}
@@ -246,9 +292,9 @@ All together, evidence supports the idea that visitation is a suitable metric to
 <<matrix representation, echo = FALSE, warning = F, message = F, fig.height=4, fig.width=5.5>>=
 p <- net[meta$net_name[meta$study == "ballantyne" & meta$count != "binary"]] %>%
 	plyr::ldply(function(x) {
-		data.frame(vname = igraph::E(net[[1]]) %>% attr("vnames"), 
+		data.frame(vname = igraph::E(x) %>% attr("vnames"), 
 							weight = igraph::E(x)$weight)
-	}) %>%
+	}, .inform = T) %>%
 	dplyr::rename_("net_name" = ".id") %>%
 	dplyr::mutate(net_name_f = factor(net_name,  
 																		levels = c( 'bal_eff','bal_vis','bal_imp'),

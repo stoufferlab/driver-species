@@ -1,7 +1,7 @@
 \documentclass[a4paper,10pt]{article}
 \usepackage[margin=22.5mm]{geometry}
 
-% abstract + title + authors
+% abstract + title + authors 
 \usepackage{abstract}
 \renewcommand{\abstractnamefont}{\normalfont\bfseries}
 \renewcommand{\abstracttextfont}{\normalfont\small\itshape} 
@@ -17,14 +17,14 @@
 % math
 \usepackage{amssymb}
 \usepackage{newtxmath}
-
+ 
 % manuscript looking document
 \usepackage{setspace}
 \usepackage{lineno,xcolor}
 \setlength{\parskip}{0.5em}
 
 % comments
-\usepackage[draft]{todonotes}
+\usepackage[draft, textsize = scriptsize]{todonotes}
 
 % graphics
 \usepackage{graphicx}
@@ -37,6 +37,9 @@
 
 % table
 \usepackage{booktabs}
+
+% box
+\usepackage{tcolorbox}
 
 % references & links
 \usepackage[
@@ -57,27 +60,7 @@ isbn=false
 }
 \usepackage{doi}
 \begin{document}
-
-% title
-% Article title
-  \title{{\LARGE \textsc{Structural controlability of pollination networks}}}
-
-% Authors and Affiliations
-  \author{\large E. Fernando Cagua}
-  \author{\large Kate Wooton}
-  \author{\large Johanna Voinopol-Sassu}
-  \author{\large Daniel B. Stouffer}
-  \affil{\normalsize Center of Integrative Ecology, School of Biological Sciences, University of Canterbury}
- \date{}
-
-\maketitle
-
-\begin{abstract}
-\noindent Si sabemos que el disfrute exige lentitud, y que---mas en general---la felicidad se asocia con el ir despacio, por que corremos tanto? El arte de comer estriba en saborear cada bocado sin pensar en el siguiente, sin apresurar el siguiente. El arte de leer, en demorarse en cada palabra como si el sentido del escrito entero estuviera contenido en ella. El arte de amar, en vivir cada momento de la relacion con la persona amada como si fuese el destino de toda la historia del mundo, desde la aparicion del primer organismo unicelular hasta hoy. Y asi podemos generalizar a las demas actividades, creo, hasta obtener un arte de vivir. Para mi se resume en la palabra ahi. --- Jorge Riechmann
-\end{abstract}
-
-\keywords{Control theory}
-
+\renewcommand*{\bibfont}{\small}
 % line numbers
 \linenumbers
 \setlength\linenumbersep{15pt}
@@ -85,11 +68,35 @@ isbn=false
 
 \onehalfspacing
 
+
+% title
+% Article title
+  \title{{\LARGE \textsc{Structural controlability of pollination networks}}}
+
+% Authors and Affiliations
+  \author{\large E. Fernando Cagua}
+  \author{\large Kate L. Wootton}
+  \author{\large Johanna Voinopol-Sassu}
+  \author{\large Daniel B. Stouffer}
+  \affil{\normalsize Center of Integrative Ecology, School of Biological Sciences, University of Canterbury}
+ \date{}
+ 
+\maketitle
+
+\begin{abstract}
+\noindent Si sabemos que el disfrute exige lentitud, y que---mas en general---la felicidad se asocia con el ir despacio, por que corremos tanto? El arte de comer estriba en saborear cada bocado sin pensar en el siguiente, sin apresurar el siguiente. El arte de leer, en demorarse en cada palabra como si el sentido del escrito entero estuviera contenido en ella. El arte de amar, en vivir cada momento de la relacion con la persona amada como si fuese el destino de toda la historia del mundo, desde la aparicion del primer organismo unicelular hasta hoy. Y asi podemos generalizar a las demas actividades, creo, hasta obtener un arte de vivir. Para mi se resume en la palabra ahi. --- Jorge Riechmann
+\end{abstract}
+
+\keywords{Control theory, box in the article}
+
+
+
 <<libraries, echo = FALSE, warning = F, message = F>>=
 library(magrittr)
 library(knitr)
 library(ggplot2)
 library(glmulti)
+library(Hmisc)
 opts_knit$set (root.dir=normalizePath('../'))
 @
 
@@ -159,22 +166,192 @@ Recent work on the control of complex systems suggest that in principle it is po
 
 Invasive species have been shown to have a disproportionate effect on the structure of pollination communities. Influencing for example the strength of species interactions, and the degree of network nestedness and connectivity \autocite{Olesen2002, Aizen2008, Bartomeus2008, Vila2009, Traveset2013}. However whether this influence is translated into a driver role has not been tested. Here we use plant pollinator communities to investigate the number of species that should be managed to control population dynamics of the whole community, the characteristics that determine whether a species should be managed or not and how invasive species fit. 
 
+
+
+
 \section*{Methods}
 
-To investigate the dynamic controllability of pollination networks, we used ten paired plants-pollinator communities. Each par was composed by a community invaded by a plant and a community free of the invasive species. Weighted visitation networks were constructed from previously published visitation data collected from pollination communities in Bristol, Great Britain \autocite{Lopezaraiza-Mikel2007} and the National Cap de Creus in Northeastern Spain \autocite{Bartomeus2008}. The four British uninvaded communities the non-invaded plots were obtained by experimentally removing the invasive species \textit{Impatients grandulifera}. Contrastingly, Spanish uninvaded communities were obtained from plots that were not been colonised by the invasive species \textit{Carpobrotus affine acinaciformis} or \textit{Opuntia stricta}. In each of the networks we calculated the minimum number of driver species---species that need to be managed in order to gain full control of the community.
+To investigate the dynamic controllability of pollination networks, we used data from ten paired plant-pollinator communities. Each pair was composed by a community invaded by a plant and a community effectively free of the invasive species (Table S1). The networks were constructed from previously published pollination visitation data collected from pollination communities in Bristol, UK \autocite{Lopezaraiza-Mikel2007} and Cap de Creus National Park, Spain \autocite{Bartomeus2008}. In the four British uninvaded communities the non-invaded plots were obtained by experimentally removing all the flowers of invasive species \textit{Impatients grandulifera}. In contrast, the Spanish uninvaded communities were obtained from plots that had not yet been colonised by the invasive species \textit{Carpobrotus affine acinaciformis} or \textit{Opuntia stricta}.
 
-We first assigned a direction to each link between plants and pollinators given by the direction of dependency. For each link between a plant and its pollinator we quantified the level of dependency of the plant on the pollinator and vice versa \autocite{Bascompte2006}. The link points to the plant if the its dependency on the pollinator is larger than the pollinator's dependency on the plant. The dependency of plant $i$ on pollinator $j$ is the ratio between the visits coming from pollinator $j$ and all pollinator visits to plant $i$. The dependency of pollinator $j$ on plant $i$ is the ratio of the visits by pollinator $j$ to plant $i$ and all visits of pollinator $j$. 
+All analysis were performed in R 3.2.2 using bipartite 2.05, igraph 1.0.1, lme4 1.0-6, MuMIn 1.15.6, and vegan 2.3-3 \autocite{RCoreTeam2015, Dormann2008, Csardi2006a, Bates2014, Barton2016, Oksansen2016}.
 
-In a directed network, a matching is a subset of links in which no two links share a common starting species or a common ending species. A species is matched if it is an ending node of an link in the matching. Otherwise, it is unmatched. It has been shown that the number of driver species can be calculated by counting the number of unmatched nodes in the directed graph representation of the pollination network \autocite{Liu2011}. We then found a maximum in the an alternative bipartite representation of the pollination network \autocite{Csardi2006}. 
+\subsection*{Manageability}
+
+Changes on the abbundances of a species can modify the abbundances of those species it interacts with. We exploit this concept to quantify the \textit{manageability} of an ecological community (\autoref{eq:m}). \todo{need ecological justification; why is $n_d$ a good metric?} Manageability is directly related to the minimum number of species on which we would need to apply management interventions if we were to gain full control of the abbundances of all species in the ecological community, $n_d$. We calculated $n_d$ by finding the maximum matching of the pollination network in each community (Box 1). 
+
+\begin{equation} \label{eq:m}
+m = 1- \frac{n_d}{n}
+\end{equation}
+
+\begin{tcolorbox}[float, title= Box 1: Maximum matching,colback=white,fontupper=\small]
+\parskip=0.5em
+
+It has been shown that the number of nodes (here species) necessary to fully control a complex network, can be calculated by counting the number of unmatched nodes \autocite{Liu2011}. In a directed network, like the simple pollination network shown on the left, a matching is a subset of links in which no two links share a common starting species or a common ending species---dark grey links---and a node is matched if it is the ending node of one of the links in the matching---dark grey nodes \autocite{West2001}.
+
+<<fig explain matching, echo = FALSE, warning = F, message = F, results = "asis", fig.height=1.4, fig.width=5.75>>=
+my_theme <- theme_bw() +
+	#scale_color_brewer(palette = "Paired") +
+	theme(legend.position = "none",
+				text = element_text(family = "Times"),
+				plot.margin=unit(c(4,0,-4,0),"mm"),
+				panel.margin=unit(c(0,0,0,0),"mm"),
+				# panel.border = element_rect(colour = "grey10", size = 0.5),
+				panel.border = element_blank(),
+				axis.text = element_blank(),
+				axis.ticks.x = element_blank(),
+				axis.ticks.y = element_blank(),
+				axis.title = element_text(size = 9),
+				plot.title = element_text(hjust = 0.05, vjust = -1.5, size = 9),
+				panel.grid = element_blank())
+
+# Function to generate paths between each connected node
+edgeMaker <- function(whichRow, len = 100, curved = TRUE){
+	fromC <- layoutCoordinates[adj_list[whichRow, 1], ]  # Origin
+	toC <- layoutCoordinates[adj_list[whichRow, 2], ]  # Terminus
+	
+	# Add curve:
+	graphCenter <- colMeans(layoutCoordinates)  # Center of the overall graph
+	bezierMid <- c(fromC[1], toC[2])  # A midpoint, for bended edges
+	distance1 <- sum((graphCenter - bezierMid)^2)
+	if(distance1 < sum((graphCenter - c(toC[1], fromC[2]))^2)){
+		bezierMid <- c(toC[1], fromC[2])
+	}  # To select the best Bezier midpoint
+	bezierMid <- (fromC + toC + bezierMid) / 3  # Moderate the Bezier midpoint
+	if(curved == FALSE){bezierMid <- (fromC + toC) / 2}  # Remove the curve
+	
+	edge <- data.frame(bezier(c(fromC[1], bezierMid[1], toC[1]),  # Generate
+														c(fromC[2], bezierMid[2], toC[2]),  # X & y
+														evaluation = len))  # Bezier path coordinates
+	edge$Sequence <- 1:len  # For size and colour weighting in plot
+	edge$Group <- paste(adj_list[whichRow, 1:2], collapse = ">")
+	return(edge)
+}
 
 
-We calculated dependencies based on visitation frequency, which has been shown to be an appropriate surrogate of the inter-specific effects \autocite{Bascompte2006, Vazquez2005}. However, because the degree distribution, and ultimately the number of driver species, can be affected by the sampling method \autocite{Bluthgen2010} we compared the number of driver species in a pollination community in which both visitation frequency and effectiveness were measured \autocite{Ballantyne2015}.
+sp_names <- c("a[1]", "a[2]", "a[3]", "p[1]", "p[2]")
 
-To quantify to what extent the number of driver species is characteristic of the structure of pollination networks we compared them a suit of random null-models. A set of null models were based on network randomisations that maintained the degree of plants, pollinators, and both plants and pollinators. To analyse the effects of the chosen directionality, we devised a null model in which we randomised the visitation patterns and re-calculated the new dependencies. In all cases we computed 999 randomisations.
+adj_matrix <- c(0,0,0,1,0,
+								0,0,0,1,1,
+								0,0,0,0,0,
+								0,0,1,0,0,
+								0,0,1,0,0) %>%
+	matrix(nrow = 5, byrow = T) %>%
+	`rownames<-`(sp_names) %>%
+	`colnames<-`(sp_names)
 
-We quantified the relative importance of each species for network dynamics. To do this, we counted the number of times a particular species was a driver species across all possible maximum matchings in the pollination network. The number of maximum matchings were found by generating the line graph of the alternative bipartite network representation, and then enumerating the maximal cliques in the complement of the line graph \autocite{Csardi2006}. 
+net <- adj_matrix %>% 
+	igraph::graph_from_adjacency_matrix(mode = "directed") 
+igraph::V(net)$type <- c(F, F, F, T, T)
+igraph::E(net)$weight <- 1
 
-Finally, we tackled the question whether some structural properties can predict the relative importance of driver species. Here, we regressed the importance of each species against measures of centrality (degree, betweenness), measures related to network robustness (contribution to nestedness) and measures of strength of association (visitation levels). 
+layoutCoordinates <- cbind(c(0,1,2,0.5,1.5), 
+													 c(1,1,1,0,0)) %>%
+	`colnames<-`(c("x", "y"))
+
+adj_list <- adj_matrix %>% 
+	reshape2::melt() %>% 
+	dplyr::filter(value > 0)
+
+# Generate an edge path for each pair of connected nodes
+n <- 17
+allEdges <- lapply(1:nrow(adj_list), edgeMaker, len = n, curved = FALSE)
+allEdges <- do.call(rbind, allEdges) %>%
+	dplyr::filter(Sequence != n) %>%
+	dplyr::mutate(Group = factor(Group),
+				 type = Group)
+
+new_lev <- c("m", "u", "m", "m", "u")
+levels(allEdges$type) <- new_lev
+
+nodes <- data.frame(layoutCoordinates) %>%
+	dplyr::mutate(spe = sp_names,
+								spe_c = c("u", "u", "m", "m", "m"), 
+								pos = rep(c(0.25, -0.25), c(3,2)))
+
+p1 <- ggplot(allEdges) +  # Pretty simple plot code
+	geom_path(aes(x = x, y = y, group = Group, colour = type, size = type), 
+						arrow = arrow(type = "closed", angle = 15, length = grid::unit(0.1, "inches"))) + # and taper
+	geom_point(data = nodes,  # Add nodes
+						 aes(x = x, y = y , fill = spe_c), size = 5, pch = 21,
+						 colour = "black") + 
+	geom_text(data = nodes, aes(x = x, y = y + pos, label = spe), size = 3, parse = T) +
+	scale_fill_manual(values = c("#636363", "white")) + 
+	scale_colour_manual(values = c("#636363", "#bdbdbd")) +
+	my_theme + xlab("") + ylab("") + ylim(c(-0.27, 1.26)) +
+ theme(plot.margin=unit(c(4,4,-4,-4),"mm")) +
+	scale_size_manual(values = c(0.5, 0.5))
+	
+net <- digraph_bipartite(net)
+adj_matrix <- net %>% igraph::as_adjacency_matrix(sparse = F, type = "upper")
+layoutCoordinates <- cbind(rep(0:4, 2), rep(c(1,0), each = 5)) %>%
+	`colnames<-`(c("x", "y"))
+
+adj_list <- adj_matrix %>% 
+	reshape2::melt() %>% 
+	dplyr::filter(value > 0)
+
+# Generate an edge path for each pair of connected nodes
+n <- 100
+allEdges <- lapply(1:nrow(adj_list), edgeMaker, len = n, curved = FALSE)
+allEdges <- do.call(rbind, allEdges) %>%
+	dplyr::filter(Sequence != n,
+								Sequence != 1) %>%
+	dplyr::mutate(Group = factor(Group),
+				 type = Group)
+
+new_lev <- c("m", "m", "u", "m", "u")
+levels(allEdges$type) <- new_lev
+
+nodes <- data.frame(layoutCoordinates) %>%
+	dplyr::mutate(spe = rep(sp_names, 2),
+								spe_l = c(paste0(sp_names, " %->% phantom(0)"), paste0(sp_names, " %<-% phantom(0)")),
+								spe_c = c(rep("u",5), c("u", "u", "m", "m", "m")), 
+								pos = rep(c(0.25, -0.25), each = 5))
+
+p2 <- ggplot(allEdges) +  # Pretty simple plot code
+	geom_path(aes(x = x, y = y, group = Group, colour = type, size = type)) + # and taper
+	geom_point(data = nodes,  # Add nodes
+						 aes(x = x, y = y, fill = spe_c), size = 5, pch = 21,
+						 colour = "black") + 
+	geom_text(data = nodes, aes(x = x + 0.08, y = y + pos, label = spe_l), parse = T, size = 3) +
+	# coord_flip()  + scale_x_reverse() + scale_y_reverse() +
+	scale_fill_manual(values = c("#636363", "white")) + 
+	scale_colour_manual(values = c("#636363", "#bdbdbd")) +
+	xlim(c(-0.12, 4.12)) + ylim(c(-0.27, 1.26)) +
+	my_theme + xlab("") + ylab("") +
+	scale_size_manual(values = c(0.5, 0.5))
+
+multiplot(p1, p2, layout = matrix(nrow = 1, c(1,1,1,2,2,2,2,2)))
+@
+
+To find the maximum matching we used a bipartite representation of the network, like the one on the right, in which the levels indicate the outgoing and incoming links to each node. Finding a matching here is equivalent to finding the links such that each node on the top is matched to at most one node on the bottom and vice versa \autocite{West2001}. The maximum matching is the one in which the matched links have the largest possible weight among all possible matchings.  
+
+The use of a maximum matching has also an intuitive explanation. In control theory lingo, a network is fully controlable when each node in the network has a "superior" or input that drives its dynamics. Matched nodes can be controled within the network by the node pointing to it---its superior. However, unmatched nodes have no superior in the network and must be directly controlled by external inputs---what we refer to as management interventions \autocite{Liu2011}.
+
+The size of the maximum matching is therefore directly related to its \textit{manageability} because systems that require a large number of inputs are more difficult to control. The manageability of the shown network is $m = 0.6$ because in theory, it is possible to guide the community to a desired state by applying management interventions to two of the five species in the community ($n_d = 2$; $a_1$ and $a_2$ in the depicted maximum matching).
+
+\end{tcolorbox}
+
+We assumed that for a pair of interacting species the direction of control is inverse to the direction of dependency. If, for instance, a plant species depends more on a pollinator species than the pollinator depends on the plant, we expect the plant abbundances to be more sensitive to changes in the pollinator abbundance than vice versa. Violation of this assumption, however, renders qualitatively consistent results (Figure S1; Table S2). Therefore, we first assigned a single direction to each link between plants and pollinators based on the direction the assymetries in dependencies based on visitation frequencies following \textcite{Bascompte2006}. The dependency of plant $i$ on pollinator $j$ is the proportion of the visits comming from pollinator $j$ compared to all pollinator visits to plant $i$. Likewise, the dependency of pollinator $j$ on plant $i$ is the ratio of the visits by pollinator $j$ to plant $i$ and all visits of pollinator $j$. 
+
+\todo{really? maybe Jason can help with a citation? or is there a better justification?}Intuitively, there is a relationship between diversity and manageability. We therefore used a set of generalised linear models to investigate the relatioship between community manageability and (i) the total number of species, (ii) plant richness, (iii) polinators richness, and (iv) the ratio of plants to pollinators richness. Because both invaded and British communities tend to be more diverse, we also assesed whether observed differences in manageability were due to these two factors.
+
+To quantify the extent to which the manageability of a pollination community is characteristic of the network structure, we compared it to a suite of random null-models. An initial set of null models was based on network randomisations that maintained the species degree (the number of interactions), or that mantained the species strength (total sum of interaction weights). Subsequently we calculated the dependencies followed by the manageability of the randomised networks. A second set of null models was based on randomisations that mantained the structure of the empirical network but randomised the direction of dependencies between species. In all cases we calculated a Z-score between the manageability of each empirical network and the corresponding manageability of 999 randomisations.
+
+\subsection*{Driver species}
+
+The manageability of a community, $m$, provides an indication of the magnitude of $n_d$ but not the identity of the species that can compose this set. In fact maximum matchings are not unsually unique in ecological networks and different sets of species of size $n_d$ could be used to control the network \autocite{Liu2011}. Nevertheless, species vary on the frequency at which they are part of this set; an indication of their relative importance to drive the state of the ecosystem.
+
+We therefore call \textit{driver species} those that are identified as needing directed interventions in the majority of maximum matchings, and therefore likely to have a disproportionate effect on the abbundances of other species in the community. We identified the driver species in each of the communities by computing all possible maximum matchings in the network. To do so, we first generated the network's line graph---an alternative representation in which nodes are the interactions of the original network and links represent common ending points. We then calculated the complement of the line graph---a graph in which nodes are adjecent if and only if they are not adjancent in the line graph. All possible maximum matchings can be found by enumerating all cliques of size $1-n_d$ in the complement graph \autocite{West2001}.
+
+We then tackled the question whether some species level structural properties can predict the relative importance of driver species. Here, we evaluated the effect on the species' relative importance of measures of centrality (degree, betweenness, and overlap), measures related to network robustness (contribution to nestedness), and measures of strength of association (visitation levels). Candidate models were compared using AIC and the relative importance of the explanatory variables was evaluated using the sum of Akaike weights over all candidate models \autocite{Burnham2003}.   
+
+\subsection*{Visitation as proxy for species interdependence}
+
+Visitation frequency has been shown to be an appropriate surrogate for inter-specific effects in pollination networks \autocite{, Vazquez2005, Bascompte2006}. Arguably, visitation reflects adequately the dependency of animals to plants, as usually during a visit animals forage for pollen or nectar regardless of wether effective pollination occurs\todo{any citation Daniel?}. Nevertheless visitation is not equivalent to pollen deposition and might be insufficient to reflect the dependencies of plants on animals \autocite{Alarcon2010, King2013}. We therefore investigated the effect of calculating the dependencies using pollination effectiveness and importance---two metrics more proximate to plant reproductive sucess.
+
+Pollinator efficiency is measured as ``the number of conspecific pollen grains deposited on a virgin stigma during a single visit by a particular animal'' \autocite{NeEman2010}. Pollinator importance on the other hand is defined as the product between visitation frequency and pollinator efficency \autocite{Ballantyne2015}. We used data collected by \textcite{Ballantyne2015} from a low diversity pollination community at a dry lowland heathland in Dorset, UK. We assessed the differences between visitation, pollinator effectiveness, and pollinator importance by comparing (i) the manageability of the community, (ii) the percentage of interactions that mantained the direction of dependency, and (iii) the Spearman correlation of the relative importance of the species in the community.
+
 
 \section*{Results}
 
@@ -182,22 +359,65 @@ Finally, we tackled the question whether some structural properties can predict 
 # find n_driver
 n_driver <- n_matched %>%
   dplyr::inner_join(meta) %>%
-  dplyr::filter(!is.na(inv)) %>%
-  dplyr::mutate(n_dr = n_pla + n_pol - n_matched,
-                n_dr_p = 1 - n_matched / (n_pla + n_pol))
+  dplyr::filter(count == "visitation") %>%
+  dplyr::mutate(n_sp = n_pla + n_pol, 
+                n_dr = n_sp - n_matched,
+                n_dr_p = n_dr / n_sp)
 
-# Wilcoxon signed rank test
+# Wilcoxon signed rank test invasive vs non invasive
 wt <- n_driver %>%
   dplyr::select(site, inv, n_dr_p) %>%
+  dplyr::filter(!is.na(inv)) %>%
   dplyr::mutate(n_dr_p = qlogis(n_dr_p)) %>%
   tidyr::spread(inv, n_dr_p) %>%
   dplyr::select(-site) %>%
-  as.matrix() %>% {
-      wilcox.test(x = `[`(.,1), y = `[`(.,2), paired = T)
-  }
+  as.matrix() 
+
+n_driver %<>%
+  dplyr::filter(!is.na(inv))
+
+wt <-  wilcox.test(x = wt[, 1], y = wt[, 2], paired = T)
+
+m0 <- glm(cbind(n_dr, n_sp) ~ n_pla * n_pol, 
+          data = n_driver, 
+          family = "binomial")
+m_nr <- glm(cbind(n_dr, n_matched) ~ I(n_pla/n_pol) + study, 
+          data = n_driver, 
+          family = "binomial")
+m1 <- glm(cbind(n_dr, n_matched) ~ I(n_pla/n_pol), 
+          data = n_driver, 
+          family = "binomial")
+m2 <- glm(cbind(n_dr, n_matched) ~ study, 
+          data = n_driver, 
+          family = "binomial")
 @
 
-We found that if we were to control the dynamics of the whole community, we would need to control between \Sexpr{round(min(n_driver$n_dr_p)*100)} and \Sexpr{round(max(n_driver$n_dr_p)*100)}\% (mean \Sexpr{round(min(n_driver$n_dr_p)*100)}\%) of the species in the community. The relative number of driver species did not change if the dependencies were assumed to be bidirectional, from plant to pollinators or from pollinators to plants (Supp. Information). However, the proportion of driver species did was not significantly different between invaded and uninvaded ecosystems (Wilcoxon signed-rank sum test, $p = \Sexpr{wt$p.value}$).
+We found that if we were to control the dynamics of the whole community, we would need to control between \Sexpr{round(min(n_driver$n_dr_p)*100)} and \Sexpr{round(max(n_driver$n_dr_p)*100)}\% (mean \Sexpr{round(mean(n_driver$n_dr_p)*100)}\%) of the species in the community. The relative number of driver species did not change if the dependencies were assumed to be bidirectional, or exclusively from plant to pollinators or from pollinators to plants (Figure S1; Table S2). In addition we did not detect any significant differences between the proportion of driver species in invaded or uninvaded ecosystems (Wilcoxon signed-rank sum test, $p = \Sexpr{round(wt$p.value, digits = 3)}$) nor between study sites (likelyhood ratio test, $Pr(>\chi^2) = \Sexpr{round(anova(m1, m_nr, test = "LRT")$`Pr(>Chi)`[2], digits = 3)}$; Table S3). Nevertheless we found that the ratio of plant to pollinator species richness had an important neggative effect on the proportion of driver species ($Pr(>\chi^2) = \Sexpr{round(anova(m2, m_nr, test = "LRT")$`Pr(>Chi)`[2], digits = 3)}$; \autoref{fig:n_driver_explanatory}, Table S3).
+
+\begin{figure}
+\centering
+<<fig explaining n_driver, echo = FALSE, warning = F, message = F, results = "asis", fig.height=2.2, fig.width=3.245>>=
+p <- predict(m1, type = "response", se.fit = T)
+
+
+ggplot(data = n_driver,
+       aes(x = n_pla/n_pol, y = 1-n_dr_p)) +
+  geom_ribbon(aes(ymax = 1- (p$fit + 1.96 * p$se.fit), ymin = 1- (p$fit - 1.96 * p$se.fit)),
+              fill = "#f0f0f0") +
+  geom_line(aes(y = 1- p$fit)) +
+  geom_point(aes(fill = study), shape = 21) +
+  ylab("manegeability") +
+  xlab("plant / pollinator richness") +
+  scale_fill_manual(values = c("#ffffff", "#bdbdbd"), 
+                    name = "", labels = c("Lopezaraiza-Mikel et al. (2007)",
+                                          "Bartomeus et al. (2008)")) +
+  fer_theme +
+  theme(plot.margin = grid::unit(c(5, 1, 2, 0), "mm"), 
+        legend.key = element_blank(), 
+        legend.position = "none")
+@
+\caption{\label{fig:n_driver_explanatory} The proportion of species needed to control the network is largely influenced by the ratio of plant to pollinator species richness  but not the location of the community. White dots correspond to communities investigated by \textcite{Bartomeus2008}; grey dots correspond to communities investigated by \textcite{Lopezaraiza-Mikel2007}.}
+\end{figure}
 
 We examined the role that the asimmetry of the dependencies which defines the direction of control has a central role in structuring the controlability of polination networks. We found that empirical networks have a much larger  the importance of dependency
 
@@ -207,49 +427,48 @@ We examined the role that the asimmetry of the dependencies which defines the di
 r <- r_w %>%
   dplyr::bind_rows(r_d) %>%
   dplyr::inner_join(meta) %>%
-  dplyr::filter(!is.na(inv)) %>%
+  dplyr::filter(count == "visitation") %>%
   dplyr::mutate(n_dr = n_pla + n_pol - n_matched)
 
 # non-parametric
-# z_scores <- r$method %>%
-#   unique() %>%
-#   plyr::ldply(function(x){
-#     n_driver %>%
-#       dplyr::mutate(method = x)
-#   }) %>%
-#   dplyr::bind_rows(r) %>%
-#   dplyr::group_by(net_name, method) %>%
-#   dplyr::mutate(z_r = rank(n_dr, na.last = NA, ties.method = "average"),
-#                 z_s = qlogis(z_r/n()),
-#                 z_s = replace(z_s, is.infinite(z_s) & z_s > 0, qlogis(0.9999)),
-#                 z_s = replace(z_s, is.infinite(z_s) & z_s < 0, qlogis(0.0001))) %>%
-#   dplyr::filter(is.na(sim)) 
-
-z_scores <- r %>%
+z_scores <- r$method %>%
+  unique() %>%
+  plyr::ldply(function(x){
+    n_driver %>%
+      dplyr::mutate(method = x)
+  }) %>%
+  dplyr::bind_rows(r) %>%
   dplyr::group_by(net_name, method) %>%
-  dplyr::summarise(mu = mean(n_dr, na.rm = T),
-                   sigma = sd(n_dr, na.rm = T)) %>%
-  dplyr::inner_join(n_driver) %>%
-  dplyr::group_by() %>%
-  dplyr::mutate(z_s = (n_dr - mu)/sigma)
+  dplyr::mutate(z_r = rank(n_dr, na.last = NA),
+                z_s = qlogis(z_r/n()),
+                z_s = replace(z_s, is.infinite(z_s) & z_s > 0, qlogis(0.999)),
+                z_s = replace(z_s, is.infinite(z_s) & z_s < 0, qlogis(0.001))) %>%
+  dplyr::filter(is.na(sim))
 
+# z_scores <- r %>%
+#   dplyr::group_by(net_name, method) %>%
+#   dplyr::summarise(mu = mean(n_dr, na.rm = T),
+#                    sigma = sd(n_dr, na.rm = T)) %>%
+#   dplyr::inner_join(n_driver) %>%
+#   dplyr::group_by() %>%
+#   dplyr::mutate(z_s = (n_dr - mu)/sigma)
 
 z_scores %<>%
   plyr::ddply("method", function(x){
     x %>%
       dplyr::mutate(sign = t.test(z_s)$p.value)
-  }) %>% 
+  }, .inform = T) %>% 
   dplyr::group_by(method) %>%
   dplyr::mutate(m_z = median(z_s)) %>%
   dplyr::group_by() %>%
-  dplyr::arrange(m_z)  %>%
+  dplyr::arrange(m_z) %>%
   dplyr::filter(method %in% c("swsh_both", 
                               "quasiswap_count", 
                               # "r00_both", 
                               # "r0_both", 
                               # "c0_both", 
                               "r0"))
-
+ 
 z_scores_method_order <- unique(z_scores$method)
 
 z_scores %>%
@@ -262,7 +481,7 @@ z_scores %>%
   geom_hline(yintercept = 0, size = 0.25, linetype = 2, colour = "grey30") +
   geom_boxplot(aes(group = method), size = 0.25, colour = "grey10",
 							 outlier.shape = 21, outlier.size = 1) +
-  geom_point(aes(y = 12, colour = sign <= 0.05), shape = 8, size = 1) +
+  geom_point(aes(y = 9, colour = sign <= 0.05), shape = 8, size = 1) +
   coord_flip() +
   scale_colour_manual(values = c(NA, "black")) +
   scale_x_continuous(breaks = c(1, 2, 3.5), labels = rev(c("dependency", "strength", "degree"))) + 
@@ -340,6 +559,12 @@ expand.grid(d = seq(min(data_pla$d), max(data_pla$d), by = 1),
 @
 \caption{\label{fig:prediction} aSS }
 \end{figure}
+
+\section*{Acknoledgements}
+
+The authors thank Dr. Takeuki Uno for the insight provided to find the set of all maximum matching algorithms, and Bernat Bramon and Marilia Gaiarsa for feedback in early stages of the project. EFC acknowledges the support from the University of Canterbury Doctoral Scholarship, the University of Canterbury Meadow Mushroooms Postgraduate Scholarship, a travel grant from the European Space Agency and a Rutherford Discovery Fellowship (to DBS). DBS ackloledges the support of a Rutherford Discovery Scholarship, administered by the Royal Society of New Zealand.
+
+\section*{Author contributions}
 
 \printbibliography
 
