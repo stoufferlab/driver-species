@@ -23,7 +23,7 @@ net <- "./data/V2.0/networks" %>%
 # read metadata
 meta <- readr::read_csv("data/ntw_info.csv") %>% dplyr::tbl_df() %>%
   dplyr::rename(count = method)
-
+ 
 # read matching results
 matched <- readRDS("./data/V2.0/n_matched.rds")
 

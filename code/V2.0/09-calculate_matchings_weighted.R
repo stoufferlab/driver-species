@@ -1,3 +1,6 @@
+# calculate the nominal minimum matching and all the maximum matchings on the
+# bidirectional networks using the weighted attriute of the dependency links
+
 library(magrittr)
 library(foreach)
 library(doMC) 
