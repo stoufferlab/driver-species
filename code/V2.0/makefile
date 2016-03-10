@@ -23,9 +23,12 @@ $(d_f)n_matched.rds $(d_f)matching_frequency.rds: 04-calculate_matchings.R $(d_f
 $(d_f)n_matched_bi.rds $(d_f)matching_frequency_bi.rds: 09-calculate_matchings_weighted.R
 	Rscript 09-calculate_matchings_weighted.R $(n_cores)
 
-randomisations: $(d_f)random_weights.rds $(d_f)random_directions.rds $(d_f)networks/*
+randomisations: $(d_f)random_weights.rds $(d_f)random_directions.rds $(d_f)random_weights_bi.rds $(d_f)networks/*
 
 $(d_f)random_weights.rds: 05-random_weights.R
+	Rscript $< $(n_cores) $(n_perm)
+
+$(d_f)random_weights_bi.rds: 11-random_weights_bi.R
 	Rscript $< $(n_cores) $(n_perm)
 
 $(d_f)random_directions.rds: 06-random_directions.R
