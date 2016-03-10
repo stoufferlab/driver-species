@@ -332,7 +332,7 @@ The size of the maximum matching is therefore directly related to its \textit{ma
 
 \end{tcolorbox}
 
-We assumed that for a pair of interacting species the direction of control is inverse to the direction of dependency. If, for instance, a plant species depends more on a pollinator species than the pollinator depends on the plant, we expect the plant abbundances to be more sensitive to changes in the pollinator abbundance than vice versa. Violation of this assumption, however, renders qualitatively consistent results (Figure S1; Table S2). Therefore, we first assigned a single direction to each link between plants and pollinators based on the direction the assymetries in dependencies based on visitation frequencies following \textcite{Bascompte2006}. The dependency of plant $i$ on pollinator $j$ is the proportion of the visits comming from pollinator $j$ compared to all pollinator visits to plant $i$. Likewise, the dependency of pollinator $j$ on plant $i$ is the ratio of the visits by pollinator $j$ to plant $i$ and all visits of pollinator $j$. 
+We assumed that for a pair of interacting species the direction of control is inverse to the direction of dependency. If, for instance, a plant species depends more on a pollinator species than the pollinator depends on the plant, we expect the plant abbundances to be more sensitive to changes in the pollinator abbundance than vice versa. However, our results are robust to this assumption as its violation renders qualitatively consistent results (Figure S1 and S2; Table S2). Therefore, we first assigned a single direction to each link between plants and pollinators based on the direction the assymetries in dependencies based on visitation frequencies following \textcite{Bascompte2006}. The dependency of plant $i$ on pollinator $j$ is the proportion of the visits comming from pollinator $j$ compared to all pollinator visits to plant $i$. Likewise, the dependency of pollinator $j$ on plant $i$ is the ratio of the visits by pollinator $j$ to plant $i$ and all visits of pollinator $j$. 
 
 \todo{really? maybe Jason can help with a citation? or is there a better justification?}Intuitively, there is a relationship between diversity and manageability. We therefore used a set of generalised linear models to investigate the relatioship between community manageability and (i) the total number of species, (ii) plant richness, (iii) polinators richness, and (iv) the ratio of plants to pollinators richness. Because both invaded and British communities tend to be more diverse, we also assesed whether observed differences in manageability were due to these two factors.
 
@@ -346,7 +346,7 @@ We therefore call \textit{driver species} those that are identified as needing d
 
 We then tackled the question whether some species level structural properties can predict the relative importance of driver species. Here, we evaluated the effect on the species' relative importance of measures of centrality (degree, betweenness, and overlap), measures related to network robustness (contribution to nestedness), and measures of strength of association (visitation levels). Candidate models were compared using AIC and the relative importance of the explanatory variables was evaluated using the sum of Akaike weights over all candidate models \autocite{Burnham2003}.   
 
-\subsection*{Visitation as proxy for species interdependence}
+\subsection*{Visitation as a proxy for species interdependence}
 
 Visitation frequency has been shown to be an appropriate surrogate for inter-specific effects in pollination networks \autocite{, Vazquez2005, Bascompte2006}. Arguably, visitation reflects adequately the dependency of animals to plants, as usually during a visit animals forage for pollen or nectar regardless of wether effective pollination occurs\todo{any citation Daniel?}. Nevertheless visitation is not equivalent to pollen deposition and might be insufficient to reflect the dependencies of plants on animals \autocite{Alarcon2010, King2013}. We therefore investigated the effect of calculating the dependencies using pollination effectiveness and importance---two metrics more proximate to plant reproductive sucess.
 
@@ -354,6 +354,8 @@ Pollinator efficiency is measured as ``the number of conspecific pollen grains d
 
 
 \section*{Results}
+
+\subsection*{Manageability}
 
 <<n_driver, echo = FALSE, warning = F, message = F>>=
 # find n_driver
@@ -377,11 +379,16 @@ n_driver %<>%
   dplyr::filter(!is.na(inv))
 
 wt <-  wilcox.test(x = wt[, 1], y = wt[, 2], paired = T)
-
-m0 <- glm(cbind(n_dr, n_sp) ~ n_pla * n_pol, 
+m0 <- glm(cbind(n_dr, n_matched) ~ n_pla * n_pol + study + inv, 
           data = n_driver, 
           family = "binomial")
-m_nr <- glm(cbind(n_dr, n_matched) ~ I(n_pla/n_pol) + study, 
+m_nr <- glm(cbind(n_dr, n_matched) ~ I(n_pla/n_pol) + study + inv, 
+          data = n_driver, 
+          family = "binomial")
+m8 <- glm(cbind(n_dr, n_matched) ~ I(n_pla/n_pol) + inv, 
+          data = n_driver, 
+          family = "binomial")
+m9 <- glm(cbind(n_dr, n_matched) ~ I(n_pla/n_pol) + study, 
           data = n_driver, 
           family = "binomial")
 m1 <- glm(cbind(n_dr, n_matched) ~ I(n_pla/n_pol), 
@@ -390,9 +397,24 @@ m1 <- glm(cbind(n_dr, n_matched) ~ I(n_pla/n_pol),
 m2 <- glm(cbind(n_dr, n_matched) ~ study, 
           data = n_driver, 
           family = "binomial")
+m3 <- glm(cbind(n_dr, n_matched) ~ I(n_pla + n_pol), 
+          data = n_driver, 
+          family = "binomial")
+m4 <- glm(cbind(n_dr, n_matched) ~ n_pla, 
+          data = n_driver, 
+          family = "binomial")
+m5 <- glm(cbind(n_dr, n_matched) ~ n_pol, 
+          data = n_driver, 
+          family = "binomial")
+m6 <- glm(cbind(n_dr, n_matched) ~ inv, 
+          data = n_driver, 
+          family = "binomial")
+m7 <- glm(cbind(n_dr, n_matched) ~ study + inv, 
+          data = n_driver, 
+          family = "binomial")
 @
 
-We found that if we were to control the dynamics of the whole community, we would need to control between \Sexpr{round(min(n_driver$n_dr_p)*100)} and \Sexpr{round(max(n_driver$n_dr_p)*100)}\% (mean \Sexpr{round(mean(n_driver$n_dr_p)*100)}\%) of the species in the community. The relative number of driver species did not change if the dependencies were assumed to be bidirectional, or exclusively from plant to pollinators or from pollinators to plants (Figure S1; Table S2). In addition we did not detect any significant differences between the proportion of driver species in invaded or uninvaded ecosystems (Wilcoxon signed-rank sum test, $p = \Sexpr{round(wt$p.value, digits = 3)}$) nor between study sites (likelyhood ratio test, $Pr(>\chi^2) = \Sexpr{round(anova(m1, m_nr, test = "LRT")$`Pr(>Chi)`[2], digits = 3)}$; Table S3). Nevertheless we found that the ratio of plant to pollinator species richness had an important neggative effect on the proportion of driver species ($Pr(>\chi^2) = \Sexpr{round(anova(m2, m_nr, test = "LRT")$`Pr(>Chi)`[2], digits = 3)}$; \autoref{fig:n_driver_explanatory}, Table S3).
+We found that if we were to control the dynamics of the whole community, we would need to control between \Sexpr{round(min(n_driver$n_dr_p)*100)} and \Sexpr{round(max(n_driver$n_dr_p)*100)}\% (mean \Sexpr{round(mean(n_driver$n_dr_p)*100)}\%) of the species in the community---which corresponds to manageabilities of \Sexpr{round(min(1-n_driver$n_dr_p), digits = 2)} to \Sexpr{round(max(1-n_driver$n_dr_p), digits = 2)} (Table S1). In addition we found that the ratio of plant to pollinator species richness had an important possitive effect on the community manageability ($Pr(>\chi^2) = \Sexpr{round(anova(m2, m_nr, test = "LRT")$`Pr(>Chi)`[2], digits = 3)}$). Constrastingly measures of biodiversity (like plant or pollinator richness) or factors such as the status of invasion, or the location of the study did not have a significant effect on the manageability (\autoref{fig:n_driver_explanatory}, Table S3).  
 
 \begin{figure}
 \centering
@@ -419,11 +441,7 @@ ggplot(data = n_driver,
 \caption{\label{fig:n_driver_explanatory} The proportion of species needed to control the network is largely influenced by the ratio of plant to pollinator species richness  but not the location of the community. White dots correspond to communities investigated by \textcite{Bartomeus2008}; grey dots correspond to communities investigated by \textcite{Lopezaraiza-Mikel2007}.}
 \end{figure}
 
-We examined the role that the asimmetry of the dependencies which defines the direction of control has a central role in structuring the controlability of polination networks. We found that empirical networks have a much larger  the importance of dependency
-
-\begin{figure}
-\centering
-<<fig randomisations, echo = FALSE, warning = F, message = F, fig.height=2.2, fig.width=3.1>>=
+<<randomisations z_scores, echo = FALSE, warning= FALSE, message = FALSE>>=
 r <- r_w %>%
   dplyr::bind_rows(r_d) %>%
   dplyr::inner_join(meta) %>%
@@ -445,14 +463,6 @@ z_scores <- r$method %>%
                 z_s = replace(z_s, is.infinite(z_s) & z_s < 0, qlogis(0.001))) %>%
   dplyr::filter(is.na(sim))
 
-# z_scores <- r %>%
-#   dplyr::group_by(net_name, method) %>%
-#   dplyr::summarise(mu = mean(n_dr, na.rm = T),
-#                    sigma = sd(n_dr, na.rm = T)) %>%
-#   dplyr::inner_join(n_driver) %>%
-#   dplyr::group_by() %>%
-#   dplyr::mutate(z_s = (n_dr - mu)/sigma)
-
 z_scores %<>%
   plyr::ddply("method", function(x){
     x %>%
@@ -469,24 +479,45 @@ z_scores %<>%
                               # "c0_both", 
                               "r0"))
  
+
+@
+
+We found that the manageability of empirical networks is not significantly different to that of network randomisations that maintained the species strength but different to those that maintained species degree (two tailed t-test, $p = \Sexpr{round(unique(dplyr::filter(z_scores, method == "quasiswap_count")$sign), digits = 3)}$ and \Sexpr{round(unique(dplyr::filter(z_scores, method == "swsh_both")$sign), digits = 3)} respectively; \autoref{fig:randomisations}). This result was also robust to the assumption that bidirectional shit (FIgure Sx)\todo{finish those analysis}.
+
+
+found that species strength and not degree structures the manageability of empirical networks (). 
+We examined the role that the asimmetry of the dependencies which defines the direction of control has a central role in structuring the controlability of polination networks. We found that empirical networks have a much larger  the importance of dependency
+
+\begin{figure}
+\centering
+<<fig randomisations, echo = FALSE, warning = F, message = F, fig.height=2.2, fig.width=3.1>>=
+
+# z_scores <- r %>%
+#   dplyr::group_by(net_name, method) %>%
+#   dplyr::summarise(mu = mean(n_dr, na.rm = T),
+#                    sigma = sd(n_dr, na.rm = T)) %>%
+#   dplyr::inner_join(n_driver) %>%
+#   dplyr::group_by() %>%
+#   dplyr::mutate(z_s = (n_dr - mu)/sigma)
+
 z_scores_method_order <- unique(z_scores$method)
 
 z_scores %>%
   dplyr::mutate(method = factor(method, levels = z_scores_method_order),
                 m_n = as.numeric(method),
                 m_n = replace(m_n, m_n == 3, 3.5)) %>%
-  ggplot(aes(x = m_n, y = z_s)) +
+  ggplot(aes(x = m_n, y = -1 * z_s)) +
   # geom_hline(yintercept = c(-0), linetype = 2, alpha = 0.7, size = 0.25) + 
-  geom_vline(xintercept = c(2.75), alpha = 0.7, size = 0.25) +
+  geom_vline(xintercept = c(2.75), alpha = 0.6, size = 0.25) +
   geom_hline(yintercept = 0, size = 0.25, linetype = 2, colour = "grey30") +
-  geom_boxplot(aes(group = method), size = 0.25, colour = "grey10",
+  geom_boxplot(aes(group = method, fill = sign <= 0.05), size = 0.25, colour = "grey10",
 							 outlier.shape = 21, outlier.size = 1) +
-  geom_point(aes(y = 9, colour = sign <= 0.05), shape = 8, size = 1) +
+  # geom_point(aes(y = 9, colour = sign <= 0.05), shape = 8, size = 1) +
   coord_flip() +
-  scale_colour_manual(values = c(NA, "black")) +
-  scale_x_continuous(breaks = c(1, 2, 3.5), labels = rev(c("dependency", "strength", "degree"))) + 
+  scale_fill_manual(values = c("white", "#bdbdbd")) +
+  scale_x_continuous(breaks = c(1, 2, 3.5), labels = rev(c("random\ndependency", "maintain strength\nrandomise degree", "maintain degree\nrandomise strength"))) + 
   xlab("") +
-  ylab("number of driver species (z-score)") + 
+  ylab("Z-score of emp. manageability") + 
   fer_theme +
   theme(axis.text.x = element_text(angle = 90), 
         legend.position = "none",
@@ -498,6 +529,23 @@ z_scores %>%
 \caption{\label{fig:randomisations} The (\textasteriskcentered indicates a significant difference)}
 \end{figure}
 
+<<eval = F, echo = F>>=
+z_scores %>%
+  dplyr::filter(method == "r0") %>%
+  dplyr::inner_join(n_driver) %>%
+  ggplot(aes(x = n_pla/n_pol, y = z_s)) +
+  geom_point()
+
+r %>%
+  dplyr::filter(method == "r0")  %>%
+  dplyr::inner_join(n_driver, by = "net_name") %>%
+  ggplot(aes(x = n_pla.y/n_pol.y, y = n_matched.x / (n_pla.y + n_pol.y))) +
+  geom_point() +
+  geom_smooth(method = "glm")
+@
+
+
+\subsection*{Driver species}
 
 <<importance, echo = FALSE, warning = F, message = F>>=
 imp <- mod %>% 
@@ -562,7 +610,7 @@ expand.grid(d = seq(min(data_pla$d), max(data_pla$d), by = 1),
 
 \section*{Acknoledgements}
 
-The authors thank Dr. Takeuki Uno for the insight provided to find the set of all maximum matching algorithms, and Bernat Bramon and Marilia Gaiarsa for feedback in early stages of the project. EFC acknowledges the support from the University of Canterbury Doctoral Scholarship, the University of Canterbury Meadow Mushroooms Postgraduate Scholarship, a travel grant from the European Space Agency and a Rutherford Discovery Fellowship (to DBS). DBS ackloledges the support of a Rutherford Discovery Scholarship, administered by the Royal Society of New Zealand.
+The authors thank Dr. Takeuki Uno for the insight provided to find the set of all maximum matching algorithms, and Bernat Bramon, Matthew Hutchinson and Marilia Gaiarsa for feedback in early stages of the project. EFC acknowledges the support from the University of Canterbury Doctoral Scholarship, the University of Canterbury Meadow Mushroooms Postgraduate Scholarship, a travel grant from the European Space Agency and a Rutherford Discovery Fellowship (to DBS). DBS ackloledges the support of a Rutherford Discovery Scholarship, administered by the Royal Society of New Zealand.
 
 \section*{Author contributions}
 
