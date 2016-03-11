@@ -23,12 +23,27 @@ matched <- net %>%
   plyr::ldply(n_matched, type = "z-bi") %>%
   `names<-`(c("net_name", "n_matched"))
 
-# calculate the frequency of species matchings
-m_freq <- 1:length(net) %>%
-  plyr::mlply(function(x) matched_frequency(net[[x]], matched$n_matched[x], type = "z-bi"),
-              .progress = "text")
+ordered_net_names <- dplyr::inner_join(meta, matched) %>% 
+  dplyr::filter(method == "visitation") %>%
+  dplyr::mutate(ncomb = choose(n_pla + n_pol, n_matched)) %>%
+  dplyr::arrange(ncomb) %$% net_name
 
-names(m_freq) <- names(net)
+onet <- net[ordered_net_names]
+
+# calculate the frequency of species matchings
+m_freq <- 1:length(onet) %>%
+  plyr::mlply(function(x) {
+    o <- matched_frequency(onet[[x]], 
+                           matched$n_matched[matched$net_name == names(onet)[x]], 
+                           type = "z-bi")
+    saveRDS(o, 
+            file = paste0("./data/V2.0/matching_frequency_bi/", 
+                          names(onet)[x], ".rds"), 
+            ascii = TRUE, compress = F)
+    return(o)
+  }, .progress = "text")
+
+names(m_freq) <- names(onet)
 
 # save data
 saveRDS(matched, file = "./data/V2.0/n_matched_bi.rds", ascii = T, compress = F)
