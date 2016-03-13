@@ -19,6 +19,7 @@ drivers <- m_f[meta$net_name[meta$study != "ballantyne"]] %>%
   plyr::ldply(function(x){
     dplyr::data_frame(species = names(x),
                       d_freq = attr(x, "n_matchings") - x,
+                      d_n_freq = x,
                       d_reim = 1 - x / attr(x, "n_matchings"))
   }) %>%
   dplyr::rename_("net_name" = ".id") %>% dplyr::tbl_df()
@@ -28,10 +29,21 @@ drivers <- dplyr::inner_join(drivers, s_p) %>%
   dplyr::mutate(d_s_m = d_strength / degree, 
                 v_s_m = v_strength / degree)
 
+guild <- c("pla", "pol") %>%
+  plyr::ldply(function(y){
+    o <- lapply(net, function(x) igraph::V(x)[igraph::V(x)$type == y]$name) %>%
+      unlist() %>% unique()
+    data.frame(guild = y, species = o)
+  })
 
-# extract guild information
+# insert guild information
 drivers <- drivers %>%
-  tidyr::separate(species, c("guild"), sep = "_", remove = F)
+  dplyr::inner_join(guild)
+
+
+drivers %>%
+  ggplot(aes(x = guild, y = d_reim)) +
+  geom_boxplot(aes(fill = guild))
 
 # explore correlations
 factor_correlations <- drivers %>%
@@ -60,20 +72,34 @@ lmer.glmulti<-function(formula,data,random="",...){
 }
 
 # calculate a lot of models
-models <- drivers %>%
+mo <- drivers %>%
   dplyr::rename_("n" = "nestedcontribution",
                  "S_d" = "d_s_m",
                  "S_v" = "v_s_m",
-                 "d" = "degree") %>%
-  plyr::dlply(c("guild"), function(x){
-    lmer("d_freq ~(n + S_d + S_v + d)^2 + (1|net_name)" %>% as.formula(), data = x)
+                 "d" = "degree") 
+
+    glmulti(d_reim ~ S_d + n + eig_cen + S_v + guild*d,
+            data = mo,
+            family = "binomial",
+            fitfunction = glm.redefined, 
+            level = 1,
+            crit = "bic") %>% coef.glmulti()
+    # 
+    # 
+    # glm(d_reim ~ d + n + guild,
+    #     data = mo,
+    #     family = "binomial") %>% summary()
+    # lmer("d_freq ~(n + S_d + S_v + d)^2 + (1|net_name)" %>% as.formula(), data = x)
 #     glmulti("d_freq", c("n", "S_d", "S_v", "d"),
 #             data = x,
 #             # family = "binomial",
 #             level = 2, crit = "aic", plotty = F, report = F,
 #             fitfunction = "gls")
-  }, .progress = "text") 
 
+glm.redefined = function(formula, data, always="", ...) {
+  # print(formula)
+  glm(as.formula(paste(deparse(formula), always)), data=data, ...)
+}
 
 saveRDS(models, file = "./data/V2.0/detailed_species_models.rds", ascii = T, compress = F)
 saveRDS(factor_correlations, file = "./data/V2.0/species_models_correlations.rds", ascii = T, compress = F)
