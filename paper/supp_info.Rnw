@@ -9,7 +9,7 @@
 \usepackage{titlesec}
 \usepackage{authblk}
 \usepackage{datetime}
-\newdateformat{usvardate}{
+\newdateformat{usvardate}{ 
 \monthname[\THEMONTH] \ordinal{DAY}, \THEYEAR}
 
 % math
@@ -64,6 +64,7 @@ library(knitr)
 library(ggplot2)
 library(glmulti)
 library(Hmisc)
+library(MuMIn)
 opts_knit$set (root.dir=normalizePath('../'))
 @
 

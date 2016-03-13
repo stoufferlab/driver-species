@@ -47,7 +47,7 @@ plyr::ldply(net, function(n){
     plyr::ldply(function(x) dplyr::add_rownames(as.data.frame(x))) %>%
     dplyr::select_("rowname", "nestedcontribution") %>% 
     dplyr::rename(species = rowname)
-  
+   
   dplyr::inner_join(d1, d2)
 }, .parallel = TRUE) %>%
   dplyr::rename_("net_name" = ".id") %>%

@@ -482,11 +482,7 @@ z_scores %<>%
 
 @
 
-We found that the manageability of empirical networks is not significantly different to that of network randomisations that maintained the species strength but different to those that maintained species degree (two tailed t-test, $p = \Sexpr{round(unique(dplyr::filter(z_scores, method == "quasiswap_count")$sign), digits = 3)}$ and \Sexpr{round(unique(dplyr::filter(z_scores, method == "swsh_both")$sign), digits = 3)} respectively; \autoref{fig:randomisations}). This result was also robust to the assumption that bidirectional shit (FIgure Sx)\todo{finish those analysis}.
-
-
-found that species strength and not degree structures the manageability of empirical networks (). 
-We examined the role that the asimmetry of the dependencies which defines the direction of control has a central role in structuring the controlability of polination networks. We found that empirical networks have a much larger  the importance of dependency
+We found that the manageability of empirical networks varied little when compared to network randomisations that maintained the species strength or species degree (two tailed t-test, $p = \Sexpr{round(unique(dplyr::filter(z_scores, method == "quasiswap_count")$sign), digits = 3)}$ and \Sexpr{round(unique(dplyr::filter(z_scores, method == "swsh_both")$sign), digits = 3)} respectively; \autoref{fig:randomisations}). This results were also broadly consistent with those obtained including both dependencies (Figure S3). Contrastingly, empirical networks have are much harder to manage than network randomisations in which the direction of the dependencies is altered but the structure is maintained. 
 
 \begin{figure}
 \centering
@@ -526,7 +522,7 @@ z_scores %>%
 				panel.grid.minor.y = element_blank())
 
 @
-\caption{\label{fig:randomisations} The (\textasteriskcentered indicates a significant difference)}
+\caption{\label{fig:randomisations} The manageability of empirical networks is much smaller than those of network randomisations in which the direction of dependencies has been randomised. In contrast the manageability of network randomisations that mantain the strength or the degree of species. The grey filling indicates that the Z-score is significantly different from zero (t-test, $p < 0.05$).}
 \end{figure}
 
 <<eval = F, echo = F>>=
