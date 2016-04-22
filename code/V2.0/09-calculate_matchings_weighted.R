@@ -24,7 +24,6 @@ matched <- net %>%
   `names<-`(c("net_name", "n_matched"))
 
 ordered_net_names <- dplyr::inner_join(meta, matched) %>% 
-  dplyr::filter(method == "visitation") %>%
   dplyr::mutate(ncomb = choose(n_pla + n_pol, n_matched)) %>%
   dplyr::arrange(ncomb) %$% net_name
 
@@ -33,8 +32,9 @@ onet <- net[ordered_net_names]
 # calculate the frequency of species matchings
 m_freq <- 1:length(onet) %>%
   plyr::mlply(function(x) {
-    o <- matched_frequency(onet[[x]], 
-                           matched$n_matched[matched$net_name == names(onet)[x]], 
+    print(names(onet)[x])
+    o <- matched_frequency(onet[[x]],
+                           prop = seq(0, 1, by = 0.1),
                            type = "z-bi")
     saveRDS(o, 
             file = paste0("./data/V2.0/matching_frequency_bi/", 
