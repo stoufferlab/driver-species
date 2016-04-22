@@ -72,26 +72,6 @@ opts_knit$set (root.dir=normalizePath('../'))
 "./code/V2.0/functions" %>% 
 	list.files(full.names = T) %>%
 	plyr::l_ply(source)
-
-# figure counter
-fig_count <- dplyr::data_frame(ref = "NA", count = 0)
-fig_n <- function(ref) {
-  fig_count <<- rbind(fig_count,
-                      dplyr::data_frame(ref = ref,
-                                        count = dplyr::last(fig_count$count) + 1))
-  return(dplyr::last(fig_count$count))
-}
-fig_r <- function(ref) fig_count$count[fig_count$ref == ref]
-
-# table counter
-tbl_count <- dplyr::data_frame(ref = "NA", count = 0)
-tbl_n <- function(ref) {
-  tbl_count <<- rbind(tbl_count,
-                      dplyr::data_frame(ref = ref,
-                                        count = dplyr::last(tbl_count$count) + 1))
-  return(dplyr::last(tbl_count$count))
-}
-tbl_r <- function(ref) tbl_count$count[tbl_count$ref == ref]
 @
 
 <<plot theme, echo = FALSE, warning = F, message = F>>=
@@ -113,7 +93,8 @@ net <- "./data/V2.0/networks" %>%
 meta <- readr::read_csv("data/ntw_info.csv") %>% dplyr::tbl_df() %>%
 	dplyr::rename(count = method)
 n_matched <- readRDS("./data/V2.0/n_matched.rds")
-m_f <- readRDS("./data/V2.0/matching_frequency.rds")
+m_f <- read_allRDS("./data/V2.0/matching_frequency")
+m_f_b <- read_allRDS("./data/V2.0/matching_frequency_bi/")
 a_m <- readRDS("./data/V2.0/n_matched_all_types.rds") 
 s_p <- readRDS("./data/V2.0/species_properties.rds") %>% dplyr::tbl_df()
 mod <- readRDS("./data/V2.0/species_models.rds")
@@ -734,15 +715,253 @@ z_scores_bi %>%
 				# panel.grid.minor.x = element_blank(),
 				panel.grid.minor.y = element_blank())
 
-
-z_scores_bi %>%
-  ggplot(aes(x = n_pla/n_pol, y = -1 * z_s)) + 
-  geom_point()
 @
-\caption{\label{fig:randomisations_bi} xxx}
+\caption{\label{fig:randomisations_bi} The manageability of network randomisations that mantain the strength or the degree of species is not different from the empirical manageability using bidirectional links.}
 \end{figure}
 
 \section{Driver species}
+
+<<driver species dependency, echo = FALSE, warning = F, message = F>>=
+
+get_frequencies <- . %>%
+  plyr::ldply(function(x){
+    plyr::ldply(x, function(y){
+      matched <- y$matched %>%
+        dplyr::rename(species = ve,
+                      m_freq = ma, 
+                      m_weight = we)
+      driver <- y$driver %>%
+        dplyr::rename(species = vs,
+                      d_freq = ma, 
+                      d_weight = we)
+      dplyr::inner_join(matched, driver, by = "species") %>%
+        dplyr::mutate(n_matchings = attr(y, "n_matchings"))
+    }, .id = "threshold") 
+	}, .id = "net_name") %>% 
+  dplyr::mutate(threshold = as.numeric(as.character(threshold))) %>%
+  dplyr::filter(threshold %in% c(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1)) %>%
+  dplyr::mutate(m_reim = m_freq/n_matchings,
+                d_reim = d_freq/n_matchings,
+                d_weight = d_weight/n_matchings)
+
+drivers_b <- get_frequencies(m_f_b) %>% 
+  dplyr::mutate(type = "z-bi") 
+
+drivers <- get_frequencies(m_f) %>% 
+  dplyr::mutate(type = "weight") %>%
+  dplyr::bind_rows(drivers_b)
+  
+driver_sp <- drivers %>%
+  dplyr::filter(threshold == 1) %>%
+  dplyr::group_by(net_name, species, type) %>%
+  dplyr::summarise(imp = d_weight != 1,
+                   d_reim_0 = d_weight,
+                   sp_imp = paste(d_weight, species))
+
+drivers %<>%
+  dplyr::inner_join(driver_sp) %>%
+  dplyr::inner_join(meta)
+
+n_matchings <- drivers %>%
+  dplyr::filter(threshold == 1, count != "binary") %>%
+  dplyr::group_by(net_name, type) %>%
+  dplyr::summarise(n_matchings = mean(n_matchings))
+
+
+p_weights <- drivers %>%
+  dplyr::group_by(net_name, type, threshold) %>%
+  dplyr::summarise(n_matchings = mean(n_matchings)) %>% 
+  dplyr::mutate(new_m = n_matchings - lead(n_matchings),
+                new_m = replace(new_m, is.na(new_m), last(n_matchings))) %>%
+  dplyr::select(-n_matchings)
+
+drivers <- drivers %>%
+  dplyr::inner_join(p_weights) %>%
+  dplyr::group_by(net_name, type, species) %>%
+  dplyr::mutate(d_weight_mean = weighted.mean(d_weight, new_m))
+@
+
+Unlike unweighted networks, where a maximum matching is defined by its size (the number of matched edges), in weighted networks, a maximum matching is one whose edges have the largest possible total weight among all possible matchings. This means that in weighted networks there is a number of matchings that have maximal size, but are not maximum matchings because its total weight is not maximal too. Therefore, for weighted networks the number of possible maximum matchings, even for lage networks, can be small (in the studied networks this number ranged from \Sexpr{min(n_matchings$n_matchings)} to \Sexpr{max(n_matchings$n_matchings)}, $\bar{\mu} = \Sexpr{mean(n_matchings$n_matchings)}$). 
+
+However the weight of species dependencies is unexact, a reflection of the fact that interaction strengths and sampling methods themselves are stochastic to some extent. This means that certain level of tolerance must be introduced so that we accept some matchings that have the same size but only a proportion of the maximum matching weight. As this proportion decreasses we accept a markedly larger number of matchings (\autoref{fig:threshold_n_matchings}).
+
+\begin{figure}
+\centering
+<<fig threshold matching, echo = FALSE, warning = F, message = F, fig.height=2.19, fig.width=3.1>>=
+
+drivers %>%
+  dplyr::filter(count != "binary") %>%
+  dplyr::group_by(net_name, threshold, type) %>%
+  dplyr::summarise(n_matchings = mean(m_freq + d_freq), 
+                   n_sp = mean(n_pla + n_pol)) %>%
+  dplyr::group_by(net_name) %>%
+  dplyr::mutate(n_matchings_rel = n_matchings / max(n_matchings)) %>%
+  ggplot(aes(x = threshold, y = n_matchings)) +
+  # geom_point(aes(colour = type), size = 1) +
+  geom_line(aes(group = interaction(type, net_name),
+                colour = type)) +
+  scale_color_manual(values = c("#252525", "#636363")) + 
+  scale_y_log10() +
+  xlab("proportion of maximum matching weight (threshold)") +
+  ylab("number of accepted matchings") +
+  fer_theme +
+  theme(legend.position = "none")
+@
+\caption{\label{fig:threshold_n_matchings} The number of accepted matchings increasses as the proportion of maximum matching weight decreasses. Each line correspond to one studied network.}
+\end{figure}
+
+
+<<>>=
+
+
+get_correlations <- function(y, limit = 5, var = "d_reim", by = c("net_name", "threshold")){
+  y %>%
+  dplyr::filter(count == "visitation") %>%
+  plyr::ddply(by, function(x){
+    c <- x %>% 
+      dplyr::select_("species", var, "type") %>%
+      tidyr::spread_("type", var) %>%
+      dplyr::arrange(species)
+    
+    names(c)<- make.names(names(c)) 
+    
+    if(ncol(c) == 2) return(NULL)
+    
+    c %<>%
+      dplyr::mutate(w_r = rank(-weight, ties.method = "average"),
+                    b_r = rank(-z.bi, ties.method = "average"),
+                    weight = replace(weight, w_r > limit & b_r > limit, NA),
+                    z.bi = replace(z.bi, w_r > limit & b_r > limit, NA))
+
+    if(nrow(dplyr::filter(c, !is.na(weight))) <= 1) return(NULL)
+    
+    c <- cor.test(c$weight, c$z.bi, method = "spearman", exact = F)
+    
+    data.frame(statistic = c$statistic,
+               p_value = c$p.value,
+               estimate = c$estimate)
+  }, .inform = T)
+}
+
+correlations <- get_correlations(drivers, limit = 5, "d_weight")
+
+correlations %>%
+  ggplot(aes(x = threshold, y = estimate)) +
+  geom_line(aes(colour = net_name)) +
+  geom_point(aes(fill = p_value < 0.05), shape = 21) +
+  geom_smooth()
+
+drivers %>%
+  dplyr::filter(threshold == 0) %>%
+  get_correlations(limit= 5, "d_weight_mean", by = "net_name") %>%
+  dplyr::inner_join(meta) %>%
+  ggplot(aes(x = n_pla + n_pol, y = estimate)) +
+  geom_point()
+
+
+drivers %>%
+  dplyr::filter(threshold == 1) %>%
+  dplyr::group_by(net_name, type) %>%
+  dplyr::mutate(ranked = rank(-d_weight_mean, ties.method = "min")) %>%
+  dplyr::filter(ranked == 1 | ranked == 2) %>% 
+  dplyr::select(net_name, type, species, ranked) %>%
+  dplyr::arrange(net_name, type, species) %>% View
+  
+@
+
+
+<<fig comparing thresholds, echo = FALSE, warning = F, message = F, fig.height=2.19, fig.width=6.2>>=
+
+
+# ggplot(drivers, aes(x = threshold, y = d_reim - d_reim_0, colour = d_reim_0, group = species)) +
+#   geom_hline(yintercept = c(-0.5, 0.5), linetype = 2) +
+#   geom_point() +
+#   geom_line() +
+#   facet_wrap(~ net_name + type) +
+#   scale_alpha_manual(values = c(1, 0.3)) +
+#   ylim(c(-1, 1)) +
+#     scale_color_gradient2(low = "#377eb8",
+#                          high = "#e41a1c",
+#                          mid = "grey80", midpoint = 0.5) +
+#   fer_theme
+# 
+# drivers %>%
+#   dplyr::filter(study == "ballantyne") %>%
+#   ggplot(aes(x = threshold, y = d_reim - d_reim_0, colour = d_reim_0, group = species)) +
+#   geom_hline(yintercept = c(-0.5, 0.5), linetype = 2) +
+#   geom_point() +
+#   geom_line() +
+#   facet_grid(net_name + type ~ species) +
+#   scale_color_gradient2(low = "#377eb8",
+#                          high = "#e41a1c",
+#                          mid = "grey80", midpoint = 0.5) +
+#   ylim(c(-1, 1)) +
+#   fer_theme
+
+# p1 <-
+  d %>%
+  dplyr::filter(study == "ballantyne", 
+                count == "importance" | count == "visitation") %>%
+  ggplot(aes(x = threshold, y = d_weight, group = species)) +
+  # geom_hline(yintercept = c(-0.5, 0.5), linetype = 2) +
+  geom_line(aes(colour = d_weight_mean)) +
+  geom_hline(aes(yintercept = d_weight_mean, colour = d_weight_mean)) +
+  geom_point(aes(colour = d_weight_mean), size = 1) +
+  facet_wrap(type ~ net_name) +
+  scale_color_gradient2(low = "#377eb8", 
+                         high = "#e41a1c", 
+                         mid = "grey80", midpoint = 0.5) +
+  scale_fill_gradient2(low = "#377eb8", 
+                         high = "#e41a1c", 
+                         mid = "grey80", midpoint = 0.5) +
+  # ylim(c(-1, 1)) +
+  fer_theme +
+  theme(legend.position = "none", 
+        plot.margin = grid::unit(c(5,2,2,0), "mm"))
+
+ball_correllations <- function(drivers, var){
+  drivers %>%
+  dplyr::filter(study == "ballantyne",
+                count == "visitation" | count == "importance") %>% 
+  plyr::ddply(c("threshold"), function(x){
+    c <- x %>% 
+      dplyr::mutate(type_count = interaction(type, count)) %>%
+      dplyr::select_("species", var, "type_count") %>%
+      dplyr::arrange(species) %>%
+      tidyr::spread_("type_count", var) %>%
+      dplyr::select(-species) %>%
+      as.matrix() %>%
+      cor(method = "spearman")
+    
+    c[lower.tri(c, diag = T)] <- NA
+    
+      c %>%
+        as.data.frame.table() %>%
+        dplyr::filter(!is.na(Freq)) %>%
+        tidyr::separate(Var1, c("type1", "count1"), 
+                        sep = "\\.", remove = F) %>%
+        tidyr::separate(Var2, c("type2", "count2"), 
+                        sep = "\\.", remove = F) %>%
+        dplyr::mutate(comp = paste(Var1, Var2, sep = "_"))
+  })
+}
+
+correlations <- ball_correllations(drivers, "d_reim")
+
+# p2 <- 
+  correlations %>% 
+  # dplyr::filter(type1 != type2) %>%
+  ggplot(aes(x = threshold, y = Freq)) +
+  geom_point(size = 1) +
+  geom_line(aes(colour = comp)) +
+  fer_theme +
+  theme(plot.margin = grid::unit(c(11.2,1,2,0), "mm")) +
+  geom_smooth()
+
+multiplot(p1, p2, layout = matrix(c(1, 1, 2), ncol = 3))
+
+@
+
 
 First we assessed the impotance of each explanatory variable individually. We included the most relevant subset into a more detailed analysis that included first order interactions between them. 
 
@@ -780,6 +999,12 @@ expand.grid(d = seq(min(data_pol$d), max(data_pol$d), by = 1),
 \end{figure}
 
 \section{Visitation as a proxy for species interdependence}
+
+\subsubsection*{Visitation as a proxy for species interdependence}
+
+Visitation frequency has been shown to be an appropriate surrogate for inter-specific effects in pollination networks \autocite{Vazquez2005, Bascompte2006}. Arguably, visitation reflects adequately the dependency of animals to plants, as usually during a visit animals forage for pollen or nectar regardless of wether effective pollination occurs\todo{any citation Daniel?}. Nevertheless visitation is not equivalent to pollen deposition and might be insufficient to reflect the dependencies of plants on animals \autocite{Alarcon2010, King2013}. We therefore investigated the effect of calculating the dependencies using pollination effectiveness and importance---two metrics more proximate to plant reproductive sucess.
+
+Pollinator efficiency is measured as ``the number of conspecific pollen grains deposited on a virgin stigma during a single visit by a particular animal'' \autocite{NeEman2010}. Pollinator importance on the other hand is defined as the product between visitation frequency and pollinator efficency \autocite{Ballantyne2015}. We used data collected by \textcite{Ballantyne2015} from a low diversity pollination community at a dry lowland heathland in Dorset, UK. We assessed the differences between visitation, pollinator effectiveness, and pollinator importance by comparing (i) the manageability of the community and (ii) the percentage of interactions that mantained the direction of dependency.
 
 The number of driver species in a pollination community and the relative importance of each species depend both of the strength of mutual dependencies between plant pollinators and the structure of the pollination network. Traditionally pollination networks have been constructed on the basis of visitation frequency, but not all flower visitor are necessarily a pollinator. It has been shown that whether or not pollination networks are represented using visitation or actual pollen deposition can have effects on the network structure and presumably on the strength of mutuial dependency \autocite{Alarcon2010}. 
 

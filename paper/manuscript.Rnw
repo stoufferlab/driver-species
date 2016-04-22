@@ -17,6 +17,7 @@
 % math
 \usepackage{amssymb}
 \usepackage{newtxmath}
+\usepackage{xfrac}
  
 % manuscript looking document
 \usepackage{setspace}
@@ -66,7 +67,7 @@ isbn=false
 \setlength\linenumbersep{15pt}
 \renewcommand\linenumberfont{\normalfont\footnotesize\sffamily\color{gray}}
 
-\onehalfspacing
+\doublespacing
 
 
 % title
@@ -83,6 +84,8 @@ isbn=false
  
 \maketitle
 
+\iffalse
+
 \begin{abstract}
 \noindent Si sabemos que el disfrute exige lentitud, y que---mas en general---la felicidad se asocia con el ir despacio, por que corremos tanto? El arte de comer estriba en saborear cada bocado sin pensar en el siguiente, sin apresurar el siguiente. El arte de leer, en demorarse en cada palabra como si el sentido del escrito entero estuviera contenido en ella. El arte de amar, en vivir cada momento de la relacion con la persona amada como si fuese el destino de toda la historia del mundo, desde la aparicion del primer organismo unicelular hasta hoy. Y asi podemos generalizar a las demas actividades, creo, hasta obtener un arte de vivir. Para mi se resume en la palabra ahi. --- Jorge Riechmann
 \end{abstract}
@@ -97,6 +100,7 @@ library(knitr)
 library(ggplot2)
 library(glmulti)
 library(Hmisc)
+library(lme4)
 opts_knit$set (root.dir=normalizePath('../'))
 @
 
@@ -104,26 +108,6 @@ opts_knit$set (root.dir=normalizePath('../'))
 "./code/V2.0/functions" %>% 
 	list.files(full.names = T) %>%
 	plyr::l_ply(source)
-
-# figure counter
-fig_count <- dplyr::data_frame(ref = "NA", count = 0)
-fig_n <- function(ref) {
-  fig_count <<- rbind(fig_count,
-                      dplyr::data_frame(ref = ref,
-                                        count = dplyr::last(fig_count$count) + 1))
-  return(dplyr::last(fig_count$count))
-}
-fig_r <- function(ref) fig_count$count[fig_count$ref == ref]
-
-# table counter
-tbl_count <- dplyr::data_frame(ref = "NA", count = 0)
-tbl_n <- function(ref) {
-  tbl_count <<- rbind(tbl_count,
-                      dplyr::data_frame(ref = ref,
-                                        count = dplyr::last(tbl_count$count) + 1))
-  return(dplyr::last(tbl_count$count))
-}
-tbl_r <- function(ref) tbl_count$count[tbl_count$ref == ref]
 @
 
 <<plot theme, echo = FALSE, warning = F, message = F>>=
@@ -145,13 +129,29 @@ net <- "./data/V2.0/networks" %>%
 meta <- readr::read_csv("data/ntw_info.csv") %>% dplyr::tbl_df() %>%
 	dplyr::rename(count = method)
 n_matched <- readRDS("./data/V2.0/n_matched.rds")
-m_f <- readRDS("./data/V2.0/matching_frequency.rds")
+a_m <- readRDS("./data/V2.0/n_matched_all_types.rds") 
 r_w <- readRDS("./data/V2.0/random_weights.rds") %>% dplyr::tbl_df() %>%
   dplyr::rename_("net_name" = ".id")
 r_d <- readRDS("./data/V2.0/random_directions.rds") %>% dplyr::tbl_df() %>%
   dplyr::rename_("net_name" = ".id")
 s_p <- readRDS("./data/V2.0/species_properties.rds") %>% dplyr::tbl_df()
-mod <- readRDS("./data/V2.0/species_models.rds")
+# mod <- readRDS("./data/V2.0/species_models.rds")
+driver <- c("./data/V2.0/matching_frequency") %>% 
+  list.files(full.names = T) %>%
+  lapply(list.files, full.names = T) %>% 
+  unlist() %>% 
+  lapply(read_allRDS)
+prop <- expand.grid(c("asymmetry", "max_dep"), 
+                    c("scaled_FALSE", "scaled_TRUE")) %>% plyr::alply(1)
+driver <- mapply(function(x, y){
+  attr(x, "type") <- as.character(y[,1])
+  attr(x, "scaled") <- stringr::str_split(as.character(y[,2]), "_") %>% unlist() %>% extract(2) %>% as.logical()
+  return(x)
+}, driver, prop)
+driver_bi <- "./data/V2.0/matching_frequency_bi" %>% 
+  read_allRDS()
+mod <- readRDS("./data/V2.0/detailed_species_models.rds")
+mo <- readRDS("./data/V2.0/detailed_species_models_data.rds")
 @
 
 \section*{Introduction}
@@ -164,69 +164,25 @@ From a systems perspective, perturbations like over-exploitation, eutrophication
 
 Recent work on the control of complex systems suggest that in principle it is possible to alter any ecological community's composition, by modifying the abundances of just some key species \autocite{Isbell2013, Cornelius2013}. Here, we apply these theories to estimate the controllability of different ecological communities and to find driver species: species, that due to the structural characteristics of their interactions are more likely to drive the dynamics of the community.
 
-Invasive species have been shown to have a disproportionate effect on the structure of pollination communities. Influencing for example the strength of species interactions, and the degree of network nestedness and connectivity \autocite{Olesen2002, Aizen2008, Bartomeus2008, Vila2009, Traveset2013}. However whether this influence is translated into a driver role has not been tested. Here we use plant pollinator communities to investigate the number of species that should be managed to control population dynamics of the whole community, the characteristics that determine whether a species should be managed or not and how invasive species fit. 
+Invasive species have been shown to have a disproportionate effect on the structure of pollination communities. Influencing for example the strength of species interactions, and the degree of network nestedness and connectivity \autocite{Olesen2002, Aizen2008, Bartomeus2008, Vila2009, Traveset2013}. However whether this influence is translated into a driver role has not been tested.
+
+\fi
+
+\section*{Introduction}
+Here we use plant pollinator communities to investigate the number of species that should be managed to control population dynamics of the whole community, the characteristics that determine whether a species should be managed or not and how invasive species fit. 
 
 
 
 
 \section*{Methods}
 
-To investigate the dynamic controllability of pollination networks, we used data from ten paired plant-pollinator communities. Each pair was composed by a community invaded by a plant and a community effectively free of the invasive species (Table S1). The networks were constructed from previously published pollination visitation data collected from pollination communities in Bristol, UK \autocite{Lopezaraiza-Mikel2007} and Cap de Creus National Park, Spain \autocite{Bartomeus2008}. In the four British uninvaded communities the non-invaded plots were obtained by experimentally removing all the flowers of invasive species \textit{Impatients grandulifera}. In contrast, the Spanish uninvaded communities were obtained from plots that had not yet been colonised by the invasive species \textit{Carpobrotus affine acinaciformis} or \textit{Opuntia stricta}.
+\subsection*{Maximum matching}
 
-All analysis were performed in R 3.2.2 using bipartite 2.05, igraph 1.0.1, lme4 1.0-6, MuMIn 1.15.6, and vegan 2.3-3 \autocite{RCoreTeam2015, Dormann2008, Csardi2006a, Bates2014, Barton2016, Oksansen2016}.
+The number of nodes necessary to fully control a complex network can be calculated by counting the number of unmatched nodes in the network's maximum matching \autocite{Liu2011}. In a directed network a matching is a subset of links in which no two links share a common starting node or a common ending node and node is matched if it is the ending node of one of the links in the matching (\autoref{fig:explain_mm}a). A matching is  maximum if the number of matched liks (matching size) is maximal, and the sum of the weights of the matched links (matching weight) is the largest possible among all possible matchings \autocite{West2001}.
 
-\subsection*{Manageability}
-
-Changes on the abbundances of a species can modify the abbundances of those species it interacts with. We exploit this concept to quantify the \textit{manageability} of an ecological community (\autoref{eq:m}). \todo{need ecological justification; why is $n_d$ a good metric?} Manageability is directly related to the minimum number of species on which we would need to apply management interventions if we were to gain full control of the abbundances of all species in the ecological community, $n_d$. We calculated $n_d$ by finding the maximum matching of the pollination network in each community (Box 1). 
-
-\begin{equation} \label{eq:m}
-m = 1- \frac{n_d}{n}
-\end{equation}
-
-\begin{tcolorbox}[float, title= Box 1: Maximum matching,colback=white,fontupper=\small]
-\parskip=0.5em
-
-It has been shown that the number of nodes (here species) necessary to fully control a complex network, can be calculated by counting the number of unmatched nodes \autocite{Liu2011}. In a directed network, like the simple pollination network shown on the left, a matching is a subset of links in which no two links share a common starting species or a common ending species---dark grey links---and a node is matched if it is the ending node of one of the links in the matching---dark grey nodes \autocite{West2001}.
-
-<<fig explain matching, echo = FALSE, warning = F, message = F, results = "asis", fig.height=1.4, fig.width=5.75>>=
-my_theme <- theme_bw() +
-	#scale_color_brewer(palette = "Paired") +
-	theme(legend.position = "none",
-				text = element_text(family = "Times"),
-				plot.margin=unit(c(4,0,-4,0),"mm"),
-				panel.margin=unit(c(0,0,0,0),"mm"),
-				# panel.border = element_rect(colour = "grey10", size = 0.5),
-				panel.border = element_blank(),
-				axis.text = element_blank(),
-				axis.ticks.x = element_blank(),
-				axis.ticks.y = element_blank(),
-				axis.title = element_text(size = 9),
-				plot.title = element_text(hjust = 0.05, vjust = -1.5, size = 9),
-				panel.grid = element_blank())
-
-# Function to generate paths between each connected node
-edgeMaker <- function(whichRow, len = 100, curved = TRUE){
-	fromC <- layoutCoordinates[adj_list[whichRow, 1], ]  # Origin
-	toC <- layoutCoordinates[adj_list[whichRow, 2], ]  # Terminus
-	
-	# Add curve:
-	graphCenter <- colMeans(layoutCoordinates)  # Center of the overall graph
-	bezierMid <- c(fromC[1], toC[2])  # A midpoint, for bended edges
-	distance1 <- sum((graphCenter - bezierMid)^2)
-	if(distance1 < sum((graphCenter - c(toC[1], fromC[2]))^2)){
-		bezierMid <- c(toC[1], fromC[2])
-	}  # To select the best Bezier midpoint
-	bezierMid <- (fromC + toC + bezierMid) / 3  # Moderate the Bezier midpoint
-	if(curved == FALSE){bezierMid <- (fromC + toC) / 2}  # Remove the curve
-	
-	edge <- data.frame(bezier(c(fromC[1], bezierMid[1], toC[1]),  # Generate
-														c(fromC[2], bezierMid[2], toC[2]),  # X & y
-														evaluation = len))  # Bezier path coordinates
-	edge$Sequence <- 1:len  # For size and colour weighting in plot
-	edge$Group <- paste(adj_list[whichRow, 1:2], collapse = ">")
-	return(edge)
-}
-
+\begin{figure}
+\centering
+<<fig explain mm, echo = FALSE, warning = F, message = F, results = "asis", fig.height=1.6, fig.width=6.2>>=
 
 sp_names <- c("a[1]", "a[2]", "a[3]", "p[1]", "p[2]")
 
@@ -265,8 +221,8 @@ levels(allEdges$type) <- new_lev
 
 nodes <- data.frame(layoutCoordinates) %>%
 	dplyr::mutate(spe = sp_names,
-								spe_c = c("u", "u", "m", "m", "m"), 
-								pos = rep(c(0.25, -0.25), c(3,2)))
+								spe_c = c("m", "m", "u", "m", "u"), 
+								pos = rep(c(0.3, -0.3), c(3,2)))
 
 p1 <- ggplot(allEdges) +  # Pretty simple plot code
 	geom_path(aes(x = x, y = y, group = Group, colour = type, size = type), 
@@ -274,12 +230,14 @@ p1 <- ggplot(allEdges) +  # Pretty simple plot code
 	geom_point(data = nodes,  # Add nodes
 						 aes(x = x, y = y , fill = spe_c), size = 5, pch = 21,
 						 colour = "black") + 
-	geom_text(data = nodes, aes(x = x, y = y + pos, label = spe), size = 3, parse = T) +
+	geom_text(data = nodes, aes(x = x, y = y + pos, label = spe), size = 3, parse = T, family = "Times") +
 	scale_fill_manual(values = c("#636363", "white")) + 
 	scale_colour_manual(values = c("#636363", "#bdbdbd")) +
-	my_theme + xlab("") + ylab("") + ylim(c(-0.27, 1.26)) +
+	my_theme + xlab("") + ylab("") + 
+  	xlim(c(-0.09, 2.09)) + ylim(c(-0.48, 1.48)) +
  theme(plot.margin=unit(c(4,4,-4,-4),"mm")) +
-	scale_size_manual(values = c(0.5, 0.5))
+	scale_size_manual(values = c(0.5, 0.5)) +
+  ggtitle("a) directed network")
 	
 net <- digraph_bipartite(net)
 adj_matrix <- net %>% igraph::as_adjacency_matrix(sparse = F, type = "upper")
@@ -305,53 +263,288 @@ levels(allEdges$type) <- new_lev
 nodes <- data.frame(layoutCoordinates) %>%
 	dplyr::mutate(spe = rep(sp_names, 2),
 								spe_l = c(paste0(sp_names, " %->% phantom(0)"), paste0(sp_names, " %<-% phantom(0)")),
-								spe_c = c(rep("u",5), c("u", "u", "m", "m", "m")), 
-								pos = rep(c(0.25, -0.25), each = 5))
+								spe_c = c(c("m", "m", "u", "m", "u"), rep("u",5)), 
+								pos = rep(c(0.3, -0.3), each = 5))
 
 p2 <- ggplot(allEdges) +  # Pretty simple plot code
 	geom_path(aes(x = x, y = y, group = Group, colour = type, size = type)) + # and taper
 	geom_point(data = nodes,  # Add nodes
 						 aes(x = x, y = y, fill = spe_c), size = 5, pch = 21,
 						 colour = "black") + 
-	geom_text(data = nodes, aes(x = x + 0.08, y = y + pos, label = spe_l), parse = T, size = 3) +
+	geom_text(data = nodes, aes(x = x + 0.08, y = y + pos, label = spe_l), parse = T, size = 3, family = "Times") +
 	# coord_flip()  + scale_x_reverse() + scale_y_reverse() +
 	scale_fill_manual(values = c("#636363", "white")) + 
 	scale_colour_manual(values = c("#636363", "#bdbdbd")) +
-	xlim(c(-0.12, 4.12)) + ylim(c(-0.27, 1.26)) +
+	xlim(c(-0.12, 4.12)) + ylim(c(-0.48, 1.48)) +
 	my_theme + xlab("") + ylab("") +
-	scale_size_manual(values = c(0.5, 0.5))
+	scale_size_manual(values = c(0.5, 0.5)) +
+  ggtitle("b) alternative bipartite representation")
 
 multiplot(p1, p2, layout = matrix(nrow = 1, c(1,1,1,2,2,2,2,2)))
 @
+\caption{\label{fig:explain_mm}  One of the possible maximum matchings of a network (dark grey links) defines a set matched ($p_1$, $p_2$, and $a_3$) and unmatched nodes ($a_1$ and $a_2$). The minimum number of species neccessary to control this network equates to the number of unmatched nodes $n_d = 2$. Superior nodes (dark grey circles) drive the dynamics of other species and are therefore important for the controlability of the network because they either require external input or because the are part of the chain that transmit the external imputs to other species.}
+\end{figure}
 
-To find the maximum matching we used a bipartite representation of the network, like the one on the right, in which the levels indicate the outgoing and incoming links to each node. Finding a matching here is equivalent to finding the links such that each node on the top is matched to at most one node on the bottom and vice versa \autocite{West2001}. The maximum matching is the one in which the matched links have the largest possible weight among all possible matchings.  
+To find the maximum matching in a pollination network we used an alternative bipartite representation of the network (\autoref{fig:explain_mm}b) in which the levels indicate the outgoing and incoming links to each node. Finding a matching in this alternative representation is equivalent to finding the set of links such that each node on the top level is matched to at most one node on the bottom level and vice versa \autocite{West2001, Csardi2006a}.  
 
-The use of a maximum matching has also an intuitive explanation. In control theory lingo, a network is fully controlable when each node in the network has a "superior" or input that drives its dynamics. Matched nodes can be controled within the network by the node pointing to it---its superior. However, unmatched nodes have no superior in the network and must be directly controlled by external inputs---what we refer to as management interventions \autocite{Liu2011}.
+The link between network controllability and the maximum matching also has an intuitive basis. In control theory, a network is fully controlable when each node in the network has a "superior", or input that drives its dynamics. Matched nodes can be controled within the network by the node pointing to it---its superior. However, unmatched nodes have no superior in the network and must be directly controlled by external inputs \autocite{Liu2011}, what we refer to as management interventions .
 
-The size of the maximum matching is therefore directly related to its \textit{manageability} because systems that require a large number of inputs are more difficult to control. The manageability of the shown network is $m = 0.6$ because in theory, it is possible to guide the community to a desired state by applying management interventions to two of the five species in the community ($n_d = 2$; $a_1$ and $a_2$ in the depicted maximum matching).
+\subsection*{Manageability}
 
-\end{tcolorbox}
+Systems that require a large number of inputs are more difficult to control. The \textit{manageability} of a community is therefore determined by the minimum number of species on which we would need to apply management interventions if we were to gain full control of the abbundances of all species in the ecological community ($n_d$, \autoref{eq:m}). 
 
-We assumed that for a pair of interacting species the direction of control is inverse to the direction of dependency. If, for instance, a plant species depends more on a pollinator species than the pollinator depends on the plant, we expect the plant abbundances to be more sensitive to changes in the pollinator abbundance than vice versa. However, our results are robust to this assumption as its violation renders qualitatively consistent results (Figure S1 and S2; Table S2). Therefore, we first assigned a single direction to each link between plants and pollinators based on the direction the assymetries in dependencies based on visitation frequencies following \textcite{Bascompte2006}. The dependency of plant $i$ on pollinator $j$ is the proportion of the visits comming from pollinator $j$ compared to all pollinator visits to plant $i$. Likewise, the dependency of pollinator $j$ on plant $i$ is the ratio of the visits by pollinator $j$ to plant $i$ and all visits of pollinator $j$. 
+\begin{equation} \label{eq:m}
+m = 1- \frac{n_d}{s}
+\end{equation}
 
-\todo{really? maybe Jason can help with a citation? or is there a better justification?}Intuitively, there is a relationship between diversity and manageability. We therefore used a set of generalised linear models to investigate the relatioship between community manageability and (i) the total number of species, (ii) plant richness, (iii) polinators richness, and (iv) the ratio of plants to pollinators richness. Because both invaded and British communities tend to be more diverse, we also assesed whether observed differences in manageability were due to these two factors.
+We quantified the manageability of ten paired plant-pollinator communities. Each pair was composed by a community invaded by a plant and a community effectively free of the invasive species (Table S1). The networks were constructed from previously published visitation data collected from pollination communities in Bristol, UK \autocite{Lopezaraiza-Mikel2007} and Cap de Creus National Park, Spain \autocite{Bartomeus2008}. In the four British uninvaded communities the non-invaded plots were obtained by experimentally removing all the flowers of invasive species \textit{Impatients grandulifera}. In contrast, the Spanish uninvaded communities were obtained from plots that had not yet been colonised by the invasive species \textit{Carpobrotus affine acinaciformis} or \textit{Opuntia stricta}.
 
-To quantify the extent to which the manageability of a pollination community is characteristic of the network structure, we compared it to a suite of random null-models. An initial set of null models was based on network randomisations that maintained the species degree (the number of interactions), or that mantained the species strength (total sum of interaction weights). Subsequently we calculated the dependencies followed by the manageability of the randomised networks. A second set of null models was based on randomisations that mantained the structure of the empirical network but randomised the direction of dependencies between species. In all cases we calculated a Z-score between the manageability of each empirical network and the corresponding manageability of 999 randomisations.
+The analysed networks were quantified using visitation frequency, which has been shown to be an appropriate surrogate for inter-specific effects in pollination networks \autocite{Vazquez2005, Bascompte2006}. Nevertheless we evaluated the effect of using pollinator efficiency or importance as measures of species interactions \autocite{NeEman2010, Ballantyne2015} and found consistent results (see Supplementary Information).
+
+\subsubsection*{Interspecific effects}
+
+Our maximum matching algotithm requires a directed network in which a link between species $i$ and $j$ pointing to species $j$ indicates that the abundance of species $j$ can be affected by the abundance of species $i$. The extent to which a pair of interacting species affect each other---the mutualism strengtht---can be quantified by the magnitude of the mutual dependence \autocite{Bascompte2006}. Therefore, we initially assumed that a pair of interacting species can affect each other abundances. The effect on each other being inverselly proportional to the magnitude of the dependencies. This assumption renders a bipartite network in which interacting pairs are connected by two directed links (\autoref{fig:explain_cd}b).
+
+\begin{figure}
+\centering
+<<fig explain control direction, echo = FALSE, warning = F, message = F, results = "asis", fig.height=1.5, fig.width=6.2>>=
+sp_names <- c("a[1]", "a[2]", "a[3]", "p[1]", "p[2]")
+
+adj_matrix <- c(0,0,0,0,0,
+								0,0,0,0,1,
+								0,0,0,0,0,
+								1,1,1,0,0, 
+								0,0,1,0,0) %>%
+	matrix(nrow = 5, byrow = T) %>%
+	`rownames<-`(sp_names) %>%
+	`colnames<-`(sp_names)
+
+net <- adj_matrix %>% 
+	igraph::graph_from_adjacency_matrix(mode = "directed") 
+igraph::V(net)$type <- c(F, F, F, T, T)
+igraph::E(net)$weight <- 1
+
+layoutCoordinates <- cbind(c(0,1,2,0.5,1.5), 
+													 c(1,1,1,0,0)) %>%
+	`colnames<-`(c("x", "y"))
+
+adj_list <- adj_matrix %>% 
+	reshape2::melt() %>% 
+	dplyr::filter(value > 0)
+
+# Generate an edge path for each pair of connected nodes
+n <- 17
+allEdges <- lapply(1:nrow(adj_list), edgeMaker, len = n, curved = FALSE)
+allEdges <- do.call(rbind, allEdges) %>%
+	dplyr::filter(Sequence != n) %>%
+	dplyr::mutate(Group = factor(Group),
+				 type = Group)
+
+new_lev <- c("m", "u", "m", "m", "u")
+levels(allEdges$type) <- new_lev
+
+nodes <- data.frame(layoutCoordinates) %>%
+	dplyr::mutate(spe = sp_names,
+								spe_c = c("m", "m", "u", "m", "u"), 
+								pos = rep(c(0.3, -0.3), c(3,2)))
+
+weights <- allEdges %>%
+  dplyr::filter(Sequence == 12) %>%
+  dplyr::mutate(weight = c(1, 2, 1, 1, 2))
+
+p1 <- ggplot(allEdges) +  # Pretty simple plot code
+	geom_path(aes(x = x, y = y, group = Group, size = type), colour = "#bdbdbd") + # and taper
+	geom_point(data = nodes,  # Add nodes
+						 aes(x = x, y = y ), size = 5, pch = 21,
+						 colour = "black", fill = "white") + 
+	# geom_text(data = nodes, aes(x = x, y = y + pos, label = spe), size = 3, parse = T, family = "Times") +
+  geom_point(data = weights, aes(x = x, y= y), size = 2.5, alpha = 0.25, colour = "white") +
+  geom_text(data = weights, aes(x = x, y= y, label = weight), size = 2.5, family = "Times") +
+	scale_fill_manual(values = c("#636363", "white")) + 
+	scale_colour_manual(values = c("#636363", "#bdbdbd")) +
+	my_theme + xlab("") + ylab("") + 
+  	xlim(c(-0.09, 2.09)) + ylim(c(-0.15, 1.15)) +
+ theme(plot.margin=unit(c(4,4,-4,-4),"mm")) +
+	scale_size_manual(values = c(0.5, 0.5)) +
+  ggtitle("a) visitation frequency")
+
+############################
+sp_names <- c("a[1]", "a[2]", "a[3]", "p[1]", "p[2]")
+
+adj_matrix <- c(0,0,0,1,0,
+								0,0,0,1,1,
+								0,0,0,1,1,
+								1,1,1,0,0,
+								0,1,1,0,0) %>%
+	matrix(nrow = 5, byrow = T) %>%
+	`rownames<-`(sp_names) %>%
+	`colnames<-`(sp_names)
+
+net_exp <- adj_matrix %>% 
+	igraph::graph_from_adjacency_matrix(mode = "directed") 
+igraph::V(net_exp)$type <- c(F, F, F, T, T)
+igraph::E(net_exp)$weight <- 1
+
+layoutCoordinates <- cbind(c(0,1,2,0.5,1.5), 
+													 c(1,1,1,0,0)) %>%
+	`colnames<-`(c("x", "y"))
+
+adj_list <- adj_matrix %>% 
+	reshape2::melt() %>% 
+	dplyr::filter(value > 0)
+
+# Generate an edge path for each pair of connected nodes
+n <- 17
+allEdges <- lapply(1:nrow(adj_list), edgeMaker, len = n, curved = FALSE)
+allEdges <- do.call(rbind, allEdges) %>%
+	dplyr::filter(Sequence != n) %>%
+	dplyr::mutate(Group = factor(Group),
+				 type = Group)
+
+new_lev <- c("m", "u", "m", "u", "u", "u", "m", "u", "u", "m")
+dir <- c("m", "m", "m", "m", "m", "u", "u", "u", "u", "u")
+dir2 <- c("m", "u", "m", "u", "u", "u", "m", "m", "u", "m")
+id <- 1:10
+allEdges %<>% dplyr::mutate(dir = type,
+                            dir2 = dir)
+levels(allEdges$type) <- new_lev
+levels(allEdges$dir) <- dir
+levels(allEdges$dir2) <- dir2
+allEdges %<>% 
+  dplyr::mutate(dir = as.numeric(dir),
+                dir2 = as.numeric(dir2),
+                dir = plyr::mapvalues(dir, c(1,2), c(0.03, -0.03)),
+                dir2 = plyr::mapvalues(dir2, c(1,2), c(0.03, -0.03)))
+
+nodes <- data.frame(layoutCoordinates) %>%
+	dplyr::mutate(spe = sp_names,
+								spe_c = c("u", "m", "m", "m", "m"), 
+								pos = rep(c(0.3, -0.3), c(3,2)))
+
+# ggplot(allEdges) +  # Pretty simple plot code
+# 	geom_path(aes(x = x + dir, y = y + dir2, group = Group, colour = type, size = type), 
+# 						arrow = arrow(type = "closed", angle = 15, length = grid::unit(0.1, "inches")))
+
+weights <- allEdges %>%
+  dplyr::filter(Sequence == 12) %>%
+  dplyr::mutate(weight = c("1", "0.5", "0.5", "0.5", "0.5", "0.25", "0.5", "0.25", "0.66", "0.33"))
+
+p2 <- ggplot(allEdges) +  # Pretty simple plot code
+	geom_path(aes(x = x + dir, y = y + dir2, group = Group, size = type), 
+						arrow = arrow(type = "closed", angle = 15, length = grid::unit(0.1, "inches")), colour = "#bdbdbd") + # and taper
+	geom_point(data = nodes,  # Add nodes
+						 aes(x = x, y = y ), size = 5, pch = 21,
+						 colour = "black", fill = "white") +  
+	# geom_text(data = nodes, aes(x = x, y = y + pos, label = spe), size = 3, parse = T, family = "Times") +
+  geom_point(data = weights, aes(x = x + dir*3, y= y), size = 2.5, alpha = 0.25, colour = "white") +
+  geom_text(data = weights, aes(x = x + dir*3, y= y, label = weight), size = 2.5, family = "Times", parse = T) +
+	scale_fill_manual(values = c("#636363", "white")) + 
+	scale_colour_manual(values = c("#636363", "#bdbdbd")) +
+	my_theme + xlab("") + ylab("") + 
+  xlim(c(-0.09, 2.09)) + ylim(c(-0.15, 1.15)) +
+ theme(plot.margin=unit(c(4,4,-4,-4),"mm")) +
+	scale_size_manual(values = c(0.5, 0.5)) +
+  ggtitle("b) mutual dependence")
+
+####################################
+
+sp_names <- c("a[1]", "a[2]", "a[3]", "p[1]", "p[2]")
+
+adj_matrix <- c(0,0,0,0,0,
+								0,0,0,1,1,
+								0,0,0,0,0,
+								1,1,1,0,0,
+								0,0,1,0,0) %>%
+	matrix(nrow = 5, byrow = T) %>%
+	`rownames<-`(sp_names) %>%
+	`colnames<-`(sp_names)
+
+net <- adj_matrix %>% 
+	igraph::graph_from_adjacency_matrix(mode = "directed") 
+igraph::V(net)$type <- c(F, F, F, T, T)
+igraph::E(net)$weight <- 1
+
+layoutCoordinates <- cbind(c(0,1,2,0.5,1.5), 
+													 c(1,1,1,0,0)) %>%
+	`colnames<-`(c("x", "y"))
+
+adj_list <- adj_matrix %>% 
+	reshape2::melt() %>% 
+	dplyr::filter(value > 0)
+
+# Generate an edge path for each pair of connected nodes
+n <- 17
+allEdges <- lapply(1:nrow(adj_list), edgeMaker, len = n, curved = FALSE)
+allEdges <- do.call(rbind, allEdges) %>%
+	dplyr::filter(Sequence != n) %>%
+	dplyr::mutate(Group = factor(Group),
+				 type = Group)
+
+# new_lev <- c("m", "u", "m", "m", "u")
+# levels(allEdges$type) <- new_lev
+
+nodes <- data.frame(layoutCoordinates) %>%
+	dplyr::mutate(spe = sp_names,
+								# spe_c = c("m", "m", "u", "m", "u"), 
+								pos = rep(c(0.3, -0.3), c(3,2)))
+
+weights <- allEdges %>%
+  dplyr::filter(Sequence == 12) %>%
+  dplyr::mutate(weight = c(0.75, 1, 0.5, 0.6, 1, 0.16)) 
+
+p3 <- ggplot(allEdges) +  # Pretty simple plot code
+	geom_path(aes(x = x, y = y, group = Group), size = 0.5,
+						arrow = arrow(type = "closed", angle = 15, length = grid::unit(0.1, "inches")), colour = "#bdbdbd") + # and taper
+	geom_point(data = nodes,  # Add nodes
+						 aes(x = x, y = y ), size = 5, pch = 21,
+						 colour = "black", fill = "white") + 
+	# geom_text(data = nodes, aes(x = x, y = y + pos, label = spe), size = 3, parse = T, family = "Times") +
+   geom_point(data = weights, aes(x = x, y= y), size = 2.5, alpha = 0.25, colour = "white") +
+  geom_text(data = weights, aes(x = x, y= y, label = weight), size = 2.5, family = "Times") +
+	scale_fill_manual(values = c("#636363", "white")) + 
+	scale_colour_manual(values = c("#636363", "#bdbdbd")) +
+	my_theme + xlab("") + ylab("") + 
+  	xlim(c(-0.09, 2.09)) + ylim(c(-0.15, 1.15)) +
+ theme(plot.margin=unit(c(4,4,-4,-4),"mm")) +
+	# scale_size_manual(values = c(0.5, 0.5)) +
+  ggtitle("c) interaction asymmetry")
+
+
+###########################
+
+multiplot(p1, p2, p3, cols = 3)
+
+@
+\caption{\label{fig:explain_cd} Mutualistic networks are usually described quantitatively by the relative number of visits between each plant and animal species (a). The mutual dependencies between interacting species (b) depend directly on the relative visitation frequency. The dependency of plant $i$ on pollinator $j$, $d_{ij}$, is the proportion of the visits coming from pollinator $j$ compared to all pollinator visits to plant $i$. Likewise, the dependency of pollinator $j$ on plant $i$, $d_{ji}$, is the ratio of the visits by pollinator $j$ to plant $i$ and all visits of pollinator $j$. Nevertheless, mutual dependencies in pollination networks tend to be highly assymetric. The relative differences of dependencies (c) then is a good indicator  }
+\end{figure}
+
+Nevertheless, mutual dependencies have been shown to be highly assymetric in natural communities \autocite{Bascompte2006}. In other words, if a plant species is largely dependent on a pollinator species, then the pollinator tends to depend only very weakly on the plant. This suggest that it may be possible to relax our initial assumption and simplify the network such that interacting species are connected by one directed link when mutual dependencies are assymetric. The direction of this link being consistent with the dominant direction of control in the bidirectional case (\autoref{fig:explain_cd}c). The extent to which a species $i$ affects species $j$ relative to the extent to which species $j$ affects species $i$ can then be summarised by the interaction asymmetry (\autoref{eq:a}).
+
+\begin{equation} \label{eq:a}
+a(i,j) = \frac{\left | d_{ij}-d_{ji} \right |}{\textup{max}\left ( d_{ij}, d_{ji} \right )}
+\end{equation}
+
+We quantified the manageability of the analysed pollination communities by finding the maximum matching of the corresponding pollination network following the method previously explained. If a network had more than one component (two species are in different components if there exist no path between them) we analysed the largest one. We then performed a paired Spearman correlation test to compare the manageability obtained when including bidirectional effects between interacting species, and when simplyfing the network to include only the dominant direction of the asymmetry. 
+
+Naively one might expect to see a negative relationship between diversity and manageability \autocite{Menge1995}. We therefore used a set of generalised linear models to investigate the relatioship between community manageability and (i) the total number of species, (ii) plant richness, (iii) polinators richness, and (iv) the ratio of plants to pollinators richness. Because both invaded and British communities tended to be more diverse, we also assesed whether observed differences in manageability were due to these two factors. Competing models were assessed by comparing the Akaike Information Criterion corrected for small sample sizes (AICc).
+
+To quantify the extent to which manageability is characteristic of the network structure\todo{failed to come up with a better wording}, we compared the manageability of empirical networks to networks generated by two null models of visitation. One set of random visitation networks was generated by maintaining the species degree (the number of interactions per species) while varying the number of visits per species. A second set of random network mantained the species strength (total sum of visits) while varying the degree of species \autocite{Oksansen2016}. We then calculated the mutual dependences and interaction asymmetries of the random networks and calculated the p-value of the manageability of each empirical network and the corresponding manageability of 999 randomisations.
+
+We also quantified the extent to which the relative manageability of a pollination community is given by the dominant direction of control, we mantained the structure of network but randomised the direction of the interaction asymmetries. This is, we first calculated the assymetries for each community and then shuffled the direction of the link between species. Similar as in previouls null models, we calculated the p-value of the empirical manageability and that of the randomisations.
 
 \subsection*{Driver species}
 
-The manageability of a community, $m$, provides an indication of the magnitude of $n_d$ but not the identity of the species that can compose this set. In fact maximum matchings are not unsually unique in ecological networks and different sets of species of size $n_d$ could be used to control the network \autocite{Liu2011}. Nevertheless, species vary on the frequency at which they are part of this set; an indication of their relative importance to drive the state of the ecosystem.
+The manageability of a community $m$ provides an indication of the magnitude of $n_d$ but not the identity of the species that can compose this set. In fact, maximum matchings are often not unique in ecological networks and different sets of species of size $n_d$ could be used to control the network \autocite{Liu2011}. Nevertheless, species vary in terms of the frequency with which they are classified as superior nodes (\autoref{fig:explain_mm}). This frequency provides an indication of their relative importance to drive the state of the community. We therefore call \textit{driver species} those that are identified as needing directed interventions in all possible matchings\todo{elaborate concept}, and consequently likely to have a disproportionate effect on the abbundances of other species in the community.
 
-We therefore call \textit{driver species} those that are identified as needing directed interventions in the majority of maximum matchings, and therefore likely to have a disproportionate effect on the abbundances of other species in the community. We identified the driver species in each of the communities by computing all possible maximum matchings in the network. To do so, we first generated the network's line graph---an alternative representation in which nodes are the interactions of the original network and links represent common ending points. We then calculated the complement of the line graph---a graph in which nodes are adjecent if and only if they are not adjancent in the line graph. All possible maximum matchings can be found by enumerating all cliques of size $1-n_d$ in the complement graph \autocite{West2001}.
+Unlike unweighted networks, where a maximum matching is defined by its size (the number of matched edges), in weighted networks, a maximum matching is one whose edges have the largest possible total weight among all possible matchings. This means that in weighted networks there is a number of matchings that have maximal size, but are not maximum matchings because its total weight is not maximal too. However the weight of species dependencies is unexact, a reflection of the fact that interaction strengths and sampling methods themselves are stochastic to some extent.
 
-We then tackled the question whether some species level structural properties can predict the relative importance of driver species. Here, we evaluated the effect on the species' relative importance of measures of centrality (degree, betweenness, and overlap), measures related to network robustness (contribution to nestedness), and measures of strength of association (visitation levels). Candidate models were compared using AIC and the relative importance of the explanatory variables was evaluated using the sum of Akaike weights over all candidate models \autocite{Burnham2003}.   
+We therefore identified the driver species in each of the networks by computing all possible matchings in the network that have the same size and have a weight above a cut-off of 0.5 times the weight of the maximum matching\todo{justify}. To do so, we first generated the network's line graph---an alternative representation in which nodes are the interactions of the original network and links represent common ending points. We then calculated the complement of the line graph---a graph in which nodes are adjecent if and only if they are not adjancent in the line graph. All possible maximum matchings can be found by enumerating all cliques of size $1-n_d$ in the complement graph \autocite{West2001, Csardi2006a}. Because of the number of matchings depends on the cut-off and the weighting of the links, we evaluated the effects of i) using a different cut-offs value between 0 and 1 and ii) weighting the links by the number of visits.
 
-\subsection*{Visitation as a proxy for species interdependence}
+Similar as when we compared the manageability obtained when assuming bidirectional links or single links determined by the asymmetry (\autoref{fig:explain_cd}), we compared the realtive importance of species under these two assumptions by calculating a paired Spearman correlation test between species' relative importance. Nevertheless because we are more interested on the agreement between highly ranked species we also calculated a weighted correlation coefficient $r_{w2}$ which gives more weight to higer ranks (\autoref{PintoDaCosta2015}), and the Jaccard similarity of the driver species identified by both methods. 
 
-Visitation frequency has been shown to be an appropriate surrogate for inter-specific effects in pollination networks \autocite{, Vazquez2005, Bascompte2006}. Arguably, visitation reflects adequately the dependency of animals to plants, as usually during a visit animals forage for pollen or nectar regardless of wether effective pollination occurs\todo{any citation Daniel?}. Nevertheless visitation is not equivalent to pollen deposition and might be insufficient to reflect the dependencies of plants on animals \autocite{Alarcon2010, King2013}. We therefore investigated the effect of calculating the dependencies using pollination effectiveness and importance---two metrics more proximate to plant reproductive sucess.
+We then tackled the question whether some species level structural properties can predict the relative importance of driver species. Here, we used a Generalised Linear Mixed-Effects model (\autoref{Bates2015}) to evaluate the effect on the species' relative importance of measures of centrality (degree, betweenness, and overlap), measures related to network robustness (contribution to nestedness), and measures of strength of association and depedency (visitation and dependency strength) \autocite{Dormann2008}. The community was included as a random effect. Candidate models were compared using AIC and the relative importance of the explanatory variables was evaluated using the sum of Akaike weights over candidate models that accounted for 95\% of the evidence \autocite{Burnham2003, Bates2014, Barton2016}. 
 
-Pollinator efficiency is measured as ``the number of conspecific pollen grains deposited on a virgin stigma during a single visit by a particular animal'' \autocite{NeEman2010}. Pollinator importance on the other hand is defined as the product between visitation frequency and pollinator efficency \autocite{Ballantyne2015}. We used data collected by \textcite{Ballantyne2015} from a low diversity pollination community at a dry lowland heathland in Dorset, UK. We assessed the differences between visitation, pollinator effectiveness, and pollinator importance by comparing (i) the manageability of the community, (ii) the percentage of interactions that mantained the direction of dependency, and (iii) the Spearman correlation of the relative importance of the species in the community.
-
+All analysis were performed in R 3.2.2 \autocite{RCoreTeam2015}.
 
 \section*{Results}
 
@@ -359,93 +552,119 @@ Pollinator efficiency is measured as ``the number of conspecific pollen grains d
 
 <<n_driver, echo = FALSE, warning = F, message = F>>=
 # find n_driver
-n_driver <- n_matched %>%
+n_driver <- a_m %>%
   dplyr::inner_join(meta) %>%
   dplyr::filter(count == "visitation") %>%
   dplyr::mutate(n_sp = n_pla + n_pol, 
                 n_dr = n_sp - n_matched,
                 n_dr_p = n_dr / n_sp)
 
-# Wilcoxon signed rank test invasive vs non invasive
-wt <- n_driver %>%
-  dplyr::select(site, inv, n_dr_p) %>%
-  dplyr::filter(!is.na(inv)) %>%
-  dplyr::mutate(n_dr_p = qlogis(n_dr_p)) %>%
-  tidyr::spread(inv, n_dr_p) %>%
-  dplyr::select(-site) %>%
-  as.matrix() 
+src_bi_w <- n_driver %>%
+  dplyr::filter(type == "z-bi" | type == "weight",
+                study != "ballantyne") %>%
+  dplyr::select(net_name, type, n_dr_p) %>%
+  tidyr::spread(type, n_dr_p) %$%
+  cor.test(weight, `z-bi`, method = "spearman")
 
+# # Wilcoxon signed rank test invasive vs non invasive
+# wt <- n_driver %>%
+#   dplyr::select(site, inv, n_dr_p) %>%
+#   dplyr::filter(!is.na(inv)) %>%
+#   dplyr::mutate(n_dr_p = qlogis(n_dr_p)) %>%
+#   tidyr::spread(inv, n_dr_p) %>%
+#   dplyr::select(-site) %>%
+#   as.matrix()
 n_driver %<>%
   dplyr::filter(!is.na(inv))
+# wt <-  wilcox.test(x = wt[, 1], y = wt[, 2], paired = T)
 
-wt <-  wilcox.test(x = wt[, 1], y = wt[, 2], paired = T)
-m0 <- glm(cbind(n_dr, n_matched) ~ n_pla * n_pol + study + inv, 
-          data = n_driver, 
+
+n_driver_wb <- dplyr::filter(n_driver, 
+                             type == "z-bi" | type == "weight")
+
+# Models
+m0 <- glm(cbind(n_dr, n_matched) ~ n_pla * n_pol + study + inv + type,
+          data = n_driver_wb,
           family = "binomial")
-m_nr <- glm(cbind(n_dr, n_matched) ~ I(n_pla/n_pol) + study + inv, 
-          data = n_driver, 
+m_nr <- glm(cbind(n_dr, n_matched) ~ I(n_pla/n_pol) + study + inv + type,
+          data = n_driver_wb,
           family = "binomial")
-m8 <- glm(cbind(n_dr, n_matched) ~ I(n_pla/n_pol) + inv, 
-          data = n_driver, 
+m8 <- glm(cbind(n_dr, n_matched) ~ I(n_pla/n_pol) + inv + type,
+          data = n_driver_wb,
           family = "binomial")
-m9 <- glm(cbind(n_dr, n_matched) ~ I(n_pla/n_pol) + study, 
-          data = n_driver, 
+m9 <- glm(cbind(n_dr, n_matched) ~ I(n_pla/n_pol) + study + type,
+          data = n_driver_wb,
           family = "binomial")
-m1 <- glm(cbind(n_dr, n_matched) ~ I(n_pla/n_pol), 
-          data = n_driver, 
+m1 <- glm(cbind(n_dr, n_matched) ~ I(n_pla/n_pol) + type,
+          data = n_driver_wb,
           family = "binomial")
-m2 <- glm(cbind(n_dr, n_matched) ~ study, 
-          data = n_driver, 
+m2 <- glm(cbind(n_dr, n_matched) ~ study + type,
+          data = n_driver_wb,
           family = "binomial")
-m3 <- glm(cbind(n_dr, n_matched) ~ I(n_pla + n_pol), 
-          data = n_driver, 
+m3 <- glm(cbind(n_dr, n_matched) ~ I(n_pla + n_pol) + type,
+          data = n_driver_wb,
           family = "binomial")
-m4 <- glm(cbind(n_dr, n_matched) ~ n_pla, 
-          data = n_driver, 
+m4 <- glm(cbind(n_dr, n_matched) ~ n_pla + type,
+          data = n_driver_wb,
           family = "binomial")
-m5 <- glm(cbind(n_dr, n_matched) ~ n_pol, 
-          data = n_driver, 
+m5 <- glm(cbind(n_dr, n_matched) ~ n_pol + type,
+          data = n_driver_wb,
           family = "binomial")
-m6 <- glm(cbind(n_dr, n_matched) ~ inv, 
-          data = n_driver, 
+m6 <- glm(cbind(n_dr, n_matched) ~ inv + type,
+          data = n_driver_wb,
           family = "binomial")
-m7 <- glm(cbind(n_dr, n_matched) ~ study + inv, 
-          data = n_driver, 
+m7 <- glm(cbind(n_dr, n_matched) ~ study + inv + type,
+          data = n_driver_wb,
           family = "binomial")
 @
 
-We found that if we were to control the dynamics of the whole community, we would need to control between \Sexpr{round(min(n_driver$n_dr_p)*100)} and \Sexpr{round(max(n_driver$n_dr_p)*100)}\% (mean \Sexpr{round(mean(n_driver$n_dr_p)*100)}\%) of the species in the community---which corresponds to manageabilities of \Sexpr{round(min(1-n_driver$n_dr_p), digits = 2)} to \Sexpr{round(max(1-n_driver$n_dr_p), digits = 2)} (Table S1). In addition we found that the ratio of plant to pollinator species richness had an important possitive effect on the community manageability ($Pr(>\chi^2) = \Sexpr{round(anova(m2, m_nr, test = "LRT")$`Pr(>Chi)`[2], digits = 3)}$). Constrastingly measures of biodiversity (like plant or pollinator richness) or factors such as the status of invasion, or the location of the study did not have a significant effect on the manageability (\autoref{fig:n_driver_explanatory}, Table S3).  
+We found that if we were to control the dynamics of the whole community, we would need to control between \Sexpr{round(min(dplyr::filter(n_driver, type == "z-bi")$n_dr_p)*100)} and \Sexpr{round(max(dplyr::filter(n_driver, type == "z-bi")$n_dr_p)*100)}\% (mean \Sexpr{round(mean(dplyr::filter(n_driver, type == "z-bi")$n_dr_p)*100)}\%) of the species in the community if we were to harness bidirectional links between species, and between \Sexpr{round(min(dplyr::filter(n_driver, type == "weight")$n_dr_p)*100)} and \Sexpr{round(max(dplyr::filter(n_driver, type == "weight")$n_dr_p)*100)}\% (mean \Sexpr{round(mean(dplyr::filter(n_driver, type == "weight")$n_dr_p)*100)}\%) if we only take into account the strongest dependence. This corresponds to manageabilities between \Sexpr{round(min(1-dplyr::filter(n_driver, type == "z-bi")$n_dr_p), digits = 2)} to \Sexpr{round(max(1-dplyr::filter(n_driver, type == "z-bi")$n_dr_p), digits = 2)} and \Sexpr{round(min(1-dplyr::filter(n_driver, type == "weight")$n_dr_p), digits = 2)} to \Sexpr{round(max(1-dplyr::filter(n_driver, type == "weight")$n_dr_p), digits = 2)} respectively (Table S1). Despite different absolute values of manageability between these assuptions, the relative manageability of different communities was mantained (Spearman rank correlation \Sexpr{round(src_bi_w$estimate, digits = 2)}, $p = \Sexpr{as.numeric(format(src_bi_w$p.value, digits = 2))}$). In addition, the ratio of plant to pollinator species richness is positively correlated with manageability ($Pr(>\chi^2) = \Sexpr{as.numeric(format(anova(m8, m6, test = "LRT")$`Pr(>Chi)`[2], digits = 2))}$). Similarly, invaded communities tend to be more difficult to manage than uninvaded ones ($Pr(>\chi^2) = \Sexpr{as.numeric(format(anova(m8, m1, test = "LRT")$`Pr(>Chi)`[2], digits = 2))}$). In constrast, measures of biodiversity (like plant or pollinator richness) or the location of the study did not have a significant effect on the manageability (\autoref{fig:n_driver_explanatory}, Table S3).  
 
 \begin{figure}
 \centering
 <<fig explaining n_driver, echo = FALSE, warning = F, message = F, results = "asis", fig.height=2.2, fig.width=3.245>>=
-p <- predict(m1, type = "response", se.fit = T)
+p <- predict(m8, type = "response", se.fit = F)
 
-
-ggplot(data = n_driver,
-       aes(x = n_pla/n_pol, y = 1-n_dr_p)) +
-  geom_ribbon(aes(ymax = 1- (p$fit + 1.96 * p$se.fit), ymin = 1- (p$fit - 1.96 * p$se.fit)),
-              fill = "#f0f0f0") +
-  geom_line(aes(y = 1- p$fit)) +
-  geom_point(aes(fill = study), shape = 21) +
-  ylab("manegeability") +
+n_driver_wb %>%
+  dplyr::mutate(fit = predict(m8, type = "response", se.fit = T)$fit,
+                se =  predict(m8, type = "response", se.fit = T)$se) %>%
+  dplyr::filter(type == "z-bi" | type == "weight") %>% 
+  ggplot(aes(x = n_pla/n_pol, y = 1-n_dr_p)) +
+  geom_line(aes(y = 1-fit, colour = type, linetype = inv), size = 0.5) + 
+  geom_point(aes(fill = type, shape = inv), show.legend = T, size = 1.25) +
+  ylab("manegeability") + 
   xlab("plant / pollinator richness") +
-  scale_fill_manual(values = c("#ffffff", "#bdbdbd"), 
-                    name = "", labels = c("Lopezaraiza-Mikel et al. (2007)",
-                                          "Bartomeus et al. (2008)")) +
+  scale_fill_manual(values = c("#ffffff", "#bdbdbd"),
+                      name = "direction of control", 
+                      labels = c("asymmetry", "mutual dependence")) +
+  scale_colour_manual(values = c("black", "#bdbdbd"),
+                      name = "direction of control", 
+                      labels = c("asymmetry", "mutual dependence")) + 
+  scale_shape_manual(values = c(21, 23), 
+                     name = "invasion status", 
+                     labels = c("invaded", "non invaded")) +
+  scale_linetype_manual(values = c(1, 12), 
+                        name = "invasion status", 
+                        labels = c("invaded", "non invaded")) +
   fer_theme +
   theme(plot.margin = grid::unit(c(5, 1, 2, 0), "mm"), 
-        legend.key = element_blank(), 
-        legend.position = "none")
+        legend.position = "none", 
+        # legend.title = element_blank(),
+        legend.key = element_rect(fill = "white", 
+                                  colour = "white"),
+        legend.key.size = grid::unit(4, "mm"),
+        legend.background = element_rect(colour = "black", size = 0.2),
+        legend.box = "horizontal",
+        legend.direction = "vertical") 
 @
-\caption{\label{fig:n_driver_explanatory} The proportion of species needed to control the network is largely influenced by the ratio of plant to pollinator species richness  but not the location of the community. White dots correspond to communities investigated by \textcite{Bartomeus2008}; grey dots correspond to communities investigated by \textcite{Lopezaraiza-Mikel2007}.}
+\caption{\label{fig:n_driver_explanatory} The relative manageability of a plant-pollinator community is largely influenced by the ratio of plant to pollinator species richness and to a smaller extent to the status of invasion. Invaded communities (circles, dashed lines) having larger levels of manageability. White and grey points correspond to manageabilities calculated using mutual dependences and interaction asymmetry respectively.}
 \end{figure}
 
 <<randomisations z_scores, echo = FALSE, warning= FALSE, message = FALSE>>=
 r <- r_w %>%
-  dplyr::bind_rows(r_d) %>%
+  dplyr::bind_rows(dplyr::mutate(r_d, type = "weight")) %>%
   dplyr::inner_join(meta) %>%
-  dplyr::filter(count == "visitation") %>%
+  dplyr::filter(study != "ballantyne") %>%
   dplyr::mutate(n_dr = n_pla + n_pol - n_matched)
 
 # non-parametric
@@ -453,40 +672,27 @@ z_scores <- r$method %>%
   unique() %>%
   plyr::ldply(function(x){
     n_driver %>%
+      dplyr::mutate(type = stringr::str_replace(type, "-", "_")) %>%
+      dplyr::filter(type == "weight" | type == "z_bi") %>%
       dplyr::mutate(method = x)
   }) %>%
   dplyr::bind_rows(r) %>%
-  dplyr::group_by(net_name, method) %>%
+  dplyr::filter(!(type == "z_bi" & method == "r0")) %>%
+  dplyr::group_by(net_name, method, type) %>%
   dplyr::mutate(z_r = rank(n_dr, na.last = NA),
-                z_s = qlogis(z_r/n()),
-                z_s = replace(z_s, is.infinite(z_s) & z_s > 0, qlogis(0.999)),
+                z_r = z_r/n(),
+                z_s = qlogis(z_r),
+                z_s = replace(z_s, (is.infinite(z_s) & z_s > 0) | z_s > qlogis(0.999), qlogis(0.999)),
                 z_s = replace(z_s, is.infinite(z_s) & z_s < 0, qlogis(0.001))) %>%
   dplyr::filter(is.na(sim))
 
-z_scores %<>%
-  plyr::ddply("method", function(x){
-    x %>%
-      dplyr::mutate(sign = t.test(z_s)$p.value)
-  }, .inform = T) %>% 
-  dplyr::group_by(method) %>%
-  dplyr::mutate(m_z = median(z_s)) %>%
-  dplyr::group_by() %>%
-  dplyr::arrange(m_z) %>%
-  dplyr::filter(method %in% c("swsh_both", 
-                              "quasiswap_count", 
-                              # "r00_both", 
-                              # "r0_both", 
-                              # "c0_both", 
-                              "r0"))
- 
-
 @
 
-We found that the manageability of empirical networks varied little when compared to network randomisations that maintained the species strength or species degree (two tailed t-test, $p = \Sexpr{round(unique(dplyr::filter(z_scores, method == "quasiswap_count")$sign), digits = 3)}$ and \Sexpr{round(unique(dplyr::filter(z_scores, method == "swsh_both")$sign), digits = 3)} respectively; \autoref{fig:randomisations}). This results were also broadly consistent with those obtained including both dependencies (Figure S3). Contrastingly, empirical networks have are much harder to manage than network randomisations in which the direction of the dependencies is altered but the structure is maintained. 
+The manageability of empirical networks varied little when compared to network randomisations that maintained the species strength or species degree. This result is consistent regardless of whether we consider mutual dependences or the interaction asymmetry. Contrastingly, empirical networks have smaller manageabilities than network randomisations in which the direction of the dependencies is altered but the structure is maintained. 
 
 \begin{figure}
 \centering
-<<fig randomisations, echo = FALSE, warning = F, message = F, fig.height=2.2, fig.width=3.1>>=
+<<fig randomisations, echo = FALSE, warning = F, message = F, fig.height=2.2, fig.width=3.245>>=
 
 # z_scores <- r %>%
 #   dplyr::group_by(net_name, method) %>%
@@ -499,116 +705,458 @@ We found that the manageability of empirical networks varied little when compare
 z_scores_method_order <- unique(z_scores$method)
 
 z_scores %>%
+  dplyr::group_by() %>%
   dplyr::mutate(method = factor(method, levels = z_scores_method_order),
                 m_n = as.numeric(method),
                 m_n = replace(m_n, m_n == 3, 3.5)) %>%
-  ggplot(aes(x = m_n, y = -1 * z_s)) +
+  ggplot(aes(x = method, y = -1 * z_s)) +
+  geom_rect(aes(xmin = 0.5, xmax = 3.5, ymin = -Inf, ymax = qlogis(0.025)), fill = "#f0f0f0") +
+  geom_rect(aes(xmin = 0.5, xmax = 3.5, ymin = Inf, ymax = qlogis(0.975)), fill = "#f0f0f0") +
+
   # geom_hline(yintercept = c(-0), linetype = 2, alpha = 0.7, size = 0.25) + 
-  geom_vline(xintercept = c(2.75), alpha = 0.6, size = 0.25) +
-  geom_hline(yintercept = 0, size = 0.25, linetype = 2, colour = "grey30") +
-  geom_boxplot(aes(group = method, fill = sign <= 0.05), size = 0.25, colour = "grey10",
-							 outlier.shape = 21, outlier.size = 1) +
+  geom_vline(aes(xintercept = 2.5), alpha = 0.6, size = 0.25) +
+   geom_hline(yintercept = 0, size = 0.25, linetype = 2, colour = "grey30") +
+  geom_boxplot(aes(fill = type), size = 0.3,
+               colour = "grey10", outlier.shape = 21, outlier.size = 1) +
   # geom_point(aes(y = 9, colour = sign <= 0.05), shape = 8, size = 1) +
-  coord_flip() +
   scale_fill_manual(values = c("white", "#bdbdbd")) +
-  scale_x_continuous(breaks = c(1, 2, 3.5), labels = rev(c("random\ndependency", "maintain strength\nrandomise degree", "maintain degree\nrandomise strength"))) + 
+  scale_x_discrete(labels = rev(c("random\nassymetry", "maintain vis. strength\nrandomise degree", "maintain vis. degree\nrandomise strength")), expand = c(0,0)) + 
+  scale_y_continuous(breaks = qlogis(c(0.001, 0.025, 0.5, 0.975,0.999)), 
+                     labels = plogis(qlogis(c(0.001, 0.025, 0.5, 0.975,0.999)))) + 
   xlab("") +
-  ylab("Z-score of emp. manageability") + 
+    coord_flip() +
+  ylab("rank of empirical manageability") + 
   fer_theme +
-  theme(axis.text.x = element_text(angle = 90), 
+  theme(
         legend.position = "none",
 				plot.margin = grid::unit(c(2, 1, 2, 0), "mm"), 
 				# panel.grid.minor.x = element_blank(),
 				panel.grid.minor.y = element_blank())
 
 @
-\caption{\label{fig:randomisations} The manageability of empirical networks is much smaller than those of network randomisations in which the direction of dependencies has been randomised. In contrast the manageability of network randomisations that mantain the strength or the degree of species. The grey filling indicates that the Z-score is significantly different from zero (t-test, $p < 0.05$).}
+\caption{\label{fig:randomisations} The manageability of empirical networks was compared to network randomisations using a normalised rank. The shaded areas in light grey ($< 0.025$ and $> 0.975$) suggest a significant difference between the empirical network and its randomisations. The empirical manageability is much smaller than those of randomisations in which the direction of assymmetries has been randomised. In contrast the manageability of network in which the visitation strength or degree was mantained was not different to the manageability of the empirical networks. Dark grey and white boxplots represent manageabilities obtained using mutual dependencies and asymmetries respectively.}
 \end{figure}
-
-<<eval = F, echo = F>>=
-z_scores %>%
-  dplyr::filter(method == "r0") %>%
-  dplyr::inner_join(n_driver) %>%
-  ggplot(aes(x = n_pla/n_pol, y = z_s)) +
-  geom_point()
-
-r %>%
-  dplyr::filter(method == "r0")  %>%
-  dplyr::inner_join(n_driver, by = "net_name") %>%
-  ggplot(aes(x = n_pla.y/n_pol.y, y = n_matched.x / (n_pla.y + n_pol.y))) +
-  geom_point() +
-  geom_smooth(method = "glm")
-@
-
 
 \subsection*{Driver species}
 
-<<importance, echo = FALSE, warning = F, message = F>>=
-imp <- mod %>% 
-  lapply(function(x){
-    coef.glmulti(x, select = 0.95) %>%
-      as.data.frame() %>%
-      dplyr::add_rownames("factor") %>%
-      dplyr::arrange(-Importance, factor)
+<<rel importance, echo = FALSE, warning = F, message = F>>=
+d_sp <- driver %>%
+  plyr::ldply(function(x) {
+    get_frequencies(x) %>%
+      dplyr::mutate(type = attr(x, "type"),
+                    scaled = attr(x, "scaled"))
   })
 
+d_sp_bi <- driver_bi %>%
+  get_frequencies() %>%
+      dplyr::mutate(type = "z_bi",
+                    scaled = FALSE)
+
+d_sp <- dplyr::bind_rows(d_sp, d_sp_bi) %>%
+  dplyr::inner_join(meta)
+# d freq is the best proxy seems to be consistent with the invasive species being at the top rank for the bidirectional links
+# d_sp %>%
+#   dplyr::filter(inv, type == "z_bi") %>%
+#   dplyr::group_by(net_name, threshold) %>% 
+#   dplyr::mutate(d_freq_rank = rank(-d_freq, ties.method = "min")) %>%
+#   dplyr::filter(species %in% c("p_4", "p_25"))
+# 
+
+correlations <- expand.grid(type = c("asymmetry", "max_dep"),
+            scaled = c(TRUE, FALSE)) %>%
+  plyr::ddply(c("type", "scaled"), function(x){
+    d_sp %>%
+      dplyr::filter(count == "visitation", 
+                    study != "ballantyne") %>% 
+      plyr::ddply(c("net_name", "threshold"), function(y){
+        u <- y %>% 
+          dplyr::filter(type == "z_bi" | 
+                          (type == x$type & scaled == x$scaled)) %>%
+          dplyr::group_by(type) %>%
+          dplyr::mutate(d_freq_rank = rank(-d_reim)) %>%
+          dplyr::select(species, type, d_freq_rank) %>%
+          tidyr::spread(type, d_freq_rank) %>%
+          `class<-`("data.frame")
+        
+        
+        
+        if(ncol(u) == 3) {
+          a <- sets::as.set(u[u[, 2] == min(u[, 2]), 1])
+          b <- sets::as.set(u[u[, 3] == min(u[, 3]), 1])
+          c(rw2(u[,2], u[,3]), rw2(rank(-u[,2]), rank(-u[,3])), cor(u[,2], u[,3], method = "spearman"), sets::set_similarity(a, b))
+        } 
+        else c(NA, NA, NA, NA)
+          
+      })
+  })
+
+corr_imp <- expand.grid(type = c("asymmetry", "max_dep"),
+            scaled = c(TRUE, FALSE)) %>%
+  plyr::ddply(c("type", "scaled"), function(x){
+    d_sp %>%
+      dplyr::filter(study == "ballantyne") %>% 
+      plyr::ddply(c("threshold"), function(y){
+        u <- y %>% 
+          dplyr::filter((type == "z_bi" & count == "importance") |
+                          (type == x$type & scaled == x$scaled & count == "visitation")) %>%
+          dplyr::group_by(type) %>%
+          dplyr::mutate(d_freq_rank = rank(-d_reim)) %>%
+          dplyr::select(species, type, d_freq_rank) %>%
+          tidyr::spread(type, d_freq_rank) %>%
+          `class<-`("data.frame")
+        
+        if(ncol(u) == 3) rw2(u[,2], u[,3])
+        else NA
+          
+      })
+  })
+
+# correlations %>%
+#   ggplot(aes(x = threshold, y = V1, colour = interaction(type, scaled))) +
+#   geom_line(aes(linetype = net_name)) +
+#   geom_smooth(se = F)
+
+# 
+# corr_imp %>%
+#   ggplot(aes(x = threshold, y = V1, colour = interaction(type, scaled))) +
+#   geom_line()
+
+# d_sp %>%
+#   dplyr::group_by(net_name, type, scaled) %>%
+#   dplyr::mutate(importance = rank(-d_reim, ties.method = "min"),
+#                 importance = importance / max(importance)) %>%
+#   dplyr::filter(type == "z_bi" |
+#                   (type == "asymmetry" & scaled == F)) %>%
+#   ggplot(aes(x = net_name, y = importance)) +
+#   geom_boxplot(aes(fill = interaction(type, scaled)))
+
+@
+
+Species vary widely on the degree of their importance for network manageability. Our method to calculate the relative importance of species relies on calculating all possible maximum matchings. The number of matchings increasses exponentially with the number of links and nodes in a network. When we use mutual dependecies, there are two links between each interacting species, and we were only able to find the importance of different species in the eleven smallest networks. For the remaining nine networks, the number of maximum matchings is much larger than $4\times 10^{10}$ and the computation of the species relative importance became unfeasible. 
+
+Nevertheless, we were able to find the relative importance of species in the single link version of the networks where links were weighted by the assymetry. For the networks in which we were able to calculate the importance using mutual dependencies, we found a strong correlation between both approaches (Spearman's rank correlation ranged between $\rho = [\Sexpr{round(min(dplyr::filter(correlations, threshold == 0.5, type == "asymmetry", scaled == T)$V3, na.rm = T), digits = 2)}, \Sexpr{round(max(dplyr::filter(correlations, threshold == 0.5, type == "asymmetry", scaled == T)$V3, na.rm = T), digits = 2)}]$, median $\tilde{\rho} = \Sexpr{round(median(dplyr::filter(correlations, threshold == 0.5, type == "asymmetry", scaled == T)$V3, na.rm = T), digits = 2)})$. Indeed, when using the weighted rank correlation coefficient $r_{w2}$, we found that the agreement was stronger for highly ranked species than for lowly ranked species ($\tilde{r_{w2}} = \Sexpr{round(median(dplyr::filter(correlations, threshold == 0.5, type == "asymmetry", scaled == T)$V1, na.rm = T), digits = 2)}$ versus $\tilde{r_{w2}} = \Sexpr{round(median(dplyr::filter(correlations, threshold == 0.5, type == "asymmetry", scaled == T)$V2, na.rm = T), digits = 2)}$). Moreover both approaches identified a highly similar set of driver species (Jaccard similarity $J = [\Sexpr{round(min(dplyr::filter(correlations, threshold == 0.5, type == "asymmetry", scaled == T)$V4, na.rm = T), digits = 2)}, \Sexpr{round(max(dplyr::filter(correlations, threshold == 0.5, type == "asymmetry", scaled == T)$V4, na.rm = T), digits = 2)}]$, $\tilde{J} = \Sexpr{round(median(dplyr::filter(correlations, threshold == 0.5, type == "asymmetry", scaled == T)$V4, na.rm = T), digits = 2)})$ 
+ 
+<<importance, echo = FALSE, warning = F, message = F, results = "hide">>=
+glmer.glmulti<-function(formula,data,random="",...){
+  glmer(paste(deparse(formula, width.cutoff = 500),random),data=data,...)
+}
+
+setMethod('getfit', 'glmerMod', function(object, ...) {
+  summ <- coef(summary(object))
+  summ1 <- summ[,1:2,drop=FALSE]
+  ## if (length(dimnames(summ)[[1]])==1) {
+  ##     summ1 <- matrix(summ1, nr=1,
+  ##                     dimnames=list(c("(Intercept)"),
+  ##                     c("Estimate","Std. Error")))
+  ## }
+  cbind(summ1, df=rep(times =10000,length(fixef(object))))
+})
+
+
+imp <- mod %>% 
+  coef.glmulti(select = 0.95) %>%
+  as.data.frame() %>%
+  dplyr::add_rownames("factor") %>%
+  dplyr::mutate(pare = grepl("(", factor, fixed =T),
+                factor = plyr::mapvalues(factor, 
+                                         c("de", "n", "vi", "eig_cen", 
+                                           "guildpol"),
+                                         c("dependency strength", 
+                                           "contribution to nestedness",
+                                           "visitation strength",
+                                           "eigen-centrality", 
+                                           "guild (pollinator)"))) %>% 
+  dplyr::arrange(-pare, -Importance, -Estimate, factor) %>% 
+  dplyr::select(-pare)
+
 print_table <- . %>%
-  dplyr::mutate(factor = paste0("$", factor, "$")) %>%
+  # dplyr::mutate(factor = paste0("$", factor, "$")) %>%
   magrittr::set_names(c("factor", "est.", "var", "No. mod.", "imp.", "C.I.")) %>% 
   dplyr::select(-var) %>%
   kable(format = "latex", align = "c", booktabs = T, digits = 2, escape = F, linesep = "") 
 @
 
+<<species, echo = FALSE, warning = F, message = F, fig.height=4.4, fig.width=3.1>>=
+data <- mo
+net <- "./data/V2.0/networks" %>%
+	read_networks()
+# pred <- expand.grid(de = c(seq(min(data$de), max(data$de), length = 20000), mean(data$de)),
+#             n = c(seq(min(data$n), max(data$n), length = 2), mean(data$n)),
+#             vi = c(seq(min(data$vi), max(data$vi), length = 2), mean(data$vi)), 
+#             eig_cen = mean(data$eig_cen, na.rm = T), 
+#             guild = "pla") %>%
+#   dplyr::mutate(q = predict.glmulti(mod, 
+#                                     select = 0.95, 
+#                                     newdata = ., 
+#                                     re.form = NA)$averages %>%
+#                   as.vector(), 
+#                 p = plogis(q)) %>%
+#   dplyr::mutate(de = de * attr(data$de, "scaled:scale") + attr(data$de, "scaled:center"),
+#                 vi = vi * attr(data$vi, "scaled:scale") + attr(data$vi, "scaled:center"),
+#                 n = n * attr(data$n, "scaled:scale") + attr(data$n, "scaled:center"))
+#   # dplyr::filter(de == mean(data$de)) %>%
+#   
+# p1 <- pred %>%
+#   dplyr::filter(vi == unique(vi)[3]) %>%
+#   ggplot(aes(x = de, y = p)) +
+#   geom_line(aes(colour = as.factor(n), group = as.factor(n)), size = 1) +
+#   scale_colour_manual(name = "contribution to nestedness",
+#                       labels = c("max.", "mean", "min"),
+#                       values = c("#cccccc", "#969696", "#525252")) +
+#   # scale_x_continuous(expand = c(0,0)) +
+#   scale_y_continuous(limits = c(0,1)) +
+#   scale_x_log10() + 
+#   # xlab("degree") +
+#   # ylab("strength of dependencies") +
+#   stat_contour(colour = "black", size = 0.75) +
+#   fer_theme + theme(panel.grid = element_blank(), legend.position = "top") 
+# 
+# p2 <- pred %>%
+#   dplyr::filter(n == unique(n)[3]) %>%
+#   ggplot(aes(x = de, y = p)) +
+#   geom_line(aes(colour = as.factor(vi), group = as.factor(vi)), size = 1) +
+#   # scale_fill_gradient(name = "relative\nimportance", high = "#f0f0f0", low = "#525252") +
+#   # scale_x_continuous(expand = c(0,0)) +
+#   scale_y_continuous(limits = c(0,1)) +
+#   scale_x_log10() + 
+#   # xlab("degree") +
+#   # ylab("strength of dependencies") +
+#   stat_contour(colour = "black", size = 0.75) +
+#   fer_theme + theme(panel.grid = element_blank(), legend.position = "top")
+# 
+
+guild <- c("pla", "pol") %>%
+  plyr::ldply(function(y){
+    o <- lapply(net, function(x) igraph::V(x)[igraph::V(x)$type == y]$name) %>%
+      unlist() %>% unique()
+    data.frame(guild = y, species = o)
+  })
+
+invasive_sp <- dplyr::filter(meta, inv) %>%
+  dplyr::mutate(species = plyr::mapvalues(invader, 
+                                          c("car", "op", "imp"),
+                                          c("p_4", "p_25", "Impatiens glandulifera")), 
+                invasive = T) %>%
+  dplyr::select(net_name, species, invasive)
+
+connected_sp <- data %>% dplyr::select(net_name, species) %>% 
+  dplyr::mutate(connected = T)
+
+s_p_s <- s_p %>%
+  dplyr::full_join(invasive_sp) %>% 
+  dplyr::mutate(invasive = replace(invasive, is.na(invasive), FALSE)) %>% 
+  dplyr::inner_join(guild) %>%
+  dplyr::inner_join(meta) %>%
+  dplyr::filter(study != "ballantyne") %>%
+  dplyr::inner_join(connected_sp)
+
+dd <- data %>% lapply(as.vector) %>% as.data.frame()
+dd <- s_p_s %>%
+  dplyr::select(net_name, species, invasive, connected) %>%
+  dplyr::inner_join(dd) %>%
+  dplyr::mutate(pp = predict(mod, select = 0.95, newdata = ., re.form = NA)$averages,
+                pp = as.vector(pp),
+                pp = plogis(pp),
+                de2 = de * attr(data$de, "scaled:scale") + attr(data$de, "scaled:center"))
+
+
+# 
+# d <- s_p_s %>%
+#   dplyr::rename(n = nestedcontribution, 
+#                 de = d_strength, 
+#                 vi = v_strength) %>%
+#   dplyr::select(de, n, vi, eig_cen, guild)
+# 
+# d %>% s_p_s %>%
+#   dplyr::select(guild)
+# 
+# pp <-  predict(mod, newdata = d, select = 0.95, re.form = NA)$averages
+# 
+# species <- s_p_s %>%
+#   dplyr::mutate(pp = plogis(as.vector(pp)))
+
+trans <- function(x, orig){
+  x * attr(orig, "scaled:scale") + attr(orig, "scaled:center")
+}
+
+b_trans <- function(x, orig){
+  (x - attr(orig, "scaled:center")) / attr(orig, "scaled:scale")
+}
+
+# juju <- function(x) 10^x
+
+# 
+# pred2 <- expand.grid(de = b_trans(exp(c(seq(log(trans(min(data$de), data$de)),
+#                                 log(trans(max(data$de), data$de)), 
+#                                 length = 500))), data$de),
+#             n = c(seq(min(data$n), max(data$n), length = 500)),
+#             vi = mean(data$vi), 
+#             eig_cen = mean(data$eig_cen, na.rm = T), 
+#             guild = "pla") %>%
+#   dplyr::mutate(q = predict.glmulti(mod, 
+#                                     select = 0.95, 
+#                                     newdata = ., 
+#                                     re.form = NA)$averages %>%
+#                   as.vector(), 
+#                 p = plogis(q)) %>%
+#   dplyr::mutate(de = de * attr(data$de, "scaled:scale") + attr(data$de, "scaled:center"),
+#                 vi = vi * attr(data$vi, "scaled:scale") + attr(data$vi, "scaled:center"),
+#                 n = n * attr(data$n, "scaled:scale") + attr(data$n, "scaled:center"))
+# 
+# p3 <- pred2 %>%
+#   ggplot() +
+#   geom_tile(aes(fill = p, x = de, y = n, z = p)) + 
+#   scale_x_log10(expand = c(0,0)) +
+#   scale_y_continuous(expand = c(0,0)) +
+#   scale_fill_continuous(limits = c(0,1), low = "#ffffff", high = "#636363") +
+#  
+#   geom_point(data = s_p_s, aes(x = d_strength, y = nestedcontribution, shape = guild, colour = invasive), size = 1) +
+#    # stat_contour(aes(x = de, y = n, z = p), 
+#                # colour = "black", size = 0.5, bins = 5) +
+#   fer_theme + 
+#   scale_shape_manual(values = c(21, 22)) +
+#   scale_color_manual(values = c("#525252","#e41a1c")) + 
+#   theme(panel.grid = element_blank(), legend.position = "none",
+# 				plot.margin = grid::unit(c(0, 0, 2, 0), "mm")) +
+#   xlab("dependency strength") +
+#   ylab("contribution to nestedness")
+# 
+# 
+# pred3 <- expand.grid(de = b_trans(exp(c(seq(log(trans(min(data$de), data$de)),
+#                                 log(trans(max(data$de), data$de)), 
+#                                 length = 500))), data$de),
+#             n = c(mean(data$n)),
+#             vi = b_trans(exp(c(seq(log(trans(min(data$vi), data$vi)),
+#                                 log(trans(max(data$vi), data$vi)),
+#                                 length = 500))), data$vi),
+#             # vi = seq(min(data$vi), max(data$vi), length.out = 500),
+#             eig_cen = mean(data$eig_cen, na.rm = T), 
+#             guild = "pla") %>%
+#   dplyr::mutate(q = predict.glmulti(mod, 
+#                                     select = 0.95, 
+#                                     newdata = ., 
+#                                     re.form = NA)$averages %>%
+#                   as.vector(), 
+#                 p = plogis(q)) %>%
+#   dplyr::mutate(de = de * attr(data$de, "scaled:scale") + attr(data$de, "scaled:center"),
+#                 vi = vi * attr(data$vi, "scaled:scale") + attr(data$vi, "scaled:center"),
+#                 n = n * attr(data$n, "scaled:scale") + attr(data$n, "scaled:center"))
+# 
+# p4 <- pred3 %>%
+#   ggplot() +
+#   geom_tile(aes(x = de, y = vi, z = p, fill = p)) + 
+#   scale_x_log10(expand = c(0,0)) +
+#   scale_y_log10(expand = c(0,0)) +
+#   scale_fill_continuous(limits = c(0,1), low = "#ffffff", high = "#636363", name = "") +
+#   geom_point(data = s_p_s, aes(x = d_strength, y = v_strength, shape = guild, colour = invasive), size = 1, show.legend = F) +
+#   # geom_contour(aes(x = de, y = vi, z = p), colour = "black", size = 0.5, bins = 5) +
+#   fer_theme + theme(panel.grid = element_blank(), legend.position = "top",
+# 				plot.margin = grid::unit(c(5, 0, -2, 0), "mm"),
+# 				legend.key.height = grid::unit(3, "mm"),
+# 				legend.key.width = grid::unit(6, "mm")) +
+#   scale_shape_manual(values = c(21, 22)) +
+#   scale_color_manual(values = c("#525252","#e41a1c")) + 
+#   xlab("") +
+#   ylab("visitation strength")
+# 
+# ratio <- function(x){
+#   o <- round(x * 1000)
+#   rep(c(1,2), times = c(o, 1000-o)) %>%
+#     matrix(ncol = 1)
+# }
+
+# 
+# pred4 <- expand.grid(de = b_trans(exp(c(seq(log(trans(min(data$de), data$de)),
+#                                 log(trans(max(data$de), data$de)), 
+#                                 length = 500))), data$de),
+#             n = mean(data$n),
+#             vi = c(-1, 0, 1),
+#             # vi = seq(min(data$vi), max(data$vi), length.out = 500),
+#             eig_cen = mean(data$eig_cen, na.rm = T), 
+#             guild = "pla") %>%
+#   dplyr::filter(!(n == max(data$n) & vi == min(data$vi)),
+#                 !(n == min(data$n) & vi == max(data$vi))) %>%
+#   dplyr::mutate(q = predict.glmulti(mod, 
+#                                     select = 0.95, 
+#                                     newdata = ., 
+#                                     re.form = NA)$averages %>%
+#                   as.vector(), 
+#                 p = plogis(q)) %>%
+#   dplyr::mutate(de = de * attr(data$de, "scaled:scale") + attr(data$de, "scaled:center"),
+#                 vi = vi * attr(data$vi, "scaled:scale") + attr(data$vi, "scaled:center"),
+#                 n = n * attr(data$n, "scaled:scale") + attr(data$n, "scaled:center"))
+# 
+# pred4 %>%
+#   ggplot(aes(x = de, y = p)) +
+#   geom_line(aes(colour = as.factor(n), linetype = as.factor(vi))) + 
+#   scale_x_log10(expand = c(0,0)) +
+#   fer_theme
+# 
+# 
+
+pred4 <- data.frame(de = rep(b_trans(exp(c(seq(log(trans(min(data$de), data$de)),
+                                log(trans(max(data$de), data$de)),
+                                length = 500))), data$de),3),
+            n = rep(c(-1,0,1), each = 500),
+            vi = rep(c(-1,0,1), each = 500),
+            type = rep(c("exp", "mean", "exp"), each = 500),
+            # vi = seq(min(data$vi), max(data$vi), length.out = 500),
+            eig_cen = mean(data$eig_cen, na.rm = T),
+            guild = "pla") %>%
+  dplyr::filter(!(n == 2 & vi == -2),
+                !(n == -2 & vi == 2)) %>%
+  dplyr::mutate(q = predict.glmulti(mod,
+                                    select = 0.95,
+                                    newdata = .,
+                                    re.form = NA)$averages %>%
+                  as.vector(),
+                p = plogis(q)) %>%
+  dplyr::mutate(de = de * attr(data$de, "scaled:scale") + attr(data$de, "scaled:center"),
+                vi = vi * attr(data$vi, "scaled:scale") + attr(data$vi, "scaled:center"),
+                n = n * attr(data$n, "scaled:scale") + attr(data$n, "scaled:center"))
+
+
+
+
+# multiplot(p4, p3, layout = ratio(0.57))
+
+@
+
+Although plants showed significantly higher levels of importance for network control than pollinators (Mann-Withney-Wilcoxon test, $p \Sexpr{fix_small_pvalue(wilcox.test(pp ~ guild, data = dd, alternative = "greater")$p.value)}$), this difference can be largely explained by the strength of dependency of the species (the sum of the dependencies for a given species). Indeed, when averaging over the set of GLMMs that accounted at least 95\% of the evidencee based on AICc, we found that the strength of dependency  is the single most important factor determining the relative importance of species for network control (\autoref{table:driver_model}\todo{consider moving the table to thes supplementary}, \autoref{fig:driver_model_alt}). Contrastingly, the number of visits a species receives (or performs) and its contribution to nestedness have only a marginal effect on its relative importance for network control. In addition, in the ten communities that were invaded, invasive species were invariably classified as a driver species. 
+
 \begin{table}
 \centering
 \small
-\subfloat[pollinators]{
 <<table importance 1, echo = FALSE, warning = F, message = F, results = "asis">>=
-print_table(imp[[1]])
+print_table(imp)
 @
-}
-\subfloat[plants]{
-<<table importance 2, echo = FALSE, warning = F, message = F, results = "asis">>=
-print_table(imp[[2]])
-@
-}
-\caption{\label{table:sd} Minimum number and proportion of driver species necessary to control the full pollination network}
+\caption{\label{table:driver_model} The strength of dependency, contribution to nestedness and visitation strength had a significative effect on all the models that accounted for 95\% of the evidence based on AICc. Coeficient estimates were avaraged following \textcite{Buckland1997a}; confidence intervals were calculated following \textcite{Lukacs2010}.}
 \end{table}
-
 
 \begin{figure}
 \centering
-<<fig species, echo = FALSE, warning = F, message = F, fig.height=2.2, fig.width=3.1>>=
-data_pol <- mod[[1]]@objects[[1]]$data
-data_pla <- mod[[2]]@objects[[1]]$data
-
-expand.grid(d = seq(min(data_pla$d), max(data_pla$d), by = 1),
-            S_d = seq(min(data_pla$S_d), max(data_pla$S_d), length = 20), 
-            n = mean(data_pla$n, na.rm = T), 
-            S_v = mean(data_pla$S_v)) %>%
-  dplyr::mutate(q = predict.glmulti(mod[[2]], 
-                                    select = 0.95, 
-                                    newdata = .)$averages %>%
-                  as.vector(), 
-                p = plogis(q)) %>%
-  ggplot(aes(x = d, y = S_d, z = p)) +
-  geom_tile(aes(alpha = p), fill = "#0e324b") +
-  # scale_fill_gradient(name = "relative\nimportance", high = "#f0f0f0", low = "#525252") +
-  scale_x_continuous(expand = c(0,0)) +
-  scale_y_continuous(expand = c(0,0)) +
-  xlab("degree") +
-  ylab("strength of dependencies") +
-  stat_contour(colour = "black", size = 0.75) +
-  fer_theme + theme(panel.grid = element_blank())
+<<fig species alt, echo = FALSE, warning = F, message = F, fig.height=2.2, fig.width=3.1>>=
+pred4 %>%
+  ggplot() +
+  geom_line(aes(x = de, y = p, linetype = type, colour = type, group = interaction(n, vi)), show.legend = F, size = 0.5) +
+  scale_x_log10(expand = c(0,0)) +
+   geom_point(data = dplyr::arrange(dd, invasive), aes(x = de2, y = pp, fill = invasive, shape = guild, size = invasive), show.legend = F) +
+    scale_shape_manual(values = c(21, 23)) +
+  scale_size_manual(values = c(1,1.5)) +
+  scale_fill_manual(values = c("white","#e41a1c")) + 
+  scale_color_manual(values = c("#525252", "black")) +
+  scale_linetype_manual(values = c(2, 1)) +
+  xlab("dependency strength") +
+  ylab("relative importance") +
+  fer_theme
 @
-\caption{\label{fig:prediction} aSS }
+\caption{\label{fig:driver_model_alt} Dependency strength is the single most important factor explaining the importance of species for network control. Visitation levels and contribution to nestedness had a significant albeit small effect on the importance (dashed lines correspond to \textpm one standard deviation on these factors). Invasive species (red) were invariably classified as driver species (those having the maximum importance for network control.}
 \end{figure}
 
 \section*{Acknoledgements}
 
 The authors thank Dr. Takeuki Uno for the insight provided to find the set of all maximum matching algorithms, and Bernat Bramon, Matthew Hutchinson and Marilia Gaiarsa for feedback in early stages of the project. EFC acknowledges the support from the University of Canterbury Doctoral Scholarship, the University of Canterbury Meadow Mushroooms Postgraduate Scholarship, a travel grant from the European Space Agency and a Rutherford Discovery Fellowship (to DBS). DBS ackloledges the support of a Rutherford Discovery Scholarship, administered by the Royal Society of New Zealand.
 
-\section*{Author contributions}
 
 \printbibliography
 
