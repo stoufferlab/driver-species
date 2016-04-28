@@ -25,7 +25,7 @@
 \setlength{\parskip}{0.5em}
 
 % comments
-\usepackage[draft, textsize = scriptsize]{todonotes}
+\usepackage[draft, textsize = scriptsize, color = gray]{todonotes}
 
 % graphics
 \usepackage{graphicx}
@@ -67,8 +67,8 @@ isbn=false
 \setlength\linenumbersep{15pt}
 \renewcommand\linenumberfont{\normalfont\footnotesize\sffamily\color{gray}}
 
-\doublespacing
-
+%\doublespacing
+\onehalfspacing
 
 % title
 % Article title
@@ -83,15 +83,6 @@ isbn=false
  \date{}
  
 \maketitle
-
-\iffalse
-
-\begin{abstract}
-\noindent Si sabemos que el disfrute exige lentitud, y que---mas en general---la felicidad se asocia con el ir despacio, por que corremos tanto? El arte de comer estriba en saborear cada bocado sin pensar en el siguiente, sin apresurar el siguiente. El arte de leer, en demorarse en cada palabra como si el sentido del escrito entero estuviera contenido en ella. El arte de amar, en vivir cada momento de la relacion con la persona amada como si fuese el destino de toda la historia del mundo, desde la aparicion del primer organismo unicelular hasta hoy. Y asi podemos generalizar a las demas actividades, creo, hasta obtener un arte de vivir. Para mi se resume en la palabra ahi. --- Jorge Riechmann
-\end{abstract}
-
-\keywords{Control theory, box in the article}
-
 
 
 <<libraries, echo = FALSE, warning = F, message = F>>=
@@ -156,6 +147,27 @@ mo <- readRDS("./data/V2.0/detailed_species_models_data.rds")
 
 \section*{Introduction}
 
+\todo[inline]{I really need some help with specific ideas for the first paragraph. Everything I come up with is shit}
+
+Seminal work on control theory has established a strong link between the structure of complex networks and its controlability \autocite{Liu2011}, and that in principle it is possible to alter any ecological community's composition, by modifying the abundances of just some key species \autocite{Cornelius2013}. Based on this work and using a small number of binary (only presence or absence of interactions) food-webs, it has been suggested that the degree distribution of ecological networks makes them inherently difficult to control \autocite{Liu2011, Ruths2014}. This theoretical result is in agreement with many cases in which the management of ecological communities is more challenging than aticipated. In contrast with other types of complex systems like neural, intra-organizational, or trust neworks, which in comparison have a hierarchical or distributed structure, ecological networks tend to be closed systems in which resources recirculate. As such, ecosystems cointain multiple feedbacks that allow them to self-regulate and therefore function relatively independent from external stimulation\todo{add ref}. Although these conceptual advances on control theory provided an initial link between the structure of ecological communities and our ability to manage them this relationship is still ambiguous. Ultimately, ecological networks can vary widely on their structure and are often comprised by interactions whose strengths can vary by several orders of magnitude\todo{add ref}.
+
+For instance, biotic invasions, as other major drivers of global change, can induce dramatic changes on the patterns of interactions that determine the structure of ecological networks \autocite{Baxter2004, Tylianakis2008, Ehrenfeld2010a}. These changes can be particularly pronounced in mutualistic networks of plants and pollinators where biotic invasions have been shown to modify the strength of species interactions and the degree of network nestedness and connectivity \autocite{Olesen2002, Aizen2008, Bartomeus2008, Vila2009, Traveset2013}. Moreover, as evidenced by the limited amount of success of restoration projects \autocite{Smith2016}, returning invaded communities to a predisturbance state is quite a difficult endeavour \autocite{Suding2004, Rodewald2015}. Understanding how differences in network structure caused by invasions are reflected on our ability to manage them can provide useful lessons to conservation science. What is more, it can also provide ecological insights: by explicitly taking into account the extent to wh ich changes in the abbundances of one species may ripple trough the community, applying control theory to ecological networks can provide an indication which species are important from a dynamic perspective and therefore crucial when attempting to alter (or maintain) the ecosystem state. 
+
+\textcite{Isbell2013} used a control theoretic approach to find the minimum subset of species neccessary to maintain network structure in six marine food webs. They found that humans affect a larger proportion of this subset of species than, for instance, apex predators. They argue that this disproportionate influence could translate into unintentional restructuring of food webs. Although insightful, \textcite{Isbell2013} had a number of shortcommings that limited the scope and applicability of their results. First, they disregard the fact that the minimum set of species is not unique and thus not all species within this set are equally important for the community population dynamics. Second, their methods were naive to differences on the strength of interspecific effects. And third, their approach was conceptually limited to trophic interactions\todo{is this too harsh?}. 
+
+Here, we expand previous theory of the control of complex systems and use a set of paired invaded and uninvaded plant-pollinator communities to investigate \textit{i)} the link between network structure and our ability to manage them, \textit{ii)} whether biotic invasions as drivers of structure change can modify this manageability, and \textit{iii)} the relative importance of species at driving the population dynamics of other species in the community. Plant pollinator networks provide an ideal framework to answer these questions. On one hand the role of asymmetric species interdependence has been heavily studied and as species are mutually interdependent, it may allow some top-down bottom-up simplifications regarding the direction of control. quantitative Our objective is
+
+As this influence is often unregulated for instance but some limitations... 
+
+Here we use a suite of plant-pollinator communities 
+
+We want to know if ecological communities are difficult to control, and this is modified by the invasion status, and which species are more important for driving the community
+
+Here we use plant pollinator communities to investigate the number of species that should be managed to control population dynamics of the whole community, the characteristics that determine whether a species should be managed or not and how invasive species fit. 
+
+\iffalse
+
+
 Ecological communities are formed by the interconnection of several species. Therefore, changes in the abundances of one species can potentially alter the abundances of the species they interact with. For instance, in a classic example of ecosystem cascades, a reduction on the abundance of sea otters, an important predator or sea urchins, can drive a dramatic reduction on kelp abundances because the sea urchins that consume kelp are released from predation. It has been long established that some species, like the sea otter, have a disproportionate large effect in their environment relative to their abundance. 
 
 In several ecosystems the relative importance of species have been identified based on empirical observations of long term dynamics. However, in less studied, highly diverse, or where the "keystone" role is shared by several species, it can be challenging to determine which is the set of species that influence the most the ecosystem dynamics. Alternative approaches that recognize a continuum of importance and that are less dependent on empirical observations have also been developed. Some of them are based on metrics that evaluate their position in the food web or on mass balance models of functional groups. Nevertheless, these approaches are conceptually limited to throphic interactions and in general ignore the structural mechanisms that allow or prevent the spread of perturbations in the ecosystem.
@@ -167,11 +179,6 @@ Recent work on the control of complex systems suggest that in principle it is po
 Invasive species have been shown to have a disproportionate effect on the structure of pollination communities. Influencing for example the strength of species interactions, and the degree of network nestedness and connectivity \autocite{Olesen2002, Aizen2008, Bartomeus2008, Vila2009, Traveset2013}. However whether this influence is translated into a driver role has not been tested.
 
 \fi
-
-\section*{Introduction}
-Here we use plant pollinator communities to investigate the number of species that should be managed to control population dynamics of the whole community, the characteristics that determine whether a species should be managed or not and how invasive species fit. 
-
-
 
 
 \section*{Methods}
@@ -1152,6 +1159,12 @@ pred4 %>%
 @
 \caption{\label{fig:driver_model_alt} Dependency strength is the single most important factor explaining the importance of species for network control. Visitation levels and contribution to nestedness had a significant albeit small effect on the importance (dashed lines correspond to \textpm one standard deviation on these factors). Invasive species (red) were invariably classified as driver species (those having the maximum importance for network control.}
 \end{figure}
+
+\section*{Discussion}
+
+Therefore, full controlability of ecological networks---being able to steer the ecosystem into any desired ecosystem state---would require a  This characteristics render ecological networks unlikely to be able to visist every possible system state   other closed systems, ecological networks 
+
+The controllability of ecological networks is not a concept limited to control theory. Controllability in the ecological context can be seen as a direct meassure of the mimimum number of species whose abbundance would need to be directly regulated to achieve full network control. While we are far away from 
 
 \section*{Acknoledgements}
 
