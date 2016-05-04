@@ -8,7 +8,7 @@ m[sample(length(m), round(size/10 * 6))] <- 0
 m %<>% matrix(ncol = sqrt(size))
 
 # random models
-simul <- vegan::nullmodel(m, "r00_ind") %>%
+simul <- vegan::nullmodel(m, "r00_both") %>%
 	simulate(3)
 
 # marginal sums

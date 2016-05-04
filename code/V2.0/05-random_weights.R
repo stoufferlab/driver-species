@@ -26,16 +26,16 @@ null_methods <- c(
 	# "swsh_samp",
 	# "swsh_samp_r",
 	# "swsh_samp_c",
-	"swsh_both"
+	"swsh_both",
 	# "swsh_both_r",
 	# "swsh_both_c",
-	# "r00_ind",
+	"r00_ind",
 	# "r0_ind",
 	# "c0_ind",
-	# "r00_samp",
+	"r00_samp",
 	# "r0_samp",
 	# "c0_samp",
-	# "r00_both",
+	"r00_both"
 	# "r0_both",
 	# "c0_both"
 ) 
