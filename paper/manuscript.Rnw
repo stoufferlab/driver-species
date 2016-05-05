@@ -73,11 +73,7 @@ isbn=false
 % title
 % Article title
   \title{
-  {\LARGE \textsc{Structural controlability of pollination networks}}\\
-  {\LARGE \textsc{Structural controlability of ecological networks}}\\
-  {\LARGE \textsc{Network manageability in the context of species invasion}}\\
-  {\LARGE \textsc{Biotic invasions reduce manageability of ecological networks}}\\
-  {\LARGE \textsc{Identifying the ``driver species'' of an ecosystem}}}
+  {\LARGE \textsc{Structural controlability of pollination networks}}}
 
 % Authors and Affiliations
   \author{\large E. Fernando Cagua}
@@ -88,6 +84,15 @@ isbn=false
  
 \maketitle
 
+Alternative titles:
+
+\textsc{Structural controlability of ecological networks}
+
+\textsc{Network manageability in the context of species invasion}
+
+\textsc{Biotic invasions reduce manageability of ecological networks}
+
+\textsc{Identifying the ``driver species'' of an ecosystem}
 
 <<libraries, echo = FALSE, warning = F, message = F>>=
 library(magrittr)
@@ -500,7 +505,7 @@ Nevertheless, mutual dependencies have been shown to be highly assymetric in nat
 
 $$a(i,j) = \frac{\left | d_{ij}-d_{ji} \right |}{\textup{max}\left ( d_{ij}, d_{ji} \right )}$$
 
-\subsection*{Relative species importance}
+\subsection*{Relative importance}
 
 \todo[inline]{insert ecological motivation?}
 
@@ -699,11 +704,11 @@ z_scores <- r$method %>%
 
 @
 
-The manageability of empirical networks varied little when compared to network randomisations that maintained the species strength or species degree. This result is consistent regardless of whether we consider mutual dependences or the interaction asymmetry. Contrastingly, empirical networks have smaller manageabilities than network randomisations in which the direction of the dependencies is altered but the structure is maintained. 
+The manageability of empirical networks was, in general, not significantly different to the manageability of network randomisations that maintain the degree or the strength of individual species (\autoref{fig:randomisations}). However when comparing the empirical network to less constrained randomisations that maintained the original connectance but in which species had different degrees and strengths, we found that empirical networks tend to have smaller values of manageability. This pattern is even more marked when we maintained the network structure but randomised only the direction of the asymmetries (\autoref{fig:randomisations}).
 
 \begin{figure}
 \centering
-<<fig randomisations, echo = FALSE, warning = F, message = F, fig.height=2.2, fig.width=3.245>>=
+<<fig randomisations, echo = FALSE, warning = F, message = F, fig.height=2.7, fig.width=3.245>>=
 
 # z_scores <- r %>%
 #   dplyr::group_by(net_name, method) %>%
@@ -720,18 +725,21 @@ z_scores %>%
   dplyr::mutate(method = factor(method, levels = z_scores_method_order),
                 m_n = as.numeric(method),
                 m_n = replace(m_n, m_n == 3, 3.5)) %>%
+  dplyr::filter(!method %in% c("r00_both", "r00_ind")) %>%
   ggplot(aes(x = method, y = -1 * z_s)) +
-  geom_rect(aes(xmin = 0.5, xmax = 3.5, ymin = -Inf, ymax = qlogis(0.025)), fill = "#f0f0f0") +
-  geom_rect(aes(xmin = 0.5, xmax = 3.5, ymin = Inf, ymax = qlogis(0.975)), fill = "#f0f0f0") +
+  geom_rect(aes(xmin = 0.5, xmax = 4.5, ymin = -Inf, ymax = qlogis(0.025)), fill = "#f0f0f0") +
+  geom_rect(aes(xmin = 0.5, xmax = 4.5, ymin = Inf, ymax = qlogis(0.975)), fill = "#f0f0f0") +
 
   # geom_hline(yintercept = c(-0), linetype = 2, alpha = 0.7, size = 0.25) + 
-  geom_vline(aes(xintercept = 2.5), alpha = 0.6, size = 0.25) +
+  geom_vline(aes(xintercept = 3.5), alpha = 0.6, size = 0.25) +
    geom_hline(yintercept = 0, size = 0.25, linetype = 2, colour = "grey30") +
   geom_boxplot(aes(fill = type), size = 0.3,
                colour = "grey10", outlier.shape = 21, outlier.size = 1) +
   # geom_point(aes(y = 9, colour = sign <= 0.05), shape = 8, size = 1) +
   scale_fill_manual(values = c("white", "#bdbdbd")) +
-  scale_x_discrete(labels = rev(c("random\nassymetry", "maintain vis. strength\nrandomise degree", "maintain vis. degree\nrandomise strength")), expand = c(0,0)) + 
+  scale_x_discrete(
+    labels = rev(c("random\nassymetry", "maintain\nconnectance", "maintain vis. strength\nrandomise degree", "maintain vis. degree\nrandomise strength")),
+    expand = c(0,0)) +
   scale_y_continuous(breaks = qlogis(c(0.001, 0.025, 0.5, 0.975,0.999)), 
                      labels = plogis(qlogis(c(0.001, 0.025, 0.5, 0.975,0.999)))) + 
   xlab("") +
@@ -1133,7 +1141,18 @@ pred4 <- data.frame(de = rep(b_trans(exp(c(seq(log(trans(min(data$de), data$de))
 
 Although plants showed significantly higher levels of importance than pollinators (Mann-Withney-Wilcoxon test, $p \Sexpr{fix_small_pvalue(wilcox.test(pp ~ guild, data = dd, alternative = "greater")$p.value)}$), this difference can be largely explained by the strength of dependency of the species (the sum of the dependencies for a given species). Indeed, when averaging over the set of GLMMs that accounted at least 95\% of the evidencee based on AICc, we found that the strength of dependency  is the single most important factor determining the relative importance of species for network control (\autoref{table:driver_model}\todo{consider moving the table to thes supplementary}, \autoref{fig:driver_model_alt}). In contrast, the number of visits a species makes (or receives) and its contribution to nestedness have only a marginal effect on its relative importance.
 
-In addition, in the ten communities that were invaded, invasive species were invariably classified as a driver species. 
+<<invasive species differ?, echo = FALSE, warning = F, message = F, results = "hide">>=
+for_invasive <- dd %>%
+  dplyr::mutate(prediction = as.vector(predict.glmulti(mod, select = 0.95, newdata = .)$averages), 
+                predictionp = plogis(prediction), 
+                res = d_reim - predictionp) %>%
+  dplyr::filter(guild == "pla")
+
+inv_test <- wilcox.test(d_reim ~ invasive, data = for_invasive, alternative = "less")
+t.test(dplyr::filter(for_invasive, invasive)$res)
+@
+
+In addition, in the ten communities that were invaded, invasive species were invariably classified as a driver species. In general, the relative importance of invasive species was significantly larger than those of the other plants in the studied communities(Mann-Whitney U Test, $p =  \Sexpr{fix_small_pvalue(inv_test$p.value)}$). However this difference can be fully explained by the explanatory variables in our model as all the residuals for the invasive species were virtually zero.  
 
 \begin{table}
 \centering
