@@ -155,6 +155,7 @@ mo <- readRDS("./data/V2.0/detailed_species_models_data.rds")
 @
 
 
+
 \section*{Introduction}
 
 \textit{Tentative spiel for the first paragraph:} We need to manage ecological communities because of ecosystem services and biodiversity maintenance. We would like to control communities in the sense of conserving and restoring them. However to control them (in that sense) we need to understand how species affect each other and potentially the whole system when they are faced by perturbations or management interventions. But we cannot do that yet because we lack a theoretical framework that link the dynamics of the community to management. Control theory might provide this link.
@@ -1181,6 +1182,8 @@ pred4 %>%
 \caption{\label{fig:driver_model_alt} Dependency strength is the single most important factor explaining the importance of species for network control. Visitation levels and contribution to nestedness had a significant albeit small effect on the importance (dashed lines correspond to \textpm one standard deviation on these factors). Invasive species (red) were invariably classified as driver species (those having the maximum importance for network control.}
 \end{figure}
 
+
+
 \section*{Discussion}
 
 We found that 
@@ -1189,9 +1192,11 @@ Therefore, full controlability of ecological networks---being able to steer the 
 
 The controllability of ecological networks is not a concept limited to control theory. Controllability in the ecological context can be seen as a direct meassure of the mimimum number of species whose abbundance would need to be directly regulated to achieve full network control. While we are far away from 
 
+
+
 \section*{Acknoledgements}
 
-The authors thank Dr. Takeuki Uno for the insight provided to find the set of all maximum matching algorithms, and Bernat Bramon, Matthew Hutchinson and Marilia Gaiarsa for feedback in early stages of the project. EFC acknowledges the support from the University of Canterbury Doctoral Scholarship, the University of Canterbury Meadow Mushroooms Postgraduate Scholarship, a travel grant from the European Space Agency and a Rutherford Discovery Fellowship (to DBS). DBS ackloledges the support of a Rutherford Discovery Fellowship, administered by the Royal Society of New Zealand.
+The authors thank Dr. Takeuki Uno for the insight provided to find the set of all maximum matching algorithms, and Bernat Bramon, Matthew Hutchinson and Marilia Gaiarsa for feedback in early stages of the project. EFC acknowledges the support from the University of Canterbury Doctoral Scholarship, the University of Canterbury Meadow Mushroooms Postgraduate Scholarship, a New Zealand International Doctoral Research Scholarship, and a travel grant from the European Space Agency. DBS ackloledges the support of a Rutherford Discovery Fellowship, administered by the Royal Society of New Zealand.
 
 
 \printbibliography
