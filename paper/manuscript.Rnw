@@ -73,7 +73,7 @@ isbn=false
 % title
 % Article title
   \title{
-  {\LARGE \textsc{Structural controlability of pollination networks}}}
+  {\LARGE \textsc{Biotic invasions reduce the manageability of mutualistic networks}}}
 
 % Authors and Affiliations
   \author{\large E. Fernando Cagua}
@@ -86,13 +86,8 @@ isbn=false
 
 Alternative titles:
 
-\textsc{Structural controlability of ecological networks}
-
 \textsc{Network manageability in the context of species invasion}
 
-\textsc{Biotic invasions reduce manageability of ecological networks}
-
-\textsc{Identifying the ``driver species'' of an ecosystem}
 
 <<libraries, echo = FALSE, warning = F, message = F>>=
 library(magrittr)
@@ -160,7 +155,11 @@ mo <- readRDS("./data/V2.0/detailed_species_models_data.rds")
 
 \textit{Tentative spiel for the first paragraph:} We need to manage ecological communities because of ecosystem services and biodiversity maintenance. We would like to control communities in the sense of conserving and restoring them. However to control them (in that sense) we need to understand how species affect each other and potentially the whole system when they are faced by perturbations or management interventions. But we cannot do that yet because we lack a theoretical framework that link the dynamics of the community to management. Control theory might provide this link.
 
-Seminal work on control theory has established a strong link between the structure of complex networks and its controlability and that in principle it is possible to alter any ecological community's composition, by modifying the abundances of just some key species \autocite{Liu2011, Cornelius2013}. Based on this work and using a small number of binary food-webs (only presence or absence of interactions), it has been suggested that the degree distribution of ecological networks makes them inherently difficult to control \autocite{Liu2011, Ruths2014}. This theoretical result is in agreement with many cases in which the management of ecological communities is more challenging than aticipated. In contrast with other types of complex systems like neural, intra-organizational, or trust neworks, ecological networks do not have a hierarchical or distributed structuretend but rather tend to be closed systems in which resources recirculate. As such, ecosystems contain multiple feedbacks that allow them to self-regulate and, therefore, function relatively independent from external stimulation\todo{add ref}. Although these conceptual advances on control theory have provided an initial link between the structure of ecological communities and our ability to manage them, this relationship is still ambiguous. Ultimately, the challenge of ecological networks is represented by the variablity of their structure and interaction strengths---which can vary by several orders of mangitude\todo{add ref}.
+
+In contrast with other types of complex systems like neural, intra-organizational, or trust neworks, ecological networks do not have a hierarchical or distributed structure but rather tend to be closed systems in which resources recirculate\todo{add ref}. As such, ecosystems contain multiple feedbacks that allow them to self-regulate and, therefore, function relatively independent from external stimulation\todo{add ref}.
+
+
+Research stemming from control theory has established a strong link between the structure of complex networks and their controlability and that, in principle it is possible to alter a ecological community's composition by modifying the abundances of only a few species \autocite{Liu2011, Cornelius2013}. Based on this work and using a small number of binary food-webs (only presence or absence of interactions), it has been suggested that the degree distribution of ecological networks makes them inherently difficult to control \autocite{Liu2011, Ruths2014}. This theoretical result is in agreement with many cases in which the management of ecological communities is more challenging than aticipated.  Although these conceptual advances on control theory have provided an initial link between the structure of ecological communities and our ability to manage them, this relationship is still ambiguous. Ultimately, the challenge of ecological networks is represented by the variablity of their structure and interaction strengths---which can vary by several orders of mangitude\todo{add ref}.
 
 For instance, biotic invasions, as other major drivers of global change, can induce dramatic changes on the patterns of interactions that determine the structure of ecological networks \autocite{Baxter2004, Tylianakis2008, Ehrenfeld2010a}. These changes can be particularly pronounced in mutualistic networks of plants and pollinators where biotic invasions have been shown to modify the strength of species interactions and the degree of network nestedness and connectivity \autocite{Olesen2002, Aizen2008, Bartomeus2008, Vila2009, Traveset2013}. Moreover, as evidenced by the limited amount of success of restoration projects \autocite{Smith2016}, returning invaded communities to a predisturbance state is quite a difficult endeavour \autocite{Suding2004, Rodewald2015}. Understanding how invasion-induced differences in network structure impact our ability to manage them, can provide useful lessons to conservation science. What is more, there are also ecological insights to be had: by explicitly taking into account the extent to which changes in the abbundances of one species may ripple trough the community, applying control theory to ecological networks can provide an indication of which species are important from a dynamic perspective, and therefore crucial when attempting to alter (or maintain) the ecosystem state. 
 
@@ -1151,7 +1150,7 @@ inv_test <- wilcox.test(d_reim ~ invasive, data = for_invasive, alternative = "l
 t.test(dplyr::filter(for_invasive, invasive)$res)
 @
 
-In addition, in the ten communities that were invaded, invasive species were invariably classified as a driver species. In general, the relative importance of invasive species was significantly larger than those of the other plants in the studied communities(Mann-Whitney U Test, $p =  \Sexpr{fix_small_pvalue(inv_test$p.value)}$). However this difference can be fully explained by the explanatory variables in our model as all the residuals for the invasive species were virtually zero.  
+In addition, in the ten communities that were invaded, invasive species were invariably classified as a driver species. In general, the relative importance of invasive species was significantly larger than those of the other plants in the studied communities (Mann-Whitney U Test, $p =  \Sexpr{fix_small_pvalue(inv_test$p.value)}$). However this difference can be fully explained by the explanatory variables in our model as all the residuals for the invasive species were virtually zero.  
 
 \begin{table}
 \centering
@@ -1182,21 +1181,57 @@ pred4 %>%
 \caption{\label{fig:driver_model_alt} Dependency strength is the single most important factor explaining the importance of species for network control. Visitation levels and contribution to nestedness had a significant albeit small effect on the importance (dashed lines correspond to \textpm one standard deviation on these factors). Invasive species (red) were invariably classified as driver species (those having the maximum importance for network control.}
 \end{figure}
 
+<<interact with invasive , echo = FALSE, warning = F, message = F, results = "asis">>=
 
+dd_inv <- dd %>%
+  dplyr::filter(net_name %in% invasive_sp$net_name) %>%
+  plyr::ddply("net_name", function(x){
+    inv <- invasive_sp$species[invasive_sp$net_name == x$net_name[1]]
+    if(length(inv) == 0){
+      x %>% 
+      dplyr::mutate(int_inv = "none")
+    } else{
+      interacting <- igraph::adjacent_vertices(net[[x$net_name[1]]], inv)[[1]] %>% names
+      x %>% 
+        dplyr::mutate(int_inv = species %in% interacting)
+    }
+  })
+
+# dd_inv %>%
+#   # dplyr::group_by(net_name, int_inv) %>%
+#   # dplyr::summarise(int_inv_d_reim_mean = mean(d_reim)) %>%
+#     ggplot(aes(x = int_inv, y = d_reim)) +
+#   geom_boxplot()
+
+dd_inv_t <- dd_inv %>%
+  dplyr::group_by(net_name, int_inv) %>%
+  dplyr::summarise(int_inv_d_reim_mean = mean(d_reim)) %>%
+  tidyr::spread(int_inv, int_inv_d_reim_mean)
+
+
+dd_inv_test <- wilcox.test(dd_inv_t[, 3][[1]], dd_inv_t[, 2][[1]], paired = F)
+
+@
+
+No significant difference on importance between pollinators interacting with invasive species or not.
 
 \section*{Discussion}
 
-We found that 
+Our results reveal that invasive mutualists are driver species in the communities they invade. As driver species, they occupy a dominant role in which changes on their abbundance have the potential to cascade trough the community and in turn affect the abbundances of several other species in the community. They achieve that by alterning the distribution of the strength of mutual dependencies and the interaction asymmetries---which constitute the foundations of the structure of mutualistic networks \autocite{Vazquez2004, Bascompte2006}. Furthermore, these structural differences caused by invasive species at a community level are reflected in a potential decrease in our ability to alter the state of the community. 
 
-Therefore, full controlability of ecological networks---being able to steer the ecosystem into any desired ecosystem state---would require a  This characteristics render ecological networks unlikely to be able to visist every possible system state   other closed systems, ecological networks 
+We confirm previous studies that suggested that in contrast with other kind of complex networks, the structure of ecological networks renders them remarkably difficult to control \autocite{Liu2011, Ruths2014}. In a hypothetical situation in which the goal were to regulate the abbundances of all species in a pollination community, our results suggest that we would need to directly intervene the abbundances of at least 40-90\% of those species. Fully controling an ecological community is out of the question, as designing and implementating the management interventions needed is currently impractical. Nevertheless, the ``manageability'' of an ecological community, which is related to the number of species that would require a directed intervention, can provide a simple, straightforward, and theoretically-informed indication of the degree to which the community is self-regulated and therefore how difficult it might be to modify its state. 
 
-The controllability of ecological networks is not a concept limited to control theory. Controllability in the ecological context can be seen as a direct meassure of the mimimum number of species whose abbundance would need to be directly regulated to achieve full network control. While we are far away from 
+Asymmertic depedences have previously found to be related to the stability and persistence of pollination networks \autocite{Memmott2004, Vazquez2004, Lever2014, Astegiano2015}. Here, we demonstrate that the manageability of mutualistic networks is also governed by the asymetric nature of mutual dependeces. Indeed, our empirical networks have markedly lower levels of manageability compared to randomisations in which the visitation network was unchanged, but the patterns of dependence were broken by randomising the direction of the asymmetries. However, consistent with previous results \autocite{Liu2011}, we show that the manageability of empirical networks was indistinguishable from that of networks with a random structure (in terms of modularity and nestedness for example) but that maintained the degree or strength of each species in the community. This suggest that the asymmetries at the species (specialization-generalization asymmetries) and the link level (interaction's dependence asymmetries) appear to be sufficiently defined by the distribution of species degree and strength \autocite{Melian2002}. Furthermore, we found that invasive species, by altering the patterns of assymetry, reduce the manageability of their communities. This result is in agreement with previous studies that suggest that invasors erode native pollination webs by ursurpating interactions and exarcerbate the asymmerties in the network, which in turn might increasse the stability of the community \autocite{Aizen2008, Bartomeus2008}. 
 
+The changes on the asymmetries found in the invaded networks are not only reflected in the manageability at a community level: invaders were found to be driver species in every single community in which they were present. Invasive plants have usually been found to be super-generalists thus playing a central role in their networks \autocite{Vila2009, Palacio2016}. Nevertheless, we found that dependence strength, rather than generalism or other metrics of centrality, explains best the importance of species for the community dynamics. Specifically, driver species tend to be those whose interaction partners are collectively more dependent on them than the other way arround. However, the influence of dependence strength was held regardless of wheter the species was invasive or not, which corroborates previous observations that suggest that exotic species, although having different traits\todo{add cite}, are not inherently different to their native counterparts, but are rather governed by the same rules of niche and competition that determine species coexistence \autocite{Stouffer2014}. Invasive species have been shown to have the ability to transform the structure of ecological communities \autocite{Aizen2008, Albrecht2014}, our results suggest that they also may have the ability to heavily influence the abbundances of other species in the ecosystem.
 
+Because of their effects on other species in the community, driver species might be natural candidates for management interventions. For instance, despite inconsistent outcomes, our results suggest that current restoration approaches that focus on direct eradication of invasive species might indeed be an effective way to modify ecosystem state. Nevertheless, our results also indicate that removals must be executed with caution as invaded commmunities tend to be dependent on them and therefore vulnerable to their erradication \autocite{Traveset2013, Albrecht2014}. Although useful for identifying conservation priorities, our approach is different to previous attempts to quantify species importance that concentrate on measures of centrality, position, coextintion or uniqueness \autocite{Jordan2006,Jordan2009, Lai2012, McDonald-Madden2016}. Instead the concept of driver species is more akin to the original concept of keystone species, which illustrated how changes on the abbundance of a key species in turn affect the abbundances of other members of the community \autocite{Paine1969, Paine1995}. However, while the keystone species were traditionally identified by infering the effects of a perturbation on a community's population dynamics \autocite{Mills1993}, the driver species concept operates the other way round, and uses the communuty dynamics, underpinned by the interspecific effects, to infer the effects of a perturbation. While it is challenging to quantify the dependence of species in an ecological community, an experimental approach to identofy dynamically important species might be even more difficult\todo{add cite}. 
+
+Here we ilustrate how a control theoretic approach can be used to study the effect on mutualistic communities of a major driver of global change, however it can be easily extended to understand the structural effects of other kind of preturbations and species interactions. Moreover, we see great potential by explicitly integrating control theory with dynamics models of species densities \autocite{Cornelius2013, Gibson2016}. From an ecological perspective, it can provide key insight on determining the relationship between controlability and species coexistence, as well as determining the trade-offs between persistence at the species and the community level. From a conservation perspective, a combined approach can be useful, not only to idetify ideal targets for management interventions, but also to design informed, rather than hopeful, interventions that achieve restoration goals.
 
 \section*{Acknoledgements}
 
-The authors thank Dr. Takeuki Uno for the insight provided to find the set of all maximum matching algorithms, and Bernat Bramon, Matthew Hutchinson and Marilia Gaiarsa for feedback in early stages of the project. EFC acknowledges the support from the University of Canterbury Doctoral Scholarship, the University of Canterbury Meadow Mushroooms Postgraduate Scholarship, a New Zealand International Doctoral Research Scholarship, and a travel grant from the European Space Agency. DBS ackloledges the support of a Rutherford Discovery Fellowship, administered by the Royal Society of New Zealand.
+The authors thank Dr. Takeuki Uno for the insight provided to find the set of all maximum matching algorithms, and Jason Tylianakis, Bernat Bramon, Matthew Hutchinson, and Marilia Gaiarsa for feedback in early stages of the project. EFC acknowledges the support from the University of Canterbury Doctoral Scholarship, the University of Canterbury Meadow Mushroooms Postgraduate Scholarship, a New Zealand International Doctoral Research Scholarship, and a travel grant from the European Space Agency. DBS ackloledges the support of a Marsden Fast-Start grant and a Rutherford Discovery Fellowship, administered by the Royal Society of New Zealand.
 
 
 \printbibliography
