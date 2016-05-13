@@ -93,6 +93,13 @@ glm.redefined = function(formula, data, always="", ...) {
   glm(as.formula(paste(deparse(formula, width.cutoff = 500), always)), data=data, ...)
 }
 
+invasive_sp <- dplyr::filter(meta, inv) %>%
+  dplyr::mutate(species = plyr::mapvalues(invader, 
+                                          c("car", "op", "imp"),
+                                          c("p_4", "p_25", "Impatiens glandulifera")), 
+                invasive = T) %>%
+  dplyr::select(net_name, species, invasive)
+
 # calculate a lot of models
 mo <- drivers %>%
   dplyr::filter(threshold == 0.5,
@@ -105,7 +112,9 @@ mo <- drivers %>%
                  "d" = "degree", 
                  "de" = "d_strength",
                  "vi" = "v_strength")  %>%
-  dplyr::mutate(n = scale(n),
+  dplyr::full_join(invasive_sp) %>% 
+  dplyr::mutate(invasive = replace(invasive, is.na(invasive), FALSE)) %>%
+  dplyr::mutate(n = scale(n)[,1],
                 S_d = scale(S_d),
                 S_v = scale(S_v),
                 d = scale(d),
@@ -113,18 +122,21 @@ mo <- drivers %>%
                 de = scale(de),
                 vi = scale(vi))
 
-to_exclude <- c("de", "eig_cen", "n", "vi") %>% 
-  combn(2) %>% 
-  apply(2, function(x) paste(x[1], x[2], sep = ":"))
 
-mod <- glmulti("d_reim", c("de", "guild", "eig_cen","n", "vi"),
+
+
+to_exclude <- c("de", "eig_cen", "n", "vi", "invasive") %>% 
+  combn(2) %>% 
+  apply(2, function(x) paste(x[1], x[2], sep = ":")) 
+
+mod <- glmulti("d_reim", c("d", "de", "guild", "eig_cen","n", "vi", "invasive"),
              # exclude = to_exclude, 
              data = mo,
              family = "binomial",
              fitfunction = glmer.glmulti, 
              level = 1,
              crit = "aic", 
-             method = "h", 
+             method = "g", 
              marginality = T,
              includeobjects = F, 
              random = " + (1 | net_name)")

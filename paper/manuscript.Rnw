@@ -279,7 +279,7 @@ Given a maximum matching, the link to network controllability has an intuitive b
 
 The manageability of a community $m$ provides an indication of the magnitude of $n_d$ but not the identity of the species that compose this set. This is rather important since maximum matchings are often not unique in for a given network and different sets of species of size $n_d$ could potentially be used to control the network \autocite{Liu2011}. Species vary in terms of the frequency with which they are classified as superior nodes (\autoref{fig:explain_mm}), and this frequency provides an indication of their relative importance in driving the state of the community. Ecologically, these distinctions are crucial because resources are limited and therefore ecological inteventions should be focused on species that might provide the largest impact. As superior nodes \autoref{fig:explain_mm} drive the dynamics of other species and are therefore important for the controlability of the network because they either require external input or because the are part of the chain that transmit the external imputs to other species, we therefore call \textit{driver species} those that are identified as being a superior node in all possible matchings, and hence those most likely to have a disproportionate effect on the abundances of other species in their community.
 
-As previously described, a maximum matching in a weighted network is one whose links have the largest possible total weight among all possible matchings. One way to calculate the species importance, and identify the driver species, would be to consider only maximum matchings. However empirical intraction strengths are to some extent stochastic and depend on proximate factors such as sampling method and intensity \autocite{Rezende2007}. This means that in weighted networks there is a number of matchings that have maximal size, but are not maximum matchings because their total weight is not maximal. We therefore relaxed the matching weight requirement and computed all possible matchings in the network that have the same maximal size while allowing for some tolerance regarding the weight. To compute all the matchings with maximal size, we first generated the network's line graph---another representation in which nodes are the links of the original network and links represent common ending points\todo{West2001}. We then calculated the complement of the line graph: a graph in which nodes are connected if and only if they are not connected in the line graph. All possible matchings of maximal size can be found by enumerating all cliques (subgraphs in which every node is linked to every other) of maximum size, which equates to $1-n_d$m in this complement graph \autocite{Csardi2006a, Gutin2013}. 
+As previously described, a maximum matching in a weighted network is one whose links have the largest possible total weight among all possible matchings. One way to calculate the species importance, and identify the driver species, would be to consider only maximum matchings. However empirical intraction strengths are to some extent stochastic and depend on proximate factors such as sampling method and intensity \autocite{Rezende2007}. This means that in weighted networks there is a number of matchings that have maximal size, but are not maximum matchings because their total weight is not maximal. We therefore relaxed the matching weight requirement and computed all possible matchings in the network that have the same maximal size while allowing for some tolerance regarding the weight. To compute all the matchings with maximal size, we first generated the network's line graph---another representation in which nodes are the links of the original network and links represent common ending points \autocite{West2001}. We then calculated the complement of the line graph: a graph in which nodes are connected if and only if they are not connected in the line graph. All possible matchings of maximal size can be found by enumerating all cliques (subgraphs in which every node is linked to every other) of maximum size, which equates to $1-n_d$m in this complement graph \autocite{Csardi2006a, Gutin2013}. 
 
 \section*{Methods}
 
@@ -478,7 +478,7 @@ nodes <- data.frame(layoutCoordinates) %>%
 
 weights <- allEdges %>%
   dplyr::filter(Sequence == 12) %>%
-  dplyr::mutate(weight = c(0.75, 0.5, 0.5, 0.6, 0.5, 0.16)) 
+  dplyr::mutate(weight = c("0.75", " ", "0.5", "0.33", " ", "0.25")) 
 
 p3 <- ggplot(allEdges) +  # Pretty simple plot code
 	geom_path(aes(x = x, y = y, group = Group), size = 0.5,
@@ -521,9 +521,7 @@ Our second key question is related to how different species differ in their impo
 
 Even in sparse networks, like these studied here, the number of maximal matchings increasses exponentially with the number of links and nodes in a network. Unfortunately, this means that the large number of links in the most diverse communities rendered the computation unfeasible when we used mutual dependecies. Taking this limitation into account, we compared the relative network manageability obtained when using asymmetries to those found when using mutual dependencies for eleven of the twenty networks (those for which the number of matchings was smaller than $4\times 10^{10}$). The comparison was performed using a paired Spearman correlation test, a weighted correlation coefficient $r_{w2}$ (which gives more weight to higer ranks; \cite{PintoDaCosta2015}), and a Jaccard similarity of the driver species in both approaches. All three approaches identified a high similarity in relative ranks. Therefore, we used the results from the assymetries, rather than mutual dependences, to further investigate the factors that determine species' relative importance since this also allows us to obtain results for all networks.
 
-Given the species importance obtained using the interaction asymmetries, we then asked the question of whether some species-level structural properties can predict the relative importance of species. To do so, we used a generalised linear mixed-effects model (GLMM) with a logistic link function to evaluate the relationship between the species' relative importance and a suite of structural measures. As predictors in this model, we specifically included measures of centrality (degree and eigen-centrality), which have been found to be strong predictors of importance in a coextintion context \autocite{Memmott2004}; a measure related to network robustness (contribution to nestedness), as nestedness has been proposed as one of the key properties that promote stability in mutualistic networks \autocite{Saavedra2011}; and measures of strength of association and dependence (visitation and dependency strength), as their distribution determine the extent of interspecific effects. All metrics were calculated using the R package bipartite 2.06 \autocite{Dormann2008}. We allowed for variation between different communities by including the network identity as a random effect \autocite{Bates2015a}. Candidate models were compared using AICc and the relative importance of the explanatory variables was evaluated using the sum of Akaike weights over candidate models that accounted for 95\% of the evidence \autocite{Burnham2003, Bates2014, Barton2016}. 
-
-Invasive species in particular have been shown to have disproportionate effects on the communities they invade (\cite{Bartomeus2008, Gilberto2012}; but see \cite{Vila2009}). So we lastly examined the extent to which invasive species tend to be driver species---species whith the maximum importance---and whether their importance could be explained by the factors previously described. To do so, as our invasive species were plants, we first used a Mann-Withney U test to compare the relative importance of invasive species to those of other plants in the community. 
+Given the species importance obtained using the interaction asymmetries, we then asked the question of whether some species-level structural properties can predict the relative importance of species. To do so, we used a generalised linear mixed-effects model (GLMM) with a logistic link function to evaluate the relationship between the species' relative importance and a suite of structural measures. As predictors in this model, we specifically included measures of centrality (degree and eigen-centrality), which have been found to be strong predictors of importance in a coextintion context \autocite{Memmott2004}; a measure related to network robustness (contribution to nestedness), as nestedness has been proposed as one of the key properties that promote stability in mutualistic networks \autocite{Saavedra2011}; and measures of strength of association and dependence (visitation and dependency strength), as their distribution determine the extent of interspecific effects; and whether the species was invasive or not. In addition we also included guild and invasive status as fixed effects; although the importance of plants and pollinators or invasive and non-invasive species could respond differently to our structural metrics, our dataset did not contain enough variation to include the corresponding interactions terms. All metrics were calculated using the R package bipartite 2.06 \autocite{Dormann2008}. We allowed for variation between different communities by including the network identity as a random effect \autocite{Bates2015a}. Candidate models were compared using AICc and the relative importance of the explanatory variables was evaluated using the sum of Akaike weights over candidate models that accounted for 95\% of the evidence \autocite{Burnham2003, Bates2014, Barton2016}. 
 
 \section*{Results}
 
@@ -659,7 +657,7 @@ par_res %>%
 #         legend.box = "horizontal",
 #         legend.direction = "vertical") 
 @
-\caption{\label{fig:n_driver_explanatory} Invaded communities have lower levels of manageability than uninvaded communities even when controling for the ratio of plant to pollinator richness. Adjusted manageability corrsponds to the partial working residuals of the invasion status.}
+\caption{\label{fig:n_driver_explanatory} Invaded communities have lower levels of manageability than uninvaded communities even when controling for the ratio of plant to pollinator richness. Adjusted manageability corrsponds to the partial working residuals of the invasion status. The box covers the 25th–75th percentiles, the middle line marks the median, and the maximum length of the whiskers is 1.5 times the interquartile range. Points outside this range show up as outliers.}
 \end{figure}
 
 <<randomisations z_scores, echo = FALSE, warning= FALSE, message = FALSE>>=
@@ -704,7 +702,7 @@ The manageability of empirical networks was, in general, not significantly diffe
 #   dplyr::group_by() %>%
 #   dplyr::mutate(z_s = (n_dr - mu)/sigma)
 
-z_scores_method_order <- unique(z_scores$method)
+z_scores_method_order <- c("r0","swsh_both", "quasiswap_count","r00_ind", "r00_samp", "r00_both")
 
 z_scores %>%
   dplyr::group_by() %>%
@@ -717,20 +715,21 @@ z_scores %>%
   geom_rect(aes(xmin = 0.5, xmax = 4.5, ymin = Inf, ymax = qlogis(0.975)), fill = "#f0f0f0") +
 
   # geom_hline(yintercept = c(-0), linetype = 2, alpha = 0.7, size = 0.25) + 
-  geom_vline(aes(xintercept = 3.5), alpha = 0.6, size = 0.25) +
+  geom_vline(aes(xintercept = 1.5), alpha = 0.6, size = 0.25) +
    geom_hline(yintercept = 0, size = 0.25, linetype = 2, colour = "grey30") +
   geom_boxplot(aes(fill = type), size = 0.3,
                colour = "grey10", outlier.shape = 21, outlier.size = 1) +
   # geom_point(aes(y = 9, colour = sign <= 0.05), shape = 8, size = 1) +
   scale_fill_manual(values = c("white", "#bdbdbd")) +
   scale_x_discrete(
-    labels = rev(c("random\nassymetry", "maintain\nconnectance", "maintain vis. strength\nrandomise degree", "maintain vis. degree\nrandomise strength")),
+    labels = rev(c("only maintain\nconnectance", "maintain strength\nrandomise degree", "maintain degree\nrandomise strength", "random\nassymetry")),
+    # breaks = c("r00_samp", "swsh_both", "quasiswap_count", "r0"),
     expand = c(0,0)) +
   scale_y_continuous(breaks = qlogis(c(0.001, 0.025, 0.5, 0.975,0.999)), 
                      labels = plogis(qlogis(c(0.001, 0.025, 0.5, 0.975,0.999)))) + 
   xlab("") +
     coord_flip() +
-  ylab("rank of empirical manageability") + 
+  ylab("mean rank of empirical manageability") + 
   fer_theme +
   theme(
         legend.position = "none",
@@ -739,7 +738,7 @@ z_scores %>%
 				panel.grid.minor.y = element_blank())
 
 @
-\caption{\label{fig:randomisations} The manageability of empirical networks was compared to network randomisations using a normalised rank. The shaded areas in light grey ($< 0.025$ and $> 0.975$) suggest a significant difference between the empirical network and its randomisations. The empirical manageability is much smaller than those of randomisations in which the direction of assymmetries has been randomised. In contrast the manageability of network in which the visitation strength or degree was mantained was not different to the manageability of the empirical networks. Dark grey and white boxplots represent manageabilities obtained using mutual dependencies and asymmetries respectively.}
+\caption{\label{fig:randomisations} The manageability of empirical networks was compared to network randomisations using a normalised rank. The shaded areas in light grey ($< 0.025$ and $> 0.975$) suggest a significant difference between the empirical network and its randomisations. The empirical manageability is much smaller than those of randomisations in which the direction of assymmetries has been randomised. In contrast the manageability of network in which the visitation strength or degree was mantained was not different to the manageability of the empirical networks. Dark grey and white boxplots represent manageabilities obtained using mutual dependencies and asymmetries respectively. All boxes are as in \autoref{fig:n_driver_explanatory}.}
 \end{figure}
 
 \subsection*{Relative importance of species}
@@ -863,12 +862,12 @@ imp <- mod %>%
   dplyr::mutate(pare = grepl("(", factor, fixed =T),
                 factor = plyr::mapvalues(factor, 
                                          c("de", "n", "vi", "eig_cen", 
-                                           "guildpol"),
+                                           "guildpol", "d", "invasiveTRUE"),
                                          c("dependency strength", 
                                            "contribution to nestedness",
                                            "visitation strength",
                                            "eigen-centrality", 
-                                           "guild (pollinator)"))) %>% 
+                                           "guild (pollinator)", "degree", "invasive sp."))) %>% 
   dplyr::arrange(-pare, -Importance, -Estimate, factor) %>% 
   dplyr::select(-pare)
 
@@ -946,24 +945,25 @@ connected_sp <- data %>% dplyr::select(net_name, species) %>%
   dplyr::mutate(connected = T)
 
 s_p_s <- s_p %>%
-  dplyr::full_join(invasive_sp) %>% 
-  dplyr::mutate(invasive = replace(invasive, is.na(invasive), FALSE)) %>% 
+  dplyr::full_join(invasive_sp) %>%
+  dplyr::mutate(invasive = replace(invasive, is.na(invasive), FALSE)) %>%
   dplyr::inner_join(guild) %>%
   dplyr::inner_join(meta) %>%
   dplyr::filter(study != "ballantyne") %>%
   dplyr::inner_join(connected_sp)
 
+
+
 dd <- data %>% lapply(as.vector) %>% as.data.frame()
 dd <- s_p_s %>%
   dplyr::select(net_name, species, invasive, connected) %>%
   dplyr::inner_join(dd) %>%
-  dplyr::mutate(pp = predict(mod, select = 0.95, newdata = ., re.form = NA)$averages,
+  dplyr::mutate(pp = predict.glmulti(mod, select = 0.2, newdata = ., re.form = NA),
                 pp = as.vector(pp),
                 pp = plogis(pp),
                 de2 = de * attr(data$de, "scaled:scale") + attr(data$de, "scaled:center"))
 
-
-# 
+#
 # d <- s_p_s %>%
 #   dplyr::rename(n = nestedcontribution, 
 #                 de = d_strength, 
@@ -1105,18 +1105,18 @@ pred4 <- data.frame(de = rep(b_trans(exp(c(seq(log(trans(min(data$de), data$de))
             type = rep(c("exp", "mean", "exp"), each = 500),
             # vi = seq(min(data$vi), max(data$vi), length.out = 500),
             eig_cen = mean(data$eig_cen, na.rm = T),
+            d = mean(data$d, na.rm = T),
             guild = "pla") %>%
   dplyr::filter(!(n == 2 & vi == -2),
                 !(n == -2 & vi == 2)) %>%
   dplyr::mutate(q = predict.glmulti(mod,
-                                    select = 0.95,
+                                    select = 2 %>% `class<-`("integer"),
                                     newdata = .,
                                     re.form = NA)$averages %>%
                   as.vector(),
                 p = plogis(q)) %>%
   dplyr::mutate(de = de * attr(data$de, "scaled:scale") + attr(data$de, "scaled:center"),
-                vi = vi * attr(data$vi, "scaled:scale") + attr(data$vi, "scaled:center"),
-                n = n * attr(data$n, "scaled:scale") + attr(data$n, "scaled:center"))
+                vi = vi * attr(data$vi, "scaled:scale") + attr(data$vi, "scaled:center"))
 
 
 
@@ -1125,21 +1125,7 @@ pred4 <- data.frame(de = rep(b_trans(exp(c(seq(log(trans(min(data$de), data$de))
 
 @
 
-Although plants showed significantly higher levels of importance than pollinators (Mann-Withney-Wilcoxon test, $p \Sexpr{fix_small_pvalue(wilcox.test(pp ~ guild, data = dd, alternative = "greater")$p.value)}$), this difference can be largely explained by the strength of dependency of the species (the sum of the dependencies for a given species). Indeed, when averaging over the set of GLMMs that accounted at least 95\% of the evidencee based on AICc, we found that the strength of dependency  is the single most important factor determining the relative importance of species for network control (\autoref{table:driver_model}\todo{consider moving the table to thes supplementary}, \autoref{fig:driver_model_alt}). In contrast, the number of visits a species makes (or receives) and its contribution to nestedness have only a marginal effect on its relative importance.
-
-<<invasive species differ?, echo = FALSE, warning = F, message = F, results = "hide">>=
-for_invasive <- dd %>%
-  dplyr::mutate(prediction = as.vector(predict.glmulti(mod, select = 0.95, newdata = .)$averages), 
-                predictionp = plogis(prediction), 
-                res = d_reim - predictionp) %>%
-  dplyr::filter(guild == "pla")
-
-inv_test <- wilcox.test(d_reim ~ invasive, data = for_invasive, alternative = "less")
-t.test(dplyr::filter(for_invasive, invasive)$res)
-@
-
-In addition, in the ten communities that were invaded, invasive species were invariably classified as a driver species. In general, the relative importance of invasive species was significantly larger than those of the other plants in the studied communities (Mann-Whitney U Test, $p =  \Sexpr{fix_small_pvalue(inv_test$p.value)}$). However this difference can be fully explained by the explanatory variables in our model as all the residuals for the invasive species were virtually zero.  
-
+Although plants showed significantly higher levels of importance than pollinators (Mann-Withney-Wilcoxon test, $p \Sexpr{fix_small_pvalue(wilcox.test(pp ~ guild, data = dd, alternative = "greater")$p.value)}$), this difference can be largely explained by the strength of dependency of the species (the sum of the dependencies for a given species). Indeed, when averaging over the set of GLMMs that accounted at least 95\% of the evidencee based on AICc, we found that the strength of dependency  is the single most important factor determining the relative importance of species for network control (\autoref{table:driver_model}, \autoref{fig:driver_model_alt}). In contrast, the number of visits a species makes (or receives) and its contribution to nestedness have only a marginal effect on its relative importance.
 \begin{table}
 \centering
 \small
@@ -1152,11 +1138,18 @@ print_table(imp)
 \begin{figure}
 \centering
 <<fig species alt, echo = FALSE, warning = F, message = F, fig.height=2.2, fig.width=3.1>>=
+
+data_pp <- data
+data_pp$pred_ri <- plogis(predict.glmulti(mod, select = as.integer(1), re.form = NA))
+data_pp$de_s <- data$de * attr(data$de, "scaled:scale") + attr(data$de, "scaled:center")
+data_pp <- lapply(data_pp, as.vector) %>% as.data.frame
+       
+
 pred4 %>%
   ggplot() +
   geom_line(aes(x = de, y = p, linetype = type, colour = type, group = interaction(n, vi)), show.legend = F, size = 0.5) +
   scale_x_log10(expand = c(0,0)) +
-   geom_point(data = dplyr::arrange(dd, invasive), aes(x = de2, y = pp, fill = invasive, shape = guild, size = invasive), show.legend = F) +
+   geom_point(data = dplyr::arrange(data_pp, invasive), aes(x = de_s, y = pred_ri, fill = invasive, shape = guild, size = invasive), show.legend = F) +
     scale_shape_manual(values = c(21, 23)) +
   scale_size_manual(values = c(1,1.5)) +
   scale_fill_manual(values = c("white","#e41a1c")) + 
@@ -1168,42 +1161,6 @@ pred4 %>%
 @
 \caption{\label{fig:driver_model_alt} Dependency strength is the single most important factor explaining the importance of species for network control. Visitation levels and contribution to nestedness had a significant albeit small effect on the importance (dashed lines correspond to \textpm one standard deviation on these factors). Invasive species (red) were invariably classified as driver species (those having the maximum importance for network control.}
 \end{figure}
-
-<<interact with invasive , echo = FALSE, warning = F, message = F, results = "asis">>=
-
-dd_inv <- dd %>%
-  dplyr::filter(net_name %in% invasive_sp$net_name) %>%
-  plyr::ddply("net_name", function(x){
-    inv <- invasive_sp$species[invasive_sp$net_name == x$net_name[1]]
-    if(length(inv) == 0){
-      x %>% 
-      dplyr::mutate(int_inv = "none")
-    } else{
-      interacting <- igraph::adjacent_vertices(net[[x$net_name[1]]], inv)[[1]] %>% names
-      x %>% 
-        dplyr::mutate(int_inv = species %in% interacting)
-    }
-  })
-
-# dd_inv %>%
-#   # dplyr::group_by(net_name, int_inv) %>%
-#   # dplyr::summarise(int_inv_d_reim_mean = mean(d_reim)) %>%
-#     ggplot(aes(x = int_inv, y = d_reim)) +
-#   geom_boxplot()
-
-dd_inv_t <- dd_inv %>%
-  dplyr::group_by(net_name, int_inv) %>%
-  dplyr::summarise(int_inv_d_reim_mean = mean(d_reim)) %>%
-  tidyr::spread(int_inv, int_inv_d_reim_mean)
-
-
-dd_inv_test <- wilcox.test(dd_inv_t[, 3][[1]], dd_inv_t[, 2][[1]], paired = F)
-
-@
-
-No significant difference on importance between pollinators interacting with invasive species or not.
-
-
 
 \section*{Discussion}
 
