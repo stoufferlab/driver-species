@@ -27,3 +27,12 @@ supp_info.tex: supp_info.Rnw
 
 clean:
 	rm -fv *.aux *.fls *.log *blx.bib *.xml *.blg *.bbl *.fdb_latexmk *.bcf *.out
+
+doc: manuscript.docx
+
+manuscript.md : manuscript.Rmd
+	Rscript -e "knitr::knit('manuscript.Rmd')"
+	
+manuscript.docx : manuscript.md template.docx
+	pandoc +RTS -K512m -RTS manuscript.md --to docx --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash-implicit_figures --output manuscript.docx --filter /usr/local/bin/pandoc-citeproc --highlight-style tango --bibliography references.bib --reference-docx template.docx
+	
