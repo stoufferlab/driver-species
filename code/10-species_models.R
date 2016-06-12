@@ -10,7 +10,7 @@ setwd("~/github/driver-species/")
   list.files(full.names = T) %>%
   plyr::l_ply(source)
 
-driver <- c("./data/V2.0/matching_frequency") %>% 
+driver <- c("./data/processed/matching_frequency") %>% 
   list.files(full.names = T) %>%
   lapply(list.files, full.names = T) %>% 
   unlist() %>% 
@@ -24,7 +24,7 @@ driver <- mapply(function(x, y){
 }, driver, prop)
 
 meta <- readr::read_csv("data/ntw_info.csv") %>% dplyr::tbl_df()
-s_p <- readRDS("./data/V2.0/species_properties.rds") %>% dplyr::tbl_df()
+s_p <- readRDS("./data/processed/species_properties.rds") %>% dplyr::tbl_df()
 
 # extract frequency
 d_sp <- driver %>%
@@ -38,7 +38,7 @@ d_sp <- driver %>%
 drivers <- dplyr::inner_join(d_sp, s_p) %>% 
   dplyr::mutate(d_s_m = d_strength / degree, 
                 v_s_m = v_strength / degree)
-net <- "./data/V2.0/networks" %>%
+net <- "./data/processed/networks" %>%
   read_networks()
 
 guild <- c("pla", "pol") %>%
@@ -205,8 +205,8 @@ mod <- glmulti("d_reim", c("d", "de", "guild", "eig_cen","n", "vi", "invasive"),
 # 
 # models <- list(pla = pla_mod, pol = pol_mod)
 
-saveRDS(mod, file = "./data/V2.0/detailed_species_models.rds", ascii = T, compress = F)
-saveRDS(mo, file = "./data/V2.0/detailed_species_models_data.rds", ascii = T, compress = F)
+saveRDS(mod, file = "./data/processed/detailed_species_models.rds", ascii = T, compress = F)
+saveRDS(mo, file = "./data/processed/detailed_species_models_data.rds", ascii = T, compress = F)
 
-saveRDS(factor_correlations, file = "./data/V2.0/species_models_correlations.rds", ascii = T, compress = F)
+saveRDS(factor_correlations, file = "./data/processed/species_models_correlations.rds", ascii = T, compress = F)
 

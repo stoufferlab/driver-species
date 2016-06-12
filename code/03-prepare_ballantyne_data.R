@@ -3,7 +3,7 @@ library(magrittr)
 setwd("~/github/driver-species/")
 
 # read data
-data <- read.csv("./data/Ballantyne-2015-raw_data.csv") %>%
+data <- read.csv("./data/raw/Ballantyne-2015-raw_data.csv") %>%
 	dplyr::tbl_df() %>%
 	dplyr::mutate(pla = paste0("p_", as.numeric(plant_species)),
 								pol = paste0("i_", as.numeric(visitor_group)))
@@ -45,7 +45,7 @@ net <- plyr::llply(ntw, function(x){
 })
 
 # save each network
-folder <- "./data/V2.0/networks/"
+folder <- "./data/processed/networks/"
 plyr::l_ply(names(net), function(x){
 	filename <- paste0(x, ".rds")
 	saveRDS(net[[x]], paste0(folder, filename), ascii = T, compress = F)

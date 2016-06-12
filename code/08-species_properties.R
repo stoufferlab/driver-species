@@ -14,7 +14,7 @@ nsimul <- commandArgs(trailingOnly = T)[2]
   plyr::l_ply(source)
 
 # read networks
-net <- "./data/V2.0/networks" %>%
+net <- "./data/processed/networks" %>%
   read_networks()
 
 # read metadata
@@ -52,6 +52,6 @@ plyr::ldply(net, function(n){
 }, .parallel = TRUE) %>%
   dplyr::rename_("net_name" = ".id") %>%
   dplyr::tbl_df() %>%
-  saveRDS(file = "./data/V2.0/species_properties.rds", 
+  saveRDS(file = "./data/processed/species_properties.rds", 
           ascii = TRUE, compress = FALSE)
 

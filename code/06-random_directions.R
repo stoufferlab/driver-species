@@ -17,7 +17,7 @@ nperm <- commandArgs(trailingOnly = T)[2]
   plyr::l_ply(source)
 
 # read networks
-net <- "./data/V2.0/networks" %>%
+net <- "./data/processed/networks" %>%
   read_networks()
 
 # read metadata
@@ -25,7 +25,7 @@ meta <- readr::read_csv("data/ntw_info.csv") %>% dplyr::tbl_df() %>%
   dplyr::rename(count = method)
  
 # read matching results
-matched <- readRDS("./data/V2.0/n_matched.rds")
+matched <- readRDS("./data/processed/n_matched.rds")
 
 null_methods <- c(
   "r0") 
@@ -103,7 +103,7 @@ plyr::ldply(net, function(n){
       dplyr::mutate(method = y)
   })
 }, .progress = "text") %>%
-  saveRDS(file = "./data/V2.0/random_directions.rds", ascii = T, compress = F)
+  saveRDS(file = "./data/processed/random_directions.rds", ascii = T, compress = F)
 
 
 

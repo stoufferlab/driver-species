@@ -7,7 +7,7 @@ setwd("~/github/driver-species/")
 # files with b correspond to interactions
 # files with exp are experimental plots (uninvaded) and ctl are control (invaded plots)
 
-folder <- "./data/networks_lopezaraiza/"
+folder <- "./data/raw/networks_lopezaraiza/"
 net_names <- list.files(folder) %>%
   grep("b", ., value = T) %>% 
   stringr::str_split(" ") %>%
@@ -41,7 +41,7 @@ net <- plyr::dlply(ntw, "Site", function(x){
 })
 
 # save each network
-folder <- "./data/V2.0/networks/"
+folder <- "./data/processed/networks/"
 plyr::l_ply(names(net), function(x){
   filename <- paste0(x, ".rds")
   saveRDS(net[[x]], paste0(folder, filename), ascii = T, compress = F)

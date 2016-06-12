@@ -12,7 +12,7 @@ setwd("~/github/driver-species/")
   plyr::l_ply(source)
 
 # read networks
-net <- "./data/V2.0/networks" %>%
+net <- "./data/processed/networks" %>%
   read_networks()
 
 # read metadata
@@ -28,4 +28,4 @@ plyr::ldply(net, function(n){
   })
 }, .progress = "text") %>%
   `names<-`(c("net_name", "type", "n_matched")) %>%
-  saveRDS(file = "./data/V2.0/n_matched_all_types.rds", ascii = T, compress = F)
+  saveRDS(file = "./data/processed/n_matched_all_types.rds", ascii = T, compress = F)

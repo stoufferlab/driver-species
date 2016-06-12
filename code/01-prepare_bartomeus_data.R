@@ -3,7 +3,7 @@ library(magrittr)
 setwd("~/github/driver-species/")
 
 # read bartomeus data
-data <- read.csv("./data/Bartomeus_Ntw_nceas.txt",sep="\t") %>%
+data <- read.csv("./data/raw/Bartomeus_Ntw_nceas.txt",sep="\t") %>%
 	dplyr::tbl_df()
 
 # organise plants and pollinator names and set weight and visit frequency
@@ -28,7 +28,7 @@ net <- plyr::dlply(ntw, "Site", function(x){
 })
 
 # save each network
-folder <- "./data/V2.0/networks/"
+folder <- "./data/processed/networks/"
 plyr::l_ply(names(net), function(x){
 	filename <- paste0(x, ".rds")
 	saveRDS(net[[x]], paste0(folder, filename), ascii = T, compress = F)

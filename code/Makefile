@@ -1,7 +1,7 @@
 all: prepare_data matching randomisations alt_matching properties models
 
 n_cores = 4
-d_f = ../../data/V2.0/
+d_f = ../../data/processed/
 n_perm = 999
 
 prepare_data: $(d_f)networks/*

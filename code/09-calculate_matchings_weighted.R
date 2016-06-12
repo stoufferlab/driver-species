@@ -12,7 +12,7 @@ setwd("~/github/driver-species/")
   plyr::l_ply(source)
 
 # read networks
-net <- "./data/V2.0/networks" %>%
+net <- "./data/processed/networks" %>%
   read_networks()
 
 # read metadata
@@ -37,7 +37,7 @@ m_freq <- 1:length(onet) %>%
                            prop = seq(0, 1, by = 0.1),
                            type = "z-bi")
     saveRDS(o, 
-            file = paste0("./data/V2.0/matching_frequency_bi/", 
+            file = paste0("./data/processed/matching_frequency_bi/", 
                           names(onet)[x], ".rds"), 
             ascii = TRUE, compress = F)
     return(o)
@@ -46,5 +46,5 @@ m_freq <- 1:length(onet) %>%
 names(m_freq) <- names(onet)
 
 # save data
-saveRDS(matched, file = "./data/V2.0/n_matched_bi.rds", ascii = T, compress = F)
-saveRDS(m_freq, file = "./data/V2.0/matching_frequency_bi.rds", ascii = T, compress = F)
+saveRDS(matched, file = "./data/processed/n_matched_bi.rds", ascii = T, compress = F)
+saveRDS(m_freq, file = "./data/processed/matching_frequency_bi.rds", ascii = T, compress = F)

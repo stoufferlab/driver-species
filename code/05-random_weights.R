@@ -18,7 +18,7 @@ nperm <- commandArgs(trailingOnly = T)[2]
 	plyr::l_ply(source)
 
 # read networks
-net <- "./data/V2.0/networks" %>%
+net <- "./data/processed/networks" %>%
 	read_networks()
 
 null_methods <- c(
@@ -73,4 +73,4 @@ plyr::ldply(net, function(n){
 		  dplyr::mutate(method = y)
 	})
 }, .progress = "text") %>%
-	saveRDS(file = "./data/V2.0/random_weights.rds", ascii = T, compress = F)
+	saveRDS(file = "./data/processed/random_weights.rds", ascii = T, compress = F)

@@ -13,7 +13,7 @@ message("loading functions")
 message("reading networks")
 
 # read networks 
-net <- "./data/V2.0/networks" %>% 
+net <- "./data/processed/networks" %>% 
 	read_networks()
 
 # read metadata
@@ -45,7 +45,7 @@ expand.grid(scale = c(F, T), weight.type = c("asymmetry", "max_dep")) %>%
                                weight.type = as.character(y$weight.type),
                                scale = y$scale) 
         saveRDS(o, 
-                file = paste0("./data/V2.0/matching_frequency/",
+                file = paste0("./data/processed/matching_frequency/",
                               y$weight.type, "/", "scaled_", y$scale, "/",
                               names(onet)[x], ".rds"), 
                 ascii = TRUE, compress = F)
