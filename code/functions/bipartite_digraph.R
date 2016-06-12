@@ -10,9 +10,11 @@
 #' 
 #' @examples
 bipartite_digraph <- function(net,
-											type = c("z-bi", "weight", "AB", "BA"),
-											keep = c("all", "A", "B", "random")){
-	
+											type = c("weight", "z-bi", "AB", "BA"),
+											keep = c("all", "A", "B", "random"),
+											weight.type = c("max_dep", "asymmetry"), 
+											scale = F){
+  
 	# sanity checks
 	stopifnot(
 		# stop if it's not an igraph object
@@ -21,24 +23,57 @@ bipartite_digraph <- function(net,
 		dplyr::n_distinct(igraph::vertex_attr(net, "type")) == 2
 	)
 	
+  # is it an unweighted network?
+  if(dplyr::n_distinct(igraph::E(net)$weight) == 1) {
+    uw <- TRUE
+  } else {
+    uw <- FALSE
+  }
+  
 	# if its bidirectional just make an easy convertion
-	if (type[1] == "z-bi") y <- igraph::as.directed(net)
-	
+	if (type[1] == "z-bi") {
+	  # get dependencies
+	  dependencies <- net %>% 
+	    igraph::as_adjacency_matrix(sparse = 0, attr = "weight")
+	  
+	  if(!uw){
+	    dependencies %<>%
+	      apply(1, function(x){x / sum(x)}) %>% t()
+	  } 
+	  
+	  y <- igraph::graph_from_adjacency_matrix(dependencies, mode = "directed",
+	                                      weighted = TRUE) %>%
+	    igraph::set_vertex_attr(name = "type", 
+	                            value = igraph::vertex_attr(net, "type")) %>%
+	    graph_reverse()
+	  
+	}
+  
 	# if it's by weight
 	else if (type[1] == "weight") {
 		# get adjancecy matrix
-		adj <- igraph::as_adjacency_matrix(net, attr = "weight", sparse = F)
+		adj_o <- igraph::as_adjacency_matrix(net, attr = "weight", sparse = F)
 		# calculate dependencies
-		adj <- apply(adj, 1, function(x){x / sum(x)}) %>% t()
+		adj <- apply(adj_o, 1, function(x){x / sum(x)}) %>% t()
 		
 		# see which one depends more on each other to establish the direction of the
 		# link
 		adj_max <- adj
 		for(i in 1:nrow(adj)){
 			for(j in 1:ncol(adj)){
-				adj_max[i,j] <- ton(adj[i,j], adj[j,i], `<=`)
+			  max_dep <- ton(adj[j,i], adj[i,j], `>=`)
+			  if (weight.type[1] == "max_dep") {
+			    adj_max[i, j] <- max_dep
+			  } else if (weight.type[1] == "asymmetry"){
+			    adj_max[i, j] <- as(adj[j,i],adj[i,j], max_dep)
+			  }
+			  
+				if(uw & adj_max[i,j] != 0) adj_max[i,j] <- 1
 			}
 		}
+		
+		if (scale) adj_max <- adj_max * adj_o
+		
 		# create graph
 		y <- igraph::graph_from_adjacency_matrix(adj_max, 
 																						 mode = "directed", 
@@ -50,6 +85,7 @@ bipartite_digraph <- function(net,
 	
 	# if it's one way or the other
 	} else {
+
 		adj <- igraph::as.directed(net) %>% igraph::as_adj(sparse = F)
 		part <- net %>% igraph::vertex_attr("type") %>% factor() %>% as.numeric()
 		if (type[1] == "AB") {
@@ -59,7 +95,8 @@ bipartite_digraph <- function(net,
 			igraph::set_edge_attr("weight", 
 														value = igraph::edge_attr(net, "weight")) %>%
 			igraph::set_vertex_attr("type", 
-															value = igraph::vertex_attr(net, "type"))
+															value = igraph::vertex_attr(net, "type")) %>%
+		  graph_reverse()
 	}
 	
 	y
@@ -72,6 +109,15 @@ ton <- function (x, y, fun = `>`) {
 	} else {
 		return(0)
 	}
+}
+
+# return the asymetry on the direction of the largest 0 otherwise,
+as <- function(x, y, tonn){
+  if (tonn == 0) {
+    return(0)
+  } else{
+    abs(x-y) / max(x, y)
+  }
 }
 
 # change the double links to single ones
@@ -116,6 +162,22 @@ check_double_links <- function(x, keep){
 }
 
 p <- function(x, ...){
-	igraph::plot.igraph(x = x , edge.arrow.size = 0.15, 
-											vertex.color = factor(igraph::vertex_attr(x, "type")), ...)
+	igraph::plot.igraph(x = x , 
+	                    edge.arrow.size = 0.25, 
+											vertex.color = factor(igraph::vertex_attr(x, "type")), 
+											edge.label = round(E(x)$weight, digits =2), 
+											edge.curved = T,...)
+}
+
+# reverse direction of edges
+graph_reverse <- function (graph) {
+  if (!igraph::is.directed(graph))
+    return(graph)
+  e <- igraph::get.data.frame(graph, what="edges")
+  ## swap "from" & "to"
+  neworder <- 1:length(e)
+  neworder[1:2] <- c(2,1)
+  e <- e[neworder]
+  names(e) <- names(e)[neworder]
+  igraph::graph.data.frame(e, vertices = igraph::get.data.frame(graph, what="vertices"))
 }
