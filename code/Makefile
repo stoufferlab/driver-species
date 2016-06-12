@@ -1,33 +1,50 @@
-CC=g++
-CFLAGS=
+all: prepare_data matching randomisations alt_matching properties models
 
-all: initialise explore analysis
+n_cores = 4
+d_f = ../../data/V2.0/
+n_perm = 999
 
-initialise: generate_networks
+prepare_data: $(d_f)networks/*
 
-explore: example_matchings
+$(d_f)networks/*: 01-prepare_bartomeus_data.R 02-prepare_lopezaraiza_data.R 03-prepare_ballantyne_data.R ../../data/networks_lopezaraiza/* ../../data/Ballantyne-2015-raw_data.csv ../../data/Bartomeus_Ntw_nceas.txt
+	Rscript 01-prepare_bartomeus_data.R; \
+	Rscript 02-prepare_lopezaraiza_data.R; \
+	Rscript 03-prepare_ballantyne_data.R
 
-analysis: redundancy # matching
+matching: dependency_matching ../../data/ntw_info.csv $(d_f)networks/*
 
-generate_networks: ../results/01_generate_networks.md
+dependency_matching: $(d_f)n_matched.rds $(d_f)matching_frequency.rds $(d_f)networks/*
 
-example_matchings: ../results/02_example_maximum_matching.md
+bidirectional_matching: $(d_f)matching_frequency_bi/*.rds $(d_f)networks/*
 
-redundancy: ../data/redundancy/node/* ../results/05_read_redundancy.md
+$(d_f)n_matched.rds $(d_f)matching_frequency.rds: 04-calculate_matchings.R $(d_f)networks/*
+	Rscript 04-calculate_matchings.R $(n_cores)
 
-matching: ../data/maximum_matchings/* 
+$(d_f)matching_frequency_bi/*.rds: 09-calculate_matchings_weighted.R
+	Rscript $< $(n_cores)
 
-../results/01_generate_networks.md: 01_generate_networks.Rmd ../data/Bartomeus_Ntw_nceas.txt 
-	Rscript cpRmd.R $<
-	
-../results/02_example_maximum_matching.md: 02_example_maximum_matching.Rmd
-	Rscript cpRmd.R $<
-	
-../data/maximum_matchings/*: 03_ntw_maximum_matchings.R _03_ntw_maximum_matchings#.sh ../data/networks/*
-	bash _03_ntw_maximum_matchings.sh 57
+randomisations: $(d_f)random_weights.rds $(d_f)random_directions.rds $(d_f)random_weights_bi.rds $(d_f)networks/*
 
-../data/redundancy/node/*: 04_critical_elements.R _04_critical_elements.sh functions
-	bash _04_critical_elements.sh 60
+$(d_f)random_weights.rds: 05-random_weights.R
+	Rscript $< $(n_cores) $(n_perm)
 
-../results/05_read_redundancy.md ../data/node_redundancy.dat ../data/n_driver_species.dat: 05_read_redundancy.Rmd
-	Rscript cpRmd.R $<
+$(d_f)random_weights_bi.rds: 11-random_weights_bi.R
+	Rscript $< $(n_cores) $(n_perm)
+
+$(d_f)random_directions.rds: 06-random_directions.R
+	Rscript $< $(n_cores) $(n_perm)
+
+alt_matching: $(d_f)n_matched_all_types.rds $(d_f)networks/*
+
+$(d_f)n_matched_all_types.rds: 07-alternative_matchings.R
+	Rscript $<
+
+properties: $(d_f)species_properties.rds
+
+$(d_f)species_properties.rds: 08-species_properties.R
+	Rscript $< $(n_cores) $(n_perm)
+
+models: $(d_f)species_models.rds
+
+$(d_f)species_models.rds: 10-species_models.R
+	Rscript $<
