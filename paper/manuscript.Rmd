@@ -4,6 +4,7 @@ csl: ecology-letters.csl
 output: html_document
 bibliography: references.bib
 ---
+
 ```{r libraries, echo = FALSE, warning = F, message = F}
 library(magrittr)
 library(knitr)
@@ -15,7 +16,7 @@ opts_knit$set (root.dir=normalizePath('../'))
 ```
 
 ```{r auxiliary functions, echo = FALSE, warning = F, message = F}
-"./code/V2.0/functions" %>% 
+"./code/functions" %>% 
 	list.files(full.names = T) %>%
 	plyr::l_ply(source)
 ```
@@ -34,19 +35,19 @@ fer_theme <- theme_bw() +
 ```
 
 ```{r read data and results, echo = FALSE, warning = F, message = F}
-net <- "./data/V2.0/networks" %>%
+net <- "./data/processed/networks" %>%
 	read_networks()
 meta <- readr::read_csv("data/ntw_info.csv") %>% dplyr::tbl_df() %>%
 	dplyr::rename(count = method)
-n_matched <- readRDS("./data/V2.0/n_matched.rds")
-a_m <- readRDS("./data/V2.0/n_matched_all_types.rds") 
-r_w <- readRDS("./data/V2.0/random_weights.rds") %>% dplyr::tbl_df() %>%
+n_matched <- readRDS("./data/processed/n_matched.rds")
+a_m <- readRDS("./data/processed/n_matched_all_types.rds") 
+r_w <- readRDS("./data/processed/random_weights.rds") %>% dplyr::tbl_df() %>%
   dplyr::rename_("net_name" = ".id")
-r_d <- readRDS("./data/V2.0/random_directions.rds") %>% dplyr::tbl_df() %>%
+r_d <- readRDS("./data/processed/random_directions.rds") %>% dplyr::tbl_df() %>%
   dplyr::rename_("net_name" = ".id")
-s_p <- readRDS("./data/V2.0/species_properties.rds") %>% dplyr::tbl_df()
+s_p <- readRDS("./data/processed/species_properties.rds") %>% dplyr::tbl_df()
 # mod <- readRDS("./data/V2.0/species_models.rds")
-driver <- c("./data/V2.0/matching_frequency") %>% 
+driver <- c("./data/processed/matching_frequency") %>% 
   list.files(full.names = T) %>%
   lapply(list.files, full.names = T) %>% 
   unlist() %>% 
@@ -58,16 +59,16 @@ driver <- mapply(function(x, y){
   attr(x, "scaled") <- stringr::str_split(as.character(y[,2]), "_") %>% unlist() %>% extract(2) %>% as.logical()
   return(x)
 }, driver, prop)
-driver_bi <- "./data/V2.0/matching_frequency_bi" %>% 
+driver_bi <- "./data/processed/matching_frequency_bi" %>% 
   read_allRDS()
-mod <- readRDS("./data/V2.0/detailed_species_models.rds")
-mo <- readRDS("./data/V2.0/detailed_species_models_data.rds")
+mod <- readRDS("./data/processed/detailed_species_models.rds")
+mo <- readRDS("./data/processed/detailed_species_models_data.rds")
 ```
 
 
 **E. Fernando Cagua^\*^, Kate L Wootton^§^, Daniel B. Stouffer^#^**
 
-Center of Integrative Ecology, School of Biological Sciences, University of Canterbury, 8041 Christchurch, New Zealand
+Centre for Integrative Ecology, School of Biological Sciences, University of Canterbury, 8041 Christchurch, New Zealand
 
 ^\*^ efc29@uclive.ac.nz 
 ^§^ kate.l.wootton@gmail.com
@@ -278,7 +279,7 @@ Notably, each network pair was composed of a community invaded by a plant and a 
 In the four British uninvaded communities, the non-invaded plots were obtained by experimentally removing all the flowers of the invasive species *Impatients grandulifera*. 
 In contrast, the Spanish uninvaded communities were obtained from plots that had not yet been colonised by either of the invasive species *Carpobrotus affine acinaciformis* or *Opuntia stricta*. 
 The structure of all networks was determined using visitation frequency which has been shown to be an appropriate surrogate for interspecific effects in pollination networks [@Vazquez2005; @Bascompte2006]. 
-To examine whether this decision would influence our results, we also evaluated the effect of using pollinator efficiency or importance as alternative measures of species interactions in a different dataset [@NeEman2010; @Ballantyne2015], and we found quantitatively similar results for all of these options (see Supplementary Information).
+To examine whether this decision would influence our results, we also evaluated the effect of using pollinator efficiency or importance as alternative measures of species interactions in a different dataset [@NeEman2010; @Ballantyne2015], and we found quantitatively similar results for all of these options (Supplementary Information S1).
 
 ### Community manageability
 
@@ -300,7 +301,8 @@ As the dependencies are bidirectional, adopting this assumption generates a weig
 Mutual dependencies have previously been shown to be highly asymmetric in natural communities [@Bascompte2006]; in other words, if a plant species is largely dependent on a pollinator species, then that pollinator tends to depend rather weakly on the plant. 
 This suggests that it may be possible to relax the assumption of bidirectional dependences and simplify the network further such that interacting species are only connected by one directed link when mutual dependencies are asymmetric (Figure 2c). 
 The extent to which a species $i$ affects species $j$ relative to the extent to which species $j$ affects species $i$ can be summarised by the interaction asymmetry given by $$a(i,j) = \frac{\left | d_{ij}-d_{ji} \right |}{max\left ( d_{ij}, d_{ji} \right )}.$$
-Employing an unidrectional interaction asymmetry, as a surrogate of bidirectional mutual dependences, confers an additional advantage for our purposes since it dramatically reduces the number of links in the network. 
+Employing an unidrectional interaction asymmetry, as a surrogate of bidirectional mutual dependences, does not alter the relative manageabilities of different networks (Supplementary Information S2). 
+Moreover, it confers an additional advantage for our purposes since it dramatically reduces the number of links in the network. 
 This translates into a substantial reduction of the time and memory required for the computation of of all possible maximum matchings in a network, particularly for large networks (see ''relative importance of species'' subsection below).
 
 ```{r fig_explain-control-direction, message=FALSE, warning=FALSE, include=FALSE}
@@ -538,7 +540,7 @@ Similar as in previous null models, we calculated the average rank of the empiri
 Our second key question is related to how species differ in their importance for driving the population dynamics of the community. 
 To quantify this importance in each network, we computed all possible matchings that have the same size as the networks' maximum matching. 
 We then calculated the frequency with which each species is deemed to be a superior node in the set of matchings that had a total weight greater or equal to 0.5 times the weight of the maximum matching. 
-We selected this threshold as it provided a high agreement between networks quantified by visitation and pollination efficiency as well as between our weighting/directionality assumptions (mutual dependences and interaction asymmetries); however, the choice of this threshold had a negligible impact on the results (Supplementary Information).
+We selected this threshold as it provided a high agreement between networks quantified by visitation and pollination efficiency as well as between our weighting/directionality assumptions (mutual dependences and interaction asymmetries); however, the choice of this threshold had a negligible impact on the results (Supplementary Information S3).
 
 We then asked the question of whether some species-level structural properties can predict our estimates of species importance.
 Although the species importance calculated from mutual dependences contains full information, even in sparse networks, like these studied here, the number of maximal matchings increases exponentially with the number of links and nodes in a network. 
@@ -846,7 +848,7 @@ print_table <- . %>%
 
 ```{r species, include = FALSE, warning = FALSE, message = FALSE}
 data <- mo
-net <- "./data/V2.0/networks" %>%
+net <- "./data/processed/networks" %>%
 	read_networks()
 
 

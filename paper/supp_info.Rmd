@@ -1,0 +1,770 @@
+---
+title: "Biotic invasions reduce the manageability of mutualistic networks"
+csl: ecology-letters.csl
+output: pdf_document
+subtitle: "Supplementary information"
+bibliography: references.bib
+---
+
+```{r libraries, echo = FALSE, warning = F, message = F}
+library(magrittr)
+library(knitr)
+library(ggplot2)
+library(glmulti)
+library(Hmisc)
+library(lme4)
+opts_knit$set (root.dir=normalizePath('../'))
+```
+
+```{r auxiliary functions, echo = FALSE, warning = F, message = F}
+"./code/functions" %>% 
+	list.files(full.names = T) %>%
+	plyr::l_ply(source)
+```
+
+```{r plot theme, echo = FALSE, warning = F, message = F}
+fer_theme <- theme_bw() +
+	theme(text = element_text(family = "Times"),
+	      title = element_text(size = 7.5, hjust = 0),
+	      legend.title = element_text(size = 9),
+	      legend.text = element_text(size = 8),
+				axis.text = element_text(size = 8),
+				axis.title = element_text(size = 9, hjust = 0.5), 
+				strip.text = element_text(size = 9, hjust = 0), 
+				strip.background = element_blank(),
+				plot.margin = grid::unit(c(5, 0, 2, 0), "mm"))
+```
+
+```{r read data and results, echo = FALSE, warning = F, message = F}
+net <- "./data/processed/networks" %>%
+	read_networks()
+meta <- readr::read_csv("data/ntw_info.csv") %>% dplyr::tbl_df() %>%
+	dplyr::rename(count = method)
+n_matched <- readRDS("./data/processed/n_matched.rds")
+a_m <- readRDS("./data/processed/n_matched_all_types.rds") 
+r_w <- readRDS("./data/processed/random_weights.rds") %>% dplyr::tbl_df() %>%
+  dplyr::rename_("net_name" = ".id")
+r_d <- readRDS("./data/processed/random_directions.rds") %>% dplyr::tbl_df() %>%
+  dplyr::rename_("net_name" = ".id")
+s_p <- readRDS("./data/processed/species_properties.rds") %>% dplyr::tbl_df()
+# mod <- readRDS("./data/processed/species_models.rds")
+driver <- c("./data/processed/matching_frequency") %>% 
+  list.files(full.names = T) %>%
+  lapply(list.files, full.names = T) %>% 
+  unlist() %>% 
+  lapply(read_allRDS)
+prop <- expand.grid(c("asymmetry", "max_dep"), 
+                    c("scaled_FALSE", "scaled_TRUE")) %>% plyr::alply(1)
+driver <- mapply(function(x, y){
+  attr(x, "type") <- as.character(y[,1])
+  attr(x, "scaled") <- stringr::str_split(as.character(y[,2]), "_") %>% unlist() %>% extract(2) %>% as.logical()
+  return(x)
+}, driver, prop)
+driver_bi <- "./data/processed/matching_frequency_bi" %>% 
+  read_allRDS()
+mod <- readRDS("./data/processed/detailed_species_models.rds")
+mo <- readRDS("./data/processed/detailed_species_models_data.rds")
+```
+
+
+*Table S1: Properties of the analysed plant-pollinator communities. $n_d$ and manageability values correspond to the assumption  that a species that depends more strongly on an interaction partner is controled by the partner. British networks were assembled by @Lopezaraiza-Mikel2007, Spanish were networks assembled by @Bartomeus2008.*
+```{r n_driver, echo = FALSE, warning = F, message = F, results = "asis"}
+# find n_driver
+n_driver <- n_matched %>%
+  dplyr::full_join(meta) %>% 
+  dplyr::filter(!is.na(inv)) %>%
+  dplyr::mutate(n_dr = n_pla + n_pol - n_matched,
+                n_dr_p = n_matched / (n_pla + n_pol))
+
+n_driver %>%
+  dplyr::select(site, inv, n_pla, n_pol, n_dr, n_dr_p, study) %>%
+  dplyr::arrange(study, site, inv) %>%
+  dplyr::mutate(site = rep(1:dplyr::n_distinct(site), each = 2),
+                inv = plyr::mapvalues(inv, c(TRUE, FALSE), c("yes", "no")),
+                n_dr_p = round(n_dr_p, digits = 2),
+                study = plyr::mapvalues(study, 
+                                        c("bartomeus", "lopezaraiza"),
+                                        c("Cap de Creus, Spain",
+                                          "Bristol, United Kingdom"))) %>%
+  dplyr::rename_("invaded" = "inv",
+                 "No. pla." = "n_pla",
+                 "No. pol." = "n_pol",
+                 "$n_d$" = "n_dr",
+                 "manageability" = "n_dr_p",
+                 "source" = "study") %>%
+  kable(align = "c", booktabs = T, 
+        linesep = c("", "\\addlinespace"), escape = F)
+```
+
+
+\newpage
+
+# S1: Visitation as a proxy for species interdependence
+
+Visitation frequency has been shown to be an appropriate surrogate for inter-specific effects in pollination networks [@Vazquez2005; @Bascompte2006]. 
+Nevertheless visitation is not equivalent to pollen deposition and might be insufficient to reflect the dependencies of plants on animals and vice versa [@Alarcon2010; @King2013]. 
+We therefore investigated the effect of calculating the dependencies using visitation or pollination effectiveness and importance---two metrics more proximate to plant reproductive success (Figure S1).
+We did this by comparing *(i)* the manageability of the community and *(ii)* the percentage of interactions that maintained the direction of dependency. 
+To do that, we used data collected by @Ballantyne2015 from a low diversity pollination community at a dry lowland heathland in Dorset, UK  (50° 43.7'N 2° 07.2'W). 
+First, deposition networks were quantified using the mean Single Visit Deposition---the number of conspecific pollen grains effectively deposited on a virgin stigma during a single visit by a particular animal [@NeEman2010; @King2013; @Ballantyne2015]. 
+Second, visitation networks were constructed counting the visits to flowers during Single Visit Depositions. 
+Finally, pollinator importance networks were constructed as the product of pollinator efficiency and visit frequency. 
+
+```{r get n_driver, echo = FALSE, warning = F, message = F}
+n_driver <- meta %>%
+  dplyr::inner_join(n_matched) %>% 
+  dplyr::mutate(n_driver = 1 - n_matched / (n_pla + n_pol))
+```
+
+We first investigated the effects at a network scale. 
+Despite marked differences in the distribution of weights of the three networks, the minimum number of driver species to control the whole community was consistent among the three different approaches (`r 1-round(n_driver$n_driver[n_driver$net_name == "bal_eff"], digits = 2)` for deposition, `r 1-round(n_driver$n_driver[n_driver$net_name == "bal_vis"], digits = 2)` for the visitation, and `r 1-round(n_driver$n_driver[n_driver$net_name == "bal_imp"], digits = 2)` for the pollinator importance network).
+
+The choice of weighting used can also have an impact on the relative importance of species.
+Therefore we calculated the frequency that each species is present in the possible sets of driver species under the three schemes. 
+Although visitation and deposition produce strikingly different results, we found a very strong agreement between the order produced by visitation and importance (Table S2). 
+Finally, we investigated whether the asymmetry of mutual dependency, which defines the direction of control, was consistent among the three possible weighting schemes. We found again that the direction of the dominant dependency was maintained was consistent for 95\% of the interactions weighted by visitation or importance, the two most appropriate metrics for pollinator and plant dependency (Table S2).
+
+All together, evidence supports the idea that visitation is a suitable metric to estimate the mutual dependency of species pairs. First it is directly related to pollinator foraging. Second it produces results consistent, at least within our controllability framework, with plant reproductive success (as estimated by the importance metric).
+
+```{r fig_visitation, echo = FALSE, warning = F, message = F, fig.height=4, fig.width=7, fig.align="center"}
+p <- net[meta$net_name[meta$study == "ballantyne" & meta$count != "binary"]] %>%
+	plyr::ldply(function(x) {
+		data.frame(vname = igraph::E(x) %>% attr("vnames"), 
+							weight = igraph::E(x)$weight)
+	}, .inform = T) %>%
+	dplyr::rename_("net_name" = ".id") %>%
+	dplyr::mutate(net_name_f = factor(net_name,  
+																		levels = c( 'bal_eff','bal_vis','bal_imp'),
+																		labels = c("a) Deposition", "b) Visitation", "c) Importance")), 
+	              pla = stringr::str_split_fixed(vname, "\\|", 2)[, 1],
+	              pol = stringr::str_split_fixed(vname, "\\|", 2)[, 2]) %>%
+  plyr::dlply("net_name_f", function(x){
+    p1 <- x %>%
+      ggplot(aes(x = pol, y = pla)) +
+      geom_tile(aes(fill = weight, width = 0.9, height = 0.9)) + 
+      coord_fixed() +
+      scale_fill_gradient(low = "#f0f0f0", high = "#525252") +
+      ylab("plants") +
+      xlab("pollinators") + 
+      fer_theme +
+      theme(axis.text = element_blank(), 
+            axis.ticks = element_blank(), 
+            legend.position = "right", 
+            legend.title = element_blank(), 
+            plot.margin = grid::unit(c(6,0,2,5), "mm"),
+            panel.grid = element_blank(),
+            legend.key.width = grid::unit(4, "mm"),
+            legend.key.height = grid::unit(4, "mm"))
+    p2 <- x %>% ggplot(aes(x = weight)) +
+      scale_x_log10() +
+      stat_density(aes(y =..density..), geom = "line") +
+      xlab("link weight") + 
+      ylab("density") +
+      ggtitle(x$net_name_f[1]) +
+      fer_theme +
+      theme(plot.margin = grid::unit(c(2,2,0,0), "mm"))
+    list(p1, p2)
+  }) 
+
+multiplot(p[[1]][[2]], p[[1]][[1]], p[[2]][[2]], p[[2]][[1]], p[[3]][[2]], p[[3]][[1]], layout = matrix(c(1,2,2,3,4,4,5,6,6), ncol = 3, byrow = T))  
+```
+_Figure S1: Distribution of interaction weights for the pollen deposition, visitation and pollinator importance networks. Note that the *x* axis in the density plots have been log-transformed._
+
+*Table S2: Spearman correlation coefficients (with p-value) of the relative importance of species and the percentage of interactions that share the direction of dependency obtained using the three weighting schemes and an unweighted scheme*
+```{r table correlations, echo = FALSE, warning = F, message = F, results = "asis"}
+d_sp <- driver %>%
+  plyr::ldply(function(x) {
+    get_frequencies(x) %>%
+      dplyr::mutate(type = attr(x, "type"),
+                    scaled = attr(x, "scaled"))
+  }) %>%
+  dplyr::inner_join(meta)
+
+correlations <- d_sp %>%
+	dplyr::filter(study == "ballantyne",
+								threshold == 0.5,
+								type == "asymmetry",
+								scaled == F) %>%
+	dplyr::group_by(net_name, threshold, type, scaled) %>%
+	dplyr::mutate(d_weight = d_weight/max(d_weight),
+								d_rank = rank(-d_weight, ties.method = "average")) %>%
+	dplyr::group_by() %>%
+	dplyr::select(net_name, species, d_rank) %>%
+	tidyr::spread(net_name, d_rank) %>%
+  dplyr::select(-species) %>%
+  as.matrix() %>%
+  Hmisc::rcorr(type = "spearman")
+
+
+my_paste <- function(x, y){
+  if(is.na(y)) return ("-")
+  b <- ""
+  if(y < 0.05) b <- ""
+  paste0(b, round(x, digits = 2), " (", fix_small_pvalue(y, 3), ")", b)
+}
+
+dir_net_b <- net[meta$net_name[meta$study == "ballantyne"]] %>%
+  lapply(function(x){
+    x %>% 
+      bipartite_digraph(type = "weight", keep = "all", weight.type = "asymmetry") %>%
+      igraph::ends(igraph::E(.)) %>% 
+      apply(1, function(y) paste(y[1], y[2]))
+  })
+
+# same order as the correlations 
+dir_net_b <- dir_net_b[colnames(correlations$P)]
+
+lt <- combn(length(dir_net_b), 2) %>%
+  apply(2, function(x){
+    length(intersect(dir_net_b[[x[1]]], dir_net_b[[x[2]]])) /
+      length(dir_net_b[[x[1]]])
+  }) %>%
+  magrittr::multiply_by(100) %>% round() %>% paste0("%")
+
+nam <- c("unweighted","deposition", "importance", "visitation")
+
+mapply(my_paste, correlations$r, correlations$P) %>%
+  matrix(ncol = length(dir_net_b)) %>% magrittr::set_colnames(nam) %>%
+  magrittr::set_rownames(nam) %>% `[<-`(lower.tri(.), lt) %>% 
+  kable(align = "c", booktabs = T)
+	
+```
+
+\newpage
+
+# S2: Direction of control
+
+We calculated the number of driver species necessary to control the whole community under the assumption that a species that depends more strongly on an interaction partner is more likely to be controlled by the partner.
+We tested the robustness of this assumption by comparing the relative number of driver species assuming that *(i)* the dependency asymmetry does not imply an unidirectional control direction, rather a species could control all its interaction partners and vice versa, *(ii)* that plants depend on pollinators, and that *(iii)* pollinators depend on plants.
+Our results using the direction of the largest dependency are consistent with the proposed alternatives: although we obtained different absolute numbers of driver species, their relative numbers are not statistically different (Figure S3, Table S3).
+
+```{r explain matching pla-pol, echo = FALSE, warning = F, message = F, results = "asis", fig.height=4.2, fig.width=5.75, fig.align="center"}
+my_theme <- theme_bw() +
+	#scale_color_brewer(palette = "Paired") +
+	theme(legend.position = "none",
+				text = element_text(family = "Times"),
+				plot.margin=unit(c(4,0,-4,0),"mm"),
+				panel.margin=unit(c(0,0,0,0),"mm"),
+				# panel.border = element_rect(colour = "grey10", size = 0.5),
+				panel.border = element_blank(),
+				axis.text = element_blank(),
+				axis.ticks.x = element_blank(),
+				axis.ticks.y = element_blank(),
+				axis.title = element_text(size = 9),
+				plot.title = element_text(hjust = 0.05, vjust = -1.5, size = 9),
+				panel.grid = element_blank())
+
+# Function to generate paths between each connected node
+edgeMaker <- function(whichRow, len = 100, curved = TRUE){
+	fromC <- layoutCoordinates[adj_list[whichRow, 1], ]  # Origin
+	toC <- layoutCoordinates[adj_list[whichRow, 2], ]  # Terminus
+	
+	# Add curve:
+	graphCenter <- colMeans(layoutCoordinates)  # Center of the overall graph
+	bezierMid <- c(fromC[1], toC[2])  # A midpoint, for bended edges
+	distance1 <- sum((graphCenter - bezierMid)^2)
+	if(distance1 < sum((graphCenter - c(toC[1], fromC[2]))^2)){
+		bezierMid <- c(toC[1], fromC[2])
+	}  # To select the best Bezier midpoint
+	bezierMid <- (fromC + toC + bezierMid) / 3  # Moderate the Bezier midpoint
+	if(curved == FALSE){bezierMid <- (fromC + toC) / 2}  # Remove the curve
+	
+	edge <- data.frame(bezier(c(fromC[1], bezierMid[1], toC[1]),  # Generate
+														c(fromC[2], bezierMid[2], toC[2]),  # X & y
+														evaluation = len))  # Bezier path coordinates
+	edge$Sequence <- 1:len  # For size and colour weighting in plot
+	edge$Group <- paste(adj_list[whichRow, 1:2], collapse = ">")
+	return(edge)
+}
+
+############## First ################
+
+sp_names <- c("a[1]", "a[2]", "a[3]", "p[1]", "p[2]")
+
+adj_matrix <- c(0,0,0,0,0,
+								0,0,0,0,0,
+								0,0,0,0,0,
+								1,1,1,0,0,
+								0,1,1,0,0) %>%
+	matrix(nrow = 5, byrow = T) %>%
+	`rownames<-`(sp_names) %>%
+	`colnames<-`(sp_names)
+
+net_exp <- adj_matrix %>% 
+	igraph::graph_from_adjacency_matrix(mode = "directed") 
+igraph::V(net_exp)$type <- c(F, F, F, T, T)
+igraph::E(net_exp)$weight <- 1
+
+layoutCoordinates <- cbind(c(0,1,2,0.5,1.5), 
+													 c(1,1,1,0,0)) %>%
+	`colnames<-`(c("x", "y"))
+
+adj_list <- adj_matrix %>% 
+	reshape2::melt() %>% 
+	dplyr::filter(value > 0)
+
+# Generate an edge path for each pair of connected nodes
+n <- 17
+allEdges <- lapply(1:nrow(adj_list), edgeMaker, len = n, curved = FALSE)
+allEdges <- do.call(rbind, allEdges) %>%
+	dplyr::filter(Sequence != n) %>%
+	dplyr::mutate(Group = factor(Group),
+				 type = Group)
+
+new_lev <- c("m", "u", "u", "m", "u")
+levels(allEdges$type) <- new_lev
+
+nodes <- data.frame(layoutCoordinates) %>%
+	dplyr::mutate(spe = sp_names,
+								spe_c = c("m", "m", "u", "u", "u"), 
+								pos = rep(c(0.25, -0.25), c(3,2)))
+
+p1 <- ggplot(allEdges) +  # Pretty simple plot code
+	geom_path(aes(x = x, y = y, group = Group, colour = type, size = type), 
+						arrow = arrow(type = "closed", angle = 15, length = grid::unit(0.1, "inches"))) + # and taper
+	geom_point(data = nodes,  # Add nodes
+						 aes(x = x, y = y , fill = spe_c), size = 5, pch = 21,
+						 colour = "black") + 
+	geom_text(data = nodes, aes(x = x, y = y + pos, label = spe), size = 3, parse = T) +
+	scale_fill_manual(values = c("#636363", "white")) + 
+	scale_colour_manual(values = c("#636363", "#bdbdbd")) +
+	my_theme + xlab("") + ylab("") + ylim(c(-0.27, 1.26)) +
+ theme(plot.margin=unit(c(4,4,-4,-4),"mm")) +
+	scale_size_manual(values = c(0.5, 0.5))
+	
+net_exp <- digraph_bipartite(net_exp)
+adj_matrix <- net_exp %>% igraph::as_adjacency_matrix(sparse = F, type = "upper")
+layoutCoordinates <- cbind(rep(0:4, 2), rep(c(1,0), each = 5)) %>%
+	`colnames<-`(c("x", "y"))
+
+adj_list <- adj_matrix %>% 
+	reshape2::melt() %>% 
+	dplyr::filter(value > 0)
+
+# Generate an edge path for each pair of connected nodes
+n <- 100
+allEdges <- lapply(1:nrow(adj_list), edgeMaker, len = n, curved = FALSE)
+allEdges <- do.call(rbind, allEdges) %>%
+	dplyr::filter(Sequence != n,
+								Sequence != 1) %>%
+	dplyr::mutate(Group = factor(Group),
+				 type = Group)
+
+new_lev <- c("m", "u", "u", "m", "u")
+levels(allEdges$type) <- new_lev
+
+nodes <- data.frame(layoutCoordinates) %>%
+	dplyr::mutate(spe = rep(sp_names, 2),
+								spe_l = c(paste0(sp_names, " %->% phantom(0)"), paste0(sp_names, " %<-% phantom(0)")),
+								spe_c = c(rep("u",5), c("m", "m", "u", "u", "u")), 
+								pos = rep(c(0.25, -0.25), each = 5))
+
+p2 <- ggplot(allEdges) +  # Pretty simple plot code
+	geom_path(aes(x = x, y = y, group = Group, colour = type, size = type)) + # and taper
+	geom_point(data = nodes,  # Add nodes
+						 aes(x = x, y = y, fill = spe_c), size = 5, pch = 21,
+						 colour = "black") + 
+	geom_text(data = nodes, aes(x = x + 0.08, y = y + pos, label = spe_l), parse = T, size = 3) +
+	# coord_flip()  + scale_x_reverse() + scale_y_reverse() +
+	scale_fill_manual(values = c("#636363", "white")) + 
+	scale_colour_manual(values = c("#636363", "#bdbdbd")) +
+	xlim(c(-0.12, 4.12)) + ylim(c(-0.27, 1.26)) +
+	my_theme + xlab("") + ylab("") +
+	scale_size_manual(values = c(0.5, 0.5))
+
+############### Second ##########
+
+sp_names <- c("a[1]", "a[2]", "a[3]", "p[1]", "p[2]")
+
+adj_matrix <- c(0,0,0,1,0,
+								0,0,0,1,1,
+								0,0,0,1,1,
+								0,0,0,0,0,
+								0,0,0,0,0) %>%
+	matrix(nrow = 5, byrow = T) %>%
+	`rownames<-`(sp_names) %>%
+	`colnames<-`(sp_names)
+
+net_exp <- adj_matrix %>% 
+	igraph::graph_from_adjacency_matrix(mode = "directed") 
+igraph::V(net_exp)$type <- c(F, F, F, T, T)
+igraph::E(net_exp)$weight <- 1
+
+layoutCoordinates <- cbind(c(0,1,2,0.5,1.5), 
+													 c(1,1,1,0,0)) %>%
+	`colnames<-`(c("x", "y"))
+
+adj_list <- adj_matrix %>% 
+	reshape2::melt() %>% 
+	dplyr::filter(value > 0)
+
+# Generate an edge path for each pair of connected nodes
+n <- 17
+allEdges <- lapply(1:nrow(adj_list), edgeMaker, len = n, curved = FALSE)
+allEdges <- do.call(rbind, allEdges) %>%
+	dplyr::filter(Sequence != n) %>%
+	dplyr::mutate(Group = factor(Group),
+				 type = Group)
+
+new_lev <- c("m", "u", "m", "u", "u")
+levels(allEdges$type) <- new_lev
+
+nodes <- data.frame(layoutCoordinates) %>%
+	dplyr::mutate(spe = sp_names,
+								spe_c = c("u", "u", "u", "m", "m"), 
+								pos = rep(c(0.25, -0.25), c(3,2)))
+
+p3 <- ggplot(allEdges) +  # Pretty simple plot code
+	geom_path(aes(x = x, y = y, group = Group, colour = type, size = type), 
+						arrow = arrow(type = "closed", angle = 15, length = grid::unit(0.1, "inches"))) + # and taper
+	geom_point(data = nodes,  # Add nodes
+						 aes(x = x, y = y , fill = spe_c), size = 5, pch = 21,
+						 colour = "black") + 
+	geom_text(data = nodes, aes(x = x, y = y + pos, label = spe), size = 3, parse = T) +
+	scale_fill_manual(values = c("#636363", "white")) + 
+	scale_colour_manual(values = c("#636363", "#bdbdbd")) +
+	my_theme + xlab("") + ylab("") + ylim(c(-0.27, 1.26)) +
+ theme(plot.margin=unit(c(4,4,-4,-4),"mm")) +
+	scale_size_manual(values = c(0.5, 0.5))
+	
+net_exp <- digraph_bipartite(net_exp)
+adj_matrix <- net_exp %>% igraph::as_adjacency_matrix(sparse = F, type = "upper")
+layoutCoordinates <- cbind(rep(0:4, 2), rep(c(1,0), each = 5)) %>%
+	`colnames<-`(c("x", "y"))
+
+adj_list <- adj_matrix %>% 
+	reshape2::melt() %>% 
+	dplyr::filter(value > 0)
+
+# Generate an edge path for each pair of connected nodes
+n <- 100
+allEdges <- lapply(1:nrow(adj_list), edgeMaker, len = n, curved = FALSE)
+allEdges <- do.call(rbind, allEdges) %>%
+	dplyr::filter(Sequence != n,
+								Sequence != 1) %>%
+	dplyr::mutate(Group = factor(Group),
+				 type = Group)
+
+new_lev <- c("m", "m", "u", "u", "u")
+levels(allEdges$type) <- new_lev
+
+nodes <- data.frame(layoutCoordinates) %>%
+	dplyr::mutate(spe = rep(sp_names, 2),
+								spe_l = c(paste0(sp_names, " %->% phantom(0)"), paste0(sp_names, " %<-% phantom(0)")),
+								spe_c = c(rep("u",5), c("u", "u", "u", "m", "m")), 
+								pos = rep(c(0.25, -0.25), each = 5))
+
+p4 <- ggplot(allEdges) +  # Pretty simple plot code
+	geom_path(aes(x = x, y = y, group = Group, colour = type, size = type)) + # and taper
+	geom_point(data = nodes,  # Add nodes
+						 aes(x = x, y = y, fill = spe_c), size = 5, pch = 21,
+						 colour = "black") + 
+	geom_text(data = nodes, aes(x = x + 0.08, y = y + pos, label = spe_l), parse = T, size = 3) +
+	# coord_flip()  + scale_x_reverse() + scale_y_reverse() +
+	scale_fill_manual(values = c("#636363", "white")) + 
+	scale_colour_manual(values = c("#636363", "#bdbdbd")) +
+	xlim(c(-0.12, 4.12)) + ylim(c(-0.27, 1.26)) +
+	my_theme + xlab("") + ylab("") +
+	scale_size_manual(values = c(0.5, 0.5))
+
+############ Third ################
+
+
+sp_names <- c("a[1]", "a[2]", "a[3]", "p[1]", "p[2]")
+
+adj_matrix <- c(0,0,0,1,0,
+								0,0,0,1,1,
+								0,0,0,1,1,
+								1,1,1,0,0,
+								0,1,1,0,0) %>%
+	matrix(nrow = 5, byrow = T) %>%
+	`rownames<-`(sp_names) %>%
+	`colnames<-`(sp_names)
+
+net_exp <- adj_matrix %>% 
+	igraph::graph_from_adjacency_matrix(mode = "directed") 
+igraph::V(net_exp)$type <- c(F, F, F, T, T)
+igraph::E(net_exp)$weight <- 1
+
+layoutCoordinates <- cbind(c(0,1,2,0.5,1.5), 
+													 c(1,1,1,0,0)) %>%
+	`colnames<-`(c("x", "y"))
+
+adj_list <- adj_matrix %>% 
+	reshape2::melt() %>% 
+	dplyr::filter(value > 0)
+
+# Generate an edge path for each pair of connected nodes
+n <- 17
+allEdges <- lapply(1:nrow(adj_list), edgeMaker, len = n, curved = FALSE)
+allEdges <- do.call(rbind, allEdges) %>%
+	dplyr::filter(Sequence != n) %>%
+	dplyr::mutate(Group = factor(Group),
+				 type = Group)
+
+new_lev <- c("m", "u", "m", "u", "u", "u", "m", "u", "u", "m")
+dir <- c("m", "m", "m", "m", "m", "u", "u", "u", "u", "u")
+dir2 <- c("m", "u", "m", "u", "u", "u", "m", "m", "u", "m")
+id <- 1:10
+allEdges %<>% dplyr::mutate(dir = type,
+                            dir2 = dir)
+levels(allEdges$type) <- new_lev
+levels(allEdges$dir) <- dir
+levels(allEdges$dir2) <- dir2
+allEdges %<>% 
+  dplyr::mutate(dir = as.numeric(dir),
+                dir2 = as.numeric(dir2),
+                dir = plyr::mapvalues(dir, c(1,2), c(0.03, -0.03)),
+                dir2 = plyr::mapvalues(dir2, c(1,2), c(0.03, -0.03)))
+
+nodes <- data.frame(layoutCoordinates) %>%
+	dplyr::mutate(spe = sp_names,
+								spe_c = c("u", "m", "m", "m", "m"), 
+								pos = rep(c(0.25, -0.25), c(3,2)))
+
+# ggplot(allEdges) +  # Pretty simple plot code
+# 	geom_path(aes(x = x + dir, y = y + dir2, group = Group, colour = type, size = type), 
+# 						arrow = arrow(type = "closed", angle = 15, length = grid::unit(0.1, "inches")))
+
+p5 <- ggplot(allEdges) +  # Pretty simple plot code
+	geom_path(aes(x = x + dir, y = y + dir2, group = Group, colour = type, size = type), 
+						arrow = arrow(type = "closed", angle = 15, length = grid::unit(0.1, "inches"))) + # and taper
+	geom_point(data = nodes,  # Add nodes
+						 aes(x = x, y = y , fill = spe_c), size = 5, pch = 21,
+						 colour = "black") + 
+	geom_text(data = nodes, aes(x = x, y = y + pos, label = spe), size = 3, parse = T) +
+	scale_fill_manual(values = c("#636363", "white")) + 
+	scale_colour_manual(values = c("#636363", "#bdbdbd")) +
+	my_theme + xlab("") + ylab("") + ylim(c(-0.27, 1.26)) +
+ theme(plot.margin=unit(c(4,4,-4,-4),"mm")) +
+	scale_size_manual(values = c(0.5, 0.5))
+	
+net_exp <- digraph_bipartite(net_exp)
+adj_matrix <- net_exp %>% igraph::as_adjacency_matrix(sparse = F, type = "upper")
+layoutCoordinates <- cbind(rep(0:4, 2), rep(c(1,0), each = 5)) %>%
+	`colnames<-`(c("x", "y"))
+
+adj_list <- adj_matrix %>% 
+	reshape2::melt() %>% 
+	dplyr::filter(value > 0)
+
+# Generate an edge path for each pair of connected nodes
+n <- 100
+allEdges <- lapply(1:nrow(adj_list), edgeMaker, len = n, curved = FALSE)
+allEdges <- do.call(rbind, allEdges) %>%
+	dplyr::filter(Sequence != n,
+								Sequence != 1) %>%
+	dplyr::mutate(Group = factor(Group),
+				 type = Group)
+
+new_lev <- c("m", "m", "u", "u", "u", "u", "m", "u", "u", "m")
+levels(allEdges$type) <- new_lev
+
+nodes <- data.frame(layoutCoordinates) %>%
+	dplyr::mutate(spe = rep(sp_names, 2),
+								spe_l = c(paste0(sp_names, " %->% phantom(0)"), paste0(sp_names, " %<-% phantom(0)")),
+								spe_c = c(rep("u",5), c("u", "m", "m", "m", "m")), 
+								pos = rep(c(0.25, -0.25), each = 5))
+
+p6 <- ggplot(allEdges) +  # Pretty simple plot code
+	geom_path(aes(x = x, y = y, group = Group, colour = type, size = type)) + # and taper
+	geom_point(data = nodes,  # Add nodes
+						 aes(x = x, y = y, fill = spe_c), size = 5, pch = 21,
+						 colour = "black") + 
+	geom_text(data = nodes, aes(x = x + 0.08, y = y + pos, label = spe_l), parse = T, size = 3) +
+	# coord_flip()  + scale_x_reverse() + scale_y_reverse() +
+	scale_fill_manual(values = c("#636363", "white")) + 
+	scale_colour_manual(values = c("#636363", "#bdbdbd")) +
+	xlim(c(-0.12, 4.12)) + ylim(c(-0.27, 1.26)) +
+	my_theme + xlab("") + ylab("") +
+	scale_size_manual(values = c(0.5, 0.5))
+
+cowplot::plot_grid(p1, p2, p3, p4, p5, p6, 
+									 ncol = 2, 
+									 rel_widths = c(3,5),
+									 labels = c("a", "", "b", "", "c", ""),
+									 label_size = 10,
+									 hjust = 0, vjust = 1)
+```
+*Figure S2: One of the possible maximum matchings for each of the assumptions regarding the direction of control: a) plants can drive the abbundance of pollinators but not otherwise, b) pollinators can drive the abbundance of plants but not otherwise; c) plants can drive the abbundance of pollinators with the same likelyhood than pollinators can modify the abbundance of plants*
+
+```{r fig alternative assumptions, echo = FALSE, warning = F, message = F, fig.height=1.5, fig.width=4.3, fig.align="center"}
+a_m_driver <- a_m %>% 
+  dplyr::full_join(meta) %>%
+  dplyr::filter(study != "ballantyne") %>% 
+  dplyr::mutate(type = factor(type, 
+                              levels =  c("AB", "BA", "weight", "z-bi"),
+                              labels = c("pla. to pol.", "pol. to pla.", "dependency", "bidirectional")),
+                type_l  = as.character(type)) %>%
+  dplyr::mutate(n_driver = n_pla + n_pol - n_matched, 
+                n_driver_rel = 1 - n_matched / (n_pla + n_pol)) 
+
+type_l <- unique(a_m_driver$type_l)
+
+a_m_driver %>%
+  ggplot(aes(x = type, y = 1 - n_driver_rel), parse = T) +
+  geom_boxplot(size = 0.25, colour = "grey10",
+							 outlier.shape = 21, outlier.size = 1) +
+  coord_flip() + 
+  xlab("") +
+  ylab("manageability") + 
+  fer_theme + 
+  theme(plot.margin = grid::unit(c(0,1,2,0), "mm"))
+
+```
+*Figure S3: Proportion of driver species necessary to control the full pollination network under four different assumptions of the direction of control.*
+
+*Table S3: pearman correlation coefficients of the number of driver species necessary to control the full pollination network under the four different assumptions of the direction of control.*
+```{r table alternative assumptions, echo = FALSE, warning = F, message = F, results = "asis"}
+
+corr_matrix <- a_m_driver %>%
+  dplyr::select(net_name, type, n_driver) %>%
+  tidyr::spread(type, n_driver) %>%
+  dplyr::select(-net_name) %>%
+  as.matrix() %>%
+  cor(method = "spearman") %>%
+  round(digits = 2)
+
+corr_matrix[lower.tri(corr_matrix, diag = T)] <- ""
+corr_matrix <- corr_matrix[, -1]
+corr_matrix <- corr_matrix[-(nrow(corr_matrix)), ]
+kable(corr_matrix, align = "c", booktabs = T)
+
+```
+
+\newpage
+
+# S3: Threshold
+
+To calculate the relative importance of a species we calculated the frequency at which they are superior nodes in a set of accepted maximal matchings. Maximal matchings were accepted if the matching weight was over a certain threshold. The threshold was defined as a proportion of the maximum matching's weight. 
+
+The number of accepted maximal matchings increased rapidly as the threshold at which they are accepted decreases. Nevertheless this number stabilises below approximately 0.6-0.7 for both the mutual dependence and the interaction asymmetry weightings.
+
+```{r number maximal matchings, echo = FALSE, warning = F, message = F, fig.height=2.5, fig.width=7, fig.align="center"}
+d_sp_bi <- driver_bi %>%
+  get_frequencies() %>%
+      dplyr::mutate(type = "z_bi",
+                    scaled = FALSE) %>%
+  dplyr::inner_join(meta)
+
+d_sp <- d_sp %>% dplyr::bind_rows(d_sp_bi)
+
+d_sp %>%
+	dplyr::filter(scaled == FALSE, 
+								study != "ballantyne", 
+								type != "max_dep") %>%
+	dplyr::mutate(type = plyr::mapvalues(type, c("asymmetry", "z_bi"),
+																			 c("interaction asymmetry",
+																			 	"mutual dependence"))) %>%
+	dplyr::group_by(net_name, threshold, type) %>%
+	dplyr::summarise(n_matchings = mean(n_matchings)) %>%
+	ggplot(aes(x = threshold, y = n_matchings, group = interaction(net_name, type))) +
+	geom_point(shape = 21) +
+	geom_line() +
+	scale_x_continuous(breaks = seq(0,1, by = 0.1)) + 
+	scale_y_log10() +
+	facet_wrap(~type) +
+	fer_theme + 
+  theme(plot.margin = grid::unit(c(0,1,2,0), "mm")) +
+	ylab("number of maximal matchings")
+
+
+```
+*Figure S4: Number of maximal matchings as a function of the threshold. Each line correspond to one network.*
+
+Next we examined how the relative importance of species changes with the chosen threshold. When only maximum matchings are accepted (threshold is one) species tend to be superior nodes in all or none of the matchings, which equates to relative importances of one or zero. Using the weights given my the mutual dependencies some species reach intermediate levels of importance as the threshold decreases. Contrastingly, this pattern is not observed when weights are given by the interaction asymmetry. In this case the stark contrast between important and unimportant species is maintained in most cases. 
+
+Finally, we performed some tests to evaluate the impact that choosing a particular threshold would have in our results. First, using the data in @Ballantyne2015, we calculated the correlation between the relative importance of species in two network representations of the community: *(i)* the visitation network weighted by the interaction asymmetries, and *(ii)* the pollination importance network weighted by the bidirectional mutual dependences. The first network representation correspond to the type of networks used on all our analyses, while the second is a representation closer to the actual interspecific effects that underpin community dynamics. We calculated these correlations using the weighted rank correlation coefficient, which is biased to give more relevance to the agreement of the most important species [@PintoDaCosta2015]. Second, in a similar fashion to the previous comparison, for the paired invaded-uninvaded networks, we calculated the correlation between the relative importance of species obtained when the maximum matchings were calculated on a network weighted by the interaction asymmetries and weighted by the mutual dependences. 
+
+We found that any threshold that as long as some maximal matchings with a weight smaller than the maximum, the choice of the threshold has little impact on the consistency of the results obtained using different approaches. We chose 0.5 as it showed the largest mean correlation between mutual dependences and interaction asymmetries. Nevertheless, the difference was marginal and any threshold <= 0.9 would have provided very similar results. 
+
+```{r rel importance vs. threshold, echo = FALSE, warning = F, message = F, fig.height=8.8, fig.width=7, fig.align="center"}
+net_desc <- n_matched %>%
+  dplyr::full_join(meta) %>% 
+  dplyr::filter(!is.na(inv)) %>%
+  dplyr::mutate(n_dr = n_pla + n_pol - n_matched,
+                n_dr_p = n_matched / (n_pla + n_pol)) %>%
+  dplyr::select(site, inv, n_pla, n_pol, n_dr, n_dr_p, study, net_name) %>%
+  dplyr::arrange(study, site, inv) %>%
+  dplyr::mutate(site = rep(1:dplyr::n_distinct(site), each = 2),
+  							inv = plyr::mapvalues(inv, c(TRUE, FALSE), c("inv.", "uninv.")),
+  							desc = paste(site, "-", inv)) %>%
+	dplyr::select(net_name, desc)
+
+cor_d_sp <- d_sp %>%
+	dplyr::group_by(net_name, threshold, type, scaled) %>%
+	dplyr::mutate(d_weight = d_weight/max(d_weight),
+								d_imp = d_freq/n_matchings,
+								d_rank = rank(-d_imp, ties.method = "average")) %>%
+	dplyr::group_by() %>%
+	dplyr::filter(net_name %in% unique(d_sp_bi$net_name),
+								scaled == FALSE, 
+								type != "max_dep") 
+	
+cor_d_sp %>%
+	dplyr::mutate(type = plyr::mapvalues(type, c("asymmetry", "z_bi"),
+																			 c("interaction asymmetry",
+																			 	"mutual dependence"))) %>%
+	dplyr::filter(study != "ballantyne") %>%
+	dplyr::group_by(net_name, type, scaled, species) %>%
+	dplyr::arrange(threshold) %>%
+	dplyr::mutate(i_imp = dplyr::first(d_imp)) %>%
+	dplyr::group_by() %>%
+	dplyr::inner_join(net_desc) %>%
+	ggplot(aes(x = threshold, y = d_imp)) +
+	geom_line(aes(group = interaction(species, net_name, type, scaled),
+								colour = i_imp)) +
+	geom_point(aes(colour = i_imp), size = 1) +
+	facet_grid(desc~type) +
+	fer_theme + 
+  theme(plot.margin = grid::unit(c(0,1,2,0), "mm"), 
+  			legend.position = "none") +
+	scale_colour_gradient2(low = "#377eb8", high = "#e41a1c", mid = "grey", midpoint = 0.5) + 
+	ylab("relative species importance")
+```
+*Figure S5: Relative importance of species for different thresholds. Each line correspond to a species within a network. The colour of the line corresponds to the relative importance obtained when all maximal matchings are accepted (threshold is zero). Only networks for which we were able to calculate the relative importance using mutual dependences are shown, but patterns of relative importance calculated using interaction asymetries are similar for the remainding networks. Network numbers correspond to those in Table S1.*
+
+```{r correlations, echo = FALSE, warning = F, message = F, fig.height=2, fig.width=7, fig.align="center"}
+p1 <- cor_d_sp %>%
+	dplyr::filter(study == "ballantyne") %>%
+	plyr::ddply("threshold", function(x){
+		x %<>%
+			dplyr::filter((type == "asymmetry" & count == "visitation") |
+											(type == "z_bi" & count == "importance")) %>%
+			dplyr::mutate(class = paste(type, count, sep = ".")) %>%
+			dplyr::select(species, class, d_rank) %>%
+			tidyr::spread(class, d_rank)
+		rw2(x$asymmetry.visitation, x$z_bi.importance)
+	}) %>%
+	ggplot(aes(x = threshold, y = V1)) +
+	geom_point() +
+	geom_line() +
+	scale_x_continuous(breaks = seq(0, 1, 0.1)) +
+	fer_theme + 
+  theme(legend.position = "none") +
+	ylab("weighted rank correlation")
+
+p2 <- cor_d_sp %>%
+	dplyr::filter(study != "ballantyne") %>%
+	plyr::ddply(c("net_name", "threshold"), function(x){
+		x %<>%
+			dplyr::select(species, type, d_rank) %>%
+			tidyr::spread(type, d_rank)
+		rw2(x$asymmetry, x$z_bi)
+	}, .inform = T) %>%
+	dplyr::group_by(threshold) %>%
+	dplyr::mutate(mean_cor = mean(V1)) %>%
+	ggplot(aes(x = threshold, y = V1, group = net_name)) +
+	geom_point(colour = "grey", size = 1, shape = 21) +
+	geom_line(colour = "grey") +
+	geom_line(aes(y = mean_cor), size = 1) +
+	geom_point(aes(y = mean_cor)) +
+	fer_theme + 
+  theme(legend.position = "none") +
+	ylab("weighted rank correlation")
+
+cowplot::plot_grid(p1, p2, labels = "AUTO", label_size = 10, vjust = 1)
+```
+*Figure S6: Weighted rank correlation coeficient $\tilde{r}_{w2}$ between (A) the relative importance of species given by the importance network in @Ballantyne2015 weighted by mutual dependences and the visitation network weighted by the interaction asymetries. (B) the relative importance of species given by mutual dependences and interaction asymmetries for a subset of the paired invaded-uninvaded networks. The black line corresponds to the mean correlation per threshold, and grey lines correspond to the correlation for each individual network.*
+
+# Supplementary References
