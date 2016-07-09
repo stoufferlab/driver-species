@@ -5,7 +5,7 @@ matched_frequency <- function(n, matching_size, type = "weight", keep = "all", p
 	# transform network
 	m <- n %>%
 		keep_largest_component() %>%
-		bipartite_digraph(type, keep, weight.type, scale) %>%
+		bipartite_digraph(type, keep, weight.type, scale) %>% 
 		digraph_bipartite()
 	
 	w <- igraph::E(m)$weight
