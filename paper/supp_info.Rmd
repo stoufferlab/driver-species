@@ -614,7 +614,7 @@ a_m_driver %>%
 ```
 *Figure S3: Proportion of driver species necessary to control the full pollination network under four different assumptions of the direction of control.*
 
-*Table S3: pearman correlation coefficients of the number of driver species necessary to control the full pollination network under the four different assumptions of the direction of control.*
+*Table S3: Spearman correlation coefficients of the number of driver species necessary to control the full pollination network under the four different assumptions of the direction of control.*
 ```{r table alternative assumptions, echo = FALSE, warning = F, message = F, results = "asis"}
 
 corr_matrix <- a_m_driver %>%
@@ -632,8 +632,93 @@ kable(corr_matrix, align = "c", booktabs = T)
 
 ```
 
-\newpage
+*Table S4: Model selection table for the manageability of studied communities. Type refers to wether the manageability was calculated using mutual dependences or interaction asymetries. "y" and "n" indicate wheter a variable was included in the model or not.*
+```{r models, echo = F, message=F, warning=F, results="asis"}
+n_driver <- a_m %>%
+  dplyr::inner_join(meta) %>%
+  dplyr::filter(count == "visitation") %>%
+  dplyr::mutate(n_sp = n_pla + n_pol, 
+                n_dr = n_sp - n_matched,
+                n_dr_p = n_dr / n_sp)
 
+src_bi_w <- n_driver %>%
+  dplyr::filter(type == "z-bi" | type == "weight",
+                study != "ballantyne") %>%
+  dplyr::select(net_name, type, n_dr_p) %>%
+  tidyr::spread(type, n_dr_p) %$%
+  cor.test(weight, `z-bi`, method = "spearman")
+
+n_driver %<>%
+  dplyr::filter(!is.na(inv))
+
+n_driver_wb <- dplyr::filter(n_driver, 
+                             type == "z-bi" | type == "weight")
+
+# Models
+m0 <- glm(cbind(n_dr, n_matched) ~ n_pla * n_pol + study + inv + type,
+          data = n_driver_wb,
+          family = "binomial")
+m_nr <- glm(cbind(n_dr, n_matched) ~ I(n_pla/n_pol) + study + inv + type,
+          data = n_driver_wb,
+          family = "binomial")
+m8 <- glm(cbind(n_dr, n_matched) ~ I(n_pla/n_pol) + inv + type,
+          data = n_driver_wb,
+          family = "binomial")
+m9 <- glm(cbind(n_dr, n_matched) ~ I(n_pla/n_pol) + study + type,
+          data = n_driver_wb,
+          family = "binomial")
+m1 <- glm(cbind(n_dr, n_matched) ~ I(n_pla/n_pol) + type,
+          data = n_driver_wb,
+          family = "binomial")
+m2 <- glm(cbind(n_dr, n_matched) ~ study + type,
+          data = n_driver_wb,
+          family = "binomial")
+m3 <- glm(cbind(n_dr, n_matched) ~ I(n_pla + n_pol) + type,
+          data = n_driver_wb,
+          family = "binomial")
+m4 <- glm(cbind(n_dr, n_matched) ~ n_pla + type,
+          data = n_driver_wb,
+          family = "binomial")
+m5 <- glm(cbind(n_dr, n_matched) ~ n_pol + type,
+          data = n_driver_wb,
+          family = "binomial")
+m6 <- glm(cbind(n_dr, n_matched) ~ inv + type,
+          data = n_driver_wb,
+          family = "binomial")
+m7 <- glm(cbind(n_dr, n_matched) ~ study + inv + type,
+          data = n_driver_wb,
+          family = "binomial")
+
+mod_table <- MuMIn::model.sel(m0, m_nr, m8, m9, m1, m2, m3, m4, m5, m6, m7) %>%
+	as.data.frame() %>% 
+	`rownames<-`(NULL) %>%
+	dplyr::select(-1) %>% 
+	lapply(function(y) {
+		if (class(y) == "factor"){
+			y <- as.character(y)
+			y <- replace(y, y == "+", "y")
+			y <- replace(y, is.na(y), "n")
+		} 
+		if (class(y) == "numeric" & any(is.na(y))){
+			y <- replace(y, !is.na(y), "y")
+			y <- replace(y, is.na(y), "n")
+		}
+		y
+	}) %>% as.data.frame()
+
+names(mod_table)[1:8] <- c("invaded", "$n_p$", "$n_a$", "study", "type", "$n_p:n_a$", "$n_p/n_a$", "$n_p+n_a$")
+
+mod_table %<>%
+	dplyr::mutate(logLik = round(logLik, 1), 
+								AICc = round(AICc, 1),
+								delta = round (delta, 1),
+								weight = round(weight, 3))
+
+mod_table %>% knitr::kable(booktabs = T)
+```
+
+
+\newpage
 # S3: Threshold
 
 To calculate the relative importance of a species we calculated the frequency at which they are superior nodes in a set of accepted maximal matchings. Maximal matchings were accepted if the matching weight was over a certain threshold. The threshold was defined as a proportion of the maximum matching's weight. 
