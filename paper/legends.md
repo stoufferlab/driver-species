@@ -1,0 +1,42 @@
+---
+title: 
+csl: ecology-letters.csl
+output: html_document
+bibliography: references.bib
+---
+
+**Figure 1:**
+Finding a maximum matching in a complex network. 
+a) We start with a directed network  in which the direction of the link represent the direction of control; that is, a link from $a_1$ to $p_1$ indicates that the state of $p_1$ (density/abundances in an ecological context) is influenced by the state of $a_1$. 
+b) To facilitate the computation of the maximum matching, we can use an alternative representation of the directed network in which each node in (a) is represented by two nodes that indicate their outgoing and incoming links. 
+In both (a) and (b) we show one of the possible maximum matchings of a network (dark grey links) that defines a set of matched ($p_1$, $p_2$, and $a_3$), unmatched ($a_1$ and $a_2$) and superior nodes ($a_1$, $a_2$, and $p_1$; dark grey circles). 
+The minimum number of species necessary to control this network equates to the number of unmatched nodes $n_d = 2$, which gives a manageability value of $m = 0.8$.
+
+**Figure 2:** 
+Different ways to depict quantitative mutualistic networks. 
+a) Pollination networks are typically described by the number of visits between each plant and animal species. 
+b) Given visitation data, the mutual dependencies between interacting species are calculated directly based on the relative visitation frequencies. 
+c) The relative differences of dependencies—the interaction asymmetry—then provides a means to identify the dominant direction of the interspecific effects.
+
+**Figure 3:**
+Invaded communities have lower levels of manageability than uninvaded communities even when controlling for the ratio of plant to pollinator richness. 
+Adjusted manageability is given by the partial working residuals of the invasion status in our generalised linear mixed model. 
+The box covers the 25th–75th percentiles, the middle line marks the median, and the maximum length of the whiskers is 1.5 times the interquartile range. 
+All points outside this range are indicated by the circles.
+
+**Figure 4:**
+The manageability of empirical networks compared to network randomisations. 
+For each randomisation approach, we show the standarised rank of the empirical value compared to the set of randomisations. 
+An scaled mean rank—akin to a p-value— less than 0.025 or greater than 0.975 (the areas shaded in light grey) suggests a significant difference between the empirical network and its randomisations. 
+The empirical manageability is much smaller than that of network randomisations in which the direction of asymmetries has been randomised. 
+In contrast, the manageability of networks in which the visitation strengths or degrees were maintained were not significantly different to the manageability of the empirical networks. 
+Dark grey and white boxplots represent manageabilities obtained using interactions weighted by mutual dependencies and asymmetries respectively. 
+All boxes are as in Figure 3.
+
+**Figure 5:**
+Dependency strength is the single most important factor explaining the importance of species for network control. 
+Visitation levels and contribution to nestedness had a significant albeit small effect on the importance (dashed lines correspond to ± one standard deviation on these factors). 
+Invasive species (circles) were invariably classified as driver species—those having the maximum importance for network control.
+
+**Table 1:**
+The strength of dependency, contribution to nestedness and visitation strength had a significative effect on all the models that accounted for 95\% of the evidence based on AICc. .
