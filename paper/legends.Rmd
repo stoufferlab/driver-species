@@ -10,7 +10,7 @@ Finding a maximum matching in a complex network.
 a) We start with a directed network  in which the direction of the link represent the direction of control; that is, a link from $a_1$ to $p_1$ indicates that the state of $p_1$ (density/abundances in an ecological context) is influenced by the state of $a_1$. 
 b) To facilitate the computation of the maximum matching, we can use an alternative representation of the directed network in which each node in (a) is represented by two nodes that indicate their outgoing and incoming links. 
 In both (a) and (b) we show one of the possible maximum matchings of a network (dark grey links) that defines a set of matched ($p_1$, $p_2$, and $a_3$), unmatched ($a_1$ and $a_2$) and superior nodes ($a_1$, $a_2$, and $p_1$; dark grey circles). 
-The minimum number of species necessary to control this network equates to the number of unmatched nodes $n_d = 2$, which gives a manageability value of $m = 0.8$.
+The minimum number of species necessary to control this network equates to the number of unmatched nodes $n_d = 2$, which gives an overall manageability of $m = 0.8$.
 
 **Figure 2:** 
 Different ways to depict quantitative mutualistic networks. 
@@ -27,7 +27,7 @@ All points outside this range are indicated by the circles.
 **Figure 4:**
 The manageability of empirical networks compared to network randomisations. 
 For each randomisation approach, we show the standarised rank of the empirical value compared to the set of randomisations. 
-An scaled mean rank—akin to a p-value— less than 0.025 or greater than 0.975 (the areas shaded in light grey) suggests a significant difference between the empirical network and its randomisations. 
+A scaled mean rank—akin to a p-value— less than 0.025 or greater than 0.975 (the areas shaded in light grey) suggests a significant difference between the empirical network and its randomisations. 
 The empirical manageability is much smaller than that of network randomisations in which the direction of asymmetries has been randomised. 
 In contrast, the manageability of networks in which the visitation strengths or degrees were maintained were not significantly different to the manageability of the empirical networks. 
 Dark grey and white boxplots represent manageabilities obtained using interactions weighted by mutual dependencies and asymmetries respectively. 
