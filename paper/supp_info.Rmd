@@ -1,5 +1,5 @@
 ---
-title: "Biotic invasions reduce the manageability of mutualistic networks"
+title: "Biotic invasions reduce the manageability of pollination networks"
 csl: ecology-letters.csl
 output: pdf_document
 subtitle: "Supplementary information"
@@ -58,6 +58,7 @@ prop <- expand.grid(c("asymmetry", "max_dep"),
 driver <- mapply(function(x, y){
   attr(x, "type") <- as.character(y[,1])
   attr(x, "scaled") <- stringr::str_split(as.character(y[,2]), "_") %>% unlist() %>% extract(2) %>% as.logical()
+
   return(x)
 }, driver, prop)
 driver_bi <- "./data/processed/matching_frequency_bi" %>% 
@@ -67,7 +68,7 @@ mo <- readRDS("./data/processed/detailed_species_models_data.rds")
 ```
 
 
-*Table S1: Properties of the analysed plant-pollinator communities. $n_d$ and manageability values correspond to the assumption  that a species that depends more strongly on an interaction partner is controled by the partner. British networks were assembled by @Lopezaraiza-Mikel2007, Spanish were networks assembled by @Bartomeus2008.*
+*Table S1: Properties of the analysed plant-pollinator communities. $n_d$ and manageability values correspond to the assumption  that a species that depends more strongly on an interaction partner is controled by the partner. British networks were assembled by @Lopezaraiza-Mikel2007, whereas Spanish were networks assembled by @Bartomeus2008.*
 ```{r n_driver, echo = FALSE, warning = F, message = F, results = "asis"}
 # find n_driver
 n_driver <- n_matched %>%
@@ -124,7 +125,7 @@ Therefore we calculated the frequency that each species is present in the possib
 Although visitation and deposition produce strikingly different results, we found a very strong agreement between the order produced by visitation and importance (Table S2). 
 Finally, we investigated whether the asymmetry of mutual dependency, which defines the direction of control, was consistent among the three possible weighting schemes. We found again that the direction of the dominant dependency was maintained was consistent for 95\% of the interactions weighted by visitation or importance, the two most appropriate metrics for pollinator and plant dependency (Table S2).
 
-All together, evidence supports the idea that visitation is a suitable metric to estimate the mutual dependency of species pairs. First it is directly related to pollinator foraging. Second it produces results consistent, at least within our controllability framework, with plant reproductive success (as estimated by the importance metric).
+Altogether, evidence supports the idea that visitation is a suitable metric to estimate the mutual dependency of species pairs. First, it is directly related to pollinator foraging. Second, it produces results consistent, at least within our controllability framework, with plant reproductive success (as estimated by the importance metric).
 
 ```{r fig_visitation, echo = FALSE, warning = F, message = F, fig.height=4, fig.width=7, fig.align="center"}
 p <- net[meta$net_name[meta$study == "ballantyne" & meta$count != "binary"]] %>%
@@ -168,9 +169,9 @@ p <- net[meta$net_name[meta$study == "ballantyne" & meta$count != "binary"]] %>%
 
 multiplot(p[[1]][[2]], p[[1]][[1]], p[[2]][[2]], p[[2]][[1]], p[[3]][[2]], p[[3]][[1]], layout = matrix(c(1,2,2,3,4,4,5,6,6), ncol = 3, byrow = T))  
 ```
-_Figure S1: Distribution of interaction weights for the pollen deposition, visitation and pollinator importance networks. Note that the *x* axis in the density plots have been log-transformed._
+_Figure S1: Distribution of interaction weights for the pollen deposition, visitation and pollinator importance networks. Note that the *x* axes in the density plots have been log-transformed._
 
-*Table S2: Spearman correlation coefficients (with p-value) of the relative importance of species and the percentage of interactions that share the direction of dependency obtained using the three weighting schemes and an unweighted scheme*
+*Table S2: Spearman correlation coefficients (with p-value) of the relative importance of species and the percentage of interactions that share the direction of dependency obtained using the three weighting schemes and an unweighted scheme.*
 ```{r table correlations, echo = FALSE, warning = F, message = F, results = "asis"}
 d_sp <- driver %>%
   plyr::ldply(function(x) {
@@ -235,7 +236,7 @@ mapply(my_paste, correlations$r, correlations$P) %>%
 # S2: Direction of control
 
 We calculated the number of driver species necessary to control the whole community under the assumption that a species that depends more strongly on an interaction partner is more likely to be controlled by the partner.
-We tested the robustness of this assumption by comparing the relative number of driver species assuming that *(i)* the dependency asymmetry does not imply an unidirectional control direction, rather a species could control all its interaction partners and vice versa, *(ii)* that plants depend on pollinators, and that *(iii)* pollinators depend on plants.
+We tested the robustness of this assumption by comparing the relative number of driver species assuming that *(i)* the dependency asymmetry does not imply a unidirectional control direction, rather a species could control all its interaction partners and vice versa, *(ii)* that plants depend on pollinators, and that *(iii)* pollinators depend on plants.
 Our results using the direction of the largest dependency are consistent with the proposed alternatives: although we obtained different absolute numbers of driver species, their relative numbers are not statistically different (Figure S3, Table S3).
 
 ```{r explain matching pla-pol, echo = FALSE, warning = F, message = F, results = "asis", fig.height=4.2, fig.width=5.75, fig.align="center"}
@@ -586,7 +587,7 @@ cowplot::plot_grid(p1, p2, p3, p4, p5, p6,
 									 label_size = 10,
 									 hjust = 0, vjust = 1)
 ```
-*Figure S2: One of the possible maximum matchings for each of the assumptions regarding the direction of control: a) plants can drive the abbundance of pollinators but not otherwise, b) pollinators can drive the abbundance of plants but not otherwise; c) plants can drive the abbundance of pollinators with the same likelyhood than pollinators can modify the abbundance of plants*
+*Figure S2: One of the possible maximum matchings for each of the assumptions regarding the direction of control: a) plants can drive the abundance of pollinators but not otherwise, b) pollinators can drive the abundance of plants but not otherwise; c) plants can drive the abundance of pollinators with the same likelihood than pollinators can modify the abundance of plants.*
 
 ```{r fig alternative assumptions, echo = FALSE, warning = F, message = F, fig.height=1.5, fig.width=4.3, fig.align="center"}
 a_m_driver <- a_m %>% 
@@ -632,7 +633,7 @@ kable(corr_matrix, align = "c", booktabs = T)
 
 ```
 
-*Table S4: Model selection table for the manageability of studied communities. Type refers to wether the manageability was calculated using mutual dependences or interaction asymetries. "y" and "n" indicate wheter a variable was included in the model or not.*
+*Table S4: Model selection table for the manageability of studied communities. Type refers to whether the manageability was calculated using mutual dependences or interaction asymmetries. "y" and "n" indicate whether a variable was included in the model or not.*
 ```{r models, echo = F, message=F, warning=F, results="asis"}
 n_driver <- a_m %>%
   dplyr::inner_join(meta) %>%
@@ -807,7 +808,7 @@ cor_d_sp %>%
 	scale_colour_gradient2(low = "#377eb8", high = "#e41a1c", mid = "grey", midpoint = 0.5) + 
 	ylab("relative species importance")
 ```
-*Figure S5: Relative importance of species for different thresholds. Each line correspond to a species within a network. The colour of the line corresponds to the relative importance obtained when all maximal matchings are accepted (threshold is zero). Only networks for which we were able to calculate the relative importance using mutual dependences are shown, but patterns of relative importance calculated using interaction asymetries are similar for the remainding networks. Network numbers correspond to those in Table S1.*
+*Figure S5: Relative importance of species for different thresholds. Each line correspond to a species within a network. The colour of the line corresponds to the relative importance obtained when all maximal matchings are accepted (threshold is zero). Only networks for which we were able to calculate the relative importance using mutual dependences are shown, but patterns of relative importance calculated using interaction asymmetries are similar for the remaining networks. Network numbers correspond to those in Table S1.*
 
 ```{r correlations, echo = FALSE, warning = F, message = F, fig.height=2, fig.width=7, fig.align="center"}
 p1 <- cor_d_sp %>%
@@ -850,6 +851,6 @@ p2 <- cor_d_sp %>%
 
 cowplot::plot_grid(p1, p2, labels = "AUTO", label_size = 10, vjust = 1)
 ```
-*Figure S6: Weighted rank correlation coeficient $\tilde{r}_{w2}$ between (A) the relative importance of species given by the importance network in @Ballantyne2015 weighted by mutual dependences and the visitation network weighted by the interaction asymetries. (B) the relative importance of species given by mutual dependences and interaction asymmetries for a subset of the paired invaded-uninvaded networks. The black line corresponds to the mean correlation per threshold, and grey lines correspond to the correlation for each individual network.*
+*Figure S6: Weighted rank correlation coefficient $\tilde{r}_{w2}$ between (A) the relative importance of species given by the importance network in @Ballantyne2015 weighted by mutual dependences and the visitation network weighted by the interaction asymmetries. (B) the relative importance of species given by mutual dependences and interaction asymmetries for a subset of the paired invaded-uninvaded networks. The black line corresponds to the mean correlation per threshold, and grey lines correspond to the correlation for each individual network.*
 
 # Supplementary References
