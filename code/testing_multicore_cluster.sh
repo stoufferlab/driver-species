@@ -11,5 +11,5 @@
 #$ -r yes
 #$ -l mem_free=8G,h_vmem=8G
 
-Rscript --no-save --no-restore testing_multicore_cluster.Rq $SGE_TASK_ID 
+Rscript --no-save --no-restore testing_multicore_cluster.R $SGE_TASK_ID 
 exit 0
