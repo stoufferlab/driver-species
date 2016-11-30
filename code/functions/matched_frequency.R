@@ -1,6 +1,6 @@
 # find the times a species is present in the maximum matching set
 
-matched_frequency <- function(n, matching_size, type = "weight", keep = "all", prop = 1, batch = 1000000, simplify = T, weight.type = "max_dep", scale = F){
+matched_frequency <- function(n, matching_size, type = "weight", keep = "all", prop = 1, batch = 1000000, simplify = T, weight.type = "max_dep", scale = F, tmpdir = tempdir()){
 	
 	# transform network
 	m <- n %>%
@@ -22,7 +22,7 @@ matched_frequency <- function(n, matching_size, type = "weight", keep = "all", p
 	# precision for computations
 	m_prec <- .Machine$double.eps * matching$matching_size * 2
 	
-	temporary_file <- tempfile()
+	temporary_file <- tempfile(tmpdir = tmpdir)
 	message("file is ", temporary_file)
 	
 	message("finding all possible maximum matchings")
