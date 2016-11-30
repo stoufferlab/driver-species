@@ -2,7 +2,6 @@ library(magrittr)
 library(foreach)
 library(doMC) 
 registerDoMC(cores = as.numeric(commandArgs(trailingOnly = T)[1]))
-folder <- as.character(commandArgs(trailingOnly = T)[2])
 setwd("~/github/driver-species/")
 
 message("loading functions")
@@ -44,9 +43,10 @@ expand.grid(scale = c(F), weight.type = c("asymmetry")) %>%
 				o <- matched_frequency(onet[[x]], 
 															 prop = seq(0, 1, by = 0.1),
 															 weight.type = as.character(y$weight.type),
-															 scale = y$scale) 
+															 scale = y$scale, 
+															 tmpdir = "/mnt/ramdisk") 
 				saveRDS(o, 
-								file = paste0(folder, 
+								file = paste0("./data/processed", 
 															"/sampling_robustness/",
 															y$weight.type, "/", "scaled_", y$scale, "/",
 															names(onet)[x], ".rds"), 
