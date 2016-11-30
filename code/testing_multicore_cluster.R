@@ -1,3 +1,4 @@
+library(doMC)
 registerDoMC(cores = 4L)
 
 
