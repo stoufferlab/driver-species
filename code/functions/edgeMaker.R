@@ -26,8 +26,8 @@ my_theme <- theme_bw() +
   #scale_color_brewer(palette = "Paired") +
   theme(legend.position = "none",
         text = element_text(family = "Times"),
-        plot.margin=unit(c(4,1,-4,0),"mm"),
-        panel.margin=unit(c(0,0,0,0),"mm"),
+        plot.margin=grid::unit(c(4,1,-4,0),"mm"),
+        panel.margin=grid::unit(c(0,0,0,0),"mm"),
         panel.border = element_rect(colour = "grey10", size = 0.5),
         # panel.border = element_blank(),
         axis.text = element_blank(),
