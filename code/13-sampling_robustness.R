@@ -1,8 +1,16 @@
 library(magrittr)
 library(foreach)
 library(doMC) 
-registerDoMC(cores = as.numeric(commandArgs(trailingOnly = T)[1]))
 setwd("~/github/driver-species/")
+registerDoMC(cores = 8)
+
+# establish the parameters for this run
+this_task <- as.numeric(commandArgs(trailingOnly = T)[1])
+task_index <- expand.grid(completeness = c(1,0.95,0.90,0.85,0.80,0.75),
+						replicate = 1:100) %>%
+	dplyr::filter(!(completeness == 1 & replicate != 1)) %>%
+	dplyr::mutate(task = 1:nrow(.))
+this_task <- dplyr::filter(task_index, task == this_task)
 
 message("loading functions")
 
@@ -31,26 +39,29 @@ ordered_net_names <- dplyr::inner_join(meta, matched) %>%
 
 onet <- net[ordered_net_names]
 
-# calculate the frequency of species matchings
-expand.grid(scale = c(F), weight.type = c("asymmetry")) %>%
-	plyr::d_ply(c("scale", "weight.type"), function(y) {
-		print(y$scale)
-		print(y$weight.type)
+# parameters for the computation 
+scale <- F
+weight.type <- "asymmetry"
+
+1:length(onet) %>%
+	plyr::mlply(function(x){
 		
-		1:length(onet) %>%
-			plyr::mlply(function(x){
-				print(names(onet)[x])
-				o <- matched_frequency(onet[[x]], 
-															 prop = seq(0, 1, by = 0.1),
-															 weight.type = as.character(y$weight.type),
-															 scale = y$scale, 
-															 tmpdir = "/mnt/ramdisk") 
-				saveRDS(o, 
-								file = paste0("./data/processed", 
-															"/sampling_robustness/",
-															y$weight.type, "/", "scaled_", y$scale, "/",
-															names(onet)[x], ".rds"), 
-								ascii = TRUE, compress = F)
-				return(o)
-			}, .progress = "text")
-	})
+		n_edges_to_remove <- round(length(igraph::E(onet[[x]])) * (1 - this_task$completeness[1]))
+		edges_to_remove <- sample(igraph::E(onet[[x]]), n_edges_to_remove, prob = 1/igraph::E(onet[[x]])$weight)
+		subsampled_network <- igraph::delete_edges(onet[[x]], edges_to_remove)
+		
+		o <- matched_frequency(subsampled_network, 
+													 prop = seq(0, 1, by = 0.1),
+													 weight.type = as.character(weight.type),
+													 scale = scale, 
+													 tmpdir = "/data/efc29/tmp/") 
+		saveRDS(o, 
+						file = paste0("./data/processed", 
+													"/sampling_robustness/",
+													weight.type, "/", "scaled_", scale, "/",
+													names(onet)[x], 
+													"_sampling_", this_task$completeness, 
+													"_replicate_", this_task$replicate, ".rds"), 
+						ascii = TRUE, compress = F)
+		return(o)
+	}, .progress = "text")
