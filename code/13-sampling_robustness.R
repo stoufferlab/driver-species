@@ -46,6 +46,7 @@ weight.type <- "asymmetry"
 1:length(onet) %>%
 	plyr::mlply(function(x){
 		
+		set.seed(this_task$replicate * this_task$completeness * 100)
 		n_edges_to_remove <- round(length(igraph::E(onet[[x]])) * (1 - this_task$completeness[1]))
 		edges_to_remove <- sample(igraph::E(onet[[x]]), n_edges_to_remove, prob = 1/igraph::E(onet[[x]])$weight)
 		subsampled_network <- igraph::delete_edges(onet[[x]], edges_to_remove)
