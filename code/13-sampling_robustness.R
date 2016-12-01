@@ -6,8 +6,8 @@ registerDoMC(cores = 8)
 
 # establish the parameters for this run
 this_task <- as.numeric(commandArgs(trailingOnly = T)[1])
-task_index <- expand.grid(completeness = c(1,0.95,0.90,0.85,0.80,0.75),
-						replicate = 1:100) %>%
+task_index <- expand.grid(completeness = seq(1, 0.75, by = -0.005),
+						replicate = 1:10) %>%
 	dplyr::filter(!(completeness == 1 & replicate != 1)) %>%
 	dplyr::mutate(task = 1:nrow(.))
 this_task <- dplyr::filter(task_index, task == this_task)
