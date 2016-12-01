@@ -12,5 +12,5 @@
 #$ -r yes
 #$ -l mem_free=16G,h_vmem=16G
 
-Rscript --no-save --no-restore 13-sampling_robustness.R $SGE_TASK_ID 
+Rscript --no-save --no-restore 13-sampling_robustness.R $SGE_TASK_ID TRUE
 exit 0

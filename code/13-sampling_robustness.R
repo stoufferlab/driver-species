@@ -12,6 +12,8 @@ task_index <- expand.grid(completeness = seq(1, 0.5, by = -0.01),
 	dplyr::mutate(task = 1:nrow(.))
 this_task <- dplyr::filter(task_index, task == this_task)
 
+overwrite <- as.logical(commandArgs(trailingOnly = T)[2])
+
 message("loading functions")
 
 "./code/functions" %>% 
@@ -44,7 +46,7 @@ scale <- F
 weight.type <- "asymmetry"
 
 1:length(onet) %>%
-	plyr::m_ply(function(x){
+	plyr::mlply(function(x){
 		
 		message("Network ", names(onet)[x])
 		
@@ -55,7 +57,9 @@ weight.type <- "asymmetry"
 												"_sampling_", this_task$completeness, 
 												"_replicate_", this_task$replicate, ".rds")
 		
-		if(!file.exists(file_name)){
+		if(!overwrite & file.exists(file_name)) {
+			return(NULL)
+		} else {
 			set.seed(this_task$replicate * this_task$completeness * 100)
 			n_edges_to_remove <- round(length(igraph::E(onet[[x]])) * (1 - this_task$completeness[1]))
 			edges_to_remove <- sample(igraph::E(onet[[x]]), n_edges_to_remove, prob = 1/igraph::E(onet[[x]])$weight)
@@ -69,5 +73,6 @@ weight.type <- "asymmetry"
 			saveRDS(o, 
 							file = , 
 							ascii = TRUE, compress = F)
+			return(o)
 		}
 	}, .progress = "text")
