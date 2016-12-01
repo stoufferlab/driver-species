@@ -44,8 +44,8 @@ matched_frequency <- function(n, matching_size, type = "weight", keep = "all", p
 	# estimate number of lines in file
 	onelinefile <- tempfile()
 	readLines(temporary_file, 1) %>% write(onelinefile)
-	nlines <- file.size(temporary_file) %>% 
-		magrittr::divide_by(file.size(onelinefile)) %>%
+	nlines <- file.info(temporary_file)$size %>% 
+		magrittr::divide_by(file.info(onelinefile)$size) %>%
 		ceiling()
 	
 	blocks <- seq(1, nlines, batch)
