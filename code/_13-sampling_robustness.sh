@@ -5,7 +5,7 @@
 #$ -j y
 #$ -S /bin/bash
 #$ -t 1-501
-#$ -tc 13
+#$ -tc 24
 #$ -pe multi_thread 8
 #$ -m a
 #$ -M efc29@uclive.ac.nz
