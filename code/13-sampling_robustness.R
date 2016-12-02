@@ -71,7 +71,7 @@ weight.type <- "asymmetry"
 														 scale = scale, 
 														 tmpdir = "/data/efc29/tmp/") 
 			saveRDS(o, 
-							file = , 
+							file = file_name, 
 							ascii = TRUE, compress = F)
 			return(o)
 		}
