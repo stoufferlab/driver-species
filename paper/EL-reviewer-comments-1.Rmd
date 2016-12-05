@@ -2,6 +2,7 @@
 title: "Response to reviewer comments ELE-00738-2016"
 date: "21 November 2016"
 output: pdf_document
+bibliography: references.bib
 ---
 
 Dear Prof. Jonathan Chase, 
@@ -28,95 +29,82 @@ I expound on this overview in some detail below. I regret that I cannot be more 
 
     *Accepted; changed.*
 
-The paragraph on lines 50-62 cites papers published no earlier than 2011. However, to support the following argument "Despite these advances, the link between the structure of complex networks and our ability to manage and conserve them is still ambiguous", the authors cite a paper that predates all of them (Tylianakis et al. 2010). The paper in question highlights practical challenges to conservation; many if not all of them remain today (which I suspect is the authors' argument). I suggest the authors revise the text to make the contribution of this reference clear.
+- The paragraph on lines 50-62 cites papers published no earlier than 2011. However, to support the following argument "Despite these advances, the link between the structure of complex networks and our ability to manage and conserve them is still ambiguous", the authors cite a paper that predates all of them (Tylianakis et al. 2010). The paper in question highlights practical challenges to conservation; many if not all of them remain today (which I suspect is the authors' argument). I suggest the authors revise the text to make the contribution of this reference clear.
 
-Comment 3
-Lines 95-97: "The number of nodes necessary to fully control a complex network can be calculated by counting the number of unmatched nodes in the network's maximum matching (Liu et al. 97 2011)."
+    *Accepted; changed. We revised the text to better reflect the contribution of @Tylianakis2010 at the same time we added a reference to a more recent paper by @Kaiser-Bunbury2015 who explicitly deals with oportunities, limitations and implications of applying network metrics in conservation science.*
 
-This statement must be contextualized by the assumed nature of the dynamical relationships in this framework. It therefore seems to me that this statement should be preceded by a discussion of those details (indeed, the authors argue that this is necessary in the Introduction, on lines 48-49).
+- Lines 95-97: "The number of nodes necessary to fully control a complex network can be calculated by counting the number of unmatched nodes in the network's maximum matching (Liu et al. 97 2011)." This statement must be contextualized by the assumed nature of the dynamical relationships in this framework. It therefore seems to me that this statement should be preceded by a discussion of those details (indeed, the authors argue that this is necessary in the Introduction, on lines 48-49).
 
-Furthermore, the authors need to discuss the appropriateness of this framework to ecological systems. The input control signals that drive even relatively simple networks to specified states can be very sensitive to initial conditions and complicated (indeed, they usually aren't calculated at all). How can a control scheme be implemented even in principle if nodes represent species populations and a control signal calls for a fractional change in a node state variable over the course of minutes? Furthermore, how do the authors interpret the methods by which cycles are controlled in linear control theory (see e.g. doi 10.1126/science.1242063 and its supplementary material) in the context of ecological management? How frequent are cycles in the authors' ecological networks?
+- Furthermore, the authors need to discuss the appropriateness of this framework to ecological systems. The input control signals that drive even relatively simple networks to specified states can be very sensitive to initial conditions and complicated (indeed, they usually aren't calculated at all). How can a control scheme be implemented even in principle if nodes represent species populations and a control signal calls for a fractional change in a node state variable over the course of minutes? Furthermore, how do the authors interpret the methods by which cycles are controlled in linear control theory (see e.g. doi 10.1126/science.1242063 and its supplementary material) in the context of ecological management? How frequent are cycles in the authors' ecological networks? I should emphasize that I am a fan of control theory and I think it is interesting to apply it as the authors do in this ms. However, the caveats that come along with the points I outline above need to be made clear for the reader. The authors might be interested in doi 10.1063/1.4931570 for a discussion of some relevant ideas.
 
-I should emphasize that I am a fan of control theory and I think it is interesting to apply it as the authors do in this ms. However, the caveats that come along with the points I outline above need to be made clear for the reader.
+    * Acepted; changed.* 
+    
+- Lines 101-103: "(ii) the sum of the weights of the matched links—known as matching weight—is the largest possible among all possible matchings of that size (West 2001)." The authors go on to cite Liu et al. 2011, but that report (and many others cited in the present ms) considers "structural controllability", which assumes binary edge weights (i.e., they exist or they do not). Is condition (ii) appropriate here? If so, why? The authors get at this later in the ms (lines 145-152, where it looks as if edges are indeed binarized), but for readers familiar with the structural control literature, there is room for confusion as they come to this point in the ms. This may be mitigated as the authors address my comment 3, but it seems appropriate for me to raise this point explicitly as well.
 
-The authors might be interested in doi 10.1063/1.4931570 for a discussion of some relevant ideas.
+- When defining n_d on line 119, it is more accurate to say that it is the "minimum number" of species needed to gain full control.
 
-Comment 4
-Lines 101-103: "(ii) the sum of the weights of the matched links—known as matching weight—is the largest possible among all possible matchings of that size (West 2001)."
-
-The authors go on to cite Liu et al. 2011, but that report (and many others cited in the present ms) considers "structural controllability", which assumes binary edge weights (i.e., they exist or they do not). Is condition (ii) appropriate here? If so, why? The authors get at this later in the ms (lines 145-152, where it looks as if edges are indeed binarized), but for readers familiar with the structural control literature, there is room for confusion as they come to this point in the ms. This may be mitigated as the authors address my comment 3, but it seems appropriate for me to raise this point explicitly as well.
-
-Comment 5
-When defining n_d on line 119, it is more accurate to say that it is the "minimum number" of species needed to gain full control.
-
-Comment 6
-Lines 132-133: "...we therefore call driver species those that are identified as being a superior node in all possible matchings..."
+- Lines 132-133: "...we therefore call driver species those that are identified as being a superior node in all possible matchings..."
 I have several comments here. First, shouldn't this be "all possible maximum matchings"?
 
 Second, a node with no outgoing edges will clearly never be a superior node and will therefore not be a driver node. I assume that this never happens in the mutualistic networks under consideration, but this probably bears mentioning so as to help develop the reader's intuition for this assessment. In any event it would be useful for the reader to see a simple network (or several) to provide clear examples of driver nodes and non-driver nodes. For instance, how can a node with an outgoing edge not be a driver node?
 
 Finally, the term "driver species" (or more generically, "driver node") has a specific meaning in the control literature (doi 10.1038/nature10011): what the authors here denote with n_d on line 118. To avoid confusion with those familiar with the control theory literature (and those readers who are inspired by this ms to delve into it), I suggest a change of terminology. Perhaps "key species"?
 
+- The approach described in lines 145-152 would be clearer if the authors included a figure demonstrating each step for a simple network.
 
-Comment 7
-The approach described in lines 145-152 would be clearer if the authors included a figure demonstrating each step for a simple network.
+- Lines 173-176: "To do so, we calculated the maximum matching of the corresponding pollination network, and estimated the minimum proportion of species that need directed interventions to fully control the species abundances in the community." Why is this an estimate? The number of species that need to be directly controlled can be determined unambiguously.
 
-Comment 8
-Lines 173-176: "To do so, we calculated the maximum matching of the corresponding pollination network, and estimated the minimum proportion of species that need directed interventions to fully control the species abundances in the community." Why is this an estimate? The number of species that need to be directly controlled can be determined unambiguously.
+- It seems to me that the number of interactions would also be an interesting factor to consider in the statistical analysis (discussed beginning on line 213).
 
-Comment 9
-It seems to me that the number of interactions would also be an interesting factor to consider in the statistical analysis (discussed beginning on line 213).
-
-Comment 10
-Lines 225-228: "Previous research indicates a direct link between a network's degree distribution and the number of nodes necessary to fully control it (Liu et al. 2011), but the strength and applicability of this relationship has not been tested for in weighted ecological networks."
+- Lines 225-228: "Previous research indicates a direct link between a network's degree distribution and the number of nodes necessary to fully control it (Liu et al. 2011), but the strength and applicability of this relationship has not been tested for in weighted ecological networks."
 
 The authors go on to discuss null models that vary edge weights. However (as mentioned in comment 4), it seems to me that the edge weight is ultimately not a factor when determining the manageability of the network, at least once it has been mapped to unidirectional and unweighted edges. The methodology and rationale here needs to be clarified. For instance, is the effect of changing edge weight restricted to affecting interaction asymmetry and thereby the unidirectional projection of the interactions? If so, how does this differ from the null model that does this explicitly (described on lines 239-246)? Does edge weight play any other role in this analysis? (Its role is clear in the section beginning on line 247.)
 
-Comment 11
-It seems useful to mention the typical size of the networks at the beginning of the results, if not earlier. In addition, the fact that the mean value of m is 0.37 means that roughly two thirds of the species in these communities need to be directly controlled, at least according to this modeling framework. It seems to me that this merits explicit comment in the Discussion.
+- It seems useful to mention the typical size of the networks at the beginning of the results, if not earlier. In addition, the fact that the mean value of m is 0.37 means that roughly two thirds of the species in these communities need to be directly controlled, at least according to this modeling framework. It seems to me that this merits explicit comment in the Discussion.
 
 Indeed, in the Discussion the authors say for example, "Because of their effects on other species in the community, driver species might be natural candidates for management interventions." This may be true, but it seems to me that the role of the directly-controlled species (that populate n_d), which serve as the gateway for the control signals to the rest of the network, merits discussion here as well. How are the two related? Do the authors envision a scenario where a control signal is actually being sent in to the network? Or do they rather envision a scenario where no controls are being used (which is counter to the central idea of structural controllability), and are they instead identifying these drivers nodes simply to provide a proxy measure of the effect of node state perturbations on the rest of the network? The latter seems more plausible than the former, but in any case more detail is needed.
 
-Comment 12
-Figure 3 should show the distributions of m as well as the adjusted value of m. I suggest also providing more detail about how the adjusted value is calculated (in the current version there is one technical sentence that non-experts will not be able to follow).
+- Figure 3 should show the distributions of m as well as the adjusted value of m. I suggest also providing more detail about how the adjusted value is calculated (in the current version there is one technical sentence that non-experts will not be able to follow).
 
-Comment 13
-In Appendix S2 (referenced in the ms on lines 205-208), the authors state that the relative number of driver species, while different for the approaches there discussed, are not significantly different from one another. However, the statistical test used is a Spearman correlation coefficient, which does not measure the difference in e.g. population means but rather the extent to which their relationship is monotonic.
+- In Appendix S2 (referenced in the ms on lines 205-208), the authors state that the relative number of driver species, while different for the approaches there discussed, are not significantly different from one another. However, the statistical test used is a Spearman correlation coefficient, which does not measure the difference in e.g. population means but rather the extent to which their relationship is monotonic.
 
 Minor comments
 Line  236: there is a missing period.
 
 
-Referee: 2
+## Referee 2
 
-Comments for the Authors
-General comments
 This manuscript proposes to apply the methods published in previous papers (e.g. Liu et al, Nature 2011) on the controllability of complex systems to invaded pollination networks. Note that controllability is rebranded “manageability” (unless it has a different meaning in this paper?). The manuscript also proposes to identify the nodes to manage or driver species. This is a fascinating area of research.
 Performing a controllability study on ten pairs of uninvaded and invaded plant-pollinator networks, the main finding is that invaded networks require a higher number of nodes to control than their non-invaded counterpart and invasive plants were driver species in all studied communities.
 The study is scientifically sound. However the manuscript is dense and difficult to read. In particular the section Theoretical framework and its subsection are confusing and should be merged with the Methods section. The discussion should be strengthen.
 In its current form, it is unlikely that readers will be able to understand or replicate the research presented – which is a shame considering the authors went through a lot of trouble to apply a control theory study in an ecological context. An overall simplification of the language/sentences and jargon used will increase the readability of this manuscript. Ruths (2014, Science) and Liu (2011, Nature) are doing a better job at explaining maximum matching, driver nodes and the overall challenge of controllability.
-Specific comments
-1)      Consider being more specific in your abstract.
-2)      L74 “we _expand_ previous theory of the control of complex systems to an ecological context”. Do you mean apply? Please clarify your contribution without ambiguity.
-3)      Section Manageability (L94).
-a.      Please first define manageability before maximum matching.
-b.      The maximum matching paragraph is difficult to understand. Reword.
-4)      Section Relative importance (L121).
-a.      It seems that the abstract refers to this section as being a novel way to identify communities’ driver species. However it is very unclear that this is a novel contribution. Please clarify in the text and provide details in supplementary information. It is also unclear from the Methods section.
-5)      Discussion:
-a.      McDonaldMadden et al (2016) actually show that network metrics are not useful to prioritise the management of foodweb, i.e. to determine which species should be managed first (if required). Please edit current text and analyse differences with your work.
-b.      Please provide some insight into how your method/analysis/results would differ for non- pollinator invaded networks.
-c.      Please discuss the caveats of your approach. I suggest moving some of the statistical analyses in sup info if word limit is an issue.
 
-6)      The maximum matching algorithm is computationally expensive as noted by the authors. In Ruths & Ruths (2014) the authors come with an interesting alternative to calculate the minimum number of independent controls (driver species) using only the number of source nodes, external dilation points and internal dilation points; and a heuristic using source and sink nodes. What is the profile of the pollinator networks studied? Would the Ruths & Ruths approach be an easier way of reaching the same conclusions? Would it bring complementary information?
-7)      A few typos in main text and sup info.
-8)      Is there a compelling reason to change controllability to “manageability”? Walters did the same thing with “adaptive management” in lieu of “adaptive control”.
-30 years later, no one remembers where “adaptive management” originally came from and it has become a keyword in ecology. As a result, ecologists have been cut from the theoretical advances in control theory and most often have no clue that these are the same thing.
+- Consider being more specific in your abstract.
+
+- L74 “we expand previous theory of the control of complex systems to an ecological context”. Do you mean apply? Please clarify your contribution without ambiguity.
+
+    *Acepted; changed. The sentence now reads "To bridge this gap, we propose methods to apply previous theory on the control of complex systems into an ecological context and implement them in empirical data"*
+
+- Section Manageability (L94). Please first define manageability before maximum matching. Also, the maximum matching paragraph is difficult to understand. Reword.
 
 
-Referee: 3
+- Section Relative importance (L121). It seems that the abstract refers to this section as being a novel way to identify communities’ driver species. However it is very unclear that this is a novel contribution. Please clarify in the text and provide details in supplementary information. It is also unclear from the Methods section.
 
-Comments for the Authors
+
+- Discussion. McDonaldMadden et al (2016) actually show that network metrics are not useful to prioritise the management of foodweb, i.e. to determine which species should be managed first (if required). Please edit current text and analyse differences with your work.
+
+- Discussion. Please provide some insight into how your method/analysis/results would differ for non- pollinator invaded networks.
+
+- Discussion. Please discuss the caveats of your approach. I suggest moving some of the statistical analyses in sup info if word limit is an issue.
+
+- The maximum matching algorithm is computationally expensive as noted by the authors. In Ruths & Ruths (2014) the authors come with an interesting alternative to calculate the minimum number of independent controls (driver species) using only the number of source nodes, external dilation points and internal dilation points; and a heuristic using source and sink nodes. What is the profile of the pollinator networks studied? Would the Ruths & Ruths approach be an easier way of reaching the same conclusions? Would it bring complementary information?
+
+- A few typos in main text and sup info.
+
+- Is there a compelling reason to change controllability to “manageability”? Walters did the same thing with “adaptive management” in lieu of “adaptive control”. 30 years later, no one remembers where “adaptive management” originally came from and it has become a keyword in ecology. As a result, ecologists have been cut from the theoretical advances in control theory and most often have no clue that these are the same thing.
+
+## Referee 3
+
 In this work Cagua et al apply tools rooted in control theory to ecological networks and discuss how this approach could be used for management of natural systems, with emphasis on the effects of invasive species. This is an exciting work. It presents to ecologists a novel way of studying the relationship between topology and dynamics that is less dependent (when compared to other methods) on particular choices about how dynamics are modeled. The authors illustrate the potential of this approach by exploring how invasive species change system dynamics and manageability. My only concern about this manuscript is that the authors need to be more careful and more explicit about some limitations of this approach and the generality of their results, specially considering the implications of their results for management.
 
 Only one type of interaction is being considered here when species are involved in multiple types of interactions. An assumption that is not explicit in the text is that all the factors controlling population densities are the interactions between plants and pollinators. The boundaries of a network, including the types of interactions that are considered or not, are often arbitrarily defined. However, this approach is highly dependent on the topology of the network and thus on how we define the network. I know this limitation applies to any study on system dynamics, but it becomes more serious when we argue that management decisions can be based on a single technique. I have two suggestions. First, the authors should discuss in detail these assumptions and their limitations. Second, It would be helpful if the authors could test the robustness of their results to sampling. The results show that invasive species change manageability. This suggests that manageability may be sensitive to sampling. A sensitivity analysis where species are added and removed from the network under different wiring schemes would help us understand the behavior of the manageability index when networks are undersampled and would allow a more informed discussion on how the choices we make when delimiting the network affect estimates of controllability. Weak links should not have a strong effect on controllability and considering the networks were built using visitation frequency, most of the strong interactions were likely sampled. Still, it would be great to show that the method is robust and this would make it easier to justify that even in the absence of complete sampling this technique is in fact useful for management.
@@ -164,3 +152,5 @@ Figure 5 legend. Please include here the definition of dependency strength so th
 This was a difficult decision.  Like all the reviewers, I think this work has huge potential, and could have major impacts in applied ecology.  However, you are unclear in your terminology wrt to the major research field you apply to this interesting ecological setting and your exposition is opaque (for example, how exactly are manageability and controllability related? – see the important caution from R2 and the detailed comments from R1).  This makes it incredibly hard to follow your work, even for someone who works in network controllability.  There also seems to be key controllability methodological work you could more effectively leverage.  I applaud the close link of theory and empiricism, but more details of the field network pairs would be helpful.  Really major revisions will be required to get this ms into a form that appeals to both newcomers and experts in the field, and the manuscript will have to be re-reviewed (likely by a mix of the same and some new reviewers), but it does have excellent potential, so I encourage the authors to carefully and thoroughly deal with all of the reviewer comments.
 
 *Thanks for the encouraging feedback*
+
+## References

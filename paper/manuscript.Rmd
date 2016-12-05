@@ -94,25 +94,16 @@ Centre for Integrative Ecology, School of Biological Sciences, University of Can
 
 # Abstract
 
-It is generally unknown how the disruptions caused by perturbations such as biotic invasions, affect our ability to manage ecological communities. 
-Here, we expand current theory on the controllability of complex systems to quantitatively assess the theoretical (relative) manageability of ten pairs of uninvaded and invaded plant-pollinator communities.
-Intriguingly, we found that invaded pollination networks might be more resilient than their uninvaded counterparts as they showed substantially lower levels of manageability.
-We also developed theory to help identify each community's driver species—those most important to manage because of their disproportionate potential to affect the abundances of all other species. 
-Remarkably, invasive plants were found to be driver species in every community in which they were found; their dominant position was generally underpinned by high asymmetry in the dependence of their interaction partners.
-Our results provide a theoretical explanation for the known challenges associated with the restoration of invaded communities, and also provide insight into the design of informed management interventions. 
-
-*Shorter version*: 
-It is generally unknown how the disruptions caused by perturbations like biotic invasions, affect our ability to manage ecological communities. 
-Here, we expand current theory on the controllability of complex systems to assess the theoretical manageability of ten pairs of uninvaded and invaded plant-pollinator communities.
-We found that invaded pollination networks might be more resilient than their uninvaded counterparts as they showed substantially lower manageability.
-We also identify each community's driver species—those most important to manage because of their disproportionate potential to affect the abundances of all other species. 
-Remarkably, invasive plants were found to be driver species in every community in which they were found; their dominant position was generally underpinned by high asymmetry in the dependence of their interaction partners.
-Our results provide a theoretical explanation for the known challenges associated with the restoration of invaded communities, and also provide insight into the design of informed management interventions. 
-
+It is generally unknown how the disruptions caused by perturbations like biotic invasions affect our ability to manage ecological communities. 
+Here, we expand theory on the controllability of complex systems to assess the theoretical manageability of ten pairs of uninvaded and invaded plant-pollinator communities. 
+We found that invaded pollination networks appear more resilient than their uninvaded counterparts as they showed substantially lower manageability. 
+We also introduce a novel way to identify communities’ driver species—those most important to manage because of their disproportionate potential to affect the abundances of all other species. 
+Remarkably, we observed that invasive plants were driver species in every community in which they were found, and their dominant position was underpinned by the high asymmetry in the dependence of their interaction partners. 
+Our results provide a theoretical explanation for the known challenges associated with the  restoration of invaded communities, and also provide insight into the design of informed management interventions. 
 
 # Introduction
 
-Complex systems are characterised by non-linear relationships in which the whole is greater than the sum of its parts [@Jorgensen1998; @Levin1999; @Montoya2006].
+Complex systems are characterised by relationships in which the whole is often greater than the sum of its parts [@Jorgensen1998; @Levin1999; @Montoya2006].
 Within community ecology, a complex systems approach has led to the development of a variety of analytical and simulation tools with which to understand, for example, the role of species when embedded in an intricate network of interactions [@Pascual2005; @Bascompte2009; @Stouffer2012]. 
 The inherent complexity of nature, however, has hindered—or at least greatly complicated—our ability to find management solutions to the many problems ecological communities face. 
 To overcome this obstacle, we require a framework that allow us to explain, predict, and manage ecological communities, particularly when they are faced with perturbations [@Sole2001; @Green2005].
@@ -121,19 +112,17 @@ Moreover, such a framework needs to be able to account for their complex structu
 Among the various possibilities, control theory appears to be a strong candidate as it is designed to deal with determining and supervising the behavior of general dynamical systems, and is well equipped to deal with the many feedbacks presents in ecological communities [@Liu2015]. 
 Research in the field has established a strong link between the structure of complex networks and their controllability, while also demonstrating that it is in principle possible to alter a whole ecological community's composition by modifying the abundances of only a few species [@Liu2011; @Cornelius2013; @Ruths2014].
 Applications of control theory to ecological networks can also take into account the extent to which changes in the abundances of one species may ripple through the community [@Cornelius2013].
-Therefore, they can provide an indication of which species are most relevant
-from a dynamic perspective, a particularly important feature given that these
-species should underpin informed attempts to both alter or maintain the ecosystem state.
+Therefore, they can provide an indication of which species are most relevant from a dynamic perspective, a particularly important feature given that these species should underpin informed attempts to both alter or maintain the ecosystem state.
 
-Despite these advances, the link between the structure of complex networks and our ability to manage and conserve them is still ambiguous [@Tylianakis2010].
+Despite these advances, practical challenges to the conservation of interaction networks still persist [@Tylianakis2010] and the link between the structure of complex networks and our ability to manage and conserve them is still ambiguous [@Kaiser-Bunbury2015].
 To complicate things further, biotic invasions—a major driver of global change—can induce dramatic changes on the patterns of interactions that determine the structure of ecological networks [@Baxter2004; @Tylianakis2008; @Ehrenfeld2010a]. 
 Although understanding how differences in network structure before and after the invasion impact our ability to manage them presents a double challenge, it is a critical first step towards a fully informed recovery. 
 Despite the apparent overlap, a control-theoretic perspective has not been widely adopted in an invasion context. 
 This is perhaps because of a lack of appropriate methodological tools that can account for observed variation on the strength of interspecific effects that are characteristic of ecological networks [@Liu2011; @Isbell2013].
 
-To bridge this gap, we expand previous theory of the control of complex systems to an ecological context.
-We then use a set of ten pairs of uninvaded and invaded plant-pollinator communities to investigate the link between invasion, network structure and ecological management. 
-We ask two specific questions framed in the context of a plant invasion.
+To bridge this gap, we propose methods to apply previous theory on the control of complex systems into an ecological context and implement them using empirical data.
+Specifically we use a set of ten pairs of uninvaded and invaded plant-pollinator communities to investigate the link between invasion, network structure and ecological management. 
+We ask two questions framed in the context of a plant invasion.
 First, we ask whether invaded networks have lower levels of manageability than their uninvaded counterparts; that is, whether they require a greater proportion of species to be managed to achieve the same level of control. 
 Second, we ask whether some species are more important than others at driving the population dynamics of the community and which factors determine this importance. 
 We focus on these particular applications for a variety of reasons. 
@@ -142,9 +131,28 @@ Second, plant-pollinator networks provide an ideal framework to answer these que
 On one hand, community networks that quantify relative levels of interaction are readily available. 
 On the other, the bipartite nature of pollination networks makes it possible to simplify assumptions of how these interactions translate into interspecific effects. 
 
-## Theoretical framework
+## Methods
 
-### Manageability
+### Theoretical framework
+
+Dynamical contstraints
+
+#### Controlability
+
+The structural controllability of a complex system can be approximated by the proportion of nodes to which we would need to apply external control input signals in order to gain full control of the state of all nodes in the network. 
+This finding is based on the premise that a complex network behaves like a dynamical system in which the state of a given node can be potentially modified by altering state of any of the nodes pointing to it.
+In an ecological community species populations can often be viewed as a function of the populations of the species they interact with.
+This ability to treat communities as a network of coupled dynamic entities enables the application of control theory in ecological settings, hence provide an explicit link between network structure and managament applications. 
+
+Indeed, in an ecological context, external control input signals that modify the state of a node (a species' population) could be refered as management interventions.
+Building on this analogy, systems that require a large number of external inputs are more difficult or costly to control. 
+Therefore, the manageability of a community is inversely related to its controllability *c*. This is given by $$c = \frac{n_d}{s},$$ where *c* ranges between zero and one, *n~d~* is the minimum number of species to which management interventions are needed to gain full control, and *s* is the total number of species in the community.
+Although the 
+
+
+systems, and hence where s
+Ecological communities are a prime candidate
+In an ecological context
 
 The number of nodes necessary to fully control a complex network can be calculated by counting the number of unmatched nodes in the network's maximum matching [@Liu2011]. 
 In a directed network, a given matching is a subset of links in which no two links share a common starting node or a common ending node; a node is then matched if it is the ending node of one of the links in the matching and unmatched otherwise (Figure 1a). 
@@ -259,11 +267,13 @@ Given a maximum matching, the link to network controllability has a largely intu
 In control theory, a network is fully controllable when each node has a "superior", that is, an input that drives its dynamics. 
 Consequently, each matched nodes can be controlled by the node pointing to it.
 Unmatched nodes, on the other hand, have no superior in the network and must be directly controlled by external inputs [@Liu2011]. 
+
+
 In an ecological context, these external inputs are what could be referred to as management interventions. 
 Building on this analogy, systems that require a large number of external inputs are more difficult or costly to control. 
 Therefore, the manageability *m* of a community can be approximated by the proportion of species on which we would need to apply management interventions in order to gain full control of the abundances of *all* species in the ecological community. This is given by $$m = 1- \frac{n_d}{s},$$ where *m* ranges between zero and one, *n~d~* is the number of species needed to gain full control and *s* is the total number of species in the community.
 
-### Relative importance
+#### Relative importance
 
 The manageability of a community *m* provides an indication of the magnitude of $n_d$ but not the identity of the species that compose this set. 
 This difference is rather important since maximum matchings are often not unique in a given network and different sets of species of size *n~d~* could potentially be used to control the network [@Liu2011]. 
@@ -278,7 +288,7 @@ This implies that there will often be multiple matchings that have maximal size 
 We can accommodate this uncertainty by relaxing the matching weight requirement and computing all possible matchings in the network that have the same maximal size while allowing for some tolerance regarding the weight. 
 One alternative to compute all the matchings with maximal size, is to first generate the network's line graph—another representation in which nodes are the links of the original network and links represent common ending points [@West2001]. Then calculate the complement of this line graph, which generates a graph in which nodes are connected if and only if they are not connected in the line graph. Finally, all possible matchings of maximal size can be found by enumerating every clique (subgraphs in which all nodes are fully connected to each other) of maximum size in this complement graph [@Csardi2006a; @Gutin2013].
 
-## Methods
+### Empirical data
 
 In the last section, we outlined the theoretical and computational underpinnings of our approach. 
 Now we illustrate its empirical application using ten pairs of plant-pollinator communities for which we explored their manageability and the relative importance of their constituent species. 
@@ -289,7 +299,7 @@ In contrast, the Spanish uninvaded communities were obtained from plots that had
 The structure of all networks was determined using visitation frequency which has been shown to be an appropriate surrogate for interspecific effects in pollination networks [@Vazquez2005; @Bascompte2006]. 
 To examine whether this decision would influence our results, we also evaluated the effect of using pollinator efficiency or importance as alternative measures of species interactions in a different data set that lacked invasive species [@NeEman2010; @Ballantyne2015], and we found quantitatively similar results for all of these options (Supplementary Information S1).
 
-### Community manageability
+#### Community manageability
 
 ```{r component_lost, echo = F}
 net <- "./data/processed/networks" %>%
@@ -324,7 +334,7 @@ To simplify the analysis, we only considered the largest component in a network 
 Smaller components were present in eleven out of the twenty networks and were typically composed of just one plant and one pollinator. 
 Their removal represented an average loss of `r sp_lost`% of the species and `r int_lost`% of the interactions.
 
-#### Weighting & directing links
+##### Weighting & directing links
 
 Recall that the aforementioned maximum matching algorithm requires a directed network in which a link between species *i* and *j* pointing to species *j* indicates that the abundance of *j* can be affected by the abundance of *i*.
 This implies that we need first to identify a directionality for the links between species that in consistent with the dynamics of the community. 
@@ -551,7 +561,7 @@ multiplot(p1, p2, p3, cols = 3)
 dev.off()
 ```
 
-#### Statistical analysis
+##### Statistical analysis
 
 Although understanding the variability of manageability across ecological networks is a useful result itself, we also wanted to test whether invasion status has an impact on the observed manageability values. 
 We therefore used a set of generalised linear models (with binomial error structure) to investigate the effect of invasion status while also controlling for factors related to species richness, since one might naively expect to see a negative relationship between diversity and manageability [@Menge1995]. 
@@ -572,7 +582,7 @@ We therefore performed an additional randomisation in which we kept the structur
 That is, we first calculated the asymmetries for each community and then shuffled the direction of the link between each pair of species. 
 Similar as to the other null models, we calculated the average rank of the empirical manageability when compared to those of the randomisations.
 
-### Relative importance of species
+#### Relative importance of species
 
 Our second key question is related to how species differ in their importance for driving the population dynamics of the community. 
 To quantify this importance in each network, we computed all possible matchings that have the same size as the networks' maximum matching. 
@@ -586,7 +596,7 @@ The comparison was performed for eleven of the twenty networks (those for which 
 All three approaches identified a high similarity in relative ranks. 
 Consequently, we focused on the results when using the asymmetries rather than mutual dependencies when further investigating the factors that determine species' relative importance since this also allows us to obtain results for all 20 networks.
 
-#### Statistical analysis
+##### Statistical analysis
 
 We then asked the question of whether some species-level structural properties can predict our estimates of species importance.
 We used a generalised linear mixed-effects model (with binomial error structure) with the relative importance as the response variable. 
@@ -804,8 +814,6 @@ correlations <- expand.grid(type = c("asymmetry", "max_dep"),
           tidyr::spread(type, d_freq_rank) %>%
           `class<-`("data.frame")
         
-        
-        
         if(ncol(u) == 3) {
           a <- sets::as.set(u[u[, 2] == min(u[, 2]), 1])
           b <- sets::as.set(u[u[, 3] == min(u[, 3]), 1])
@@ -814,7 +822,7 @@ correlations <- expand.grid(type = c("asymmetry", "max_dep"),
         else c(NA, NA, NA, NA)
           
       })
-  })
+  }, .progress = "text")
 
 corr_imp <- expand.grid(type = c("asymmetry", "max_dep"),
             scaled = c(TRUE, FALSE)) %>%
