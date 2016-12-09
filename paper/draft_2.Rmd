@@ -1,0 +1,78 @@
+---
+title: "Biotic invasions reduce the manageability of pollination networks"
+csl: ecology-letters.csl
+header-includes:
+   - \usepackage{setspace}
+output: pdf_document
+geometry: outer=6cm, top=2cm, bottom=2cm
+classoption: twoside, a4paper
+bibliography: references.bib
+---
+
+\doublespacing
+
+# Methods
+
+## Theoretical framework
+
+At the core of control theory of complex networks is the idea that the state of a node depends on the state of the nodes it interacts with. 
+The particular shape of this dependency being determined both by the dynamical relationship among interacting nodes as well as the structure of the links in the network. 
+It has been shown that a particular network that can be expressed as a state space system of the form $\dot{x} = Ax + Bu(t)$ is controllable if there exists a minimum number of nodes in the network (*N~D~ > 0*) to which is possible to apply an external control signal that propagates trough the network to in turn drive the state of every other node in the network to a particular configuration [@Kalman1963; @Liu2011].
+Conveniently the information necessary to determine whether a network is controllable and the number of driver nodes *N~D~*, is fully contained in the network structure. 
+
+Strictly speaking, although the network structure tells us whether the system is controllable or not, it provides no information about the characteristics of the control signal or the feasibility of its implementation [@Motter2015].
+Numerical algorithms to identify the control signal already exist [@Cornelius2013] however, they have the important limitation of requiring full knowledge of the dynamical relationships among nodes; an approach not yet possible for empirical ecological applications.
+Instead, structural controllability, even when using only information regarding the network architecture, can provide a powerful indication of our ability to control it. 
+
+### Manageability
+
+The number of driver nodes *N~D~* not only determines whether a network is controllable but can also, from a structural perspective, provides an indication of how difficult its control might be.
+This is so because intuitively systems that require a large number of external inputs are more difficult or costly to control.
+In an ecological context, external signals that modify the state of a node (a species' population) can be viewed as management interventions.
+Building on this analogy, the manageability of an ecological community can be understood in the context of how difficult is to modify the abundances of species in the community using external interventions—a common theme in ecosystem management, conservation, and restoration.
+We, therefore, use the density of driver nodes $n_D = \frac{N_D}{S},$ as an index of the manageability of an ecological community, where *S* is the total number of species.
+
+It has been recently shown that the problem of calculating *N~D~* is equivalent to finding a maximum matching in the network [@Liu2011].
+In a directed network, a matching is a subset of *links* in which no two of them share a common starting or ending node (Figure 1a).
+A given matching has *maximal cardinality* if the number of matched links (which is also known as the matching size) is the largest possible.
+A maximal cardinality matching is then called *maximum matching* if the sum of the weights of the matched links (also known as matching weight) is the largest possible [@West2001].
+It follows that for binary link (unweighted) networks all maximal cardinality matchings are also maximum matchings.
+
+Once we have a matching, with the subset of links that constitute it, we can also characterise the nodes in the network according to it.
+A node is said to be *matched* if it is at the end of a matched link and *unmatched* otherwise. 
+Finally, a node is said to be *superior* if it is at the start of a matched link (note that all unmatched nodes are also superior but not vice versa).
+These node categories help us linking a maximum matching back to the concept of network controllability in an intuitive way.
+Each matched node can be controlled by the node that is pointing to it—its superior.
+Unmatched nodes, on the other hand, are the driver nodes because they have no superior in the network and must be directly controlled by an external input [@Liu2011].
+
+**Computational considerations.** Finding find the maximum matchings, especially in large, directed, and highly connected networks can be an expensive operation.
+Although other less computationally expensive approaches to characterise the control profile of complex networks that are based on heuristics do exist [@Ruths2014], we found them to be extremely sensitive to assumptions regarding the direction of control (Supplementary Materials Section 2).
+Our strategy, instead, is to adopt an alternative bipartite representation of the directed network in which the two levels indicate the outgoing and incoming links to each node (Supplementary Section 2). 
+We then used an algorithm implemented in *igraph* to find the maximum bipartite matching in this alternative representation [@Csardi2006a].
+
+### Relative importance
+
+While calculating *n~D~* provides an indication of the manageability of an ecological community, it does provide sufficient information about the identity of the species that compose this set. 
+This difference is rather important since maximum matchings are often not unique in a given network and different sets of species of size *N~D~* could potentially be used to control the network [@Liu2011]. 
+That is, species can be further characterised in terms of the frequency with which they  exist on key paths leading through the network, which provides an indication of their relative importance in driving the state of the community. 
+Ecologically, these distinctions are relevant because management and conservation resources are limited and therefore ecological interventions should ideally be focused on species that might provide the largest impact.
+
+We focus on superior nodes and not exclusively on driver/unmatched nodes, as is customary in the control literature, because realistically, from an ecological perspective, we are not yet able to aim for full control of the abundances of all species in the community.
+Superior nodes, which include driver nodes, are important for the controllability of the network not only because they might require external control signal but essentially because they are part of the chain that transmits the control signal to other species.
+
+Traditionally, structural controllability assumes unweighted links—they exist or not and hence results are entirely based on topology.
+However, it has been shown that using weighted links can reveal important ecological patterns and processes that might be undetectable in unweighted networks [@Scotti2007; @Tylianakis2007; @Vazquez2007; @Kaiser-Bunbury2010a].
+Here we use the quantitative version of the maximum matching algorithm, hence giving priority to the species that participate in the pathways that potentially have the largest impact on the community.
+By incorporating the role of the dynamical relationships between species without being overly dependent on the particular choices about how dynamics are modelled, we address to some extent one of the limitations of structural controllability.
+
+As previously described, a maximum matching in a weighted network is one whose links have the largest possible total weight among all possible matchings. 
+One way to calculate the species importance would be to consider only maximum matchings. 
+However, empirical interaction strengths are to some extent stochastic and depend on proximate factors such as sampling method and intensity [@Gibson2011].
+This implies that there will often be multiple maximal cardinality matchings but that are maximum matchings because of their total weight, although comparatively large, is not maximal. 
+As using only maximum matchings in empirical networks might be therefore too restrictive, we relax the matching weight requirement and compute all possible matchings in the network that have the same maximal size while allowing for some tolerance regarding the weight. 
+
+**Computational considerations.** One alternative to computing all the maximum cardinality matchings is to first generate the network's line graph—another representation in which nodes are the links of the original network and links represent common ending points [@West2001]. 
+Then calculate the complement of this line graph, which generates a graph in which nodes are connected if and only if they are not connected in the line graph. 
+Finally, all possible matchings of maximal size can be found by enumerating every clique (subgraphs in which all nodes are fully connected to each other) of maximum size in this complement graph [@Csardi2006a; @Gutin2013].
+
+# References
