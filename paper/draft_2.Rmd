@@ -3,76 +3,263 @@ title: "Biotic invasions reduce the manageability of pollination networks"
 csl: ecology-letters.csl
 header-includes:
    - \usepackage{setspace}
-output: pdf_document
-geometry: outer=6cm, top=2cm, bottom=2cm
+output: 
+  pdf_document:
+    fig_crop: false
+# geometry: outer=6cm, top=2cm, bottom=2cm
 classoption: twoside, a4paper
 bibliography: references.bib
 ---
 
 \doublespacing
 
+```{r libraries, echo = F, include = F}
+library(igraph)
+library(magrittr)
+library(dplyr)
+library(latex2exp)
+
+"../code/functions" %>% 
+	list.files(full.names = T) %>%
+	plyr::l_ply(source)
+  
+```
+
+```{r example networks, include = F, message = F, warning = F, }
+
+sp_names_fancy <- c(TeX("$p_1$"), TeX("$p_2$"), TeX("$p_3$"), TeX("$a_1$"), TeX("$a_2$"))
+sp_names_fancy_b <- c(TeX("$\\mathbf{p_1}$"), TeX("$\\mathbf{p_2}$"), TeX("$\\mathbf{p_3}$"), TeX("$\\mathbf{a_1}$"), TeX("$\\mathbf{a_2}$"))
+
+sp_names <- c("p1", "p2", "p3", "a1", "a2")
+
+adj_matrix <- c(0,0,0,1,0,
+								0,0,0,2,5,
+								0,0,0,0,0,
+								0,0,1,0,0,
+								0,0,1,0,0) %>%
+	matrix(nrow = 5, byrow = T)
+
+net <- adj_matrix %>% 
+	graph_from_adjacency_matrix(mode = "undirected", weighted = TRUE) 
+igraph::V(net)$type <- c(F, F, F, T, T)
+igraph::V(net)$name <- sp_names
+
+base_net <- net
+bi_net <- net %>%
+	keep_largest_component() %>%
+	bipartite_digraph(type = "z-bi", weight.type = "assymetry") 
+as_net <- net %>%
+	keep_largest_component() %>%
+	bipartite_digraph(type = "weight", weight.type = "asymmetry")
+
+fam <- "Helvetica"
+# layout is based on the bidirectional network
+set.seed(1)
+
+lay <- bi_net %>%
+	layout_nicely()
+v_c <- "white"
+l_c <- "black"
+l_s <- 0.9
+ma <- c(0,0,0,0)
+label_pos_x <- -1
+label_pos_y <- 1
+
+pal <- RColorBrewer::brewer.pal(5, "PuOr")
+```
+
+# Glossary
+
+Driver node
+  ~ 
+  
+Matched/unmatched link
+  ~ 
+  
+Matched/unmatched node
+  ~ 
+
+Matching
+  ~ 
+  
+Matching size
+  ~ 
+  
+Matching weight
+  ~ 
+  
+Maximal cardinality matching
+  ~ 
+  
+Maximum matching
+  ~ 
+
+Superior node
+  ~ 
+
+
 # Methods
 
 ## Theoretical framework
 
-At the core of control theory of complex networks is the idea that the state of a node depends on the state of the nodes it interacts with. 
-The particular shape of this dependency being determined both by the dynamical relationship among interacting nodes as well as the structure of the links in the network. 
-It has been shown that a particular network that can be expressed as a state space system of the form $\dot{x} = Ax + Bu(t)$ is controllable if there exists a minimum number of nodes in the network (*N~D~ > 0*) to which is possible to apply an external control signal that propagates trough the network to in turn drive the state of every other node in the network to a particular configuration [@Kalman1963; @Liu2011].
-Conveniently the information necessary to determine whether a network is controllable and the number of driver nodes *N~D~*, is fully contained in the network structure. 
+At the core of control theory of complex networks is the idea that the state of a node depends on the state of the nodes it interacts with, and particular form of this dependency is determined both by the dynamic relationship among interacting nodes as well as the structure of the links in the network. 
+A complex network can usually be simplified as a linear system of the form $\dot{x} = Ax + Bu(t)$, where the change over time of its state ($\dot{x}$) depends on its current state *x*, an external time-varying input *u(t)*, and the matrices *A* and *B*, which encapsulate information about the network structure and how the network responds to the external input, respectively.
+Previous research has shown that such a system is controllable if there exists a minimum number of nodes in the network ($D \geq 0$) to which is possible to apply an external control signal that propagates trough the network to in turn drive the state of every other node in the network to a particular configuration [@Kalman1963; @Liu2011].
+Conveniently, the information necessary to determine whether a network is controllable, and the number of driver nodes *D*, is fully contained in the network structure [@Liu2011; @Motter2015] 
 
-Strictly speaking, although the network structure tells us whether the system is controllable or not, it provides no information about the characteristics of the control signal or the feasibility of its implementation [@Motter2015].
-Numerical algorithms to identify the control signal already exist [@Cornelius2013] however, they have the important limitation of requiring full knowledge of the dynamical relationships among nodes; an approach not yet possible for empirical ecological applications.
-Instead, structural controllability, even when using only information regarding the network architecture, can provide a powerful indication of our ability to control it. 
+Strictly speaking, the network structure tells us whether a linear approximation of the system is controllable or not, but it provides limited information about the characteristics of the control signal or the feasibility of its implementation [@Motter2015].
+Despite this limitation, structural controllability provides important information of our ability to control a system without requiring full and precise knowledge of the dynamical relationships among nodes.
+This means that structural controlability can be applied on a wide range of readily available network representations of ecological communities. 
+Moreover, when quantitative data about species iteractions is available, we show how some of the limitations of structural controllability can be overcome by incorporating the role of dynamical relationships without being overly dependent on the particular choices about how dynamics are modelled.
 
 ### Manageability
 
-The number of driver nodes *N~D~* not only determines whether a network is controllable but can also, from a structural perspective, provides an indication of how difficult its control might be.
-This is so because intuitively systems that require a large number of external inputs are more difficult or costly to control.
-In an ecological context, external signals that modify the state of a node (a species' population) can be viewed as management interventions.
-Building on this analogy, the manageability of an ecological community can be understood in the context of how difficult is to modify the abundances of species in the community using external interventions—a common theme in ecosystem management, conservation, and restoration.
-We, therefore, use the density of driver nodes $n_D = \frac{N_D}{S},$ as an index of the manageability of an ecological community, where *S* is the total number of species.
+The number of driver nodes *D* not only determines whether a network is controllable, but can also provide a structural indication of how difficult its control might be.
+This is because systems that require a large number of external input signals are intuitively more difficult or costly to control.
+In an ecological context, external signals that modify the state of a node (this is a species' population) can be thought of as management interventions.
+We, therefore, use the density of driver nodes $n_D = \frac{D}{S},$ as an index of the manageability of an ecological community, where *S* is the total number of species.
+From this perspective, the manageability of an ecological community can be understood in the context of how difficult is to modify the abundances of species in the community using external interventions—a common theme in ecosystem management, conservation, and restoration.
 
-It has been recently shown that the problem of calculating *N~D~* is equivalent to finding a maximum matching in the network [@Liu2011].
-In a directed network, a matching is a subset of *links* in which no two of them share a common starting or ending node (Figure 1a).
-A given matching has *maximal cardinality* if the number of matched links (which is also known as the matching size) is the largest possible.
-A maximal cardinality matching is then called *maximum matching* if the sum of the weights of the matched links (also known as matching weight) is the largest possible [@West2001].
-It follows that for binary link (unweighted) networks all maximal cardinality matchings are also maximum matchings.
+It has been recently shown that calculating *D* is equivalent to finding a maximum matching in the network [@Liu2011].
+In a directed network, a matching is a subset of links in which no two of them share a common starting or ending node (Figure 1).
+A given matching has *maximal cardinality* if the number of matched links (also refered to as the *matching size*) is the largest possible.
+A maximal cardinality matching is then called a *maximum matching* if the sum of the weights of the matched links (also refered to as matching weight) is again the largest possible [@West2001].
+Note that this implies that for unweighted binary networks all maximal cardinality matchings are also maximum matchings.
 
-Once we have a matching, with the subset of links that constitute it, we can also characterise the nodes in the network according to it.
+Once we have the subset of links that constitute a matching, we can also classify the nodes in the network (Figure 1).
 A node is said to be *matched* if it is at the end of a matched link and *unmatched* otherwise. 
-Finally, a node is said to be *superior* if it is at the start of a matched link (note that all unmatched nodes are also superior but not vice versa).
-These node categories help us linking a maximum matching back to the concept of network controllability in an intuitive way.
+A node is also said to be *superior* if it is at the start of a matched link (note that all unmatched nodes are also superior but not vice versa).
+Notably, these node categories help us to intuitively link a maximum matching back to the concept of network controllability as follows.
 Each matched node can be controlled by the node that is pointing to it—its superior.
-Unmatched nodes, on the other hand, are the driver nodes because they have no superior in the network and must be directly controlled by an external input [@Liu2011].
+Unmatched nodes, on the other hand, are the driver nodes *D* because they have no superior in the network and must be directly controlled by an external input [@Liu2011].
 
-**Computational considerations.** Finding find the maximum matchings, especially in large, directed, and highly connected networks can be an expensive operation.
-Although other less computationally expensive approaches to characterise the control profile of complex networks that are based on heuristics do exist [@Ruths2014], we found them to be extremely sensitive to assumptions regarding the direction of control (Supplementary Materials Section 2).
-Our strategy, instead, is to adopt an alternative bipartite representation of the directed network in which the two levels indicate the outgoing and incoming links to each node (Supplementary Section 2). 
-We then used an algorithm implemented in *igraph* to find the maximum bipartite matching in this alternative representation [@Csardi2006a].
+```{r figure 1, echo = F, message = F, warning = F, fig.width = 6.2, fig.height = 1.8, results= "hide", fig.cap = "**Matchings of a simple network**. We start with a network in which the direction of the links indicate the direction of control (a); that is, a link from *a~1~* to *p~1~*, for instance, indicates that the state of *p~1~* (density/abundances in an ecological context) is influenced by the state of *a~1~*. This network has two maximal cardinality matchings (b, c); this is, two configurations in which it would be possible to excert full control of the network. The three matched links (blue arrows) represent the possible control paths trough the network and provide indication of the matched nodes (also in blue), which are controlled by superior nodes within the network (bold node labels). Unmatched nodes (in orange) are also called driver nodes because full network control requires external signals to be applied on them, and therefore, the manageability of the network can be infered from the density of unmatched nodes *n~D~ = D/S = 2/5*. Out of the two maximal cardinality matchings (b, c) only one of them has maximum weight and therefore is a maximum matching (c); note that if the network were unweighted both maximal cardinality matchings would also be maximum matchings. Further examples can be found in the Supplemental Material SXX."}
+layout(matrix(c(1,2,3,4, 4, 4), 2, 3, byrow = TRUE),
+  	heights=c(8,1))
+par( mar=c(0,0,0,0))
+
+as_net %>% 
+	plot(layout = lay, 
+			 vertex.color = v_c, 
+			 vertex.size = 30,
+			 vertex.label = sp_names_fancy,
+			 vertex.label.family = fam,
+			 vertex.label.color = l_c,
+			 edge.label = round(E(.)$weight,1), 
+			 edge.label.family = fam,
+			 edge.label.color = l_c,
+			 edge.label.cex = l_s,
+			 edge.curved = F,
+			 edge.arrow.size = 0.5,
+			 margin = ma)
+
+text(label_pos_x, label_pos_y, "a)", adj = c(0,0))
+
+as_mat <- as_net %>%
+	digraph_bipartite() %>% 
+	max_bipartite_match()
+
+as_all_mat <- as_net %>%
+	digraph_bipartite() %>%
+	igraph::make_line_graph() %>%
+	igraph::complementer() %>% 
+	igraph::max_cliques(min = as_mat$matching_size) %>%
+	rev()
+
+text_pos_x <- 0.5
+text_pos_y <- -0.7
+
+base_as_net <- as_net
+E(as_net)$weight <- round(E(as_net)$weight, 1)
+
+1:length(as_all_mat) %>%
+	plyr::l_ply(function(x){
+		
+		E(as_net)$matched <- 2
+		E(as_net)$matched[as_all_mat[[x]]] <- 4
+		
+		igraph::V(as_net)$matched <- 2
+		igraph::V(as_net)$matched[igraph::V(as_net)$name %in%
+																ends(as_net, as_all_mat[[x]])[, 2]] <- 4
+		
+		igraph::V(as_net)$superior <- 1
+		igraph::V(as_net)$superior[igraph::V(as_net)$name %in%
+																ends(as_net, as_all_mat[[x]])[, 1]] <- 2
+		
+		names_fancy <- sp_names_fancy
+		names_fancy[igraph::V(as_net)$name %in%
+																ends(as_net, as_all_mat[[x]])[, 1]] <-
+			sp_names_fancy_b[igraph::V(as_net)$name %in%
+																ends(as_net, as_all_mat[[x]])[, 1]]
+		
+		matching_weight <- sum(E(as_net)$weight[as_all_mat[[x]]])
+		
+		as_net %>% 
+			plot(layout = lay, 
+					 vertex.size = 30,
+					 vertex.label = names_fancy,
+					 vertex.label.family = fam,
+					 vertex.label.color = l_c,
+					 vertex.label.cex = igraph::V(.)$superior * 0.1 + 0.9,
+					 # vertex.shape = igraph::V(.)$vertex.shape,
+					 vertex.color = pal[igraph::V(.)$matched],
+					 edge.color = pal[E(.)$matched],
+					 edge.label = NA, 
+					 edge.width = E(.)$matched/2,
+					 edge.label.family = fam,
+					 edge.label.color = igraph::E(.)$matched,
+					 edge.label.cex = l_s,
+					 edge.curved = F,
+					 edge.arrow.size = 0.5,
+					 margin = ma) %>% 
+			print()
+		
+		igraph::V(as_net)$name <- sp_names
+		
+		text(label_pos_x, label_pos_y, paste0(letters[1+x], ")"), adj = c(0,0))
+		text(text_pos_x, text_pos_y, cex = 0.95,
+				 paste0("D = ", length(igraph::V(as_net)) - as_mat$matching_size, "\n",
+				 			 "matching size: ", as_mat$matching_size, "\n",
+				 			 "matching weight: ", round(matching_weight, 1)))
+})
+
+as_net <- base_as_net
+
+plot.new()
+legend(0.16, 0.9, legend = c("unmatched link", "matched link"), horiz = TRUE,
+			 lty = 1, 
+			 col = pal[c(2, 4)],
+			 lwd = 2, cex = 0.9, xjust=0.5, yjust=1, bty = "n")
+
+legend(0.57, 0.9, legend = c("unmatched node", "matched node"), horiz = TRUE,
+			 pch = 21, 
+			 pt.bg = pal[c(2, 4)],
+			 pt.cex = 2,
+			 cex = 0.9, xjust=0.5, yjust=1, bty = "n")
+
+legend(1-0.16 + 0.05, 0.9, legend = expression(paste(bold("(bold label)"), " ", "superior nodes")), horiz = TRUE,
+			 cex = 0.9, xjust=0.5, yjust=1, bty = "n")
+
+matching <- net %>%
+	matched_frequency(type = "z-bi", weight.type = "asymmetry", prop = 0)
+```
 
 ### Relative importance
 
-While calculating *n~D~* provides an indication of the manageability of an ecological community, it does provide sufficient information about the identity of the species that compose this set. 
+While calculating *n~D~* provides an indication of the manageability of an ecological community, it does not provide information about the identity of the species that compose this set. 
 This difference is rather important since maximum matchings are often not unique in a given network and different sets of species of size *N~D~* could potentially be used to control the network [@Liu2011]. 
-That is, species can be further characterised in terms of the frequency with which they  exist on key paths leading through the network, which provides an indication of their relative importance in driving the state of the community. 
-Ecologically, these distinctions are relevant because management and conservation resources are limited and therefore ecological interventions should ideally be focused on species that might provide the largest impact.
+Ecologically, these distinctions are also relevant because management and conservation resources are limited and therefore ecological interventions should ideally be focused on the set of species that might provide the largest impact.
+Consequently, species can be further characterised in terms of the frequency with which they exist on key paths leading through the network, which provides an indication of their relative importance in driving the state of the community. 
 
-We focus on superior nodes and not exclusively on driver/unmatched nodes, as is customary in the control literature, because realistically, from an ecological perspective, we are not yet able to aim for full control of the abundances of all species in the community.
-Superior nodes, which include driver nodes, are important for the controllability of the network not only because they might require external control signal but essentially because they are part of the chain that transmits the control signal to other species.
+Specifically, in an unweighted network to approximate a species importance for network control it is possible compute all the maximum matchings and calculate the frequency at which each species is classified as a superior node.
+Because our networks are weighted, we compute all maximal cardinality matchings and not just the maximum matchings. 
+We do so because empirical interaction strengths are to some extent stochastic and depend on proximate factors such as sampling method and intensity [@Gibson2011], and therefore using only maximum matchings in empirical networks might be therefore too restrictive. 
+Furthermore, we focus on superior nodes and not exclusively on driver/unmatched nodes, as is customary in the control literature, because realistically, from an ecological perspective, we are not yet able to aim for full control of the abundances of all species in the community.
+Superior nodes, of which driver nodes are a subset, are important for the controllability of the network not only because they might require an external control signal but, essentially, because they are part of the chain that transmits the control signal to other species.
 
-Traditionally, structural controllability assumes unweighted links—they exist or not and hence results are entirely based on topology.
+It is worth to note that ,traditionally, structural controllability assumes unweighted links—they exist or not—and hence results are entirely based on topology.
 However, it has been shown that using weighted links can reveal important ecological patterns and processes that might be undetectable in unweighted networks [@Scotti2007; @Tylianakis2007; @Vazquez2007; @Kaiser-Bunbury2010a].
-Here we use the quantitative version of the maximum matching algorithm, hence giving priority to the species that participate in the pathways that potentially have the largest impact on the community.
-By incorporating the role of the dynamical relationships between species without being overly dependent on the particular choices about how dynamics are modelled, we address to some extent one of the limitations of structural controllability.
+By using the quantitative version of the maximum matching algorithm, we give priority to the species that participate in the pathways that potentially have the largest impact on the community; effectively incorporating, at least partially, the dynamics of the system.
 
-As previously described, a maximum matching in a weighted network is one whose links have the largest possible total weight among all possible matchings. 
-One way to calculate the species importance would be to consider only maximum matchings. 
-However, empirical interaction strengths are to some extent stochastic and depend on proximate factors such as sampling method and intensity [@Gibson2011].
-This implies that there will often be multiple maximal cardinality matchings but that are maximum matchings because of their total weight, although comparatively large, is not maximal. 
-As using only maximum matchings in empirical networks might be therefore too restrictive, we relax the matching weight requirement and compute all possible matchings in the network that have the same maximal size while allowing for some tolerance regarding the weight. 
-
-**Computational considerations.** One alternative to computing all the maximum cardinality matchings is to first generate the network's line graph—another representation in which nodes are the links of the original network and links represent common ending points [@West2001]. 
-Then calculate the complement of this line graph, which generates a graph in which nodes are connected if and only if they are not connected in the line graph. 
-Finally, all possible matchings of maximal size can be found by enumerating every clique (subgraphs in which all nodes are fully connected to each other) of maximum size in this complement graph [@Csardi2006a; @Gutin2013].
 
 # References
