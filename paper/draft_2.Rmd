@@ -77,6 +77,36 @@ label_pos_y <- 1
 pal <- RColorBrewer::brewer.pal(5, "PuOr")
 ```
 
+# Introduction
+
+Complex systems are characterised by relationships in which the whole is often greater than the sum of its parts [@Jorgensen1998; @Levin1999; @Montoya2006].
+Within community ecology, a complex systems approach has led to the development of a variety of analytical and simulation tools with which to understand, for example, the role of species when embedded in an intricate network of interactions [@Pascual2005; @Bascompte2009; @Stouffer2012]. 
+The inherent complexity of nature, however, has hindered—or at least greatly complicated—our ability to find management solutions to the many problems ecological communities face. 
+To overcome this obstacle, we require a framework that allows us to explain, predict, and manage ecological communities, particularly when they are confronted with perturbations [@Sole2001; @Green2005].
+Moreover, such a framework needs to be able to account for their complex structure, and the dynamics that determine the state of each species, and the community as a whole. 
+
+Among the various possibilities, control theory appears to be a strong candidate as it is designed to deal with determining and supervising the behaviour of general dynamical systems, and is well equipped to deal with the many feedbacks present in ecological communities [@Liu2015]. 
+Research in the field has established a strong link between the structure of complex networks and their controllability, while also demonstrating that it is in principle possible to alter a whole ecological community's composition by modifying the abundances of only a few species [@Liu2011; @Cornelius2013; @Ruths2014].
+Applications of control theory to ecological networks can also take into account the extent to which changes in the abundances of one species may ripple through the community [@Cornelius2013].
+Therefore, control theory could provide an indication of which species are most relevant from a structural and dynamic perspective, a particularly important feature given that these species should underpin informed attempts to both alter or maintain the ecosystem state.
+
+Despite these advances, practical challenges to the conservation of interaction networks persist [@Tylianakis2010], and the link between the structure of complex networks and our ability to manage and conserve them is still ambiguous [@Kaiser-Bunbury2015].
+To complicate things further, biotic invasions—a major driver of global change—can induce dramatic changes in the patterns of interactions that determine the structure of ecological networks [@Baxter2004; @Tylianakis2008; @Ehrenfeld2010a]. 
+Although understanding how differences in network structure before and after the invasion impact our ability to manage them presents a double challenge, it is a critical first step towards a fully informed recovery. 
+Despite the apparent overlap, a control-theoretic perspective has not been widely adopted in an invasion context. 
+This is perhaps because of a lack of appropriate methodological tools that can account for the observed variation in the strength of interspecific effects that are characteristic of ecological networks [@Liu2011; @Isbell2013].
+
+To bridge this gap, we develop methods to apply previous theory on the control of complex systems into an ecological context and implement them using empirical data, while taking into account the quantitative differences that exist among species interactions.
+Specifically, we use a set of ten pairs of uninvaded and invaded plant-pollinator communities to investigate the link between invasion, network structure and ecological management. 
+We ask two questions framed in the context of a plant invasion.
+First, we ask whether invaded networks have differnt levels of manageability than their uninvaded counterparts; that is, whether they require a different proportion of species to be managed to achieve the same level of control. 
+Second, we ask whether some species are more important than others at driving the population dynamics of the community and which factors determine this importance. 
+We focus on these particular applications for a variety of reasons. 
+First, biotic invasions are known to produce tractable changes in the structure of ecological networks, and these changes can be particularly pronounced in mutualistic networks between plants and pollinators where biotic invasions have been shown to modify the strength of species interactions and the degree of network nestedness and connectivity [@Olesen2002; @Aizen2008; @Bartomeus2008; @Vila2009; @Traveset2013]. 
+Second, plant-pollinator networks provide an ideal framework to answer these questions. 
+On the one hand, community networks that quantify relative levels of interaction are readily available. 
+On the other, the bipartite nature of pollination networks makes it possible to simplify assumptions of how these interactions translate into interspecific effects. 
+
 # Methods
 
 ## Theoretical framework
@@ -107,7 +137,7 @@ Note that this implies that for unweighted binary networks all maximal cardinali
 
 Once we have the subset of links that constitute a matching, we can also classify the nodes in the network (Figure 1).
 A node is said to be *matched* if it is at the end of a matched link and *unmatched* otherwise. 
-A node is also said to be *superior* if it is at the start of a matched link (note that all unmatched nodes are also superior but not vice versa).
+A node is also said to be *superior* if it is at the start of a matched link (note that a node cannot be superior if it has no outgoing links).
 Notably, these node categories help us to intuitively link a maximum matching back to the concept of network controllability as follows.
 Each matched node can be controlled by the node that is pointing to it—its superior.
 Unmatched nodes, on the other hand, are the driver nodes *D* because they have no superior in the network and must be directly controlled by an external input [@Liu2011].
@@ -301,7 +331,7 @@ The dependency of plant *i* on pollinator *j*, *d~ij~*, is the proportion of the
 Likewise, the dependency of pollinator *j* on plant *i*, *d~ji~*, is the ratio of the visits by pollinator *j* to plant *i* and all visits of pollinator *j*.
 As the dependencies are not symmetric, its use generates a weighted bipartite network in which all interacting pairs are connected by two directed links (Figure 2b). 
 
-```{r, echo = F, fig.width = 6.2, fig.height = 1.6, message = F, warning = F, fig.pos = "T", fig.cap = "Different ways to depict quantitative mutualistic networks. (a) Pollination networks are typically described by the number of visits between each plant and animal species. (b) Given visitation data, the mutual dependencies between interacting species are calculated directly based on the relative visitation frequencies. (c) The relative differences of dependencies—the interaction asymmetry—then provide a means to identify the dominant direction of the interspecific effects."}
+```{r figure 2, echo = F, fig.width = 6.2, fig.height = 1.6, message = F, warning = F, fig.pos = "T", fig.cap = "**Different ways to depict quantitative mutualistic networks**. (a) Pollination networks are typically described by the number of visits between each plant and animal species. (b) Given visitation data, the mutual dependencies between interacting species are calculated directly based on the relative visitation frequencies. (c) The relative differences of dependencies—the interaction asymmetry—then provide a means to identify the dominant direction of the interspecific effects."}
 
 par(mfrow=c(1,3), mar=c(0,0,0,0))
 
@@ -418,35 +448,35 @@ In addition, we also included guild and invasive status as categorical fixed eff
 All network metrics were calculated using the R package bipartite 2.06 [@Dormann2008]. 
 We lastly allowed for variation between different communities by including the network identity as a random effect [@Bates2015]. 
 Candidate models were compared using AICc and the relative importance of the explanatory variables was evaluated using the sum of Akaike weights over candidate models that accounted for 95% of the evidence [@Burnham2003; @Bates2015; @Barton2016]. 
-Coefficient estimates were averaged following @Buckland1997a while confidence intervals were calculated following [@Lukacs2010].
+Coefficient estimates were averaged following @Buckland1997a while confidence intervals were calculated following @Lukacs2010.
 
 # Appendix 1: Glossary 
 
 Driver node
-  ~ 
+  ~ An unmatched node in a maximal cardinality matching or a maximum matching. From the control perspective driver nodes are those to which external control signals must ble applied in order to gain full control of the network.
   
 Matched/unmatched link
-  ~ 
+  ~ A link if said to be *matched* if it is part of a matching and *unmatched* otherwise.
   
 Matched/unmatched node
-  ~ 
+  ~ A node is said to be *matched* if it is at the end of a matched link and *unmatched* otherwise.
 
 Matching
-  ~ 
+  ~ A subset of links in which no two of them share a common starting or ending node.
   
 Matching size
-  ~ 
+  ~ The number of matched links in a particular matching.
   
 Matching weight
-  ~ 
+  ~ The sum of the weights of all matched links in a particular matching. 
   
 Maximal cardinality matching
-  ~ 
+  ~ A matching with the largest possible size. In unweighted networks all maximal cardinality matchings are also maximum matchings.
   
 Maximum matching
-  ~ 
+  ~ A matching with the largest possible size *and* weight. 
 
 Superior node
-  ~ 
+  ~ The node at the start of a matched link. From the control perspective superior nodes compose the chain that propagate the control signal(s) trough the network.
 
 # References

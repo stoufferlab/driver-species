@@ -1,6 +1,6 @@
 ---
 title: "Response to reviewer comments ELE-00738-2016"
-date: "21 November 2016"
+date: "14 December 2016"
 header-includes:
    - \usepackage{setspace}
 output: pdf_document
@@ -106,7 +106,7 @@ In its current form, it is unlikely that readers will be able to understand or r
 
 - L74 “we expand previous theory of the control of complex systems to an ecological context”. Do you mean apply? Please clarify your contribution without ambiguity.
 
-    *The sentence now reads "To bridge this gap, we propose methods to apply previous theory on the control of complex systems into an ecological context and implement them in empirical data"*
+    *The sentence now reads "To bridge this gap, we develop methods to apply previous theory on the control of complex systems into an ecological context and implement them using empirical data, while taking into account the quantitative differences that exist among species interactions."*
 
 - Section Manageability (L94). Please first define manageability before maximum matching. Also, the maximum matching paragraph is difficult to understand. Reword.
 
@@ -141,13 +141,21 @@ Second, It would be helpful if the authors could test the robustness of their re
 
 See more specific comments below.
 
-Ln 25. I don't think that the statement that you "expand theory on the controllability of complex systems" is accurate. It is not clear to me how these results contribute to expand the general theory
+- Ln 25. I don't think that the statement that you "expand theory on the controllability of complex systems" is accurate. It is not clear to me how these results contribute to expand the general theory
 
-Ln 52, typo: presents
+    *Thank you. We have apologise for the imprecision. The sentence now reads "To bridge this gap, we develop methods to apply previous theory on the control of complex systems into an ecological context and implement them using empirical data, while taking into account the quantitative differences that exist among species interactions", which better reflects our contribution.*
 
-Ln 59. Please rewrite this sentence. it's not clear what "they" refers to here.
+- Ln 52, typo: presents
 
-Ln 78. It is not clear why this is the direction of the hypothesis. Did you already have any indication that networks with invasive species should have lower manageability? Is there any theoretical explanation for this expectation?
+    *Thanks. It's been changed.*
+
+- Ln 59. Please rewrite this sentence. it's not clear what "they" refers to here.
+
+    *Thanks. The subject was intended to be "control theory". We have rephrased the sentence to improve clarity and it now reads "Therefore, control theory can potentially provide an indication of which species are most relevant from a structural and dynamic perspective, a particularly important feature given that these species should underpin informed attempts to both alter or maintain the ecosystem state".* 
+
+- Ln 78. It is not clear why this is the direction of the hypothesis. Did you already have any indication that networks with invasive species should have lower manageability? Is there any theoretical explanation for this expectation?
+
+    *We based the direction of the hypothesis in the general feeling of failure of several restoration ecology programmes. However, in retrospect, we realise that the academic evidence to substantiate the hypotheis was insufficient. We have reframed the sentence to indicate that invaded communities might have different levels of manageability but without an a priori expectation on the direction of this difference. REVISE, CHECK WITH WARWICK*
 
 - Ln 95-98. It is very hard to keep track of all those definitions - matching, matched nodes, matched links, matching size, matching weight, maximum matching. I found myself going back and forth several times between the framework, methods and results sections. A glossary would help a lot.
 
@@ -161,11 +169,11 @@ Ln 78. It is not clear why this is the direction of the hypothesis. Did you alre
 
     *Indeed. We apologise for the imprecision. We indeed mean financial resources. We have modified the sentence to improve clarity and it now reads "Ecologically, these distinctions are relevant because management and conservation resources are limited and therefore ecological interventions should ideally be focused on species that might provide the largest impact."*
 
-Ln 236. Typo: missing period
+- Ln 236. Typo: missing period
 
     *Thanks. We corrected it.*
 
-Ln 293: Typo: reference
+- Ln 293: Typo: reference
 
     *Thanks. We corrected it.*
 
