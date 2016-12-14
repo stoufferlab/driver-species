@@ -73,11 +73,15 @@ I have several comments here. First, shouldn't this be "all possible maximum mat
 
 - Lines 173-176: "To do so, we calculated the maximum matching of the corresponding pollination network, and estimated the minimum proportion of species that need directed interventions to fully control the species abundances in the community." Why is this an estimate? The number of species that need to be directly controlled can be determined unambiguously.
 
+    *We apologise for the poor choice of words. As the referee points out it is not an estimation but an exact calculation. The sentence now reads "To do so, we calculated the maximum matching of the corresponding pollination network, and determined the minimum proportion of species that need directed interventions to fully control the species abundances in the community".*
+
 - It seems to me that the number of interactions would also be an interesting factor to consider in the statistical analysis (discussed beginning on line 213).
 
-- Lines 225-228: "Previous research indicates a direct link between a network's degree distribution and the number of nodes necessary to fully control it (Liu et al. 2011), but the strength and applicability of this relationship has not been tested for in weighted ecological networks."
+    *Thanks for the observation. We have now included the number of interactions in the network as an extra explanatory variable. TO DO*
 
-The authors go on to discuss null models that vary edge weights. However (as mentioned in comment 4), it seems to me that the edge weight is ultimately not a factor when determining the manageability of the network, at least once it has been mapped to unidirectional and unweighted edges. The methodology and rationale here needs to be clarified. For instance, is the effect of changing edge weight restricted to affecting interaction asymmetry and thereby the unidirectional projection of the interactions? If so, how does this differ from the null model that does this explicitly (described on lines 239-246)? Does edge weight play any other role in this analysis? (Its role is clear in the section beginning on line 247.)
+- Lines 225-228: "Previous research indicates a direct link between a network's degree distribution and the number of nodes necessary to fully control it (Liu et al. 2011), but the strength and applicability of this relationship has not been tested for in weighted ecological networks." The authors go on to discuss null models that vary edge weights. However (as mentioned in comment 4), it seems to me that the edge weight is ultimately not a factor when determining the manageability of the network, at least once it has been mapped to unidirectional and unweighted edges. The methodology and rationale here needs to be clarified. For instance, is the effect of changing edge weight restricted to affecting interaction asymmetry and thereby the unidirectional projection of the interactions? If so, how does this differ from the null model that does this explicitly (described on lines 239-246)? Does edge weight play any other role in this analysis? (Its role is clear in the section beginning on line 247.)
+
+    *In retrospect we realise that we did not have a clear rationale to include an randomisation of the link weights. As the referee points out, a change on the weights would only be reflected on a potential change on the interaction asymmetry. We identifyed two problems with this approach: first the changes aren't easily tractable, and second there is not a standard way to randomise weight in quantiative networks and the particular choice of the algorithm might influence the results. We therefore decided to remove the null model that maintained the degree of species and randomised the weight of the links as the effect of the asymetry is explicitly tackled by the second approach in which we maintain the structure but randomise the asymmetry.*
 
 - It seems useful to mention the typical size of the networks at the beginning of the results, if not earlier. In addition, the fact that the mean value of m is 0.37 means that roughly two thirds of the species in these communities need to be directly controlled, at least according to this modeling framework. It seems to me that this merits explicit comment in the Discussion.
 
@@ -159,7 +163,11 @@ Ln 78. It is not clear why this is the direction of the hypothesis. Did you alre
 
 Ln 236. Typo: missing period
 
+    *Thanks. We corrected it.*
+
 Ln 293: Typo: reference
+
+    *Thanks. We corrected it.*
 
 Ln 303-305. Please explain here which is the response variable that the ratio of plant to pollinator can explain.
 
