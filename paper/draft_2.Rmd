@@ -6,6 +6,7 @@ output:
   pdf_document:
     fig_crop: no
   html_document: default
+  word_document: default
 header-includes:
 - \usepackage{setspace}
 - \usepackage{float}
@@ -20,8 +21,13 @@ library(igraph)
 library(magrittr)
 library(dplyr)
 library(latex2exp)
+library(ggplot2)
 
 "../code/functions" %>% 
+	list.files(full.names = T) %>%
+	plyr::l_ply(source)
+
+"../code/plotting_functions" %>% 
 	list.files(full.names = T) %>%
 	plyr::l_ply(source)
   
@@ -32,6 +38,22 @@ net <- "../data/processed/networks" %>%
 	read_networks()
 meta <- readr::read_csv("../data/ntw_info.csv") %>% dplyr::tbl_df() %>%
 	dplyr::rename(count = method)
+n_driver <- readRDS("../data/processed/n_driver.rds")
+manag_models <- readRDS("../data/processed/models_manageability.rds")
+src_bi_w <- readRDS("../data/processed/manageability_bi_vs_weight.rds")
+```
+
+```{r plot theme, echo = FALSE, warning = F, message = F}
+fer_theme <- theme_bw() +
+	theme(text = element_text(family = "Times"),
+	      title = element_text(size = 7.5, hjust = 0),
+	      legend.title = element_text(size = 9),
+	      legend.text = element_text(size = 8),
+				axis.text = element_text(size = 8),
+				axis.title = element_text(size = 9, hjust = 0.5), 
+				strip.text = element_text(size = 9, hjust = 0), 
+				strip.background = element_blank(),
+				plot.margin = grid::unit(c(5, 0, 2, 0), "mm"))
 ```
 
 ```{r example networks, include = F, message = F, warning = F, }
@@ -99,7 +121,7 @@ This is perhaps because of a lack of appropriate methodological tools that can a
 To bridge this gap, we develop methods to apply previous theory on the control of complex systems into an ecological context and implement them using empirical data, while taking into account the quantitative differences that exist among species interactions.
 Specifically, we use a set of ten pairs of uninvaded and invaded plant-pollinator communities to investigate the link between invasion, network structure and ecological management. 
 We ask two questions framed in the context of a plant invasion.
-First, we ask whether invaded networks have differnt levels of manageability than their uninvaded counterparts; that is, whether they require a different proportion of species to be managed to achieve the same level of control. 
+First, on the basis of the complexities involved with invasive species erradication and ecosystem restoration [@Woodford2016], we ask whether invaded networks have lower levels of manageability than their uninvaded counterparts; that is, whether they require a greater proportion of species to be managed to achieve the same level of control. 
 Second, we ask whether some species are more important than others at driving the population dynamics of the community and which factors determine this importance. 
 We focus on these particular applications for a variety of reasons. 
 First, biotic invasions are known to produce tractable changes in the structure of ecological networks, and these changes can be particularly pronounced in mutualistic networks between plants and pollinators where biotic invasions have been shown to modify the strength of species interactions and the degree of network nestedness and connectivity [@Olesen2002; @Aizen2008; @Bartomeus2008; @Vila2009; @Traveset2013]. 
@@ -403,7 +425,7 @@ Once we had this alternative representation, then used the maximum bipartite mat
 
 Although understanding the variability of manageability across ecological networks is a useful result itself, we also wanted to test whether invasion status has an impact on the observed *n~D~*. 
 We, therefore, used a set of generalised linear models (with binomial error structure) to investigate the effect of invasion status while also controlling for factors related to species richness, since one might naively expect to see a negative relationship between diversity and manageability [@Menge1995]. 
-These covariates included the total number of species, plant richness, pollinators richness, the ratio of plants to pollinators richness, and the study site (as a two-level factor). 
+These covariates included the total number of species, plant richness, pollinators richness, the ratio of plants to pollinators richness, the link density (connectance), and the study site (as a two-level factor). 
 We assessed competing models by comparing the Akaike Information Criterion corrected for small sample sizes (AICc), and report results for the most parsimonious model.
 
 We next explored whether real networks differ in their architecture from random ones in a concerted way that affects manageability. 
@@ -449,6 +471,51 @@ All network metrics were calculated using the R package bipartite 2.06 [@Dormann
 We lastly allowed for variation between different communities by including the network identity as a random effect [@Bates2015]. 
 Candidate models were compared using AICc and the relative importance of the explanatory variables was evaluated using the sum of Akaike weights over candidate models that accounted for 95% of the evidence [@Burnham2003; @Bates2015; @Barton2016]. 
 Coefficient estimates were averaged following @Buckland1997a while confidence intervals were calculated following @Lukacs2010.
+
+# Results
+
+## Manageability
+
+All of the networks studied had a driver node density *n~D~* between `r round(min(dplyr::filter(n_driver, type == "z-bi")$n_dr_p), digits = 2)` and `r round(max(dplyr::filter(n_driver, type == "z-bi")$n_dr_p), digits = 2)` (mean `r round(mean(dplyr::filter(n_driver, type == "z-bi")$n_dr_p), digits = 2)`) when we considered bidirectional links weighted by the mutual dependences. 
+This was in strong agreement with the results obtained using the dependence asymmetry for which *n~D~* ranged between `r round(min(dplyr::filter(n_driver, type == "weight")$n_dr_p), digits = 2)` and `r round(max(dplyr::filter(n_driver, type == "weight")$n_dr_p), digits = 2)` (mean `r round(mean(dplyr::filter(n_driver, type == "weight")$n_dr_p), digits = 2)`; Spearman rank correlation `r round(src_bi_w$estimate, digits = 2)`, *p* `r fix_small_pvalue(src_bi_w$p.value)`). 
+In addition, we found that invaded communities had less driver node density than uninvaded ones even when controlling for potential diversity effects (Figure 3), suggesting that. 
+Out of the various covariates we explored—total number of species, plant richness, pollinator richness, link density (connectance), and the ratio of plant to pollinator richness—only the ratio of plant to pollinator richness was retained in the final model as determined by the AICc (Table S4). 
+
+```{r fig_explaining-n-driver, echo = FALSE, warning = FALSE, message = FALSE, fig.width = 3.245, fig.height = 3.2, fig.cap = "asdasd"}
+
+par_res <- as.data.frame(residuals(manag_models@objects[[1]], "partial"))
+names(par_res) <- paste0(make.names(names(par_res)), "_res")
+par_res %<>%
+  dplyr::bind_cols(manag_models@objects[[1]]$data)
+
+p1 <- par_res %>%
+  ggplot(aes(x = inv, y = inv_res)) +
+  # facet_wrap(~type) +
+  geom_boxplot(size = 0.3,
+               colour = "grey10", outlier.shape = 21, outlier.size = 1) +
+  fer_theme +
+  scale_x_discrete(labels = c("uninvaded", "invaded"), name = "") +
+  ylab(expression(paste(n[D], " partial residuals"))) +
+  coord_flip() +
+  theme(
+        legend.position = "none",
+				plot.margin = grid::unit(c(2, 1, 2, 0), "mm"), 
+				# panel.grid.minor.x = element_blank(),
+				panel.grid.minor.y = element_blank())
+
+p2 <- par_res %>%
+  ggplot(aes(x = n_pla/n_pol, y = I.n_pla.n_pol._res)) +
+	geom_smooth(method = "lm", se = F, colour = "black", size = 0.5) +
+	geom_point(shape = 21) + 
+	fer_theme +
+	scale_x_continuous(name = "ratio plant / pollinators") +
+	scale_y_continuous(name = expression(paste(n[D], " partial residuals"))) 
+
+cowplot::plot_grid(p1, p2, ncol = 1, align = "v")
+# pdf("./paper/figures/fig_3.pdf", height = 1.7, width = 3.245, family = "Times", compress = F, title = "Figure 3")
+# f3
+# dev.off()
+```
 
 # Appendix 1: Glossary 
 
