@@ -1,5 +1,5 @@
 ---
-title: "Biotic invasions reduce the manageability of pollination networks"
+title: "Biotic invasions fuck with the manageability of pollination networks"
 classoption: a4paper
 csl: ecology-letters.csl
 output:
@@ -103,11 +103,11 @@ pal <- RColorBrewer::brewer.pal(5, "PuOr")
 
 Complex systems are characterised by relationships in which the whole is often greater than the sum of its parts [@Jorgensen1998; @Levin1999; @Montoya2006].
 Within community ecology, a complex systems approach has led to the development of a variety of analytical and simulation tools with which to understand, for example, the role of species when embedded in an intricate network of interactions [@Pascual2005; @Bascompte2009; @Stouffer2012]. 
-The inherent complexity of nature, however, has hindered—or at least greatly complicated—our ability to find management solutions to the many problems ecological communities face. 
+The inherent complexity of nature, however, has regularly hindered—or at least greatly complicated—our ability to find management solutions to the many problems ecological communities face. 
 To overcome this obstacle, we require a framework that allows us to explain, predict, and manage ecological communities, particularly when they are confronted with perturbations [@Sole2001; @Green2005].
-Moreover, such a framework needs to be able to account for their complex structure, and the dynamics that determine the state of each species, and the community as a whole. 
+Ideally, such a framework needs to be able to account for their complex structure, and the dynamics that determine the state of each species, and the community as a whole. 
 
-Among the various possibilities, control theory appears to be a strong candidate as it is designed to deal with determining and supervising the behaviour of general dynamical systems, and is well equipped to deal with the many feedbacks present in ecological communities [@Liu2015]. 
+Among the various possibilities, control theory appears to be a strong candidate as it is designed to deal with determining and supervising the behaviour of general dynamical systems [@Motter2015], and is well equipped to deal with the many feedbacks present in ecological communities [@Liu2015]. 
 Research in the field has established a strong link between the structure of complex networks and their controllability, while also demonstrating that it is in principle possible to alter a whole ecological community's composition by modifying the abundances of only a few species [@Liu2011; @Cornelius2013; @Ruths2014].
 Applications of control theory to ecological networks can also take into account the extent to which changes in the abundances of one species may ripple through the community [@Cornelius2013].
 Therefore, control theory could provide an indication of which species are most relevant from a structural and dynamic perspective, a particularly important feature given that these species should underpin informed attempts to both alter or maintain the ecosystem state.
