@@ -549,5 +549,11 @@ Maximum matching
 
 Superior node
   ~ The node at the start of a matched link. From the control perspective superior nodes compose the chain that propagate the control signal(s) trough the network.
+  
+## Acknowledgments 
+
+The authors thank Dr. Takeuki Uno for the insight provided to find the set of all maximum matching algorithms, and Jason Tylianakis, Bernat Bramon, Warwick Allen, Matthew Hutchinson, and Marilia Gaiarsa for feedback and valuable discussions. 
+EFC acknowledges the support from the University of Canterbury Doctoral Scholarship, the University of Canterbury Meadow Mushrooms Postgraduate Scholarship, a New Zealand International Doctoral Research Scholarship, and a travel grant from the European Space Agency. 
+DBS acknowledges the support of a Marsden Fast-Start grant and a Rutherford Discovery Fellowship, administered by the Royal Society of New Zealand.
 
 # References
