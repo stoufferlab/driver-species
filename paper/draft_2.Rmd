@@ -524,31 +524,31 @@ cowplot::plot_grid(p1, p2, ncol = 1, align = "v")
 # Appendix 1: Glossary 
 
 Driver node
-  ~ An unmatched node in a maximal cardinality matching or a maximum matching. From the control perspective driver nodes are those to which external control signals must ble applied in order to gain full control of the network.
+  ~ An unmatched node in a maximal cardinality matching or a maximum matching. From the control perspective, driver nodes are those to which external control signals must be applied in order to gain full control of the network.
   
 Matched/unmatched link
-  ~ A link if said to be *matched* if it is part of a matching and *unmatched* otherwise.
+  ~ A link is refered to as *matched* if it is part of a matching, and *unmatched* otherwise.
   
 Matched/unmatched node
-  ~ A node is said to be *matched* if it is at the end of a matched link and *unmatched* otherwise.
+  ~ A node is refered to as *matched* if it is at the end of a matched link, and *unmatched* otherwise.
 
 Matching
-  ~ A subset of links in which no two of them share a common starting or ending node.
+  ~ A set of links in which no two of them share a common starting or ending node.
   
 Matching size
-  ~ The number of matched links in a particular matching.
+  ~ The number of matched links in a  matching.
   
 Matching weight
   ~ The sum of the weights of all matched links in a particular matching. 
   
 Maximal cardinality matching
-  ~ A matching with the largest possible size. In unweighted networks all maximal cardinality matchings are also maximum matchings.
+  ~ A matching with the largest possible matching size. In unweighted networks, all maximal cardinality matchings are also maximum matchings.
   
 Maximum matching
-  ~ A matching with the largest possible size *and* weight. 
+  ~ A matching with the largest possible matching size *and* matching weight. 
 
 Superior node
-  ~ The node at the start of a matched link. From the control perspective superior nodes compose the chain that propagate the control signal(s) trough the network.
+  ~ The node at the start of a matched link. From the control perspective, superior nodes make up the chain(s) that propagate the control signal(s) through the network.
   
 ## Acknowledgments 
 
