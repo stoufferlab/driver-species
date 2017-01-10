@@ -118,10 +118,11 @@ Although understanding how differences in network structure before and after the
 Despite the apparent overlap, a control-theoretic perspective has not been widely adopted in an invasion context. 
 This is perhaps because of a lack of appropriate methodological tools that can account for the observed variation in the strength of interspecific effects that are characteristic of ecological networks [@Liu2011; @Isbell2013].
 
-To bridge this gap, we develop methods to apply previous theory on the control of complex systems into an ecological context and implement them using empirical data, while taking into account the quantitative differences that exist among species interactions.
+To bridge this gap, we outline an approach to apply theory on the control of complex systems in an ecological context and implement them using empirical data.
+Furthermore, we introduce methods with which to take into account the important quantitative differences that exist among species interactions.
 Specifically, we use a set of ten pairs of uninvaded and invaded plant-pollinator communities to investigate the link between invasion, network structure and ecological management. 
-We ask two questions framed in the context of a plant invasion.
-First, on the basis of the complexities involved with invasive species erradication and ecosystem restoration [@Woodford2016], we ask whether invaded networks have lower levels of manageability than their uninvaded counterparts; that is, whether they require a greater proportion of species to be managed to achieve the same level of control. 
+While doing so, we ask two questions framed in the context of a plant invasion.
+First, on grounded on the difficulties usually involved with invasive species erradication and ecosystem restoration [@Woodford2016], we ask whether invaded networks have lower levels of "manageability" than their uninvaded counterparts; that is, whether they require a greater proportion of species to be managed to achieve the same level of control. 
 Second, we ask whether some species are more important than others at driving the population dynamics of the community and which factors determine this importance. 
 We focus on these particular applications for a variety of reasons. 
 First, biotic invasions are known to produce tractable changes in the structure of ecological networks, and these changes can be particularly pronounced in mutualistic networks between plants and pollinators where biotic invasions have been shown to modify the strength of species interactions and the degree of network nestedness and connectivity [@Olesen2002; @Aizen2008; @Bartomeus2008; @Vila2009; @Traveset2013]. 
