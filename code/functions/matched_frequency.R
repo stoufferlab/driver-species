@@ -9,7 +9,7 @@
 # scale <- F
 # tmpdir <- tempdir()
 
-matched_frequency <- function(n, matching_size, type = "weight", keep = "all", prop = 1, batch = 100000, simplify = T, weight.type = "max_dep", scale = F, tmpdir = tempdir()){
+matched_frequency <- function(n, matching_size, type = "weight", keep = "all", prop = 1, batch = 10000, simplify = T, weight.type = "max_dep", scale = F, tmpdir = tempdir()){
 	
 	# transform network
 	dir <- n %>%
