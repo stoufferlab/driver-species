@@ -32,7 +32,9 @@ ordered_net_names <- dplyr::inner_join(meta, matched) %>%
 onet <- net[ordered_net_names]
 
 # calculate the frequency of species matchings
-expand.grid(scale = c(F, T), weight.type = c("asymmetry", "max_dep")) %>%
+expand.grid(scale = c(F
+											#, T
+											), weight.type = c("asymmetry", "max_dep")) %>%
   plyr::d_ply(c("scale", "weight.type"), function(y) {
     print(y$scale)
     print(y$weight.type)
