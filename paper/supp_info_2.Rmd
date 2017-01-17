@@ -1,0 +1,662 @@
+---
+title: "Biotic invasions fuck with the manageability of pollination networks"
+subtitle: "Supporting Information"
+classoption: a4paper
+csl: ecology-letters.csl
+output:
+  pdf_document:
+    fig_crop: no
+  html_document: default
+  word_document: default
+header-includes:
+- \usepackage{setspace}
+- \usepackage{float}
+- \renewcommand{\figurename}{Figure SI}
+documentclass: artikel1
+bibliography: references.bib
+---
+
+\doublespacing
+
+```{r libraries, echo = F, include = F}
+library(igraph)
+library(magrittr)
+library(dplyr)
+library(latex2exp)
+library(ggplot2)
+library(RColorBrewer)
+
+"../code/functions" %>% 
+	list.files(full.names = T) %>%
+	plyr::l_ply(source)
+
+"../code/plotting_functions" %>% 
+	list.files(full.names = T) %>%
+	plyr::l_ply(source)
+  
+```
+
+```{r load data, include = F}
+net <- "../data/processed/networks" %>%
+	read_networks()
+meta <- readr::read_csv("../data/ntw_info.csv") %>% dplyr::tbl_df() %>%
+	dplyr::rename(count = method)
+n_driver <- readRDS("../data/processed/n_driver.rds")
+manag_models <- readRDS("../data/processed/models_manageability.rds")
+src_bi_w <- readRDS("../data/processed/manageability_bi_vs_weight.rds")
+r_w <- readRDS("../data/processed/random_weights.rds") %>% dplyr::tbl_df() %>%
+  dplyr::rename_("net_name" = ".id")
+r_d <- readRDS("../data/processed/random_directions.rds") %>% dplyr::tbl_df() %>%
+  dplyr::rename_("net_name" = ".id")
+
+prop <- expand.grid(c("asymmetry", "max_dep"), 
+                    c("scaled_FALSE", "scaled_TRUE")) %>% plyr::alply(1)
+driver <- c("../data/processed/matching_frequency") %>% 
+  list.files(full.names = T) %>%
+  lapply(list.files, full.names = T) %>% 
+  unlist() %>% 
+  lapply(read_allRDS)
+driver <- mapply(function(x, y){
+  attr(x, "type") <- as.character(y[,1])
+  attr(x, "scaled") <- stringr::str_split(as.character(y[,2]), "_") %>% unlist() %>% extract(2) %>% as.logical()
+  return(x)
+}, driver, prop)
+driver_bi <- "../data/processed/matching_frequency_bi" %>% 
+  read_allRDS()
+```
+
+```{r plot theme, echo = FALSE, warning = F, message = F}
+fer_theme <- theme_bw() +
+	theme(text = element_text(family = "Times"),
+	      title = element_text(size = 7.5, hjust = 0),
+	      legend.title = element_text(size = 9),
+	      legend.text = element_text(size = 8),
+				axis.text = element_text(size = 8),
+				axis.title = element_text(size = 9, hjust = 0.5), 
+				strip.text = element_text(size = 9, hjust = 0), 
+				strip.background = element_blank(),
+				plot.margin = grid::unit(c(5, 0, 2, 0), "mm"))
+```
+
+```{r example networks, include = F, message = F, warning = F, }
+
+sp_names_fancy <- c(TeX("$p_1$"), TeX("$p_2$"), TeX("$p_3$"), TeX("$a_1$"), TeX("$a_2$"))
+sp_names_fancy_b <- c(TeX("$\\mathbf{p_1}$"), TeX("$\\mathbf{p_2}$"), TeX("$\\mathbf{p_3}$"), TeX("$\\mathbf{a_1}$"), TeX("$\\mathbf{a_2}$"))
+
+sp_names <- c("p1", "p2", "p3", "a1", "a2")
+
+adj_matrix <- c(0,0,0,1,0,
+								0,0,0,2,5,
+								0,0,0,0,0,
+								0,0,1,0,0,
+								0,0,1,0,0) %>%
+	matrix(nrow = 5, byrow = T)
+
+example_net <- adj_matrix %>% 
+	graph_from_adjacency_matrix(mode = "undirected", weighted = TRUE) 
+igraph::V(example_net)$type <- c(F, F, F, T, T)
+igraph::V(example_net)$name <- sp_names
+
+base_net <- example_net
+bi_net <- example_net %>%
+	keep_largest_component() %>%
+	bipartite_digraph(type = "z-bi", weight.type = "asymmetry") 
+as_net <- example_net %>%
+	keep_largest_component() %>%
+	bipartite_digraph(type = "weight", weight.type = "asymmetry")
+
+fam <- "Helvetica"
+# layout is based on the bidirectional network
+set.seed(1)
+
+lay <- bi_net %>%
+	layout_nicely()
+v_c <- "white"
+l_c <- "black"
+l_s <- 0.9
+ma <- c(0,0,0,0)
+label_pos_x <- -1
+label_pos_y <- 1
+
+pal <- RColorBrewer::brewer.pal(5, "PuOr")
+
+
+# BIDIRECTIONAL MATCHINGS
+
+
+as_mat <- bi_net %>%
+	digraph_bipartite() %>% 
+	max_bipartite_match()
+
+as_all_mat <- bi_net %>%
+	digraph_bipartite(type = "z-bi") %>%
+	igraph::make_line_graph() %>%
+	igraph::complementer() %>% 
+	igraph::max_cliques(min = as_mat$matching_size) %>%
+	rev()
+
+text_pos_x <- 0.5
+text_pos_y <- -0.7
+
+base_bi_net <- bi_net
+E(bi_net)$weight <- round(E(bi_net)$weight, 1)
+
+nets <- 1:length(as_all_mat) %>%
+	plyr::llply(function(x){
+		
+		igraph::E(bi_net)$matched <- 2
+		igraph::E(bi_net)$matched[as_all_mat[[x]]] <- 4
+		
+		igraph::V(bi_net)$matched <- 2
+		igraph::V(bi_net)$matched[igraph::V(bi_net)$name %in%
+																ends(bi_net, as_all_mat[[x]])[, 2]] <- 4
+		
+		igraph::V(bi_net)$superior <- 1
+		igraph::V(bi_net)$superior[igraph::V(bi_net)$name %in%
+																ends(bi_net, as_all_mat[[x]])[, 1]] <- 2
+		
+		names_fancy <- sp_names_fancy
+		names_fancy[igraph::V(bi_net)$name %in%
+																ends(bi_net, as_all_mat[[x]])[, 1]] <-
+			sp_names_fancy_b[igraph::V(bi_net)$name %in%
+																ends(bi_net, as_all_mat[[x]])[, 1]]
+		
+		matching_weight <- sum(E(bi_net)$weight[as_all_mat[[x]]])
+		
+		n_edges <- length(igraph::E(bi_net))
+		has_cycles <- igraph::E(bi_net)[setdiff(1:n_edges, as_all_mat[[x]])] %>%
+			igraph::delete_edges(bi_net, .) %>% 
+			igraph::is_dag() %>%
+			magrittr::not()
+		
+		list(
+			bi_net = bi_net,
+			names_fancy = names_fancy,
+			as_mat = as_mat, 
+			as_all_mat = as_all_mat[[x]], 
+			matching_weight = matching_weight,
+			has_cycles = has_cycles
+		)
+	
+})
+
+nets <- nets[order(!unlist(lapply(nets, function(x) x$has_cycles)), unlist(lapply(nets, function(x) x$matching_weight)), decreasing = T)]
+```
+
+# S1: Finding a complex network's matchings
+
+Each species can control at most one other species
+
+```{r fig-direction-of-control, echo = F, message = F, warning = F, fig.width = 6.2, fig.height = 3.2, results = "hide", fig.cap = "**Finding a maximum matching in a complex network**. (a) We start with a directed network in which the direction of the link represents the direction of control. (b) Our strategy to find find the number of driver species is based on an alternative representation of the directed network in which each node in (a) is represented by two nodes that indicate their outgoing and incoming links. Finding a maximum matching in this alternative representation is equivalent to finding the largest possible set of edges in which one node in the left hand side is connected to at most one node in the right hand side. It is then easy to identify the roles of each node in this representation: nodes on the right hand side that are connected to a matched link (purple) are matched, while those connected to a matched link on the left hand side are superior. (c) This information can then be mapped back to the original representation to identify the control paths and the driver nodes in the network. (d, e, and f) Ilustrate the approach for a network with bidirectional links."}
+# par(mfrow=c(2,2), mar=c(0,0,0,0))
+bi_sp_names_fancy <- c( TeX("$p_1^-$"), TeX("$p_2^-$"), TeX("$p_3^-$"), TeX("$a_1^-$"), TeX("$a_2^-$"), TeX("$p_1^+$"), TeX("$p_2^+$"), TeX("$p_3^+$"), TeX("$a_1^+$"), TeX("$a_2^+$"))
+
+bi_sp_names_fancy_b <- c( TeX("$p_1^-$"), TeX("$p_2^-$"), TeX("$p_3^-$"), TeX("$a_1^-$"), TeX("$a_2^-$"), TeX("$\\mathbf{p_1^+}$"), TeX("$\\mathbf{p_2^+}$"), TeX("$\\mathbf{p_3^+}$"), TeX("$\\mathbf{a_1^+}$"), TeX("$\\mathbf{a_2^+}$"))
+
+
+par(mfrow=c(2,3), mar= c(0,0,0,0))
+
+# ASYMMETRY
+as_net %>% 
+	plot(layout = lay, 
+			 vertex.color = v_c, 
+			 vertex.size = 35,
+			 vertex.label = sp_names_fancy,
+			 vertex.label.family = fam,
+			 vertex.label.color = l_c,
+			 edge.label = round(E(.)$weight,1), 
+			 edge.label.family = fam,
+			 edge.label.color = l_c,
+			 edge.label.cex = l_s,
+			 edge.curved = F,
+			 edge.arrow.size = 0.5,
+			 margin = ma)
+
+text(label_pos_x, label_pos_y, "a)", adj = c(0,0))
+
+
+as_mat <- as_net %>%
+	digraph_bipartite() %>% 
+	max_bipartite_match()
+
+as_all_mat <- as_net %>%
+	digraph_bipartite() %>%
+	igraph::make_line_graph() %>%
+	igraph::complementer() %>% 
+	igraph::max_cliques(min = as_mat$matching_size) %>%
+	rev()
+
+text_pos_x <- 0.5
+text_pos_y <- -0.7
+
+base_as_net <- as_net
+E(as_net)$weight <- round(E(as_net)$weight, 1)
+
+bi_as_net <- as_net %>%
+	digraph_bipartite() 
+
+igraph::V(bi_as_net)$matched <- 2
+igraph::V(bi_as_net)$matched[igraph::V(bi_as_net)$name %in%
+														 	ends(bi_as_net, as_all_mat[[1]])[, 2]] <- 4
+igraph::V(bi_as_net)$matched[1:5] <- NA
+
+igraph::V(bi_as_net)$superior <- 30
+igraph::V(bi_as_net)$superior[igraph::V(bi_as_net)$name %in%
+														 	ends(bi_as_net, as_all_mat[[1]])[, 1]] <- 40
+igraph::V(bi_as_net)$superior[6:10] <- 35
+
+igraph::E(bi_as_net)$matched <- 2
+		igraph::E(bi_as_net)$matched[as_all_mat[[1]]] <- 4
+																 
+bi_as_net %>%
+	plot(layout = matrix(c(rep(c(-0.5, 0.9), each = 5), rep(seq(-0.8, 0.8, length.out = 5), 2)), ncol = 2), 
+			 # vertex.size = igraph::V(.)$superior,
+			 vertex.size = 30, 
+			 vertex.label = c(bi_sp_names_fancy[6:10], bi_sp_names_fancy[1:5]),
+			 vertex.label.family = fam,
+			 vertex.label.color = l_c,
+			 # vertex.label.cex = igraph::V(.)$superior * 0.1 + 0.9,
+			 # vertex.color = pal[igraph::V(.)$matched],
+			 vertex.color = NA,
+			 edge.color = pal[E(.)$matched],
+			 edge.label = NA, 
+			 edge.width = E(.)$matched/2,
+			 edge.label.family = fam,
+			 edge.label.color = igraph::E(.)$matched,
+			 edge.label.cex = l_s,
+			 edge.curved = F,
+			 edge.arrow.size = 0.5,
+			 margin = ma, 
+			 rescale = F)
+
+text(-0.95, 0.825, "b)", adj = c(0,0))
+
+E(as_net)$matched <- 2
+		E(as_net)$matched[as_all_mat[[1]]] <- 4
+		
+		igraph::V(as_net)$matched <- 2
+		igraph::V(as_net)$matched[igraph::V(as_net)$name %in%
+																ends(as_net, as_all_mat[[1]])[, 2]] <- 4
+		
+		igraph::V(as_net)$superior <- 1
+		igraph::V(as_net)$superior[igraph::V(as_net)$name %in%
+																ends(as_net, as_all_mat[[1]])[, 1]] <- 2
+		
+		names_fancy <- sp_names_fancy
+		names_fancy[igraph::V(as_net)$name %in%
+																ends(as_net, as_all_mat[[1]])[, 1]] <-
+			sp_names_fancy_b[igraph::V(as_net)$name %in%
+																ends(as_net, as_all_mat[[1]])[, 1]]
+		
+		matching_weight <- sum(E(as_net)$weight[as_all_mat[[1]]])
+		
+		as_net %>% 
+			plot(layout = lay, 
+					 vertex.size = igraph::V(.)$superior * 10 + 20,
+					 vertex.label = names_fancy,
+					 vertex.label.family = fam,
+					 vertex.label.color = l_c,
+					 vertex.label.cex = igraph::V(.)$superior * 0.1 + 0.9,
+					 # vertex.shape = igraph::V(.)$vertex.shape,
+					 vertex.color = pal[igraph::V(.)$matched],
+					 edge.color = pal[E(.)$matched],
+					 edge.label = NA, 
+					 edge.width = E(.)$matched/2,
+					 edge.label.family = fam,
+					 edge.label.color = igraph::E(.)$matched,
+					 edge.label.cex = l_s,
+					 edge.curved = F,
+					 edge.arrow.size = 0.5,
+					 margin = ma) %>% 
+			print()
+
+text(label_pos_x, label_pos_y, "c)", adj = c(0,0))
+
+
+bi_net %>% 
+	plot(layout = lay, 
+			 vertex.color = v_c, 
+			 vertex.size = 35,
+			 vertex.label = sp_names_fancy,
+			 vertex.label.family = fam,
+			 vertex.label.color = l_c,
+			 edge.label = round(E(.)$weight,1), 
+			 edge.label.family = fam,
+			 edge.label.color = l_c,
+			 edge.label.cex = l_s,
+			 edge.curved = T,
+			 edge.arrow.size = 0.5,
+			 margin = ma)
+text(label_pos_x, label_pos_y, "d)", adj = c(0,0))
+
+i <- 1
+bi_bi_net <- nets[[i]]$bi_net %>%
+	digraph_bipartite(type = "z-bi")
+
+		igraph::E(bi_bi_net)$matched <- 2
+		igraph::E(bi_bi_net)$matched[nets[[i]]$as_all_mat] <- 4
+		
+		igraph::V(bi_bi_net)$matched <- 2
+		igraph::V(bi_bi_net)$matched[igraph::V(bi_bi_net)$name %in%
+																ends(bi_bi_net, nets[[i]]$as_all_mat)[, 1]] <- 4
+		igraph::V(bi_bi_net)$matched[6:10] <- NA
+		
+		igraph::V(bi_bi_net)$superior <- 30
+		igraph::V(bi_bi_net)$superior[igraph::V(bi_bi_net)$name %in%
+																ends(bi_bi_net, nets[[i]]$as_all_mat)[, 2]] <- 40
+		igraph::V(bi_bi_net)$superior[1:5] <- 35
+		
+		bi_names_fancy <- bi_sp_names_fancy
+		bi_names_fancy[igraph::V(bi_bi_net)$name %in%
+									ends(bi_bi_net, nets[[i]]$as_all_mat)[, 2]] <-
+			bi_sp_names_fancy_b[igraph::V(bi_bi_net)$name %in%
+														ends(bi_bi_net, nets[[i]]$as_all_mat)[, 2]]
+		
+		
+bi_bi_net %>%
+	plot(layout = matrix(c(rep(c(0.9,-0.5), each = 5), rep(seq(-0.8, 0.8, length.out = 5), 2)), ncol = 2), 
+			 # vertex.size = igraph::V(.)$superior,
+			 vertex.size = 30,
+			 vertex.label = bi_sp_names_fancy, 
+			 vertex.label.family = fam,
+			 vertex.label.color = l_c,
+			 # vertex.color = pal[igraph::V(.)$matched],
+			 vertex.color = NA, 
+			 edge.color = pal[igraph::E(.)$matched],
+			 # edge.label = round(E(.)$weight,1), 
+			 edge.label.family = fam,
+			 edge.width = E(.)$matched/2,
+			 edge.label.color = l_c,
+			 edge.label.cex = l_s,
+			 edge.curved = F,
+			 edge.arrow.size = 0.5,
+			 margin =  ma, 
+			 # asp = 0.5, 
+			 rescale = F)
+
+text(-0.95, 0.825, "e)", adj = c(0,0))
+
+nets[[1]]$bi_net %>%
+	plot(layout = lay, 
+			 vertex.label = nets[[1]]$names_fancy,
+			 vertex.size = igraph::V(.)$superior * 10 + 20,
+			 vertex.label.family = fam,
+			 vertex.label.color = l_c,
+			 vertex.color = pal[igraph::V(.)$matched],
+			 edge.color = pal[igraph::E(.)$matched],
+			 # edge.label = round(E(.)$weight,1), 
+			 edge.label.family = fam,
+			 edge.label.color = l_c,
+			 edge.label.cex = l_s,
+			 edge.curved = T,
+			 edge.arrow.size = 0.5,
+			 edge.width = E(.)$matched/2,
+			 margin = ma, 
+			 # asp = 0.5, 
+			 rescale = T)
+
+text(label_pos_x, label_pos_y, "f)", adj = c(0,0))
+
+```
+
+```{r fig-finding-all-matchings, echo = F, message = F, warning = F, fig.width = 6.2, fig.height = 1.6, results = "hide", fig.cap = "**Finding all possible maximum cardinality matchings**. "}
+par(mfrow=c(1,3), mar= c(0,0,0,0))
+
+as_mat <- as_net %>%
+	digraph_bipartite() %>% 
+	max_bipartite_match()
+
+as_all_mat <- as_net %>%
+	digraph_bipartite() %>%
+	igraph::make_line_graph() %>%
+	igraph::complementer() %>% 
+	igraph::max_cliques(min = as_mat$matching_size) %>%
+	rev()
+
+text_pos_x <- 0.5
+text_pos_y <- -0.7
+
+base_as_net <- as_net
+E(as_net)$weight <- round(E(as_net)$weight, 1)
+
+bi_as_net <- as_net %>%
+	digraph_bipartite() 
+
+igraph::V(bi_as_net)$matched <- 2
+igraph::V(bi_as_net)$matched[igraph::V(bi_as_net)$name %in%
+														 	ends(bi_as_net, as_all_mat[[1]])[, 2]] <- 4
+igraph::V(bi_as_net)$matched[1:5] <- NA
+
+igraph::V(bi_as_net)$superior <- 30
+igraph::V(bi_as_net)$superior[igraph::V(bi_as_net)$name %in%
+														 	ends(bi_as_net, as_all_mat[[1]])[, 1]] <- 40
+igraph::V(bi_as_net)$superior[6:10] <- 35
+
+igraph::E(bi_as_net)$matched <- 2
+		igraph::E(bi_as_net)$matched[as_all_mat[[1]]] <- 4
+# 																 
+# bi_as_net %>%
+# 	plot(layout = matrix(c(rep(c(-0.5, 0.9), each = 5), rep(seq(-0.8, 0.8, length.out = 5), 2)), ncol = 2), 
+# 			 # vertex.size = igraph::V(.)$superior,
+# 			 vertex.size = 30, 
+# 			 vertex.label =  c(bi_sp_names_fancy[6:10], bi_sp_names_fancy[1:5]),
+# 			 vertex.label.family = fam,
+# 			 vertex.label.color = l_c,
+# 			 # vertex.label.cex = igraph::V(.)$superior * 0.1 + 0.9,
+# 			 # vertex.color = pal[igraph::V(.)$matched],
+# 			 vertex.color = NA,
+# 			 # edge.color = pal[E(.)$matched],
+# 			 edge.label = NA, 
+# 			 # edge.width = E(.)$matched/2,
+# 			 edge.label.family = fam,
+# 			 edge.label.color = igraph::E(.)$matched,
+# 			 edge.label.cex = l_s,
+# 			 edge.curved = F,
+# 			 edge.arrow.size = 0.5,
+# 			 margin = ma, 
+# 			 rescale = F)
+# 
+# text(-0.95, 0.825, "a)", adj = c(0,0))
+
+###
+
+bi_as_net %>% 
+	delete_vertices(c(1, 3, 7)) %>% 
+	plot(vertex.size = 35, 
+			 vertex.label = c(bi_sp_names_fancy[6:10], bi_sp_names_fancy[1:5])[-c(1,3,7)], 
+			 vertex.color = "white", 
+			 edge.label = 1:5,
+			 vertex.label.family = fam,
+			 vertex.label.color = l_c,
+			 edge.label.family = fam,
+			 edge.label.color = l_c,
+			 edge.label.cex = l_s,
+			 edge.curved = F,
+			 edge.arrow.size = 0.5,
+			 margin = ma, 
+			 layout = layout_in_circle)
+
+text(-1, 1, "a)", adj = c(0,0))
+
+set.seed(2)
+bi_as_net %>%
+		igraph::make_line_graph() %>% 
+	plot(vertex.size = 35, 
+			 # vertex.label = c(bi_sp_names_fancy[6:10], bi_sp_names_fancy[1:5])[-c(1,3,7)], 
+			 vertex.color = "white", 
+			 # edge.label = 1:5,
+			 vertex.label.family = fam,
+			 vertex.label.color = l_c,
+			 edge.label.family = fam,
+			 edge.label.color = l_c,
+			 edge.label.cex = l_s,
+			 edge.curved = F,
+			 edge.arrow.size = 0.5,
+			 margin = ma, 
+			 layout = layout_in_circle)
+
+text(-1, 1, "b)", adj = c(0,0))
+
+
+nam <- ends(bi_net, 1:length(igraph::E(bi_as_net)))
+
+comp <- bi_as_net %>%
+		igraph::make_line_graph() %>% 
+		igraph::complementer() 
+
+
+colo <- c("#d7191c", "grey70", "#d7191c", "#2b83ba", "grey70", "#2b83ba", "#814E6B")
+vertices <- layout_in_circle(comp)
+plot.new()
+scaling_x <- 0.94
+scaling_y <- 0.58
+centring_x <- -0.01
+centring_y <- 0.2
+# polygon((vertices[c(1,3,5), 1] + 1)/2 * scaling_x + centring_x, (vertices[c(1,3,5), 2] + 1) /2 *scaling_y +centring_y, col = "#d7191c")
+par(new = T)
+comp %>%
+	plot(vertex.size = 35, 
+			 # vertex.label = c(bi_sp_names_fancy[6:10], bi_sp_names_fancy[1:5])[-c(1,3,7)], 
+			 vertex.color = NA, 
+			 # edge.label = 1:5,
+			 vertex.label.family = fam,
+			 vertex.label.color = l_c,
+			 edge.color = colo, 
+			 edge.label.family = fam,
+			 edge.label.color = l_c,
+			 edge.label.cex = l_s,
+			 edge.curved = F,
+			 edge.arrow.size = 0.5,
+			 margin = ma, 
+			 layout = layout_in_circle)
+
+
+
+text(-1, 1, "c)", adj = c(0,0))
+
+# 
+# igraph::max_cliques(min = matching$matching_size, 
+# 												max = matching$matching_size,
+# 												file = temporary_file)
+
+
+```
+
+
+
+```{r fig-matchings-bidirectional, echo = F, message = F, warning = F, fig.width = 6.2, fig.height = 3.2, results = "hide"}
+par(mfrow=c(2,3), mar=c(0,0,0,0))
+
+bi_net %>% 
+	plot(layout = lay, 
+			 vertex.color = v_c, 
+			 vertex.size = 30,
+			 vertex.label = sp_names_fancy,
+			 vertex.label.family = fam,
+			 vertex.label.color = l_c,
+			 edge.label = round(E(.)$weight,1), 
+			 edge.label.family = fam,
+			 edge.label.color = l_c,
+			 edge.label.cex = l_s,
+			 edge.curved = T,
+			 edge.arrow.size = 0.5,
+			 margin = ma)
+
+text(label_pos_x, label_pos_y, "a)", adj = c(0,0))
+
+1:4 %>%
+	plyr::l_ply(function(x, pal){
+		
+		attach(nets[[x]], pos = 1, warn.conflicts = F)	
+		
+		nets[[x]]$bi_net %>% 
+			plot(layout = lay, 
+					 vertex.size = 30,
+					 vertex.label = names_fancy,
+					 vertex.label.family = fam,
+					 vertex.label.color = l_c,
+					 vertex.label.cex = igraph::V(.)$superior * 0.1 + 0.9,
+					 # vertex.shape = igraph::V(.)$vertex.shape,
+					 vertex.color = pal[igraph::V(.)$matched],
+					 edge.color = pal[igraph::E(.)$matched],
+					 # edge.color = c("#B2ABD2", "#FDB863"),
+					 edge.label = NA, 
+					 edge.width = E(.)$matched/2,
+					 edge.label.family = fam,
+					 edge.label.color = igraph::E(.)$matched,
+					 edge.label.cex = l_s,
+					 edge.curved = T,
+					 edge.arrow.size = 0.5,
+					 margin = ma, 
+					 palette = pal) %>% 
+			print()
+		
+		igraph::V(bi_net)$name <- sp_names
+		
+		text(label_pos_x, label_pos_y, paste0(letters[1+x], ")"), adj = c(0,0))
+		text(text_pos_x, text_pos_y, cex = 0.95,
+				 paste0("D = ", length(igraph::V(bi_net)) - as_mat$matching_size, "\n",
+				 			 "matching size: ", as_mat$matching_size, "\n",
+				 			 "matching weight: ", round(matching_weight, 1)))
+	}, pal)
+
+plot.new()
+legend(0.5, 0.7, legend = c("unmatched link", "matched link"), horiz = F,
+			 lty = 1, 
+			 col = pal[c(2, 4)],
+			 lwd = 2, cex = 0.9, xjust=0.5, yjust=1, bty = "n")
+
+legend(0.5, 0.5, legend = c("unmatched node", "matched node"), horiz = F,
+			 pch = 21, 
+			 pt.bg = pal[c(2, 4)],
+			 pt.cex = 2,
+			 cex = 0.9, xjust=0.5, yjust=1, bty = "n")
+
+legend(0.5, 0.3, legend = expression(paste(bold("(bold label)"), " ", "superior nodes")), horiz = TRUE,
+			 cex = 0.9, xjust=0.5, yjust=1, bty = "n")
+
+
+```
+
+
+```{r  fig-matchings-bidirectional-no, echo = F, message = F, warning = F, fig.width = 6.2, fig.height = 4.8, results = "hide"}
+
+par(mfrow=c(3,4), mar=c(0,0,0,0))
+5:length(nets) %>%
+	plyr::l_ply(function(x, pal){
+		
+		attach(nets[[x]], pos = 1, warn.conflicts = F)	
+		
+		nets[[x]]$bi_net %>% 
+			plot(layout = lay, 
+					 vertex.size = 30,
+					 vertex.label = names_fancy,
+					 vertex.label.family = fam,
+					 vertex.label.color = l_c,
+					 vertex.label.cex = igraph::V(.)$superior * 0.1 + 0.9,
+					 # vertex.shape = igraph::V(.)$vertex.shape,
+					 vertex.color = pal[igraph::V(.)$matched],
+					 edge.color = pal[igraph::E(.)$matched],
+					 # edge.color = c("#B2ABD2", "#FDB863"),
+					 edge.label = NA, 
+					 edge.width = E(.)$matched/2,
+					 edge.label.family = fam,
+					 edge.label.color = igraph::E(.)$matched,
+					 edge.label.cex = l_s,
+					 edge.curved = T,
+					 edge.arrow.size = 0.5,
+					 margin = ma, 
+					 palette = pal) %>% 
+			print()
+		
+		igraph::V(bi_net)$name <- sp_names
+		
+		# text(label_pos_x, label_pos_y, paste0(letters[1+x-5], ")"), adj = c(0,0))
+		# text(text_pos_x, text_pos_y, cex = 0.95,
+		# 		 paste0("D = ", length(igraph::V(bi_net)) - as_mat$matching_size, "\n",
+		# 		 			 "matching size: ", as_mat$matching_size, "\n",
+		# 		 			 "matching weight: ", round(matching_weight, 1)))
+	}, pal)
+
+```
+
