@@ -78,7 +78,7 @@ igraph::V(example_net)$name <- sp_names
 base_net <- example_net
 bi_net <- example_net %>%
 	keep_largest_component() %>%
-	bipartite_digraph(type = "z-bi", weight.type = "assymetry") 
+	bipartite_digraph(type = "z-bi", weight.type = "asymetry") 
 as_net <- example_net %>%
 	keep_largest_component() %>%
 	bipartite_digraph(type = "weight", weight.type = "asymmetry")
