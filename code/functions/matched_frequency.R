@@ -1,12 +1,22 @@
 # find the times a species is present in the maximum matching set
 
+# # params
+# type <- "weight"
+# keep <- "all"
+# prop <- 0
+# batch <- 1000000
+# weigh.type <- "asymmetry"
+# scale <- F
+# tmpdir <- tempdir()
+
 matched_frequency <- function(n, matching_size, type = "weight", keep = "all", prop = 1, batch = 1000000, simplify = T, weight.type = "max_dep", scale = F, tmpdir = tempdir()){
 	
 	# transform network
-	m <- n %>%
+	dir <- n %>%
 		keep_largest_component() %>%
-		bipartite_digraph(type, keep, weight.type, scale) %>% 
-		digraph_bipartite()
+		bipartite_digraph(type, keep, weight.type, scale)
+	m <- dir %>% 
+		digraph_bipartite(type) 
 	
 	w <- igraph::E(m)$weight
 	
@@ -68,13 +78,28 @@ matched_frequency <- function(n, matching_size, type = "weight", keep = "all", p
 	    # m_weights_exp <- apply(weights, 1, sum) %>% {exp(.)/sum(exp(.))}
 
 	    l <- lapply(prop, function(pr){
+	    	
 	      mat <- matrix(NA, ncol = matching$matching_size, nrow = nrow(matchings))
+	      
+	     # Remove matchings with a weight under the threshold
 	      for(j in 1:nrow(weights)){
 	        if(pr * matching$matching_weight - sum(weights[j, ]) <= m_prec){
 	          mat[j, ] <- matchings[j, ]
 	        } 
 	      }
 	      mat <- mat[complete.cases(mat), , drop = F]
+	      
+	      # remove cycles
+	      n_edges <- length(igraph::E(dir))
+	      mat2 <- matrix(NA, ncol = matching$matching_size, nrow = nrow(mat))
+	      for(j in 1:nrow(mat)){
+	      	is_acyclic <- igraph::E(dir)[setdiff(1:n_edges, mat[j, ])] %>%
+	      		igraph::delete_edges(dir, .) %>% 
+	      		igraph::is_dag()
+	      	if(is_acyclic) mat2[j, ] <- mat[j, ]
+	      }
+	      mat2 <- mat[complete.cases(mat2), , drop = F]
+	      mat <- mat2
 	      
 	      if(nrow(mat) == 0) return(NULL)
 	      
