@@ -20,6 +20,12 @@ Fernando Cagua
 
 ******************************************
 
+## Editor's Comments
+
+This was a difficult decision.  Like all the reviewers, I think this work has huge potential, and could have major impacts in applied ecology.  However, you are unclear in your terminology wrt to the major research field you apply to this interesting ecological setting and your exposition is opaque (for example, how exactly are manageability and controllability related? – see the important caution from R2 and the detailed comments from R1).  This makes it incredibly hard to follow your work, even for someone who works in network controllability.  There also seems to be key controllability methodological work you could more effectively leverage.  I applaud the close link of theory and empiricism, but more details of the field network pairs would be helpful.  Really major revisions will be required to get this ms into a form that appeals to both newcomers and experts in the field, and the manuscript will have to be re-reviewed (likely by a mix of the same and some new reviewers), but it does have excellent potential, so I encourage the authors to carefully and thoroughly deal with all of the reviewer comments.
+
+*Thanks for the encouraging feedback*
+
 ## Referee 1
 
 In ms ELE-00738-2016, the authors seek to apply ideas from control theory (specifically, structural controllability) to bipartite ecological networks. The main idea of structural control theory, at least in the recent applied literature, is that some nodes are recipients of external, time-varying control signals that proceed to propagate through a network in such a way as to drive the state of every node in the network to a desired configuration in finite time. There tend to be many ways to do this, and nodes can further be characterized by the frequency with which they exist on key paths leading through the network.
@@ -192,10 +198,5 @@ Ln 372. It is important to say that vulnerability is related change, but that it
 Figure 5 legend. Please include here the definition of dependency strength so the reader does not need to go back and forth.
 
 
-## Editor's Comments
-
-This was a difficult decision.  Like all the reviewers, I think this work has huge potential, and could have major impacts in applied ecology.  However, you are unclear in your terminology wrt to the major research field you apply to this interesting ecological setting and your exposition is opaque (for example, how exactly are manageability and controllability related? – see the important caution from R2 and the detailed comments from R1).  This makes it incredibly hard to follow your work, even for someone who works in network controllability.  There also seems to be key controllability methodological work you could more effectively leverage.  I applaud the close link of theory and empiricism, but more details of the field network pairs would be helpful.  Really major revisions will be required to get this ms into a form that appeals to both newcomers and experts in the field, and the manuscript will have to be re-reviewed (likely by a mix of the same and some new reviewers), but it does have excellent potential, so I encourage the authors to carefully and thoroughly deal with all of the reviewer comments.
-
-*Thanks for the encouraging feedback*
 
 ## References
