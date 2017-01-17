@@ -34,7 +34,7 @@ matched_frequency <- function(n, matching_size, type = "weight", keep = "all", p
 	
 	temporary_file <- tempfile(tmpdir = tmpdir)
 	message("file is ", temporary_file)
-	
+	message(system.time())
 	message("finding all possible maximum matchings")
 	# find all possible maximum matchings
 	matched_links <- m %>%
@@ -59,7 +59,8 @@ matched_frequency <- function(n, matching_size, type = "weight", keep = "all", p
 		ceiling()
 	
 	blocks <- seq(1, nlines, batch)
-	
+	message("found ", nlines, "maximum cardinality matchings")
+	message(system.time())
 	message("reading maximum matching file")
 	freq_matching <- 
 	  plyr::llply(blocks, function(i){
@@ -166,6 +167,8 @@ matched_frequency <- function(n, matching_size, type = "weight", keep = "all", p
 	  `attr<-`(o, "n_matchings", tot_n_matchings)
 	})
 	
+	message("finished")
+	message(system.time())
 	if(length(prop) == 1 & simplify) {
 	  return(freq_matching[[1]])
 	} else {
