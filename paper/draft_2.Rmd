@@ -176,7 +176,7 @@ par( mar=c(0,0,0,0))
 as_net %>% 
 	plot(layout = lay, 
 			 vertex.color = v_c, 
-			 vertex.size = 30,
+			 vertex.size = 35,
 			 vertex.label = sp_names_fancy,
 			 vertex.label.family = fam,
 			 vertex.label.color = l_c,
@@ -231,7 +231,7 @@ E(as_net)$weight <- round(E(as_net)$weight, 1)
 		
 		as_net %>% 
 			plot(layout = lay, 
-					 vertex.size = 30,
+					 vertex.size = igraph::V(.)$superior * 10 + 20,
 					 vertex.label = names_fancy,
 					 vertex.label.family = fam,
 					 vertex.label.color = l_c,
@@ -264,16 +264,22 @@ plot.new()
 legend(0.16, 0.9, legend = c("unmatched link", "matched link"), horiz = TRUE,
 			 lty = 1, 
 			 col = pal[c(2, 4)],
-			 lwd = 2, cex = 0.9, xjust=0.5, yjust=1, bty = "n")
+			 lwd = 2, cex = 0.9, xjust=0.5, yjust=0.8, bty = "n")
 
 legend(0.57, 0.9, legend = c("unmatched node", "matched node"), horiz = TRUE,
 			 pch = 21, 
 			 pt.bg = pal[c(2, 4)],
 			 pt.cex = 2,
-			 cex = 0.9, xjust=0.5, yjust=1, bty = "n")
+			 cex = 0.9, xjust=0.5, yjust=0.8, bty = "n")
 
-legend(1-0.16 + 0.05, 0.9, legend = expression(paste(bold("(bold label)"), " ", "superior nodes")), horiz = TRUE,
-			 cex = 0.9, xjust=0.5, yjust=1, bty = "n")
+legend(1-0.16 + 0.05, 0.9, legend = expression(paste(bold("  superior node"))), horiz = TRUE,
+			 pch = 21, 
+			 # pt.bg = pal[c(2, 4)],
+			 pt.cex = c(3),
+			 cex = 0.9, xjust=0.5, yjust=0.8, bty = "n")
+
+# legend(1-0.16 + 0.05, 0.9, legend = expression(paste(bold("(bold label)"), " ", "superior nodes")), horiz = TRUE,
+# 			 cex = 0.9, xjust=0.5, yjust=1, bty = "n")
 
 ```
 
@@ -358,14 +364,14 @@ The dependence of plant *i* on pollinator *j*, *d~ij~*, is the proportion of the
 Likewise, the dependence of pollinator *j* on plant *i*, *d~ji~*, is the proportion of the visits by pollinator *j* to plant *i* and all visits of pollinator *j*.
 As the dependences are not symmetric, their use generates a weighted bipartite network in which all interacting pairs are connected by two directed links (Figure 2b). 
 
-```{r figure 2, echo = F, fig.width = 6.2, fig.height = 1.6, message = F, warning = F, fig.pos = "T", fig.cap = "**Different ways to depict quantitative mutualistic networks**. (a) Pollination networks are typically described by the number of visits between each plant and animal species. (b) Given visitation data, the mutual dependences between interacting species are calculated directly based on the relative visitation frequencies. (c) The relative differences of dependences—the interaction asymmetry—then provide a means to identify the dominant direction of the interspecific effects."}
+```{r figure 2, echo = F, fig.width = 6.2, fig.height = 1.6, message = F, warning = F, fig.pos = "T", fig.cap = "**Different ways to depict quantitative mutualistic networks**. (a) Pollination networks are frequently described by the observed number of visits between each plant and animal species. (b) Based on that visitation data, the mutual dependences between interacting species are calculated directly based on the relative visitation frequencies. (c) The relative differences of these  dependences—the interaction asymmetry—then provide a means to estimate the dominant direction of the interspecific effects."}
 
 par(mfrow=c(1,3), mar=c(0,0,0,0))
 
 base_net %>%
 	plot(layout = lay, 
 			 vertex.color = v_c, 
-			 vertex.size = 30,
+			 vertex.size = 35,
 			 vertex.label = sp_names_fancy,
 			 vertex.label.family = fam,
 			 vertex.label.color = l_c,
@@ -381,7 +387,7 @@ text(label_pos_x, label_pos_y, "a)", adj = c(0,0))
 bi_net %>% 
 	plot(layout = lay, 
 			 vertex.color = v_c, 
-			 vertex.size = 30,
+			 vertex.size = 35,
 			 vertex.label = sp_names_fancy,
 			 vertex.label.family = fam,
 			 vertex.label.color = l_c,
@@ -397,7 +403,7 @@ text(label_pos_x, label_pos_y, "b)", adj = c(0,0))
 as_net %>% 
 	plot(layout = lay, 
 			 vertex.color = v_c, 
-			 vertex.size = 30,
+			 vertex.size = 35,
 			 vertex.label = sp_names_fancy,
 			 vertex.label.family = fam,
 			 vertex.label.color = l_c,
