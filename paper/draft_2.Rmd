@@ -41,6 +41,25 @@ meta <- readr::read_csv("../data/ntw_info.csv") %>% dplyr::tbl_df() %>%
 n_driver <- readRDS("../data/processed/n_driver.rds")
 manag_models <- readRDS("../data/processed/models_manageability.rds")
 src_bi_w <- readRDS("../data/processed/manageability_bi_vs_weight.rds")
+r_w <- readRDS("../data/processed/random_weights.rds") %>% dplyr::tbl_df() %>%
+  dplyr::rename_("net_name" = ".id")
+r_d <- readRDS("../data/processed/random_directions.rds") %>% dplyr::tbl_df() %>%
+  dplyr::rename_("net_name" = ".id")
+
+prop <- expand.grid(c("asymmetry", "max_dep"), 
+                    c("scaled_FALSE", "scaled_TRUE")) %>% plyr::alply(1)
+driver <- c("../data/processed/matching_frequency") %>% 
+  list.files(full.names = T) %>%
+  lapply(list.files, full.names = T) %>% 
+  unlist() %>% 
+  lapply(read_allRDS)
+driver <- mapply(function(x, y){
+  attr(x, "type") <- as.character(y[,1])
+  attr(x, "scaled") <- stringr::str_split(as.character(y[,2]), "_") %>% unlist() %>% extract(2) %>% as.logical()
+  return(x)
+}, driver, prop)
+driver_bi <- "../data/processed/matching_frequency_bi" %>% 
+  read_allRDS()
 ```
 
 ```{r plot theme, echo = FALSE, warning = F, message = F}
@@ -486,10 +505,10 @@ Coefficient estimates were averaged following @Buckland1997a while confidence in
 
 All of the networks studied had a driver node density *n~D~* between `r round(min(dplyr::filter(n_driver, type == "z-bi")$n_dr_p), digits = 2)` and `r round(max(dplyr::filter(n_driver, type == "z-bi")$n_dr_p), digits = 2)` (mean `r round(mean(dplyr::filter(n_driver, type == "z-bi")$n_dr_p), digits = 2)`) when we considered bidirectional links weighted by the mutual dependences. 
 This was in strong agreement with the results obtained using the dependence asymmetry for which *n~D~* ranged between `r round(min(dplyr::filter(n_driver, type == "weight")$n_dr_p), digits = 2)` and `r round(max(dplyr::filter(n_driver, type == "weight")$n_dr_p), digits = 2)` (mean `r round(mean(dplyr::filter(n_driver, type == "weight")$n_dr_p), digits = 2)`; Spearman rank correlation `r round(src_bi_w$estimate, digits = 2)`, *p* `r fix_small_pvalue(src_bi_w$p.value)`). 
-In addition, we found that invaded communities had less driver node density than uninvaded ones even when controlling for potential diversity effects (Figure 3), suggesting that. 
-Out of the various covariates we explored—total number of species, plant richness, pollinator richness, link density (connectance), and the ratio of plant to pollinator richness—only the ratio of plant to pollinator richness was retained in the final model as determined by the AICc (Table S4). 
+In addition, we found that invaded communities had less driver node density than uninvaded ones even when controlling for potential diversity effects (Figure 3a). 
+Out of the various covariates we explored—total number of species, plant richness, pollinator richness, link density (connectance), and the ratio of plant to pollinator richness—only the ratio of plant to pollinator richness was retained in the final model as determined by the AICc (Figure 3b; Table S4). 
 
-```{r fig_explaining-n-driver, echo = FALSE, warning = FALSE, message = FALSE, fig.width = 3.245, fig.height = 3.2, fig.cap = "asdasd"}
+```{r fig_explaining-n-driver, echo = FALSE, warning = FALSE, message = FALSE, fig.width = 3.245, fig.height = 3.2, fig.cap = " Coovariates of driver node density. (a) Invaded communities have lower proportion of driver nodes *n~D~* than uninvaded communities even when controlling for factors related to species richness. The box covers the 25th–75th percentiles, the middle line marks the median, and the maximum length of the whiskers is 1.5 times the interquartile range. All points outside this range are indicated by the circles. (b) Out of the biodiversity metrics, only the ratio of plants to pollinators showed a significant relationship with *n~D~*. In both plots, residuals correspond to the partial working residuals of the invasion status in our generalised linear mixed model."}
 
 par_res <- as.data.frame(residuals(manag_models@objects[[1]], "partial"))
 names(par_res) <- paste0(make.names(names(par_res)), "_res")
@@ -517,13 +536,105 @@ p2 <- par_res %>%
 	geom_point(shape = 21) + 
 	fer_theme +
 	scale_x_continuous(name = "ratio plant / pollinators") +
-	scale_y_continuous(name = expression(paste(n[D], " partial residuals"))) 
+	scale_y_continuous(name = expression(paste(n[D], " partial residuals"))) +
+	theme(axis.title.y = element_text(vjust = 1, margin = margin(1,-3,1,1, unit = "lines")))
 
-cowplot::plot_grid(p1, p2, ncol = 1, align = "v")
-# pdf("./paper/figures/fig_3.pdf", height = 1.7, width = 3.245, family = "Times", compress = F, title = "Figure 3")
+cowplot::plot_grid(p1, p2, ncol = 1, align = "v") +
+	cowplot::draw_plot_label(label = c("a)", "b)"), size = 8, fontface = "plain", y = c(1, 0.5))
+# pdf("../paper/figures/fig_3.pdf", height = 1.7, width = 3.245, family = "Times", compress = F, title = "Figure 3")
 # f3
 # dev.off()
+
 ```
+
+When exploring the effect of network structure itself, we observed that the manageability of empirical networks was, in general, not significantly different to the manageability of network randomisations that maintained the degree or the strength of individual species (Figure 4). 
+However, when comparing the empirical network to randomisations that maintained the network structure but randomised only the direction of the asymmetries, we found that empirical networks showed a significant tendency to have smaller values of manageability.
+
+```{r fig_randomisations, echo = FALSE, warning = FALSE, message = FALSE, fig.width = 3.245, fig.height = 1.6, fig.cap = "The manageability of empirical networks compared to network randomisations. For each randomisation approach, we show the standarised rank of the empirical value compared to the set of randomisations. A scaled mean rank—akin to a p-value— less than 0.025 or greater than 0.975 (the areas shaded in light grey) suggests a significant difference between the empirical network and its randomisations. The empirical manageability is much smaller than that of network randomisations in which the direction of asymmetries has been randomised. In contrast, the manageability of networks in which the species degrees were randomly shuffled were not significantly different to the manageability of the empirical networks. Dark grey and white boxplots represent manageabilities obtained using interactions weighted by mutual dependences and asymmetries respectively. All boxes are as in Figure 3a."}
+r <- r_w %>%
+  dplyr::bind_rows(dplyr::mutate(r_d, type = "weight")) %>%
+  dplyr::inner_join(meta) %>%
+  dplyr::filter(study != "ballantyne") %>%
+  dplyr::mutate(n_dr = n_pla + n_pol - n_matched)
+
+# non-parametric
+z_scores <- r$method %>%
+  unique() %>%
+  plyr::ldply(function(x){
+    n_driver %>%
+      dplyr::mutate(type = stringr::str_replace(type, "-", "_")) %>%
+      dplyr::filter(type == "weight" | type == "z_bi") %>%
+      dplyr::mutate(method = x)
+  }) %>%
+  dplyr::bind_rows(r) %>%
+  dplyr::filter(!(type == "z_bi" & method == "r0")) %>%
+  dplyr::group_by(net_name, method, type) %>%
+  dplyr::mutate(z_r = rank(n_dr, na.last = NA),
+                z_r = z_r/n(),
+                z_s = qlogis(z_r),
+                z_s = replace(z_s, (is.infinite(z_s) & z_s > 0) | z_s > qlogis(0.999), qlogis(0.999)),
+                z_s = replace(z_s, is.infinite(z_s) & z_s < 0, qlogis(0.001))) %>%
+  dplyr::filter(is.na(sim))
+
+z_scores_method_order <- c("r0","swsh_both", "quasiswap_count","r00_ind", "r00_samp", "r00_both")
+
+z_scores %>%
+  dplyr::group_by() %>%
+  dplyr::mutate(method = factor(method, levels = z_scores_method_order),
+                m_n = as.numeric(method),
+                m_n = replace(m_n, m_n == 3, 3.5)) %>%
+  dplyr::filter(!method %in% c("r00_both", "r00_ind", "r00_samp", 
+  														 "swsh_both")) %>% # the maintain degree randomise strength option
+  ggplot(aes(x = method, y = -1 * z_s)) +
+  geom_rect(aes(xmin = 0.5, xmax = 2.5, ymin = -Inf, ymax = qlogis(0.025)), fill = "#f0f0f0") +
+  geom_rect(aes(xmin = 0.5, xmax = 2.5, ymin = Inf, ymax = qlogis(0.975)), fill = "#f0f0f0") +
+
+  # geom_hline(yintercept = c(-0), linetype = 2, alpha = 0.7, size = 0.25) + 
+  geom_vline(aes(xintercept = 1.5), alpha = 0.6, size = 0.25) +
+   geom_hline(yintercept = 0, size = 0.25, linetype = 2, colour = "grey30") +
+  geom_boxplot(aes(fill = type), size = 0.3,
+               colour = "grey10", outlier.shape = 21, outlier.size = 1) +
+  # geom_point(aes(y = 9, colour = sign <= 0.05), shape = 8, size = 1) +
+  scale_fill_manual(values = c("white", "#bdbdbd")) +
+  scale_x_discrete(
+    labels = rev(c("random degree", # "maintain degree\nrandomise strength", 
+    							 "random\nassymetry")),
+    # breaks = c(#"r00_samp", #"swsh_both",
+    					 # "quasiswap_count", "r0"),
+    expand = c(0,0)) +
+  scale_y_continuous(breaks = qlogis(c(0.001, 0.025, 0.5, 0.975,0.999)), 
+                     labels = plogis(qlogis(c(0.001, 0.025, 0.5, 0.975,0.999)))) + 
+  xlab("") +
+    coord_flip() +
+  ylab("mean rank of empirical manageability") + 
+  fer_theme +
+  theme(
+        legend.position = "none",
+				plot.margin = grid::unit(c(2, 1, 2, 0), "mm"), 
+				# panel.grid.minor.x = element_blank(),
+				panel.grid.minor.y = element_blank())
+```
+
+## Relative importance
+
+```{r}
+d_sp <- driver %>%
+  plyr::ldply(function(x) {
+    get_frequencies(x) %>%
+      dplyr::mutate(type = attr(x, "type"),
+                    scaled = attr(x, "scaled"))
+  }) %>% 
+	dplyr::filter(scaled == FALSE)
+
+d_sp_bi <- driver_bi %>%
+  get_frequencies() %>%
+      dplyr::mutate(type = "z_bi",
+                    scaled = FALSE)
+
+d_sp <- dplyr::bind_rows(d_sp, d_sp_bi) %>%
+  dplyr::inner_join(meta) 
+```
+
 
 # Appendix 1: Glossary 
 
