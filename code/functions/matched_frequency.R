@@ -60,7 +60,7 @@ matched_frequency <- function(n, matching_size, type = "weight", keep = "all", p
 	
 	blocks <- seq(1, nlines, batch)
 	message("found ", nlines, "maximum cardinality matchings")
-	message(system.time())
+	message(Sys.time())
 	message("reading maximum matching file")
 	freq_matching <- 
 	  plyr::llply(blocks, function(i){
@@ -168,7 +168,7 @@ matched_frequency <- function(n, matching_size, type = "weight", keep = "all", p
 	})
 	
 	message("finished")
-	message(system.time())
+	message(Sys.time())
 	if(length(prop) == 1 & simplify) {
 	  return(freq_matching[[1]])
 	} else {
