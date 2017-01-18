@@ -3,8 +3,8 @@
 # # params
 # type <- "weight"
 # keep <- "all"
-# prop <- 0
-# batch <- 1000000
+# prop <- seq(0, 1, by = 0.1)
+# batch <- 10000
 # weigh.type <- "asymmetry"
 # scale <- F
 # tmpdir <- tempdir()
@@ -78,7 +78,7 @@ matched_frequency <- function(n, matching_size, type = "weight", keep = "all", p
 	    
 	    # m_weights_exp <- apply(weights, 1, sum) %>% {exp(.)/sum(exp(.))}
 
-	    l <- lapply(prop, function(pr){
+	    l <- plyr::llply(prop, function(pr){
 	    	
 	      mat <- matrix(NA, ncol = matching$matching_size, nrow = nrow(matchings))
 	      
@@ -89,6 +89,7 @@ matched_frequency <- function(n, matching_size, type = "weight", keep = "all", p
 	        } 
 	      }
 	      mat <- mat[complete.cases(mat), , drop = F]
+	      if(nrow(mat) == 0) return(NULL)
 	      
 	      # remove cycles
 	      n_edges <- length(igraph::E(dir))
