@@ -80,20 +80,20 @@ matched_frequency <- function(n, matching_size, type = "weight", keep = "all", p
 	    
 	    # remove cycles
 	    n_edges <- length(igraph::E(dir))
-	    no_cycle_mat <- matrix(NA, ncol = matching$matching_size, nrow = nrow(mat))
-	    for(j in 1:nrow(mat)){
+	    no_cycle_mat <- matrix(NA, ncol = matching$matching_size, nrow = nrow(matchings))
+	    for(j in 1:nrow(matchings)){
 	    	is_acyclic <- igraph::E(dir)[setdiff(1:n_edges, matchings[j, ])] %>%
 	    		igraph::delete_edges(dir, .) %>% 
 	    		igraph::is_dag()
 	    	if(is_acyclic) no_cycle_mat[j, ] <- matchings[j, ]
 	    }
-	    no_cycle_mat <- no_cycle_mat[complete.cases(mat2), , drop = F]
+	    no_cycle_mat <- no_cycle_mat[complete.cases(no_cycle_mat), , drop = F]
 	    
 	    if(nrow(no_cycle_mat) == 0) return(NULL)
 
 	    l <- plyr::llply(prop, function(pr){
 	    	
-	      mat <- matrix(NA, ncol = matching$matching_size, nrow = nrow(matchings))
+	      mat <- matrix(NA, ncol = matching$matching_size, nrow = nrow(no_cycle_mat))
 	      
 	     # Remove matchings with a weight under the threshold
 	      for(j in 1:nrow(weights)){
