@@ -35,7 +35,8 @@ m_freq <- 1:length(onet) %>%
     print(names(onet)[x])
     o <- matched_frequency(onet[[x]],
                            prop = seq(0, 1, by = 0.1),
-                           type = "z-bi")
+                           type = "z-bi",
+    											 tmpdir = "/data/efc29/tmp/")
     saveRDS(o, 
             file = paste0("./data/processed/matching_frequency_bi/", 
                           names(onet)[x], ".rds"), 
