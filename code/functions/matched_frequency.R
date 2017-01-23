@@ -96,7 +96,7 @@ matched_frequency <- function(n, matching_size, type = "weight", keep = "all", p
 	      mat <- matrix(NA, ncol = matching$matching_size, nrow = nrow(no_cycle_mat))
 	      
 	     # Remove matchings with a weight under the threshold
-	      for(j in 1:nrow(weights)){
+	      for(j in 1:nrow(no_cycle_mat)){
 	        if(pr * matching$matching_weight - sum(weights[j, ]) <= m_prec){
 	          mat[j, ] <- no_cycle_mat[j, ]
 	        } 
