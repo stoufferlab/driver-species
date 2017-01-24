@@ -11,7 +11,7 @@ output:
 header-includes:
 - \usepackage{setspace}
 - \usepackage{float}
-- \renewcommand{\figurename}{Figure SI}
+- \renewcommand{\figurename}{Supporting Figure}
 documentclass: artikel1
 bibliography: references.bib
 ---
@@ -185,17 +185,21 @@ nets <- nets[order(!unlist(lapply(nets, function(x) x$has_cycles)), unlist(lappl
 
 # S1: Finding a complex network's matchings
 
-Each species can control at most one other species
+Our approach to find the minumum number of driver nodes relies on finding maximum matchings and maximum cardinality matchings. Most existing algorithms are designed to work with undirected bipartie networks, where finding the maximum matching is equivalent to finding the maximum flow between the two levels. 
 
-```{r fig-direction-of-control, echo = F, message = F, warning = F, fig.width = 6.2, fig.height = 3.2, results = "hide", fig.cap = "**Finding a maximum matching in a complex network**. (a) We start with a directed network in which the direction of the link represents the direction of control. (b) Our strategy to find find the number of driver species is based on an alternative representation of the directed network in which each node in (a) is represented by two nodes that indicate their outgoing and incoming links. Finding a maximum matching in this alternative representation is equivalent to finding the largest possible set of edges in which one node in the left hand side is connected to at most one node in the right hand side. It is then easy to identify the roles of each node in this representation: nodes on the right hand side that are connected to a matched link (purple) are matched, while those connected to a matched link on the left hand side are superior. (c) This information can then be mapped back to the original representation to identify the control paths and the driver nodes in the network. (d, e, and f) Ilustrate the approach for a network with bidirectional links."}
+We start with a directed network in which the direction of the link represents the direction of control (Supporting figure 1a). We then construct an alternative representation of the directed network in which each node of the directed network is represented by two nodes that indicate their outgoing and incoming links (Supporting figure 1b). Finding a maximum matching in this alternative representation is equivalent to finding the largest possible set of edges in which one node in the left hand side is connected to at most one node in the right hand side. To find the maximum matching we use the push-relabel algorithm implemented in `max_bipartite_matching` in the R package igraph 1.0.1 [@Csardi2006a]. Once we have the matching shown in the Supporting Figure 1b, it is then easy to identify the roles of each node in this representation: nodes on the right hand side that are connected to a matched link (purple) are matched, while those connected to a matched link on the left hand side are superior. This information can then be mapped back to the original representation to identify the control paths and the driver nodes in the network (Supporting Figure 1c). Supporting Figure 1d, e, and f ilustrate this approach for a network with bidirectional links.
+
+```{r fig-direction-of-control, echo = F, message = F, warning = F, fig.width = 6.2, fig.height = 3.4, results = "hide", fig.cap = "**Finding a maximum matching in a complex network**. (a & d) Directed networks that indicate the direction of control between species. (b & e) Alternative bipartite representations of the directed networks. (c & f) The matchings in the bipartite representation mapped back to the original network."}
 # par(mfrow=c(2,2), mar=c(0,0,0,0))
 bi_sp_names_fancy <- c( TeX("$p_1^-$"), TeX("$p_2^-$"), TeX("$p_3^-$"), TeX("$a_1^-$"), TeX("$a_2^-$"), TeX("$p_1^+$"), TeX("$p_2^+$"), TeX("$p_3^+$"), TeX("$a_1^+$"), TeX("$a_2^+$"))
 
 bi_sp_names_fancy_b <- c( TeX("$p_1^-$"), TeX("$p_2^-$"), TeX("$p_3^-$"), TeX("$a_1^-$"), TeX("$a_2^-$"), TeX("$\\mathbf{p_1^+}$"), TeX("$\\mathbf{p_2^+}$"), TeX("$\\mathbf{p_3^+}$"), TeX("$\\mathbf{a_1^+}$"), TeX("$\\mathbf{a_2^+}$"))
 
 
-par(mfrow=c(2,3), mar= c(0,0,0,0))
-
+# par(mfrow=c(2,3), mar= c(0,0,0,0))
+layout(matrix(c(1,2,3,4, 5, 6, 7, 7, 7), 3, 3, byrow = TRUE),
+  	heights=c(8,8,1))
+par( mar=c(0,0,0,0))
 # ASYMMETRY
 as_net %>% 
 	plot(layout = lay, 
@@ -397,10 +401,33 @@ nets[[1]]$bi_net %>%
 
 text(label_pos_x, label_pos_y, "f)", adj = c(0,0))
 
+## LEGEND 
+plot.new()
+legend(0.16, 0.9, legend = c("unmatched link", "matched link"), horiz = TRUE,
+			 lty = 1, 
+			 col = pal[c(2, 4)],
+			 lwd = 2, cex = 0.9, xjust=0.5, yjust=0.8, bty = "n")
+
+legend(0.57, 0.9, legend = c("unmatched node", "matched node"), horiz = TRUE,
+			 pch = 21, 
+			 pt.bg = pal[c(2, 4)],
+			 pt.cex = 2,
+			 cex = 0.9, xjust=0.5, yjust=0.8, bty = "n")
+
+legend(1-0.16 + 0.05, 0.9, legend = expression(paste(bold("  superior node"))), horiz = TRUE,
+			 pch = 21, 
+			 # pt.bg = pal[c(2, 4)],
+			 pt.cex = c(3),
+			 cex = 0.9, xjust=0.5, yjust=0.8, bty = "n")
 ```
 
-```{r fig-finding-all-matchings, echo = F, message = F, warning = F, fig.width = 6.2, fig.height = 1.6, results = "hide", fig.cap = "**Finding all possible maximum cardinality matchings**. "}
-par(mfrow=c(1,3), mar= c(0,0,0,0))
+The algorithm implemented in `max_bipartite_matching`, however, is only able to find **one** of the, possibly many, maximum matchings in a network. One maximum matching is sufficient to calculate *n~D~* and hence to provide indication of a communitie's manageability, however it is not possible to estimate the role of individual species. To do that we need to calculate all possible maximum matchings (or all maximal cardinality matchings in weighted networks like ours). We start from the alternative bipartite representation in Supporting Figure 1b and assign an identity to each of the links in the network (shown as numbers in Supporting Figure 2a). We will call this bipartite representation *B*. We then construct the line graph of the alternative bipartite representation *L(B)* (Supporting Figure 2b). Each node in *L(B)* represents a link in *B* and are connected to each other only if they share a common node in *B*. We calculate the complement graph of *L(B)* and idetify all the maximum cliques (Supporting Figure 2c). Here some extra definitions are neccessary. First, the complement of *L(B)*, *H*, is a graph with the same nodes as *L(B)* but that has a link between two given nodes if and only if there is not a link in *L(B)*. Second, a clique is a subset of nodes such that any two of them are linked. Lastly, a maximum clique is a clique such that there are no cliques with more nodes. In this example there are two maximum cliques: that one formed by 1, 3 and 5, and by 2, 3 and 5. The final step is then to map these cliques into the original network to obtain all possible maximum cardinality matchings as shown in Figure 1 in the main text.
+
+```{r fig-finding-all-matchings, echo = F, message = F, warning = F, fig.width = 6.2, fig.height = 1.8, results = "hide", fig.cap = "**Finding all possible maximum cardinality matchings**. (a) Alternative bipartite representation of a directed network. (b) Line graph of the network in a. (c) Complement of the network in b. The two maximum cliques are shown in red and blue."}
+layout(matrix(c(1,2,3,4, 5, 6), 2, 3, byrow = TRUE),
+  	heights=c(8,1))
+par( mar=c(0,0,0,0))
+
 
 as_mat <- as_net %>%
 	digraph_bipartite() %>% 
@@ -538,13 +565,25 @@ text(-1, 1, "c)", adj = c(0,0))
 # igraph::max_cliques(min = matching$matching_size, 
 # 												max = matching$matching_size,
 # 												file = temporary_file)
+## Legends
 
+plot.new()
+text(0.5, 0.5, expression(paste(italic(B), ": bipartite representation")), adj = c(0.5,0.75))
 
+plot.new()
+text(0.5, 0.5, expression(paste(italic(L(B)), ": line graph of ", italic(B))), adj = c(0.5,0.75))
+
+plot.new()
+text(0.5, 0.5, expression(paste(italic(H), ": complement of ", italic(L(B)))) , adj = c(0.5,0.75))
 ```
 
+In the main text we show all maximum cardinality matchings for a example network in which the direction of control is based on the dependence asymmetries (Figure 1). For completeness, here we show all the maximum cardinality matchings for an example network in which the links are bidirectional (Supporting Figure 3). 
 
+Empirical network example here.
 
-```{r fig-matchings-bidirectional, echo = F, message = F, warning = F, fig.width = 6.2, fig.height = 3.2, results = "hide"}
+It is important to note that our approach to find all the maximum matchings, which is based on the alternative bipartite representation of the directed network and a series of network transofrmations, has an important disadvantage. Namely, that it is possible tha cycles in network figure 4
+
+```{r fig-matchings-bidirectional, echo = F, message = F, warning = F, fig.width = 6.2, fig.height = 3.2, results = "hide", fig.cap = "SAD"}
 par(mfrow=c(2,3), mar=c(0,0,0,0))
 
 bi_net %>% 
@@ -619,7 +658,7 @@ legend(0.5, 0.3, legend = expression(paste(bold("(bold label)"), " ", "superior 
 ```
 
 
-```{r  fig-matchings-bidirectional-no, echo = F, message = F, warning = F, fig.width = 6.2, fig.height = 4.8, results = "hide"}
+```{r  fig-matchings-bidirectional-no, echo = F, message = F, warning = F, fig.width = 6.2, fig.height = 4.8, results = "hide", fig.cap= "asd asd"}
 
 par(mfrow=c(3,4), mar=c(0,0,0,0))
 5:length(nets) %>%
@@ -660,3 +699,4 @@ par(mfrow=c(3,4), mar=c(0,0,0,0))
 
 ```
 
+# References
