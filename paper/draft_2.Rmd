@@ -131,17 +131,16 @@ Research in the field has established a strong link between the structure of com
 Applications of control theory to ecological networks can also take into account the extent to which changes in the abundances of one species may ripple through the community [@Cornelius2013].
 Therefore, control theory could provide an indication of which species are most relevant from a structural and dynamic perspective, a particularly important feature given that these species should underpin informed attempts to both alter or maintain the ecosystem state.
 
-Despite these advances, practical challenges to the conservation of interaction networks persist [@Tylianakis2010], and the link between the structure of complex networks and our ability to manage and conserve them is still ambiguous [@Kaiser-Bunbury2015].
+Despite these advances, practical challenges to the conservation of interaction networks persist [@Tylianakis2010], and the link between the structure of complex networks and our ability to manage and conserve them is still ambiguous [@Bluthgen2010; @Kaiser-Bunbury2015].
 To complicate things further, biotic invasions—a major driver of global change—can induce dramatic changes in the patterns of interactions that determine the structure of ecological networks [@Baxter2004; @Tylianakis2008; @Ehrenfeld2010a]. 
 Although understanding how differences in network structure before and after the invasion impact our ability to manage them presents a double challenge, it is a critical first step towards a fully informed recovery. 
-Despite the apparent overlap, a control-theoretic perspective has not been widely adopted in an invasion context. 
+Despite the apparent overlap, a control-theoretic perspective has not been adopted in an invasion context. 
 This is perhaps because of a lack of appropriate methodological tools that can account for the observed variation in the strength of interspecific effects that are characteristic of ecological networks [@Liu2011; @Isbell2013].
 
 To bridge this gap, we outline an approach to apply theory on the control of complex systems in an ecological context and implement them using empirical data.
-Furthermore, we introduce methods with which to take into account the important quantitative differences that exist among species interactions.
 Specifically, we use a set of ten pairs of uninvaded and invaded plant-pollinator communities to investigate the link between invasion, network structure and ecological management. 
 While doing so, we ask two questions framed in the context of a plant invasion.
-First, on grounded on the difficulties usually involved with invasive species erradication and ecosystem restoration [@Woodford2016], we ask whether invaded networks have lower levels of "manageability" than their uninvaded counterparts; that is, whether they require a greater proportion of species to be managed to achieve the same level of control. 
+First, grounded on the difficulties usually involved with invasive species erradication and ecosystem restoration [@Woodford2016], we ask whether invaded networks have lower levels of "manageability" than their uninvaded counterparts; that is, whether they require a greater proportion of species to be managed to achieve the same level of control. 
 Second, we ask whether some species are more important than others at driving the population dynamics of the community and which factors determine this importance. 
 We focus on these particular applications for a variety of reasons. 
 First, biotic invasions are known to produce tractable changes in the structure of ecological networks, and these changes can be particularly pronounced in mutualistic networks between plants and pollinators where biotic invasions have been shown to modify the strength of species interactions and the degree of network nestedness and connectivity [@Olesen2002; @Aizen2008; @Bartomeus2008; @Vila2009; @Traveset2013]. 
@@ -154,14 +153,14 @@ On the other, the bipartite nature of pollination networks makes it possible to 
 ## Theoretical framework
 
 Disregarding practical considerations, any network could, in theory, be fully controlled if we control the state of every single node individually.
-At the core of control theory of complex networks, however, rest the idea the state of a node depends on the state of the nodes it interacts with, and the particular form of this dependence is determined both by the dynamic relationship among interacting nodes as well as the structure of the links in the network. 
-This property can, therefore, be harnessed to find a minimum subset of driver nodes *D* to which to apply external input signals which then drive the state of every other node in the network to a desired configuration in finite time [@Kalman1963; @Liu2011].
+At the core of control theory of complex networks, however, rests the idea that the state of a node depends on the state of the nodes it interacts with, and the particular form of this dependence is determined both by the dynamic relationship among interacting nodes as well as the structure of the links in the network. 
+This principle can, therefore, be harnessed to find a subset of driver nodes to which to apply external input signals which then drive the state of every other node in the network to a desired configuration.
 
-Conveniently, the information necessary to determine whether a network with linear dynamics is controllable, and the minimum number of driver nodes *D* is fully contained in the network structure [@Liu2011; @Motter2015]. 
+Conveniently, the information necessary to determine whether a network with linear dynamics is controllable, and, equivalently, the minimum number of driver nodes *D* is fully contained in the network structure [@Kalman1963; @Liu2011; @Motter2015]. 
 We, therefore, start from the assumption that that an ecological network can, at least near equilibrium points, be described by $\frac{dx}{dt} = Ax + Bu(t)$, where the change over time of its state ($\frac{dx}{dt}$) depends on its current state *x* (the species' populations in an ecological context), an external time-varying input *u(t)*, and the matrices *A* and *B*, which encapsulate information about the network structure and how the network responds to the external input, respectively. 
-Even though this might be a strong assumption, it has been shown that fundamental insight about the control of complex systems can be gained without a detailed knowledge of the nonlinear dynamics and the system parameters [@Liu2015]; an important step towards understanding the controllability of systems with nonlinear dynamics [@Liu2011]. 
-This means that this structural controllability can be applied to a wide range of readily available network representations of ecological communities to provide a strong indication of our ability to control them. 
-Moreover, we show here how quantitative data about species interactions can help us move past some of the limitations of structural controllability by better approximating the role of dynamical relationships without being overly dependent on the specific choices of how these dynamics are modelled or characterised.
+Even though linearity might be a strong assumption, it has been shown that fundamental insight about the control of complex systems can be gained without a detailed knowledge of the nonlinear dynamics and the system parameters [@Liu2015], an important step towards ultimately understanding the controllability of systems with nonlinear dynamics [@Liu2011]. 
+This means that structural controllability can be applied to a wide range of readily available network representations of ecological communities to provide a strong indication of our ability to control them. 
+Moreover, we show here how quantitative data about species interactions can help us move past some of the limitations of structural controllability by better approximating the role of interspecific dynamical relationships without being overly dependent on the specific choices of how these dynamics are modelled or characterised.
 
 ### Manageability
 
@@ -187,7 +186,7 @@ Unmatched nodes are the *driver nodes* *D* because they have no superior in the 
 Each matched node, on the other hand, can be controlled by the node that is pointing to it—its superior.
 
 
-```{r figure 1, echo = F, message = F, warning = F, fig.width = 6.2, fig.height = 1.8, results= "hide", fig.pos = "t", fig.cap = "**Matchings of a simple network**. (a) We start with a network in which the direction of the links indicates the potential direction of control; for example a link from *a~1~* to *p~1~* indicates that the state of *p~1~* is influenced by the state of *a~1~*. (b & c) This network has two maximal cardinality matchings; that is, two configurations in which it would be possible to exert full control of the network via external input signals to a minimal set of nodes. In both cases, the three matched links (purple arrows) represent the control paths through the network and provide an indication of the matched nodes (purple), which are controlled by superior nodes within the network (bold node labels). Unmatched nodes (orange) are called driver nodes because full network control requires external signals to be applied to them. Out of the two maximal cardinality matchings only one (c) has maximum weight and therefore is also a maximum matching. Further examples can be found in the Supplemental Material SXX."}
+```{r figure 1, echo = F, message = F, warning = F, fig.width = 6.2, fig.height = 1.8, results= "hide", fig.pos = "t", fig.cap = "**Matchings of a simple network**. (a) We start with a network in which the direction of the links indicates the potential direction of control; for example a link from *a~1~* to *p~1~* indicates that the state of *p~1~* is influenced by the state of *a~1~*. (b & c) This network has two maximal cardinality matchings; that is, two configurations in which it would be possible to exert full control of the network via external input signals to a minimal set of nodes. In both cases, the three matched links (purple arrows) represent the control paths through the network and provide an indication of the matched nodes (purple), which are controlled by superior nodes within the network (bold node labels). Unmatched nodes (orange) are called driver nodes because full network control requires external signals to be applied to them. Out of the two maximal cardinality matchings only one (c) has maximum weight and therefore is also a maximum matching. Further examples can be found in the Supporting Information S1."}
 layout(matrix(c(1,2,3,4, 4, 4), 2, 3, byrow = TRUE),
   	heights=c(8,1))
 par( mar=c(0,0,0,0))
@@ -304,21 +303,21 @@ legend(1-0.16 + 0.05, 0.9, legend = expression(paste(bold("  superior node"))), 
 
 ### Relative importance
 
-While calculating *n~D~* provides an indication of the manageability of an ecological community, it does not provide information about the identity of the species that compose this set. 
-This difference is rather important since maximum matchings are often not unique in a given network and different sets of species of size *D* could potentially be used to control the network [@Liu2011]. 
-Ecologically, these distinctions are acutely relevant because management and conservation resources are limited, and therefore ecological interventions should ideally be focused on the set of species that might provide the largest impact.
-Consequently, species can be further characterised regarding the frequency with which an external input signal could be applied to them in order to control the full network. 
-In other words, the frequency *f~D~* with which a species is classified as a driver node.
-However, the role of driver nodes is still ambiguous when full network controllability is unfeasible or undesired—often the case in ecological settings.
-Alternatively, species can also be characterised by the frequency *f~S~* with which they are classified as superior nodes.
-This is, the frequency with which they exist on key paths through the network that transmits the control signal to other species.
-We show how, together, *f~D~* and *f~S~* can provide an indication of a species' relative importance in driving the state of the community. 
+While calculating *n~D~* provides an indication of the manageability of an ecological community, it does not provide information about the identity of the species that compose the set of driver nodes. 
+Ecologically, these distinctions are acutely relevant because management and conservation resources are limited, and therefore ecological interventions should ideally be focused on the set of species that might provide the largest impact. 
+Maximum matchings in a network are often not unique, and each different maximum matching indicates a unique path that can potentially be used to control the network. 
+We harness this property and use a network's multiple maximum matchings to characterise a species' relative importance in driving the state of the community. 
+One possibility is to characterise a species by the frequency *f~D~* with which it is classified as a driver node.
+However, the role of driver nodes is still ambiguous when **full** network controllability is unfeasible or undesired—which is often the case in ecological settings.
+We therefore also calculate the frequency *f~S~* with which a species is classified as superior nodes, this is the frequency with which they are part of possible control paths—intervention strategies from a management perspective.
 
 Most commonly, structural controllability assumes unweighted networks—links exist or not, and hence *f~D~* and *f~S~* can be calculated by computing all possible maximum matchings. 
-However, it has been shown that using weighted links can reveal significant ecological patterns and processes that might be undetectable in unweighted networks [@Scotti2007; @Tylianakis2007; @Vazquez2007; @Kaiser-Bunbury2010a].
-We, therefore, use a quantitative version of the maximum matching algorithm and instead calculate all maximal cardinality matchings and rank them by their matching weight. 
-We do so because empirical interaction strengths are to some extent stochastic and depend on proximate factors such as sampling method and intensity [@Gibson2011], and therefore using only maximum matchings in weighted empirical networks might be therefore too restrictive. 
-By incorporating the interaction weight we give priority to the species that participate in the pathways that potentially have the largest impact on the community; effectively incorporating, at least partially, the dynamics of the system.
+However, it has been shown that using weighted links can reveal significant ecological patterns and processes that might be undetectable in unweighted networks [@Scotti2007; @Tylianakis2007; @Vazquez2007; @Kaiser-Bunbury2010a]. 
+For example, a species *A* interacts with both species *B* and *C* but depends strongly on *B* and only weakly on *C*. 
+Intuitively, a management intervention designed to indirectly modify the abundance of a species *A* is more likely to succeed if the abundance of *B*, rather than *C*, is directly controlled.
+A complication of including the interaction weight when calculating the maximum matching, however, is that empirical interaction strengths are to some extent stochastic and depend on proximate factors such as sampling method and intensity [@Gibson2011].
+We circumvent this issue by calculating all maximal cardinality matchings and subsequently ranking them by their matching weight. 
+By following this approach, we effectively give priority to the species that participate in the pathways that potentially have the largest impact on the community while acknowledging the limitations associated with sampling and its potential restrictions. 
 
 ## Empirical application
 
@@ -331,8 +330,8 @@ We now describe the application of the previously defined framework to ten paire
 Four pairs were obtained from natural or semi-natural vegetation communities in the city of Bristol, UK [@Lopezaraiza-Mikel2007]. 
 These networks are comprised of `r lop[1]`-`r lop[6]` species (mean `r round(lop[4])`), and non-invaded plots were obtained by experimentally removing all the flowers of the invasive species *Impatients grandulifera*.
 The other six pairs were obtained from lower diversity Mediterranean shrublands in Cap de Creus National Park, Spain [@Bartomeus2008].
-These networks are comprised of `r bar[1]`-`r bar[6]` species (mean `r round(bar[4])`); in contrast to the above, contrastingly, uninvaded communities were obtained from plots that had not yet been colonised by either of the invasive species *Carpobrotus affine acinaciformis* or *Opuntia stricta*. 
-Further details about the empirical networks can be found in the Supplementary Information XXX.
+These networks are comprised of `r bar[1]`-`r bar[6]` species (mean `r round(bar[4])`); in contrast to the above, uninvaded communities were obtained from plots that had not yet been colonised by either of the invasive species *Carpobrotus affine acinaciformis* or *Opuntia stricta*. 
+Further details about the empirical networks can be found in the Supporting Information Table 1.
 
 We then specified the structure of all networks using pollinator visitation frequency, which has been shown to be an appropriate surrogate for interspecific effects in pollination networks [@Vazquez2005; @Bascompte2006]. 
 To examine whether this decision would influence our results, we also evaluated the effect of using pollinator efficiency or pollinator importance as alternative measures of species interactions in a different data set that lacked invasive species [@NeEman2010; @Ballantyne2015], and we found quantitatively similar results for all three of these options (Supplementary Information XXX).
