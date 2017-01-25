@@ -65,7 +65,7 @@ bipartite_digraph <- function(net,
 			  if (weight.type[1] == "max_dep") {
 			    adj_max[i, j] <- max_dep
 			  } else if (weight.type[1] == "asymmetry"){
-			    adj_max[i, j] <- as(adj[j,i],adj[i,j], max_dep)
+			    adj_max[i, j] <- as(adj[j,i], adj[i,j], max_dep)
 			  }
 			  
 				if(uw & adj_max[i,j] != 0) adj_max[i,j] <- 1
@@ -115,7 +115,9 @@ ton <- function (x, y, fun = `>`) {
 as <- function(x, y, tonn){
   if (tonn == 0) {
     return(0)
-  } else{
+  } else if (x ==y) {
+  	return(0.5)
+  } else {
     abs(x-y) / max(x, y)
   }
 }
