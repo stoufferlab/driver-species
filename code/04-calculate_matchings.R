@@ -45,7 +45,8 @@ expand.grid(scale = c(F
         o <- matched_frequency(onet[[x]], 
                                prop = seq(0, 1, by = 0.1),
                                weight.type = as.character(y$weight.type),
-                               scale = y$scale) 
+                               scale = y$scale,
+        											 tmpdir = "/data/efc29/tmp/") 
         saveRDS(o, 
                 file = paste0("./data/processed/matching_frequency/",
                               y$weight.type, "/", "scaled_", y$scale, "/",
