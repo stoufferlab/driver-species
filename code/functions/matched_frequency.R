@@ -1,6 +1,6 @@
 # find the times a species is present in the maximum matching set
-
-# # params
+# 
+# # # params
 # type <- "weight"
 # keep <- "all"
 # prop <- seq(0, 1, by = 0.1)
@@ -8,26 +8,32 @@
 # weigh.type <- "asymmetry"
 # scale <- F
 # tmpdir <- tempdir()
+# matching_full <- T
 
-matched_frequency <- function(n, matching_size, type = "weight", keep = "all", prop = 1, batch = 10000, simplify = T, weight.type = "max_dep", scale = F, tmpdir = tempdir()){
+matched_frequency <- function(n, type = "weight", keep = "all", prop = 1, batch = 10000, simplify = T, weight.type = "max_dep", scale = F, tmpdir = tempdir(), matching_size = NULL){
+	
+	# plot(n, vertex.size = 5, edge.label = igraph::E(n)$weight)
 	
 	# transform network
 	dir <- n %>%
 		keep_largest_component() %>%
 		bipartite_digraph(type, keep, weight.type, scale)
+
+	plot(dir, vertex.size = 5, edge.arrow.size = 0.5)
+
 	m <- dir %>% 
 		digraph_bipartite(type) 
 	
 	w <- igraph::E(m)$weight
 	
 	# if there matching size and weight are not provided calculate them
-	if(methods::hasArg(matching_size) & methods::hasArg(matching_weight)) {
-	  matching <- list(matching_size = matching_size,
-	                   matching_weight = matching_weight)
-	} else {
+	# if(methods::hasArg(matching_size) & methods::hasArg(matching_weight)) {
+	#   matching <- list(matching_size = matching_size,
+	#                    matching_weight = matching_weight)
+	# } else {
 	  matching <- m %>%
 	    igraph::max_bipartite_match() 
-	}
+	# }
 	
 	# precision for computations
 	m_prec <- .Machine$double.eps * matching$matching_size * 2
@@ -36,14 +42,31 @@ matched_frequency <- function(n, matching_size, type = "weight", keep = "all", p
 	message("file is ", temporary_file)
 	message(Sys.time())
 	message("finding all possible maximum matchings")
-	# find all possible maximum matchings
-	matched_links <- m %>%
-		igraph::make_line_graph() %>%
-		igraph::complementer() %>% 
-		igraph::max_cliques(min = matching$matching_size, 
-												max = matching$matching_size,
-												file = temporary_file)
 	
+	if(is.null(matching_size)){
+		# find all possible maximum matchings
+		size <- matching$matching_size
+		matched_links <- m %>%
+			igraph::make_line_graph() %>%
+			igraph::complementer() %>% 
+			igraph::max_cliques(min = size, 
+													max = size,
+													file = temporary_file)
+	} else {
+		size <- matching_size
+		# dir.create(tmpdir)
+		# file.create(temporary_file)
+		m %>%
+			igraph::make_line_graph() %>%
+			igraph::complementer() %>% 
+			igraph::cliques(min = size, 
+													max = size) %>%
+			unlist() %>% 
+			matrix(ncol = size, byrow = T) %>%
+			subtract(1) %>%
+			write.table(temporary_file, col.names = F, row.names = F)
+	}
+
 	# given the list of matched links return a vector of driver species (TRUE/FALSE)
 	is_matched <- function(x, m){
 		m_n <- igraph::ends(m, igraph::E(m)[x + 1])[,2]
@@ -69,18 +92,18 @@ matched_frequency <- function(n, matching_size, type = "weight", keep = "all", p
 	                      skip = i-1, 
 	                      quiet = T) %>%
 	      add(1) %>% 
-	      matrix(ncol = matching$matching_size, byrow = TRUE)
+	      matrix(ncol = size, byrow = TRUE)
 	    
 	    if(nrow(matchings) == 0) return(NULL)
 	    
 	    weights <- w[matchings] %>% 
-	      matrix(ncol = matching$matching_size)
+	      matrix(ncol = size)
 	    
 	    # m_weights_exp <- apply(weights, 1, sum) %>% {exp(.)/sum(exp(.))}
 	    
 	    # remove cycles
 	    n_edges <- length(igraph::E(dir))
-	    no_cycle_mat <- matrix(NA, ncol = matching$matching_size, nrow = nrow(matchings))
+	    no_cycle_mat <- matrix(NA, ncol = size, nrow = nrow(matchings))
 	    for(j in 1:nrow(matchings)){
 	    	is_acyclic <- igraph::E(dir)[setdiff(1:n_edges, matchings[j, ])] %>%
 	    		igraph::delete_edges(dir, .) %>% 
@@ -93,7 +116,7 @@ matched_frequency <- function(n, matching_size, type = "weight", keep = "all", p
 
 	    l <- plyr::llply(prop, function(pr){
 	    	
-	      mat <- matrix(NA, ncol = matching$matching_size, nrow = nrow(no_cycle_mat))
+	      mat <- matrix(NA, ncol = size, nrow = nrow(no_cycle_mat))
 	      
 	     # Remove matchings with a weight under the threshold
 	      for(j in 1:nrow(no_cycle_mat)){
@@ -130,11 +153,17 @@ matched_frequency <- function(n, matching_size, type = "weight", keep = "all", p
 		return(l)
 		 
 	}, .parallel = T)
+	
+	if(is.null(freq_matching[[1]])){
+		return(matched_frequency(n = n, matching_size = size - 1, type = type, keep = keep, prop = prop, batch = batch, simplify = simplify, weight.type = weight.type, scale = scale, tmpdir = tmpdir))
+	}
 
 	freq_matching %<>% revert_list()
 	
+	freq_matching <- Filter(Negate(function(x) is.null(unlist(x))), freq_matching)
+	
 	# for each proportion consolidate results
-	freq_matching <- lapply(freq_matching, function(f){
+	freq_matching <- plyr::llply(freq_matching, function(f){
 	  
 	  tot_matched <- f %>%
 	    plyr::ldply(function(x) x$matched_vertex) %>%
@@ -165,7 +194,7 @@ matched_frequency <- function(n, matching_size, type = "weight", keep = "all", p
 	       driver = tot_driver)
 	  
 	  `attr<-`(o, "n_matchings", tot_n_matchings)
-	})
+	}, .inform = T)
 	
 	message("finished")
 	message(Sys.time())
