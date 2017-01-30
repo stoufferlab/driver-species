@@ -19,7 +19,7 @@ matched_frequency <- function(n, type = "weight", keep = "all", prop = 1, batch 
 		keep_largest_component() %>%
 		bipartite_digraph(type, keep, weight.type, scale)
 
-	plot(dir, vertex.size = 5, edge.arrow.size = 0.5)
+	# plot(dir, vertex.size = 5, edge.arrow.size = 0.5)
 
 	m <- dir %>% 
 		digraph_bipartite(type) 
