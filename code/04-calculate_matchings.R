@@ -2,6 +2,7 @@ library(magrittr)
 library(foreach)
 library(doMC) 
 registerDoMC(cores = as.numeric(commandArgs(trailingOnly = T)[1]))
+net_number <- as.integer(commandArgs(trailingOnly = T)[2])
 setwd("~/github/driver-species/")
 
 message("loading functions")
@@ -30,6 +31,10 @@ ordered_net_names <- dplyr::inner_join(meta, matched) %>%
   dplyr::arrange(ncomb) %$% net_name
 
 onet <- net[ordered_net_names]
+
+if(net_number != 0){
+	onet <- onet[net_number]
+}
 
 # calculate the frequency of species matchings
 expand.grid(scale = c(F
