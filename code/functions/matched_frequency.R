@@ -10,15 +10,17 @@
 # tmpdir <- tempdir()
 # matching_full <- T
 
-matched_frequency <- function(n, type = "weight", keep = "all", prop = 1, batch = 10000, simplify = T, weight.type = "max_dep", scale = F, tmpdir = tempdir(), matching_size = NULL){
+matched_frequency <- function(n, dir = NULL, type = "weight", keep = "all", prop = 1, batch = 10000, simplify = T, weight.type = "max_dep", scale = F, tmpdir = tempdir(), matching_size = NULL){
 	
 	# plot(n, vertex.size = 5, edge.label = igraph::E(n)$weight)
 	
-	# transform network
-	dir <- n %>%
-		keep_largest_component() %>%
-		bipartite_digraph(type, keep, weight.type, scale)
-
+	# transform network if the directed version has not been provided
+	if(is.null(dir)){
+		dir <- n %>%
+			keep_largest_component() %>%
+			bipartite_digraph(type, keep, weight.type, scale)
+	}
+	
 	# plot(dir, vertex.size = 5, edge.arrow.size = 0.5)
 
 	m <- dir %>% 
@@ -155,7 +157,7 @@ matched_frequency <- function(n, type = "weight", keep = "all", prop = 1, batch 
 	}, .parallel = T)
 	
 	if(is.null(freq_matching[[1]])){
-		return(matched_frequency(n = n, matching_size = size - 1, type = type, keep = keep, prop = prop, batch = batch, simplify = simplify, weight.type = weight.type, scale = scale, tmpdir = tmpdir))
+		return(matched_frequency(n = n,  dir = dir, matching_size = size - 1, type = type, keep = keep, prop = prop, batch = batch, simplify = simplify, weight.type = weight.type, scale = scale, tmpdir = tmpdir))
 	}
 
 	freq_matching %<>% revert_list()
