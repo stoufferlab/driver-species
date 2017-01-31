@@ -104,7 +104,7 @@ if(net_number != 0){
 
 # calculate matchings
 all_matchings <- subset_onet %>%
-	plyr::llply(all_unidirected_networks, type, keep, weigh.type, scale) %>%
+	plyr::llply(all_unidirected_networks, type, keep, weight.type, scale) %>%
 	plyr::llply(function(x){
 		x %>% 
 			plyr::llply(function(y) {
