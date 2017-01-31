@@ -10,10 +10,10 @@ tmpdir <- as.character(commandArgs(trailingOnly = T)[3])
 overwrite <- as.logical(commandArgs(trailingOnly = T)[4])
 
 task_index <- expand.grid(network = 1:24,
-													completeness = seq(1, 0.5, by = -0.01),
+													completeness = seq(1, 0.5, by = -0.05),
 													replicate = 1:10) %>%
 	dplyr::filter(!(completeness == 1 & replicate != 1)) %>%
-	dplyr::mutate(task = 1:nrow(.))
+	dplyr::mutate(task = nrow(.):1)
 this_task <- dplyr::filter(task_index, task == this_task)
 
 message("loading functions")

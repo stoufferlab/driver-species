@@ -4,7 +4,7 @@
 #$ -cwd
 #$ -j y
 #$ -S /bin/bash
-#$ -t 1-12024
+#$ -t 1-2424
 ##$ -tc 24
 #$ -pe multi_thread 8
 #$ -m a
