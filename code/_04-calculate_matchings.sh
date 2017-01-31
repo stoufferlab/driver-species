@@ -4,9 +4,9 @@
 #$ -cwd
 #$ -j y
 #$ -S /bin/bash
-##$ -pe multi_thread ${n_cores} # needs to be specified externally
+##$ -pe multi_thread 47 # needs to be specified externally
 #$ -m a
-#$ -tc 24
+#$ -t 1-24
 #$ -M efc29@uclive.ac.nz
 #$ -r yes
 #$ -l mem_free=16G,h_vmem=16G
