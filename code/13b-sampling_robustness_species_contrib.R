@@ -2,17 +2,19 @@ library(magrittr)
 library(foreach)
 library(doMC) 
 setwd("~/github/driver-species/")
-registerDoMC(cores = 8)
 
 # establish the parameters for this run
 this_task <- as.numeric(commandArgs(trailingOnly = T)[1])
-task_index <- expand.grid(completeness = seq(1, 0.5, by = -0.01),
-						replicate = 1:10) %>%
+registerDoMC(cores = as.numeric(commandArgs(trailingOnly = T)[2]))
+tmpdir <- as.character(commandArgs(trailingOnly = T)[3])
+overwrite <- as.logical(commandArgs(trailingOnly = T)[4])
+
+task_index <- expand.grid(network = 1:24,
+													completeness = seq(1, 0.5, by = -0.01),
+													replicate = 1:10) %>%
 	dplyr::filter(!(completeness == 1 & replicate != 1)) %>%
 	dplyr::mutate(task = 1:nrow(.))
 this_task <- dplyr::filter(task_index, task == this_task)
-
-overwrite <- as.logical(commandArgs(trailingOnly = T)[2])
 
 message("loading functions")
 
@@ -42,37 +44,46 @@ ordered_net_names <- dplyr::inner_join(meta, matched) %>%
 onet <- net[ordered_net_names]
 
 # parameters for the computation 
-scale <- F
+scale <- FALSE
 weight.type <- "asymmetry"
+keep <- "all"
+type <- "weight"
 
-1:length(onet) %>%
-	plyr::mlply(function(x){
-		
-		message("Network ", names(onet)[x])
-		
+subset_onet <- onet[[this_task$network]]
+# set seed
+set.seed(this_task$network * this_task$replicate * this_task$completeness * 100)
+
+# generate a subsampled network
+n_edges_to_remove <- round(length(igraph::E(subset_onet)) * 
+																		(1 - this_task$completeness[1]))
+edges_to_remove <- sample(igraph::E(subset_onet), n_edges_to_remove, 
+																		prob = 1/igraph::E(subset_onet)$weight)
+subsampled_network <- igraph::delete_edges(subset_onet, edges_to_remove)
+
+# get all the possible directed networks out of that one
+directed_networks <- all_unidirected_networks(subsampled_network, type, keep, 
+																							weight.type, scale)
+
+directed_networks %>%
+	names() %>%
+	plyr::l_ply(function(x){
+		# check if it exists
 		file_name <- paste0("./data/processed", 
 												"/sampling_robustness/",
 												weight.type, "/", "scaled_", scale, "/",
-												names(onet)[x], 
+												names(onet)[this_task$network], 
 												"_sampling_", this_task$completeness, 
-												"_replicate_", this_task$replicate, ".rds")
-		
+												"_replicate_", this_task$replicate, "_", x, ".rds")
 		if(!overwrite & file.exists(file_name)) {
 			return(NULL)
 		} else {
-			set.seed(this_task$replicate * this_task$completeness * 100)
-			n_edges_to_remove <- round(length(igraph::E(onet[[x]])) * (1 - this_task$completeness[1]))
-			edges_to_remove <- sample(igraph::E(onet[[x]]), n_edges_to_remove, prob = 1/igraph::E(onet[[x]])$weight)
-			subsampled_network <- igraph::delete_edges(onet[[x]], edges_to_remove)
-			
-			o <- matched_frequency(subsampled_network, 
-														 prop = seq(0, 1, by = 0.1),
-														 weight.type = as.character(weight.type),
-														 scale = scale, 
-														 tmpdir = "/data/efc29/tmp/") 
-			saveRDS(o, 
-							file = file_name, 
-							ascii = TRUE, compress = F)
-			return(o)
+			matched_frequency(n = NULL, dir = directed_networks[[x]], type = type, 
+												keep = keep, seq(0, 1, by = 0.1),
+												# temporary directory goes as a input argument
+												tmpdir = tmpdir
+												) %>%
+				saveRDS(file = file_name, 
+								ascii = TRUE, compress = F)
 		}
-	}, .progress = "text")
+	})
+
