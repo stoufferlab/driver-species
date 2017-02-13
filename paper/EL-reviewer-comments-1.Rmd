@@ -35,8 +35,8 @@ We have fully addressed the flaws pointed by all the reviewers and, in the proce
 The most substantial change is related to the result that ecological invasions reduce the manageability of the studied pollination networks. 
 After revising the manuscript, we found that the effect of invasion is actually the opposite of what we initially reported. 
 This result arises from a regression in which the response variable was the proportion of driver nodes. 
-Our previous conclusion arose from a trivial mistake on the interpretation of this result for which we are apologetic. 
-This regression indicates that the invasion status is *inversely* related to $n_D$ (the density of driver nodes) and **not** to our previous definition of manageability $m = 1- n_D$. 
+Our previous conclusion arose from a trivial mistake on the implementation of this regression for which we are extremely apologetic. 
+The regression indicates that the invasion status is *inversely* related to $n_D$ (the density of driver nodes) and **not** to our previous definition of manageability $m = 1- n_D$. 
 We highlight that although the corrected result now contradicts our hypothesis, our postulate has remained unchanged and the applicability of our approach is maintained. 
 It is possible that the root of the mistake was, as you and the reviewers helpfully pointed out, that our definition of manageability and its relation to previous conceptions of controllability were confusing. 
 Now, we refrain from giving a mathematical definition to manageability and instead focus on $n_D$, an unambiguous metric clearly defined in the structural controllability literature. 
