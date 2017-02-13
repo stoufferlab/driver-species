@@ -1,30 +1,54 @@
 ---
 title: "Response to reviewer comments ELE-00738-2016"
 date: "14 December 2016"
-header-includes:
-   - \usepackage{setspace}
 output: pdf_document
 classoption: a4paper
 bibliography: references.bib
+header-includes:
+- \usepackage{setspace}
 ---
 
 \onehalfspacing
 
 Dear Prof. Jonathan Chase, 
 
-We are grateful for the opportunity to resubmit a revised manuscript for your consideration. We have endeavored to incorporate all reviewers' feedback into the manuscript and we feel the attached draft constitutes an important improvement from the previous version. We were impressed by the quality of the reviews; they all were thoughtful, clear, and constructive. It is evident that all three anonymous reviewers have given a fair and careful consideration to our manuscript. We would like to thank them for the truly valuable feedback. 
+We are grateful for the opportunity to resubmit a revised manuscript for your consideration. 
+We have endeavored to incorporate all reviewers' feedback into the manuscript and we feel the attached draft constitutes an important improvement from the previous version. 
+We were impressed by the quality of the reviews; they all were thoughtful, clear, and constructive. 
+It is evident that all three anonymous reviewers have given a fair and careful consideration to our manuscript. 
+We would like to thank them for the truly valuable feedback. 
 
-The reviewers identified major limitations in our manuscript. Specifically with regards to the terminology, the underlying  structural control, and the lack of detail in the presentation of the empirical networks. In the current version, we have thoroughly addressed all these concerns and improved both the robustness of the analyisis and the clarity of the concepts. Detailed responses to each comment, one by one, are provided below.
+The reviewers identified major limitations in our manuscript. 
+Specifically with regards to the terminology, the underlying  structural control, and the lack of detail in the presentation of the empirical networks. 
+In the current version, we have thoroughly addressed all these concerns and improved both the robustness of the analyisis and the clarity of the concepts. 
+Detailed responses to each comment, one by one, are provided in the corresponding section. 
 
 Fernando Cagua
 
 ******************************************
 
-## Editor's Comments
+## Response to the handling editor
 
-This was a difficult decision.  Like all the reviewers, I think this work has huge potential, and could have major impacts in applied ecology.  However, you are unclear in your terminology wrt to the major research field you apply to this interesting ecological setting and your exposition is opaque (for example, how exactly are manageability and controllability related? – see the important caution from R2 and the detailed comments from R1).  This makes it incredibly hard to follow your work, even for someone who works in network controllability.  There also seems to be key controllability methodological work you could more effectively leverage.  I applaud the close link of theory and empiricism, but more details of the field network pairs would be helpful.  Really major revisions will be required to get this ms into a form that appeals to both newcomers and experts in the field, and the manuscript will have to be re-reviewed (likely by a mix of the same and some new reviewers), but it does have excellent potential, so I encourage the authors to carefully and thoroughly deal with all of the reviewer comments.
+We are thankful for the encouraging assessment that our work "has excellent potential" and "could have major impacts on applied ecology". 
+We have fully addressed the flaws pointed by all the reviewers and, in the process, took advantage of this opportunity to incorporate some further changes that in our opinion improved the quality and thoroughness of our assessment.
 
-*Thanks for the encouraging feedback*
+The most substantial change is related to the result that ecological invasions reduce the manageability of the studied pollination networks. 
+After revising the manuscript, we found that the effect of invasion is actually the opposite of what we initially reported. 
+This result arises from a regression in which the response variable was the proportion of driver nodes. 
+Our previous conclusion arose from a trivial mistake on the interpretation of this result for which we are apologetic. 
+This regression indicates that the invasion status is *inversely* related to $n_D$ (the density of driver nodes) and **not** to our previous definition of manageability $m = 1- n_D$. 
+We highlight that although the corrected result now contradicts our hypothesis, our postulate has remained unchanged and the applicability of our approach is maintained. 
+It is possible that the root of the mistake was, as you and the reviewers helpfully pointed out, that our definition of manageability and its relation to previous conceptions of controllability were confusing. 
+Now, we refrain from giving a mathematical definition to manageability and instead focus on $n_D$, an unambiguous metric clearly defined in the structural controllability literature. 
+
+We extend this approach to our investigation on the relative importance of species. 
+In the previous manuscript, we referred to species that were classified as superior nodes in all possible control strategies as *driver species*. 
+Because of the similarities with the term *driver node*, which has been used in previous literature and we also use in our manuscript, it was extremely easy to misinterpret the terms and follow our rationale. 
+Now, we have removed the term driver species and instead focus on two straightforward metrics: $f_D$ and $f_S$, which more clearly correspond to the frequency to which a species is classified as a driver or superior node, respectively. 
+
+Finally, we have made important modifications to the section in which we explain the theoretical underpinnings of structural controllability. 
+We hope it is easier to follow both for experts and newcomers. 
+We also have included a significant amount of detail and extra examples in the supplementary material to simplify the lives of those interested in applying the proposed approach or replicating our results. 
 
 ## Referee 1
 
