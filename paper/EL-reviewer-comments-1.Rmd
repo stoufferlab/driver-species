@@ -36,15 +36,12 @@ The most substantial change is related to the result that ecological invasions r
 After revising the manuscript, we found that the effect of invasion is actually the opposite of what we initially reported. 
 This result arises from a regression in which the response variable was the proportion of driver nodes. 
 Our previous conclusion arose from a trivial mistake on the implementation of this regression for which we are extremely apologetic. 
-The regression indicates that the invasion status is *inversely* related to $n_D$ (the density of driver nodes) and **not** to our previous definition of manageability $m = 1- n_D$. 
-We highlight that although the corrected result now contradicts our hypothesis, our postulate has remained unchanged and the applicability of our approach is maintained. 
-It is possible that the root of the mistake was, as you and the reviewers helpfully pointed out, that our definition of manageability and its relation to previous conceptions of controllability were confusing. 
-Now, we refrain from giving a mathematical definition to manageability and instead focus on $n_D$, an unambiguous metric clearly defined in the structural controllability literature. 
+The regression indicates that the invasion status is *inversely* related to $n_D$ (the density of driver nodes) and **not** to our previous definition of manageability $m = 1 - n_D$. In catching this error, the editor and reviewers will note that revised result now contradicts our hypothesis and has also led to our having to amend the title of the paper. Nevertheless, we hope that you will agree that both our overall objective and the applicability of our approach is maintained. 
 
-We extend this approach to our investigation on the relative importance of species. 
+Upon reflection, we also suspect that the root of the mistake was, as you and the reviewers helped point out, that our definition of manageability and its relation to existing concept of controllability were confusing. In the revised paper, we refrain from giving a mathematical definition of manageability and instead focus on $n_D$, an unambiguous metric clearly defined in the structural controllability literature. We also extend these attempts to use the existing nomenclature rather than introduce new terms in our investigation of the relative importance of species. 
 In the previous manuscript, we referred to species that were classified as superior nodes in all possible control strategies as *driver species*. 
-Because of the similarities with the term *driver node*, which has been used in previous literature and we also use in our manuscript, it was extremely easy to misinterpret the terms and follow our rationale. 
-Now, we have removed the term driver species and instead focus on two straightforward metrics: $f_D$ and $f_S$, which more clearly correspond to the frequency to which a species is classified as a driver or superior node, respectively. 
+Because of the strong similarities with the term *driver node*, which has been used in previous literature and we also use in our manuscript, it was extremely easy to misinterpret the terms and follow our rationale. 
+Now, we have removed the term driver species and instead focus on two well-defined metrics: $f_D$ and $f_S$, which correspond to the frequency to which a species is classified as a driver or superior node, respectively. 
 
 Finally, we have made important modifications to the section in which we explain the theoretical underpinnings of structural controllability. 
 We hope it is easier to follow both for experts and newcomers. 
