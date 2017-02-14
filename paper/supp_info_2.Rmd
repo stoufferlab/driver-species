@@ -734,11 +734,13 @@ legend(0.2, 0.95, legend = replace_names$sp_letter, horiz = F, bty = "n", text.f
 
 ```
 
-In addition, here we also show all the maximum cardinality matchings for an example network in which the links are bidirectional (Supporting Figure 4). It is important to note that using bidirectional is problematic for a couple 
+In addition, here we also show all the maximum cardinality matchings for an example network in which the links are weighted based on the mutual dependences (Supporting Figure 4). It is important to note that using mutual dependencies is problematic for a couple of reasons. 
 
-It is important to note that our approach to find all the maximum matchings, which is based on the alternative bipartite representation of the directed network and a series of network transofrmations, has an important disadvantage. Namely, that it is possible tha cycles in network figure 4
+First, having two links between species and using our maximum matching approach to calculate the control configurations, result in matchings that include cycle forming links (Supporting Figure 5). Strictly speaking these configurations are maximum matchings in the alternative bipartite configuration (Supporting Figure 1e) but are not in the directed network (Supporting Figure 1f).  While bidirectional links are the norm when using mutual dependences, they only appear in the asymmetry-weighted networks whenever the mutual dependences between two species symmetric. In this special case, we include two links weighted with 0.5 to reflect the fact that the species affect each other in the same proportion. Whenever present, we filter out the cycle containing matchings before conducting any analysis. In the special case when the network has no matchings that correspond to control configurations, we reduce by one the size of the cliques we enumerate in *H* (Supporting Figure 2).
 
-```{r fig-matchings-bidirectional, echo = F, message = F, warning = F, fig.width = 6.2, fig.height = 3.2, results = "hide", fig.cap = "SAD"}
+Second, the number of maximal matchings increasses dispproportionally fast with the number of links in a network. For instance, our example network in Figure 1, which is composed by uni-directional links weighted by the asymmetry, has two different maximum matchings. In contrast, the equivalent network with bidirectional links has 16 different maximum matchings (Supporting Figure 4 and 5). To further ilustrate this growth, some of our empirical networks, had approximately ten thousand different maximum matchings using asymmetries but one hundred million when using mutual dependences. This exponential growth, and the computational cost of filtering matchings with cycles, surpassed the capabilities of the available computational resources and rendered us unable to calculate all possible maximum matchings when using mutual dependences in most of our networks.
+
+```{r fig-matchings-bidirectional, echo = F, message = F, warning = F, fig.width = 6.2, fig.height = 3.2, results = "hide", fig.cap = "**Matchings of a simple network with bidirectional links**. (a) A network with bidirectional links. (b-e) Possible control configurations." }
 par(mfrow=c(2,3), mar=c(0,0,0,0))
 
 bi_net %>% 
@@ -812,7 +814,7 @@ legend(0.5, 0.3, legend = expression(paste(bold("(bold label)"), " ", "superior 
 
 ```
 
-```{r  fig-matchings-bidirectional-no, echo = F, message = F, warning = F, fig.width = 6.2, fig.height = 4.8, results = "hide", fig.cap= "asd asd"}
+```{r  fig-matchings-bidirectional-no, echo = F, message = F, warning = F, fig.width = 6.2, fig.height = 4.8, results = "hide", fig.cap= "**Cycles in a bidirectional network**. Our approach finds twelve configurations for Supporting Figure 4a that are not actual matchings."}
 
 par(mfrow=c(3,4), mar=c(0,0,0,0))
 5:length(nets) %>%
