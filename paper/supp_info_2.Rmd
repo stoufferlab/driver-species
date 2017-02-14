@@ -861,6 +861,8 @@ par(mfrow=c(3,4), mar=c(0,0,0,0))
 net_prop <- net %>%
 	plyr::ldply(function(x){
 		x <- keep_largest_component(x)
+		n_pla <- sum(igraph::V(x)$type == "pla")
+		n_pol <- sum(igraph::V(x)$type == "pol")
 		bipartite::networklevel(igraph::as_incidence_matrix(x, 
 																												types = igraph::V(x)$type == "pla",
 																												attr = "weight"),
@@ -868,9 +870,9 @@ net_prop <- net %>%
 																			"ISA", 
 																			"weighted NODF")) %>%
 			as.list() %>% as.data.frame() %>%
-			dplyr::mutate(n_sp = length(igraph::V(x)),
-										n_pla = sum(igraph::V(x)$type == "pla"),
-										n_pol = sum(igraph::V(x)$type == "pol"))
+			dplyr::mutate(n_sp = length(igraph::V(x))) %>%
+			dplyr::mutate(n_pla = n_pla,
+										n_pol = n_pol)
 	})
 
 library(xtable)
