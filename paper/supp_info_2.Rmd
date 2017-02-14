@@ -1048,5 +1048,58 @@ mapply(my_paste, correlations$r, correlations$P) %>%
 
 Altogether, evidence supports the idea that visitation is a suitable metric to estimate the mutual dependency of species pairs. First, it is directly related to pollinator foraging. Second, it produces results consistent, at least within our controllability framework, with plant reproductive success (as estimated by the importance metric). 
 
+# S4: Sensitivity analysis
+
+Our approach is fundamentaly based on the network structure. 
+Often, the majority of the interactions that determine this structure are weak, which in our networks means that most interactions are formed by a small number of observed pollination visits, and therefore those weak intercations are less conspicuous in the field than strong ones. 
+To strengthen the case of pur approach, we therefore evaluated the robustness of our results to simulated sampling limitations. 
+
+To do so, for each network, we removed a portion of the links and calculated how three control metrics of the subsampled network compare to those of the full network. 
+Specifically, we calculated the difference between the $n_D$ of the subsampled and the full network, the spearman correlation between the vectors $f_D$—which contain the frequency with wich each species is classified as a driver species, and the spearman correlation between $f_S$—which contain the frequency with which each species is classified as a superior node. 
+We removed links from the full network with a probability inversly proportional to the interaction weight, and varied the portion of links removed between 0.5 and 0.95 at 0.05 increments. 
+We repeated the procedure ten times for each portion level and each network to obtain a total sample size of $n=2000$.
+
+Overall, the results of the sensitivity analysis indicate that our approach might be useful for management even in the absence of complete sampling. 
+Specifically as the proportion of sampled interaction decreassed, the variability of $n_D$ increassed, but was overall very similar when compared to that obtained using all available interactions (Supporting Figure 7a). 
+Similarly, the correlation between the relative frequency with which species are classified as a driver ($f_D$) or as a superior node ($f_S$) was correlated ever for *extreme* levels of undersampling. 
+For instance, we found that with a sampling level of 0.5, the mean spearman correlation coefficient was 0.66 for $f_D$ and 0.76 for $f_S$. 
+Finally, the resulst suggest that the relative ranking of species is better conserved in $f_S$ than for $f_D$ troughout all levels subsampling levels.
+
+```{r fig-subsampling-sensitivity, echo = F, message = F, warning = F, fig.width = 4.5, fig.height = 3.5, results = "hide", fig.cap= "**Sensitivity to subsampling**. (a) The difference between the *n~D~* of the subsampled and the full networks. (b) The spearman correlation of the relative importance of species between the subsampled and the full networks."}
+n_d_sampling <- readRDS("../data/processed/sampling_robustness/n_d_sampling.rds")
+	
+p1 <- n_d_sampling %>% 
+	dplyr::filter(!grepl("bal", net_name)) %>%
+	ggplot(aes(x = sampling_proportion, y = n_d_base-n_d)) +
+	geom_hline(yintercept = 0, linetype = 1, size = 0.3, colour = "grey") +
+	xlab("sampling proportion") +
+	ylab(expression(paste(Delta, n[D]))) +
+	geom_boxplot(aes(x = as.factor(sampling_proportion)), size = 0.3,
+               colour = "grey10", outlier.shape = 21, outlier.size = 1) +
+	fer_theme
+
+f_sampling <- readRDS("../data/processed/sampling_robustness/f_sampling.rds")
+
+p2 <- f_sampling %>%
+	dplyr::filter(!grepl("bal", net_name)) %>%
+	ggplot(aes(x = as.factor(sampling_proportion), y = correlation)) +
+	geom_boxplot(aes(fill = frequency), size = 0.3,
+               colour = "grey10", outlier.shape = 21, outlier.size = 1) +
+	xlab("sampling proportion") +
+	ylab("spearman correlation") +
+	scale_fill_brewer(labels = expression(f[D], f[S]), name = "") +
+	fer_theme +
+	theme(legend.position = c(0.875,0.175), legend.justification = "center", 
+				legend.direction = "horizontal", legend.key = element_blank())
+
+cowplot::plot_grid(p1, p2, ncol = 1, align = "v", rel_heights = c(1,1), labels = c("a)", "b)"), label_size = 8)
+
+f_sampling %>%
+	dplyr::filter(!grepl("bal", net_name)) %>%
+	dplyr::filter(sampling_proportion == 0.5) %>%
+	dplyr::group_by(frequency) %>%
+	dplyr::summarise(correlation = mean(correlation))
+```
+
 
 # References
