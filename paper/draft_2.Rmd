@@ -190,9 +190,9 @@ Unmatched nodes are the *driver nodes* *D* because they have no superior in the 
 Each matched node, on the other hand, can be controlled by the node that is pointing to it—its superior.
 
 
-```{r figure 1, echo = F, message = F, warning = F, fig.width = 6.2, fig.height = 1.8, results= "hide", fig.pos = "t", fig.cap = "**Matchings of a simple network**. (a) We start with a network in which the direction of the links indicates the potential direction of control; for example a link from *a~1~* to *p~1~* indicates that the state of *p~1~* is influenced by the state of *a~1~*. (b & c) This network has two maximal cardinality matchings; that is, two configurations in which it would be possible to exert full control of the network via external input signals to a minimal set of nodes. In both cases, the three matched links (purple arrows) represent the control paths through the network and provide an indication of the matched nodes (purple), which are controlled by superior nodes within the network (bold node labels). Unmatched nodes (orange) are called driver nodes because full network control requires external signals to be applied to them. Out of the two maximal cardinality matchings only one (c) has maximum weight and therefore is also a maximum matching. Further examples can be found in the Supporting Information S1."}
-layout(matrix(c(1,2,3,4, 4, 4), 2, 3, byrow = TRUE),
-  	heights=c(8,1))
+```{r figure 1, echo = F, message = F, warning = F, fig.width = 6.2, fig.height = 1.9, results= "hide", fig.pos = "t", fig.cap = "**Matchings of a simple network**. (a) We start with a network in which the direction of the links indicates the potential direction of control; for example a link from *a~1~* to *p~1~* indicates that the state of *p~1~* is influenced by the state of *a~1~*. (b & c) This network has two maximal cardinality matchings; that is, two configurations in which it would be possible to exert full control of the network via external input signals to a minimal set of nodes. In both cases, the three matched links (purple arrows) represent the control paths through the network and provide an indication of the matched nodes (purple), which are controlled by superior nodes within the network (circular nodes). Unmatched nodes (orange) are called driver nodes because full network control requires external signals to be applied to them. Out of the two maximal cardinality matchings only one (c) has maximum weight and therefore is also a maximum matching. Further examples can be found in the Supporting Information S1."}
+layout(matrix(c(1, 1, 2, 4, 3, 4), 2, 3),
+  	heights=c(8,2))
 par( mar=c(0,0,0,0))
 
 as_net %>% 
@@ -210,7 +210,7 @@ as_net %>%
 			 edge.arrow.size = 0.5,
 			 margin = ma)
 
-text(label_pos_x, label_pos_y, "a)", adj = c(0,0))
+text(label_pos_x, label_pos_y, "(a)", adj = c(0,0), font = 2)
 
 as_mat <- as_net %>%
 	digraph_bipartite() %>% 
@@ -232,37 +232,51 @@ E(as_net)$weight <- round(E(as_net)$weight, 1)
 1:length(as_all_mat) %>%
 	plyr::l_ply(function(x){
 		
-		E(as_net)$matched <- 2
-		E(as_net)$matched[as_all_mat[[x]]] <- 4
+		E(as_net)$matched <- 1
+		E(as_net)$matched[as_all_mat[[x]]] <- 5
 		
-		igraph::V(as_net)$matched <- 2
+		E(as_net)$matched_width <- 1
+		E(as_net)$matched_width[as_all_mat[[x]]] <- 1.5
+		
+		igraph::V(as_net)$matched <- 1
 		igraph::V(as_net)$matched[igraph::V(as_net)$name %in%
+																ends(as_net, as_all_mat[[x]])[, 2]] <- 5
+		
+		igraph::V(as_net)$matched_fill <- 2
+		igraph::V(as_net)$matched_fill[igraph::V(as_net)$name %in%
 																ends(as_net, as_all_mat[[x]])[, 2]] <- 4
 		
 		igraph::V(as_net)$superior <- 1
 		igraph::V(as_net)$superior[igraph::V(as_net)$name %in%
 																ends(as_net, as_all_mat[[x]])[, 1]] <- 2
 		
+		igraph::V(as_net)$sup_shape <- "square"
+		igraph::V(as_net)$sup_shape[igraph::V(as_net)$name %in%
+																ends(as_net, as_all_mat[[x]])[, 1]] <- "circle"
+		
 		names_fancy <- sp_names_fancy
-		names_fancy[igraph::V(as_net)$name %in%
-																ends(as_net, as_all_mat[[x]])[, 1]] <-
-			sp_names_fancy_b[igraph::V(as_net)$name %in%
-																ends(as_net, as_all_mat[[x]])[, 1]]
+		# names_fancy[igraph::V(as_net)$name %in%
+		# 														ends(as_net, as_all_mat[[x]])[, 1]] <-
+		# 	sp_names_fancy_b[igraph::V(as_net)$name %in%
+		# 														ends(as_net, as_all_mat[[x]])[, 1]]
 		
 		matching_weight <- sum(E(as_net)$weight[as_all_mat[[x]]])
 		
 		as_net %>% 
 			plot(layout = lay, 
-					 vertex.size = igraph::V(.)$superior * 10 + 20,
+					 # vertex.size = igraph::V(.)$superior * 10 + 20,
+					 vertex.size = 30,
+					 vertex.color = pal[igraph::V(.)$matched_fill],
+					 vertex.shape = igraph::V(.)$sup_shape,
 					 vertex.label = names_fancy,
 					 vertex.label.family = fam,
 					 vertex.label.color = l_c,
-					 vertex.label.cex = igraph::V(.)$superior * 0.1 + 0.9,
+					 vertex.label.cex = 1,
 					 # vertex.shape = igraph::V(.)$vertex.shape,
-					 vertex.color = pal[igraph::V(.)$matched],
+					 vertex.frame.color = pal[igraph::V(.)$matched],
 					 edge.color = pal[E(.)$matched],
 					 edge.label = NA, 
-					 edge.width = E(.)$matched/2,
+					 edge.width = E(.)$matched_width,
 					 edge.label.family = fam,
 					 edge.label.color = igraph::E(.)$matched,
 					 edge.label.cex = l_s,
@@ -273,8 +287,8 @@ E(as_net)$weight <- round(E(as_net)$weight, 1)
 		
 		igraph::V(as_net)$name <- sp_names
 		
-		text(label_pos_x, label_pos_y, paste0(letters[1+x], ")"), adj = c(0,0))
-		text(text_pos_x, text_pos_y, cex = 0.95,
+		text(label_pos_x, label_pos_y, paste0("(",letters[1+x], ")"), adj = c(0,0), font = 2)
+		text(text_pos_x, text_pos_y, cex = 0.9,
 				 paste0("D = ", length(igraph::V(as_net)) - as_mat$matching_size, "\n",
 				 			 "matching size: ", as_mat$matching_size, "\n",
 				 			 "matching weight: ", round(matching_weight, 1)))
@@ -283,21 +297,22 @@ E(as_net)$weight <- round(E(as_net)$weight, 1)
 as_net <- base_as_net
 
 plot.new()
-legend(0.16, 0.9, legend = c("unmatched link", "matched link"), horiz = TRUE,
+legend(0.25, 0.8, legend = c("unmatched link", "matched link"), horiz = TRUE,
 			 lty = 1, 
-			 col = pal[c(2, 4)],
+			 col = pal[c(1, 5)],
 			 lwd = 2, cex = 0.9, xjust=0.5, yjust=0.8, bty = "n")
 
-legend(0.57, 0.9, legend = c("unmatched node", "matched node"), horiz = TRUE,
+legend(0.8, 0.8, legend = c("unmatched node", "matched node"), horiz = TRUE,
 			 pch = 21, 
 			 pt.bg = pal[c(2, 4)],
+			 col = pal[c(1,5)],
 			 pt.cex = 2,
 			 cex = 0.9, xjust=0.5, yjust=0.8, bty = "n")
 
-legend(1-0.16 + 0.05, 0.9, legend = expression(paste(bold("  superior node"))), horiz = TRUE,
-			 pch = 21, 
+legend(0.5, 0.35, legend = c("superior node", "non-superior node"), horiz = TRUE,
+			 pch = c(21, 22), 
 			 # pt.bg = pal[c(2, 4)],
-			 pt.cex = c(3),
+			 pt.cex = 2,
 			 cex = 0.9, xjust=0.5, yjust=0.8, bty = "n")
 
 # legend(1-0.16 + 0.05, 0.9, legend = expression(paste(bold("(bold label)"), " ", "superior nodes")), horiz = TRUE,
