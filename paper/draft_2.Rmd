@@ -1,5 +1,5 @@
 ---
-title: "Biotic invasions fuck with the manageability of pollination networks"
+title: "The manageability of pollination networks in an invasion context"
 classoption: a4paper
 csl: ecology-letters.csl
 output:
