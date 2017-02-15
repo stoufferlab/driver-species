@@ -734,126 +734,6 @@ legend(0.2, 0.95, legend = replace_names$sp_letter, horiz = F, bty = "n", text.f
 
 ```
 
-In addition, here we also show all the maximum cardinality matchings for an example network in which the links are weighted based on the mutual dependences (Supporting Figure 4). It is important to note that using mutual dependencies is problematic for a couple of reasons. 
-
-First, having two links between species and using our maximum matching approach to calculate the control configurations, result in matchings that include cycle forming links (Supporting Figure 5). Strictly speaking these configurations are maximum matchings in the alternative bipartite configuration (Supporting Figure 1e) but are not in the directed network (Supporting Figure 1f).  While bidirectional links are the norm when using mutual dependences, they only appear in the asymmetry-weighted networks whenever the mutual dependences between two species symmetric. In this special case, we include two links weighted with 0.5 to reflect the fact that the species affect each other in the same proportion. Whenever present, we filter out the cycle containing matchings before conducting any analysis. In the special case when the network has no matchings that correspond to control configurations, we reduce by one the size of the cliques we enumerate in *H* (Supporting Figure 2).
-
-Second, the number of maximal matchings increasses dispproportionally fast with the number of links in a network. For instance, our example network in Figure 1, which is composed by uni-directional links weighted by the asymmetry, has two different maximum matchings. In contrast, the equivalent network with bidirectional links has 16 different maximum matchings (Supporting Figure 4 and 5). To further ilustrate this growth, some of our empirical networks, had approximately ten thousand different maximum matchings using asymmetries but one hundred million when using mutual dependences. This exponential growth, and the computational cost of filtering matchings with cycles, surpassed the capabilities of the available computational resources and rendered us unable to calculate all possible maximum matchings when using mutual dependences in most of our networks.
-
-```{r fig-matchings-bidirectional, echo = F, message = F, warning = F, fig.width = 6.2, fig.height = 3.2, results = "hide", fig.cap = "**Matchings of a simple network with bidirectional links**. (a) A network with bidirectional links. (b-e) Possible control configurations." }
-par(mfrow=c(2,3), mar=c(0,0,0,0))
-
-bi_net %>% 
-	plot(layout = lay, 
-			 vertex.color = v_c, 
-			 vertex.size = 30,
-			 vertex.label = sp_names_fancy,
-			 vertex.label.family = fam,
-			 vertex.label.color = l_c,
-			 edge.label = round(E(.)$weight,1), 
-			 edge.label.family = fam,
-			 edge.label.color = l_c,
-			 edge.label.cex = l_s,
-			 edge.curved = T,
-			 edge.arrow.size = 0.5,
-			 margin = ma)
-
-text(label_pos_x, label_pos_y, "a)", adj = c(0,0))
-
-1:4 %>%
-	plyr::l_ply(function(x, pal){
-		
-		attach(nets[[x]], pos = 1, warn.conflicts = F)	
-		
-		nets[[x]]$bi_net %>% 
-			plot(layout = lay, 
-					 vertex.size = 30,
-					 vertex.label = names_fancy,
-					 vertex.label.family = fam,
-					 vertex.label.color = l_c,
-					 vertex.label.cex = igraph::V(.)$superior * 0.1 + 0.9,
-					 # vertex.shape = igraph::V(.)$vertex.shape,
-					 vertex.color = pal[igraph::V(.)$matched],
-					 edge.color = pal[igraph::E(.)$matched],
-					 # edge.color = c("#B2ABD2", "#FDB863"),
-					 edge.label = NA, 
-					 edge.width = E(.)$matched/2,
-					 edge.label.family = fam,
-					 edge.label.color = igraph::E(.)$matched,
-					 edge.label.cex = l_s,
-					 edge.curved = T,
-					 edge.arrow.size = 0.5,
-					 margin = ma, 
-					 palette = pal) %>% 
-			print()
-		
-		igraph::V(bi_net)$name <- sp_names
-		
-		text(label_pos_x, label_pos_y, paste0(letters[1+x], ")"), adj = c(0,0))
-		text(text_pos_x, text_pos_y, cex = 0.95,
-				 paste0("D = ", length(igraph::V(bi_net)) - as_mat$matching_size, "\n",
-				 			 "matching size: ", as_mat$matching_size, "\n",
-				 			 "matching weight: ", round(matching_weight, 1)))
-	}, pal)
-
-plot.new()
-legend(0.5, 0.7, legend = c("unmatched link", "matched link"), horiz = F,
-			 lty = 1, 
-			 col = pal[c(2, 4)],
-			 lwd = 2, cex = 0.9, xjust=0.5, yjust=1, bty = "n")
-
-legend(0.5, 0.5, legend = c("unmatched node", "matched node"), horiz = F,
-			 pch = 21, 
-			 pt.bg = pal[c(2, 4)],
-			 pt.cex = 2,
-			 cex = 0.9, xjust=0.5, yjust=1, bty = "n")
-
-legend(0.5, 0.3, legend = expression(paste(bold("(bold label)"), " ", "superior nodes")), horiz = TRUE,
-			 cex = 0.9, xjust=0.5, yjust=1, bty = "n")
-
-
-```
-
-```{r  fig-matchings-bidirectional-no, echo = F, message = F, warning = F, fig.width = 6.2, fig.height = 4.8, results = "hide", fig.cap= "**Cycles in a bidirectional network**. Our approach finds twelve configurations for Supporting Figure 4a that are not actual matchings."}
-
-par(mfrow=c(3,4), mar=c(0,0,0,0))
-5:length(nets) %>%
-	plyr::l_ply(function(x, pal){
-		
-		attach(nets[[x]], pos = 1, warn.conflicts = F)	
-		
-		nets[[x]]$bi_net %>% 
-			plot(layout = lay, 
-					 vertex.size = 30,
-					 vertex.label = names_fancy,
-					 vertex.label.family = fam,
-					 vertex.label.color = l_c,
-					 vertex.label.cex = igraph::V(.)$superior * 0.1 + 0.9,
-					 # vertex.shape = igraph::V(.)$vertex.shape,
-					 vertex.color = pal[igraph::V(.)$matched],
-					 edge.color = pal[igraph::E(.)$matched],
-					 # edge.color = c("#B2ABD2", "#FDB863"),
-					 edge.label = NA, 
-					 edge.width = E(.)$matched/2,
-					 edge.label.family = fam,
-					 edge.label.color = igraph::E(.)$matched,
-					 edge.label.cex = l_s,
-					 edge.curved = T,
-					 edge.arrow.size = 0.5,
-					 margin = ma, 
-					 palette = pal) %>% 
-			print()
-		
-		igraph::V(bi_net)$name <- sp_names
-		
-		# text(label_pos_x, label_pos_y, paste0(letters[1+x-5], ")"), adj = c(0,0))
-		# text(text_pos_x, text_pos_y, cex = 0.95,
-		# 		 paste0("D = ", length(igraph::V(bi_net)) - as_mat$matching_size, "\n",
-		# 		 			 "matching size: ", as_mat$matching_size, "\n",
-		# 		 			 "matching weight: ", round(matching_weight, 1)))
-	}, pal)
-
-```
 
 # S2: Properties of empirical networks
 
@@ -922,7 +802,7 @@ net_prop %>%
 
 Visitation frequency has been shown to be an appropriate surrogate for inter-specific effects in pollination networks [@Vazquez2005; @Bascompte2006]. 
 Nevertheless visitation is not equivalent to pollen deposition and might be insufficient to reflect the dependencies of plants on animals and vice versa [@Alarcon2010; @King2013]. 
-We therefore investigated the effect of calculating the dependencies using visitation or pollination effectiveness and importance---two metrics more proximate to plant reproductive success (Supporting Figure 6).
+We therefore investigated the effect of calculating the dependencies using visitation or pollination effectiveness and importance---two metrics more proximate to plant reproductive success (Supporting Figure 4).
 We did this by comparing *(i)* the manageability of the community and *(ii)* the percentage of interactions that maintained the direction of dependency. 
 To do that, we used data collected by @Ballantyne2015 from a low diversity pollination community at a dry lowland heathland in Dorset, UK  (50° 43.7'N 2° 07.2'W). 
 First, deposition networks were quantified using the mean single visit deposition---the number of conspecific pollen grains effectively deposited on a virgin stigma during a single visit by a particular animal [@NeEman2010; @King2013; @Ballantyne2015]. 
@@ -976,7 +856,7 @@ p <- net[meta$net_name[meta$study == "ballantyne" & meta$count != "binary"]] %>%
 cowplot::plot_grid(p[[1]][[2]], p[[1]][[1]], p[[2]][[2]], p[[2]][[1]], p[[3]][[2]], p[[3]][[1]], ncol = 2, rel_widths = c(1.5,2))  
 ```
 
-At a network scale, despite marked differences in the distribution of weights of the three networks (Supporting Figure 6), the driver node density *n~D~* was consistent among the three different approaches (`r 1-round(n_driver$n_driver[n_driver$net_name == "bal_eff"], digits = 2)` for deposition, `r 1-round(n_driver$n_driver[n_driver$net_name == "bal_vis"], digits = 2)` for the visitation, and `r 1-round(n_driver$n_driver[n_driver$net_name == "bal_imp"], digits = 2)` for the pollinator importance network).
+At a network scale, despite marked differences in the distribution of weights of the three networks (Supporting Figure 4), the driver node density *n~D~* was consistent among the three different approaches (`r 1-round(n_driver$n_driver[n_driver$net_name == "bal_eff"], digits = 2)` for deposition, `r 1-round(n_driver$n_driver[n_driver$net_name == "bal_vis"], digits = 2)` for the visitation, and `r 1-round(n_driver$n_driver[n_driver$net_name == "bal_imp"], digits = 2)` for the pollinator importance network).
 
 The choice of weighting used can also have an impact on at the species level.
 Therefore we calculated *f~D~* and *f~S~* (the frequency at which each species is classified as a driver or superior node, respectively, within the set of all possible matchings in a network) and calculated it's correlation among three times of weighting schemes.
@@ -1060,8 +940,8 @@ We removed links from the full network with a probability inversly proportional 
 We repeated the procedure ten times for each portion level and each network to obtain a total sample size of $n=2000$.
 
 Overall, the results of the sensitivity analysis indicate that our approach might be useful for management even in the absence of complete sampling. 
-Specifically as the proportion of sampled interaction decreassed, the variability of $n_D$ increassed, but was overall very similar when compared to that obtained using all available interactions (Supporting Figure 7a). 
-Similarly, the correlation between the relative frequency with which species are classified as a driver ($f_D$) or as a superior node ($f_S$) was correlated ever for *extreme* levels of undersampling. 
+Specifically as the proportion of sampled interaction decreassed, the variability of $n_D$ increassed, but was overall very similar when compared to that obtained using all available interactions (Supporting Figure 5a). 
+Similarly, the correlation between the relative frequency with which species are classified as a driver ($f_D$) or as a superior node ($f_S$) was correlated ever for *extreme* levels of undersampling (Supporting figure 5b). 
 For instance, we found that with a sampling level of 0.5, the mean spearman correlation coefficient was 0.66 for $f_D$ and 0.76 for $f_S$. 
 Finally, the resulst suggest that the relative ranking of species is better conserved in $f_S$ than for $f_D$ troughout all levels subsampling levels.
 
@@ -1101,5 +981,129 @@ f_sampling %>%
 	dplyr::summarise(correlation = mean(correlation))
 ```
 
+# S5: Chosing the direction of control
+
+At a first glance our decision to adopt the direction the assymetries and not the bidirectional dependences as the direction of control might seem uneccessary. 
+Nevertheless we find that it better reflect
+Our decision to adopt the direction of asymmetries as the direction of control is basedmainIn addition, here we also show all the maximum cardinality matchings for an example network in which the links are weighted based on the mutual dependences (Supporting Figure 6). It is important to note that using mutual dependencies is problematic for a couple of reasons. 
+
+First, having two links between species and using our maximum matching approach to calculate the control configurations, result in matchings that include cycle forming links (Supporting Figure 7). Strictly speaking these configurations are maximum matchings in the alternative bipartite configuration (Supporting Figure 1e) but are not in the directed network (Supporting Figure 1f).  While bidirectional links are the norm when using mutual dependences, they only appear in the asymmetry-weighted networks whenever the mutual dependences between two species symmetric. In this special case, we include two links weighted with 0.5 to reflect the fact that the species affect each other in the same proportion. Whenever present, we filter out the cycle containing matchings before conducting any analysis. In the special case when the network has no matchings that correspond to control configurations, we reduce by one the size of the cliques we enumerate in *H* (Supporting Figure 2).
+
+Second, the number of maximal matchings increasses dispproportionally fast with the number of links in a network. For instance, our example network in Figure 1, which is composed by uni-directional links weighted by the asymmetry, has two different maximum matchings. In contrast, the equivalent network with bidirectional links has 16 different maximum matchings (Supporting Figure 6 and 7). To further ilustrate this growth, some of our empirical networks, had approximately ten thousand different maximum matchings using asymmetries but one hundred million when using mutual dependences. This exponential growth, and the computational cost of filtering matchings with cycles, surpassed the capabilities of the available computational resources and rendered us unable to calculate all possible maximum matchings when using mutual dependences in most of our networks.
+
+```{r fig-matchings-bidirectional, echo = F, message = F, warning = F, fig.width = 6.2, fig.height = 3.2, results = "hide", fig.cap = "**Matchings of a simple network with bidirectional links**. (a) A network with bidirectional links. (b-e) Possible control configurations." }
+par(mfrow=c(2,3), mar=c(0,0,0,0))
+
+bi_net %>% 
+	plot(layout = lay, 
+			 vertex.color = v_c, 
+			 vertex.size = 30,
+			 vertex.label = sp_names_fancy,
+			 vertex.label.family = fam,
+			 vertex.label.color = l_c,
+			 edge.label = round(E(.)$weight,1), 
+			 edge.label.family = fam,
+			 edge.label.color = l_c,
+			 edge.label.cex = l_s,
+			 edge.curved = T,
+			 edge.arrow.size = 0.5,
+			 margin = ma)
+
+text(label_pos_x, label_pos_y, "a)", adj = c(0,0))
+
+1:4 %>%
+	plyr::l_ply(function(x, pal){
+		
+		attach(nets[[x]], pos = 1, warn.conflicts = F)	
+		
+		nets[[x]]$bi_net %>% 
+			plot(layout = lay, 
+					 vertex.size = 30,
+					 vertex.label = names_fancy,
+					 vertex.label.family = fam,
+					 vertex.label.color = l_c,
+					 vertex.label.cex = igraph::V(.)$superior * 0.1 + 0.9,
+					 # vertex.shape = igraph::V(.)$vertex.shape,
+					 vertex.color = pal[igraph::V(.)$matched],
+					 edge.color = pal[igraph::E(.)$matched],
+					 # edge.color = c("#B2ABD2", "#FDB863"),
+					 edge.label = NA, 
+					 edge.width = E(.)$matched/2,
+					 edge.label.family = fam,
+					 edge.label.color = igraph::E(.)$matched,
+					 edge.label.cex = l_s,
+					 edge.curved = T,
+					 edge.arrow.size = 0.5,
+					 margin = ma, 
+					 palette = pal) %>% 
+			print()
+		
+		igraph::V(bi_net)$name <- sp_names
+		
+		text(label_pos_x, label_pos_y, paste0(letters[1+x], ")"), adj = c(0,0))
+		text(text_pos_x, text_pos_y, cex = 0.95,
+				 paste0("D = ", length(igraph::V(bi_net)) - as_mat$matching_size, "\n",
+				 			 "matching size: ", as_mat$matching_size, "\n",
+				 			 "matching weight: ", round(matching_weight, 1)))
+	}, pal)
+
+plot.new()
+legend(0.5, 0.7, legend = c("unmatched link", "matched link"), horiz = F,
+			 lty = 1, 
+			 col = pal[c(2, 4)],
+			 lwd = 2, cex = 0.9, xjust=0.5, yjust=1, bty = "n")
+
+legend(0.5, 0.5, legend = c("unmatched node", "matched node"), horiz = F,
+			 pch = 21, 
+			 pt.bg = pal[c(2, 4)],
+			 pt.cex = 2,
+			 cex = 0.9, xjust=0.5, yjust=1, bty = "n")
+
+legend(0.5, 0.3, legend = expression(paste(bold("(bold label)"), " ", "superior nodes")), horiz = TRUE,
+			 cex = 0.9, xjust=0.5, yjust=1, bty = "n")
+
+
+```
+
+```{r  fig-matchings-bidirectional-no, echo = F, message = F, warning = F, fig.width = 6.2, fig.height = 4.8, results = "hide", fig.cap= "**Cycles in a bidirectional network**. Our approach finds twelve configurations for Supporting Figure 6a that are not actual matchings."}
+
+par(mfrow=c(3,4), mar=c(0,0,0,0))
+5:length(nets) %>%
+	plyr::l_ply(function(x, pal){
+		
+		attach(nets[[x]], pos = 1, warn.conflicts = F)	
+		
+		nets[[x]]$bi_net %>% 
+			plot(layout = lay, 
+					 vertex.size = 30,
+					 vertex.label = names_fancy,
+					 vertex.label.family = fam,
+					 vertex.label.color = l_c,
+					 vertex.label.cex = igraph::V(.)$superior * 0.1 + 0.9,
+					 # vertex.shape = igraph::V(.)$vertex.shape,
+					 vertex.color = pal[igraph::V(.)$matched],
+					 edge.color = pal[igraph::E(.)$matched],
+					 # edge.color = c("#B2ABD2", "#FDB863"),
+					 edge.label = NA, 
+					 edge.width = E(.)$matched/2,
+					 edge.label.family = fam,
+					 edge.label.color = igraph::E(.)$matched,
+					 edge.label.cex = l_s,
+					 edge.curved = T,
+					 edge.arrow.size = 0.5,
+					 margin = ma, 
+					 palette = pal) %>% 
+			print()
+		
+		igraph::V(bi_net)$name <- sp_names
+		
+		# text(label_pos_x, label_pos_y, paste0(letters[1+x-5], ")"), adj = c(0,0))
+		# text(text_pos_x, text_pos_y, cex = 0.95,
+		# 		 paste0("D = ", length(igraph::V(bi_net)) - as_mat$matching_size, "\n",
+		# 		 			 "matching size: ", as_mat$matching_size, "\n",
+		# 		 			 "matching weight: ", round(matching_weight, 1)))
+	}, pal)
+
+```
 
 # References
