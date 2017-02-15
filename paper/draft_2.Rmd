@@ -125,16 +125,19 @@ Complex systems are characterised by relationships in which the whole is often g
 Within community ecology, a complex systems approach has led to the development of a variety of analytical and simulation tools with which to understand, for example, the role of species when embedded in an intricate network of interactions [@Pascual2005; @Bascompte2009; @Stouffer2012]. 
 The inherent complexity of nature, however, has regularly hindered—or at least greatly complicated—our ability to find management solutions to the many problems ecological communities face. 
 To overcome this obstacle, we require a framework that allows us to explain, predict, and manage ecological communities, particularly when they are confronted with perturbations [@Sole2001; @Green2005].
-Ideally, such a framework needs to be able to account for their complex structure, and the dynamics that determine the state of each species, and the community as a whole. 
+Ideally, such a framework needs to be able to account for their complex structure and the dynamics that determine the species abbundances and the state of the community. 
 
-Among the various possibilities, control theory appears to be a strong candidate as it is designed to deal with determining and supervising the behaviour of general dynamical systems [@Motter2015], and is well equipped to deal with the many feedbacks present in ecological communities [@Liu2015]. 
-Research in the field has established a strong link between the structure of complex networks and their controllability, while also demonstrating that it is in principle possible to alter a whole ecological community's composition by modifying the abundances of only a few species [@Liu2011; @Cornelius2013; @Ruths2014].
-Applications of control theory to ecological networks can also take into account the extent to which changes in the abundances of one species may ripple through the community [@Cornelius2013].
-Therefore, control theory could provide an indication of which species are most relevant from a structural and dynamic perspective, a particularly important feature given that these species should underpin informed attempts to both alter or maintain the ecosystem state.
+Among the various possibilities, *control theory* appears to be a strong candidate. This method, widely used in engineering to determine and supervise the behaviour of dynamical systems [@Motter2015], is well equipped to deal with the many feedbacks present in ecological communities [@Liu2015]. 
+Research in the this area has established a strong link between the structure of complex networks and their *controllability*—the relative ability of manipulating network components to drive the system to a desired state [@Liu2011; @Cornelius2013; @Ruths2014]. 
+These advances suggest that it is in principle possible to alter a whole ecological community's composition by modifying the abundances of only a few species.
+Furthermore, applications of control theory to ecological networks can also take into account the extent to which changes in the abundances of one species may ripple through the community [@Cornelius2013].
+Therefore, control theory could also be harnessed to provide an indication of which species are most relevant from a structural and dynamic perspective.
 
-Despite these advances, practical challenges to the conservation of interaction networks persist [@Tylianakis2010], and the link between the structure of complex networks and our ability to manage and conserve them is still ambiguous [@Bluthgen2010; @Kaiser-Bunbury2015].
-To complicate things further, biotic invasions—a major driver of global change—can induce dramatic changes in the patterns of interactions that determine the structure of ecological networks [@Baxter2004; @Tylianakis2008; @Ehrenfeld2010a]. 
-Although understanding how differences in network structure before and after the invasion impact our ability to manage them presents a double challenge, it is a critical first step towards a fully informed recovery. 
+This information is valuable not only from an ecological perspective, but it might be also relevant to address management and conservation challenges.  
+This is particularly true in the context of biotic invasions, where identifying key players in the community is a prerequisite to informed attempts to either alter the state of invaded ecosystem and maintain the state of uninvaded ones.
+Despite recent advances in network theory, practical challenges to the conservation of interaction networks persist [@Tylianakis2010], and the link between the structure of complex networks and our ability to manage and conserve them, is still ambiguous [@Bluthgen2010; @Kaiser-Bunbury2015].
+To complicate things further, biotic invasions can induce dramatic changes in the patterns of interactions that determine the structure of ecological networks [@Baxter2004; @Tylianakis2008; @Ehrenfeld2010a]. 
+Understanding how the differences in network structure before and after the invasion impact our ability to manage the communities doububle challenge, it is a critical first step towards a fully informed recovery. 
 Despite the apparent overlap, a control-theoretic perspective has not been adopted in an invasion context. 
 This is perhaps because of a lack of appropriate methodological tools that can account for the observed variation in the strength of interspecific effects that are characteristic of ecological networks [@Liu2011; @Isbell2013].
 
