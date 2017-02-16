@@ -59,6 +59,7 @@ r_w <- readRDS("../data/processed/random_weights.rds") %>% dplyr::tbl_df() %>%
   dplyr::rename_("net_name" = ".id")
 r_d <- readRDS("../data/processed/random_directions.rds") %>% dplyr::tbl_df() %>%
   dplyr::rename_("net_name" = ".id")
+a_m <- readRDS("../data/processed/n_matched_all_types.rds") 
 
 prop <- expand.grid(c("asymmetry", "max_dep"), 
                     c("scaled_FALSE", "scaled_TRUE")) %>% plyr::alply(1)
@@ -983,13 +984,17 @@ f_sampling %>%
 
 # S5: Chosing the direction of control
 
-At a first glance our decision to adopt the direction the assymetries and not the bidirectional dependences as the direction of control might seem uneccessary. 
-Nevertheless we find that it better reflect
-Our decision to adopt the direction of asymmetries as the direction of control is basedmainIn addition, here we also show all the maximum cardinality matchings for an example network in which the links are weighted based on the mutual dependences (Supporting Figure 6). It is important to note that using mutual dependencies is problematic for a couple of reasons. 
+Our decision to adopt the direction of asymmetries as the direction of control, while coherent with ecological processes, confers several advantages. 
+First it is consistent with previous studies, which facilitates the comparability between our findings and those in other systems explored using structural controlability. 
+Second, it reduces the number of control cycles in the network—which require special treatment in our approach. 
+And third, the reduced number of links, facilitates the computation of all possible maximum matchings.
 
-First, having two links between species and using our maximum matching approach to calculate the control configurations, result in matchings that include cycle forming links (Supporting Figure 7). Strictly speaking these configurations are maximum matchings in the alternative bipartite configuration (Supporting Figure 1e) but are not in the directed network (Supporting Figure 1f).  While bidirectional links are the norm when using mutual dependences, they only appear in the asymmetry-weighted networks whenever the mutual dependences between two species symmetric. In this special case, we include two links weighted with 0.5 to reflect the fact that the species affect each other in the same proportion. Whenever present, we filter out the cycle containing matchings before conducting any analysis. In the special case when the network has no matchings that correspond to control configurations, we reduce by one the size of the cliques we enumerate in *H* (Supporting Figure 2).
-
-Second, the number of maximal matchings increasses dispproportionally fast with the number of links in a network. For instance, our example network in Figure 1, which is composed by uni-directional links weighted by the asymmetry, has two different maximum matchings. In contrast, the equivalent network with bidirectional links has 16 different maximum matchings (Supporting Figure 6 and 7). To further ilustrate this growth, some of our empirical networks, had approximately ten thousand different maximum matchings using asymmetries but one hundred million when using mutual dependences. This exponential growth, and the computational cost of filtering matchings with cycles, surpassed the capabilities of the available computational resources and rendered us unable to calculate all possible maximum matchings when using mutual dependences in most of our networks.
+For ilustration, we show all maximum cardinality matchings for an example network in which links are weighted based on the mutual dependences (Supporting figure 6). 
+We note, however, that using mutual dependences, or any set up that can lead to bidirectional links, is problematic for a couple of reasons. 
+First, having two links between interacting species and using our maximum matching approach to calculate the control configurations, can result in matchings that include cycle inducing links (Supporting Figure 7). 
+Strictly speaking these configurations are maximum matchings in the alternative bipartite configuration (Supporting Figure 1e) but not in the directed network (Supporting Figure 1f). 
+While bidirectional links are the norm when using mutual dependences, they only appear in the asymmetry-weighted networks whenever the mutual dependences between two species are strictly symmetric. 
+In this special case, we include two links weighted with 0.5 to reflect the fact that the species affect each other in the same proportion. 
 
 ```{r fig-matchings-bidirectional, echo = F, message = F, warning = F, fig.width = 6.2, fig.height = 3.2, results = "hide", fig.cap = "**Matchings of a simple network with bidirectional links**. (a) A network with bidirectional links. (b-e) Possible control configurations." }
 par(mfrow=c(2,3), mar=c(0,0,0,0))
@@ -1065,9 +1070,9 @@ legend(0.5, 0.3, legend = expression(paste(bold("(bold label)"), " ", "superior 
 
 ```
 
-```{r  fig-matchings-bidirectional-no, echo = F, message = F, warning = F, fig.width = 6.2, fig.height = 4.8, results = "hide", fig.cap= "**Cycles in a bidirectional network**. Our approach finds twelve configurations for Supporting Figure 6a that are not actual matchings."}
+```{r  fig-matchings-bidirectional-no, echo = F, message = F, warning = F, fig.width = 6.2, fig.height = 2.4, results = "hide", fig.cap= "**Cycles in a bidirectional network**. Our approach finds twelve configurations for Supporting Figure 6a that are not actual matchings."}
 
-par(mfrow=c(3,4), mar=c(0,0,0,0))
+par(mfrow=c(2,6), mar=c(0,0,0,0))
 5:length(nets) %>%
 	plyr::l_ply(function(x, pal){
 		
@@ -1075,17 +1080,17 @@ par(mfrow=c(3,4), mar=c(0,0,0,0))
 		
 		nets[[x]]$bi_net %>% 
 			plot(layout = lay, 
-					 vertex.size = 30,
+					 vertex.size = 35,
 					 vertex.label = names_fancy,
 					 vertex.label.family = fam,
 					 vertex.label.color = l_c,
-					 vertex.label.cex = igraph::V(.)$superior * 0.1 + 0.9,
+					 vertex.label.cex = igraph::V(.)$superior * 0.1 + 0.6,
 					 # vertex.shape = igraph::V(.)$vertex.shape,
 					 vertex.color = pal[igraph::V(.)$matched],
 					 edge.color = pal[igraph::E(.)$matched],
 					 # edge.color = c("#B2ABD2", "#FDB863"),
 					 edge.label = NA, 
-					 edge.width = E(.)$matched/2,
+					 edge.width = E(.)$matched/3,
 					 edge.label.family = fam,
 					 edge.label.color = igraph::E(.)$matched,
 					 edge.label.cex = l_s,
@@ -1105,5 +1110,110 @@ par(mfrow=c(3,4), mar=c(0,0,0,0))
 	}, pal)
 
 ```
+
+We consider two approaches to tackle this limitation. 
+The first approach, is to calculate the matching(s) as usual and then, before calculating $f_S$ and $f_D$, filter out the cycle (Supporting Figure 7). 
+In the special case that the network has no maximal matchings that correspond to feasible control configurations, because they all include cycles, we reduce the size of the cliques we enumerate in $H$ (Supporting figure 2) and repeat. 
+The second approach is, instead of calculating the matching(s) for the network with bidirectional cycles, we calculate the matching(s) of $2^n$ unidirectional versions of the network, where $n$ is the number of cycles in the network (Supporting figure 8).
+We then average over the unidirectional networks to find the overall $f_S$ and $f_D$ for a given species. 
+
+The number of maximal matchings increases disproportionally fast with the number of links in a network. 
+For instance, our example network in Figure 1, which is composed of unidirectional links weighted by the asymmetry, has two different maximum matchings. 
+In contrast, the equivalent network with bidirectional links has 16 different maximum matchings (Supporting Figure 6 and 7). 
+To further ilustrate the implications of this growth, some of our empirical networks had approximately ten thousand different maximum matchings using asymmetries but one hundred million when using mutual dependences. 
+This exponential growth, and the computational cost of either filtering matchings with cycles or calculating the matchings for $2^n$ networks, surpassed the capabilities of the available computational resources and rendered us unable to calculate all possible maximum matchings when using mutual dependences in most of our bidirectional networks.
+Nevertheless, as most of our networks weighted by asymmetry had between zero and four cycles, we successfully used the second approach explained in the previous paragraph to calculate the all maximum matchings for these networks.
+
+```{r fig-tackle-cycles, echo = F, message = F, warning = F, fig.width = 3.3, fig.height = 1.5, results = "hide", fig.cap= "**Dealing with cycles**. The network on the left, which has *n = 2* cycles, can be decomposed in *2^n^* unidirectional networs."}
+layout(matrix(c(1,2,3, 1,4, 5), ncol = 3, byrow = TRUE), widths = c(2, 1,1))
+par( mar=c(0,0,0,0))
+
+set.seed(3)
+g_one_bi <- matrix(c(0,1,1,1,0,1,1,0,0), ncol = 3) %>%
+	igraph::graph_from_adjacency_matrix()
+lay_g_one_bi <- layout_nicely(g_one_bi)
+
+plot(g_one_bi, 
+		 edge.curved = c(T, T, T, T, T), 
+		 layout = lay_g_one_bi, 
+		 vertex.color = NA, 
+		 vertex.label = NA,
+		 vertex.size = 30, 
+				 edge.arrow.size = 0.5,
+		 margin = c(0,0,0,0.5))
+text(-1, 1.1, "(a)", font = 2, cex = 0.9)
+text(1.65, 1.1, "(b)", font = 2, cex = 0.9)
+
+# xline <- 1.5
+# arrows(x0 = xline, y0=-2, x1=xline, y1=2, col='grey30', length=0, lwd=1)
+per <- gtools::permutations(2, 2, v = c(1,3), repeats.allowed = T)
+per[, 2] <- per[, 2] + 1
+per %>%
+	plyr::a_ply(1, function(x){
+		print(x)
+	g_one_bi%>% 
+		delete_edges(x) %>% 
+		plot(layout = lay_g_one_bi, 
+				 vertex.color = NA, 
+				 vertex.label = NA,
+				 vertex.size = 40, 
+				 edge.arrow.size = 0.3)
+
+})
+
+```
+
+We highlight that althoug the direction of control might affect the $f_S$ and $f_D$, it doesn't affect strongly the network's relative density of driver nodes $n_D$. 
+We reached this conclusion by calculating the $n_D$ obtained assuming that (a) the direction of control is governed by the asymmetry or (b) bidirectional dependences, (c) that plants depend on pollinators, and that (d) pollinators depend on plants. 
+Although the $n_D$ values were quantitatively different between the approaches (Supporting figure 9), the Spearman correlation among these four options suggested a very high agreement (Supporting table 3).
+
+```{r fig-alternative-assumptions, echo = F, message = F, warning = F, fig.width = 4, fig.height = 1.6, results = "hide", fig.cap= "**Absolute differences among asumptions on the direction of control.**"}
+
+a_m_driver <- a_m %>% 
+  dplyr::full_join(meta) %>%
+  dplyr::filter(study != "ballantyne") %>% 
+  dplyr::mutate(type = factor(type, 
+                              levels =  c("AB", "BA", "weight", "z-bi"),
+                              labels = c("pla. to pol.", "pol. to pla.", "asymmetry", "bidirectional dep.")),
+                type_l  = as.character(type)) %>%
+  dplyr::mutate(n_driver = n_pla + n_pol - n_matched, 
+                n_driver_rel = 1 - n_matched / (n_pla + n_pol)) 
+
+type_l <- unique(a_m_driver$type_l)
+
+a_m_driver %>%
+  ggplot(aes(x = type, y = n_driver_rel), parse = T) +
+  geom_boxplot(size = 0.25, colour = "grey10",
+							 outlier.shape = 21, outlier.size = 1) +
+  coord_flip() + 
+  xlab("") +
+  ylab(expression(n[D])) + 
+  fer_theme + 
+  theme(plot.margin = grid::unit(c(0,1,2,0), "mm"))
+
+```
+
+
+```{r table-alternative-assumptions, echo = FALSE, warning = F, message = F, results = "asis", sanitize = FALSE}
+
+corr_matrix <- a_m_driver %>%
+  dplyr::select(net_name, type, n_driver) %>%
+  tidyr::spread(type, n_driver) %>%
+  dplyr::select(-net_name) %>%
+  as.matrix() %>%
+  cor(method = "spearman") %>%
+  round(digits = 2)
+
+corr_matrix[lower.tri(corr_matrix, diag = T)] <- ""
+corr_matrix <- corr_matrix[, -1]
+corr_matrix <- corr_matrix[-(nrow(corr_matrix)), ]
+
+ corr_matrix %>% 
+  xtable::xtable(caption = "\\textbf{Agreement among assumptions on the direction of control}. Spearman correlation coefficients of the number of driver nodes $n_D$ four different assumptions of the direction of control..") %>%
+	print(comment = FALSE, include.rownames = TRUE)
+
+```
+
+# S6: Using control profile heuristics
 
 # References
