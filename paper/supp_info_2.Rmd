@@ -805,7 +805,124 @@ legend(0.2, 0.95, legend = replace_names$sp_letter, horiz = F, bty = "n", text.f
 ```
 
 
-# S2: Properties of empirical networks
+# Control profiles
+
+@Ruths2014 proposed a heuristic-based method to provide insight of what might be required to control a network.
+The method is based on the idea that the reasons behind a node being classified as a driver node can be precisely identified, and that the relative contribution of these reasons can be used to characterise the control profile of the network. 
+Specifically, nodes can be deemed to be driver nodes for three reasons:
+
+1. **Because it is a source node**. Source nodes are nodes that exclusively have outgoing links. Therefore, other nodes cannot control it, but instead, it must be externally controlled. 
+2. **Because of an external dilation**. Dilations occur whenever a control signal needs to branch out in order to reach all nodes in a network. 
+One kind of dilation, which arises due to a surplus of sink nodes (those that only have incoming links) is called external dilation. 
+This concept might be easier to understand by looking at Figure \@ref(fig:fig-SA-exp)c. 
+The source node *a* branches out into nine paths, but it can only control one of them. 
+We say then, that the sink nodes *d* to *k* become driver nodes because of an external dilation.
+3. **Because of an internal dilation**. The remaining dilations (those that do not arise from a surplus of sink nodes) are called internal dilations. 
+Node *j* in Figure \@ref(fig:fig-SA-exp)c and the driver nodes in Figure \@ref(fig:fig-matchings-bidirectional) are examples of this category.
+
+Mathematically, the number of driver nodes $N_D$ is the sum of the number of source nodes, the number of external dilation points, and the number of internal dilation points, $N_D = N_s + N_e + N_i$. 
+A network can then be characterised by the relative proportion of the three kind of controls $$\eta_s + \eta_e + \eta_i = 1,$$ where $\eta_s = N_s/N_D$, $\eta_e = N_e/N_D$, and $\eta_i = N_i/N_D$. 
+These terms can be calculated with relative ease.
+$N_D$ can be calculated using a maximum matching algorithm. 
+$N_s$ can be calculated by inspecting the network's degree distribution.
+$N_e = max(0,N_t - N_s)$, where $N_t$ is the number of sink nodes in the network.
+And we can solve for $N_i$ once we have all other information.
+
+Applying this framework to our networks directed by the asymmetry we identify that they are all external dilation dominated (Figure \@ref(fig:fig-control-profiles)).
+@Ruths2014 explains that "external-dilation-dominated networks exhibited strong aspects of top-down control". 
+Because of the surplus of sink nodes, an external intervention that is applied to a source node will induce a correlated response among their subordinate species. 
+For example, an increase in the abundance of *Heracleum sphondylum* (Figure \@ref(fig:fig-SA-exp)) is likely to induce an increase in the abundance of the pollinators it interacts with.
+Therefore it can be expected that in order to fully control the network it is not sufficient to apply interventions to the source nodes. 
+
+The control profile of our pollination networks provides additional justification to our decision to determine the importance of a species, not only by virtue of $f_D$, but also by $f_S$.
+Many species that act like control sinks in our network, will be classified as a driver node, because they are necessary to *fully* control the dynamics of the community, as opposed to playing a central role influencing the abundance of other species in the community.
+
+Using this approach also highlights the importance of appropiately selecting the direction of control (See Section 6). 
+A network with bidirectional links weighted by the mutual dependences would have zero source nodes and zero sink nodes. 
+Therefore, the control profile of such a network would have been completely uninformative, as it would just highlight that the proportion of internal dilations is $\eta_i = 1$.
+
+```{r fig-control-profiles, echo = F, message = F, warning = F, fig.width = 6.2, fig.height = 2.6, results = "hide", fig.cap= "**Control profiles of the studied networks**. Following @Ruths2014, profiles are shown in a ternary plot in which the cornders correspond to points (1, 0, 0), (0, 1, 0), and (0, 0, 1) in the three-dimensional $(\\eta_s, \\eta_e, \\eta_i)$ space such that $\\eta_s + \\eta_e + \\eta_i = 1$, and $\\eta_s, \\eta_e$, and $\\eta_i > 0$."}
+n_driver <- meta %>%
+  dplyr::inner_join(n_matched) %>% 
+  dplyr::mutate(n_driver = 1 - n_matched / (n_pla + n_pol))
+
+profiles <- net %>%
+	plyr::ldply(function(x){
+		d <- x %>% 
+			keep_largest_component() %>%
+			bipartite_digraph(type = "weight",
+												keep = "all",
+												weight.type = "asymmetry", 
+												scale = F)
+		E(d)$weight <- 1
+		out_degree <- igraph::degree(d, mode = "out") 
+    in_degree <- igraph::degree(d, mode = "in") 
+    n_sources <- sum(out_degree > 0 & in_degree == 0) 
+    n_sinks <- sum(out_degree == 0 & in_degree > 0) 
+    n_ext_dil <- max(0,n_sinks - n_sources) 
+    n_sp <- length(igraph::V(d))
+    data.frame(n_sources = n_sources, n_sinks = n_sinks,  
+               n_ext_dil = n_ext_dil, n_sp = n_sp)
+	}) %>%
+	dplyr::rename(net_name = .id) %>%
+	dplyr::mutate()
+
+profiles %<>%
+	dplyr::inner_join(n_driver) %>%
+	dplyr::mutate(n_driver = n_sp - n_matched,
+								n_int_dil = n_driver - n_sources - n_ext_dil,
+								eta_s = n_sources / n_driver,
+								eta_e = n_ext_dil / n_driver,
+								eta_i = n_int_dil / n_driver)
+
+library(ggtern) 
+
+	
+# p1 <- 
+profiles %>%
+ 	dplyr::filter(!grepl("bal_bin", net_name)) %>%
+ 	ggplot(aes(x = eta_s, z = eta_e, y = eta_i)) + 
+	geom_mask() +
+  geom_point(fill = "gray70", shape = 21, size = 2, alpha = 0.7) + 
+	coord_tern(expand = T) +
+ 	labs(x = "$\\eta_s$",
+ 			 y = "$\\eta_i$",
+ 			 z = "$\\eta_e$",
+ 			 Tarrow = "internal dilation",
+ 			 Rarrow = "external dilation",
+ 			 Larrow = "source") +
+	fer_theme +
+ 	# tern_limit(0.2,0.2, 1) +
+ 	theme(panel.grid = element_line(colour = "grey90", size = 0.3),
+ 				plot.title = element_text(margin = margin(-14, 0, 0, 0)),
+ 				plot.margin = margin(t = -10),
+ 				plot.background = element_blank()) +
+ 	percent_custom("%") +
+ 	theme_nogrid_minor() +
+ 	theme_showarrows() +
+ 	theme_arrowlarge() +
+ 	theme_latex(TRUE) 
+# 
+# p2 <- profiles %>% 
+# 	dplyr::filter(!grepl("bal_bin", net_name)) %>%
+# 	ggplot(aes(eta_e, n_driver/n_sp)) +
+# 	geom_point(shape = 21) +
+# 	# scale_x_log10() + scale_y_log10() +
+# 	geom_smooth(method = "lm", colour = "black", size = 0.5) +
+# 	# scale_x_log10() +
+# 	fer_theme +
+# 	theme(plot.margin = margin(r = 2, t = 18, b = 21),
+#  				plot.background = element_blank()) +
+# 	xlab(expression(eta[s])) +
+# 	ylab(expression(n[D]))
+# 
+# grid.arrange(grobs = list(
+# 	grid::textGrob("(a)", x = 0, y = -2, gp = grid::gpar(font = 2, cex = 0.7), just = "left"),
+# 	grid::textGrob("(b)", x = 0, y = -2, gp = grid::gpar(font = 2, cex = 0.7), just = "left"), 
+# 	p1, p2), nrow = 2, heights = c(1,30), widths = c(1, 1.4))
+```
+
+# Properties of empirical networks
 
 ```{r calc-network-properties, echo = F, message = F}
 net_prop <- net %>%
@@ -882,9 +999,7 @@ Second, visitation networks were constructed counting the visits to flowers duri
 Finally, pollinator importance networks were constructed as the product of pollinator efficiency and visit frequency. 
 
 ```{r fig-visitation-vs-deposition-vs-importance, echo = F, message = F, warning = F, fig.width = 6.2, fig.height = 4, results = "hide", fig.cap= "**Distribution of interaction weights for the pollen deposition, visitation and pollinator importance networks**. Note that the *x* axis in the density plots have been log-transformed."}
-n_driver <- meta %>%
-  dplyr::inner_join(n_matched) %>% 
-  dplyr::mutate(n_driver = 1 - n_matched / (n_pla + n_pol))
+
 
 p <- net[meta$net_name[meta$study == "ballantyne" & meta$count != "binary"]] %>%
 	plyr::ldply(function(x) {
