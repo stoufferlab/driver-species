@@ -4,7 +4,7 @@ subtitle: "Supporting Information"
 classoption: a4paper
 csl: ecology-letters.csl
 output:
-  pdf_document:
+  bookdown::pdf_document2:
     fig_crop: no
     keep_tex: yes
   html_document: default
@@ -210,17 +210,17 @@ nets <- 1:length(as_all_mat) %>%
 nets <- nets[order(!unlist(lapply(nets, function(x) x$has_cycles)), unlist(lapply(nets, function(x) x$matching_weight)), decreasing = T)]
 ```
 
-# S1: Finding a complex network's matchings
+# Finding a complex network's matchings
 
 Our approach to find the minumum number of driver nodes relies on finding maximum matchings and maximum cardinality matchings. 
 
-We start with a directed network in which the direction of the link represents the direction of control (Figure S1a). 
-We then construct an alternative representation of the directed network in which each node of the directed network is represented by two nodes that indicate their outgoing and incoming links respectively (Figure S1b). 
+We start with a directed network in which the direction of the link represents the direction of control (Figure \@ref(fig:fig-direction-of-control)a). 
+We then construct an alternative representation of the directed network in which each node of the directed network is represented by two nodes that indicate their outgoing and incoming links respectively (Figure \@ref(fig:fig-direction-of-control)b). 
 Finding a maximum matching in this alternative representation is equivalent to finding the largest possible set of edges in which one node on the left-hand side is connected to at most one node on the right-hand side. 
 To find the maximum matching we use the push-relabel algorithm implemented in `max_bipartite_matching` in the R package igraph 1.0.1 [@Csardi2006a]. 
-Once we have the matching (shown in the Figure S1b) it is then easy to identify the roles of each node in this representation: nodes on the left-hand side that are connected to a matched (purple) link are superior while those connected to a matched link on the right-hand side are matched. 
-This information can then be mapped back to the original representation to identify the control paths and the driver nodes in the network (Figure S1c). 
-Figure S1d, e, and f ilustrate this approach for a network with bidirectional links.
+Once we have the matching (shown in the Figure \@ref(fig:fig-direction-of-control)b) it is then easy to identify the roles of each node in this representation: nodes on the left-hand side that are connected to a matched (purple) link are superior while those connected to a matched link on the right-hand side are matched. 
+This information can then be mapped back to the original representation to identify the control paths and the driver nodes in the network (Figure \@ref(fig:fig-direction-of-control)c). 
+Figure \@ref(fig:fig-direction-of-control)d, e, and f ilustrate this approach for a network with bidirectional links.
 
 ```{r fig-direction-of-control, echo = F, message = F, warning = F, fig.width = 6.2, fig.height = 3.4, results = "hide", fig.cap = "**Finding a maximum matching in a complex network**. (a & d) Directed networks that indicate the direction of control between species. (b & e) Alternative bipartite representations of the directed networks. (c & f) The matchings in the bipartite representation mapped back to the original network."}
 # par(mfrow=c(2,2), mar=c(0,0,0,0))
@@ -480,11 +480,11 @@ legend(0.7, 0.35, legend = c("superior node", "non-superior node"),
 The algorithm implemented in `max_bipartite_matching`, however, is only able to find **one** of the possibly many maximum matchings in a network. 
 Though one maximum matching is enough to calculate *n~D~* and hence to provide indication of a communitie's manageability, it is not sufficient to estimate the role of individual species. 
 To do that, we need to calculate all possible maximum matchings (or, equivalently, all maximal cardinality matchings in weighted networks like ours). 
-To do this, we again start from the alternative bipartite representation in Figure S1b and assign an identity to each of the links in the network (shown as numbers in Figure S2a).
+To do this, we again start from the alternative bipartite representation in Figure \@ref(fig:fig-direction-of-control)b and assign an identity to each of the links in the network (shown as numbers in Figure \@ref(fig:fig-finding-all-matchings)a).
 We will call this bipartite representation *B*. 
-We then construct the line graph of the alternative bipartite representation *L(B)* (Figure S2b). 
+We then construct the line graph of the alternative bipartite representation *L(B)* (Figure \@ref(fig:fig-finding-all-matchings)b). 
 Each node in *L(B)* represents a link in *B* and these are connected to each other only if and only if they share a common node in *B*. 
-We then calculate the complement graph of *L(B)* and identify all the maximal cliques (Figure S2c). 
+We then calculate the complement graph of *L(B)* and identify all the maximal cliques (Figure \@ref(fig:fig-finding-all-matchings)c). 
 Here some extra definitions are neccessary. 
 First, the complement of *L(B)*, *H*, is a graph with the same nodes as *L(B)* but that has a link between two given nodes if and only if there is not a link in *L(B)*. 
 Second, a clique is a subset of nodes such that any two of them are linked. 
@@ -492,7 +492,7 @@ Lastly, a maximum clique is a clique such that there are no cliques with more no
 In this example, there are two maximum cliques: that one formed by 1, 3 and 5, and the one formed by 2, 3 and 5. 
 The final step is then to map these cliques into the original network to obtain all possible maximum cardinality matchings as shown in Figure 1 in the main text.
 
-```{r fig-finding-all-matchings, echo = F, message = F, warning = F, fig.width = 6.2, fig.height = 1.8, results = "hide", fig.cap = "**Finding all possible maximum cardinality matchings**. (a) Alternative bipartite representation of the directed network in Figure S1a. (b) Line graph of the network in a. (c) Complement of the network in b. The two maximum cliques are shown in red and blue."}
+```{r fig-finding-all-matchings, echo = F, message = F, warning = F, fig.width = 6.2, fig.height = 1.8, results = "hide", fig.cap = "**Finding all possible maximum cardinality matchings**. (a) Alternative bipartite representation of the directed network in Figure \\@ref(fig:fig-direction-of-control)a. (b) Line graph of the network in a. (c) Complement of the network in b. The two maximum cliques are shown in red and blue."}
 layout(matrix(c(1,2,3,4, 5, 6), 2, 3, byrow = TRUE),
   	heights=c(8,1))
 par( mar=c(0,0,0,0))
@@ -647,12 +647,12 @@ text(0.5, 0.5, expression(paste(italic(H), ": complement of ", italic(L(B)))) , 
 ```
 
 In the main text, we show all maximum cardinality matchings for a simple example network. 
-To further ilustrate our methodology, here we also show the approach for the smallest of our empirical networks, the uninvaded network at site 10 (Table S1; Figure S3). 
+To further ilustrate our methodology, here we also show the approach for the smallest of our empirical networks, the uninvaded network at site 10 (Table S1; Figure \@ref(fig:fig-SA-exp)). 
 The largest component of this network is composed of 16 species of which 2 are non-invasive plants and the rest are pollinators. 
 The one-to-one relationship between matched and superior nodes implies that in order to achieve full network controllability, most pollinators would be unmatched, and hence driver species that require external intervention. 
 At the same time, both plants in the community, *Heracleum sphpndylum* and *Rubus fructicosus*, and one of the pollinators, *Orthotylus/Lygocorus*, tend to be classified as superior nodes.
 
-```{r fig-SA_exp, echo = F, message = F, warning = F, fig.width = 6.2, fig.height = 6.2, results = "hide", fig.cap = "**Illustration of the procedure with an empirical network**. (a) The initial visitation network. (b) The directed network in which the direction of control is determined based on the mutual dependences and assymetries. (c) One of the possible maximum matchings calculated using the procedures illustrated in the Figures S1 and S2."}
+```{r fig-SA-exp, echo = F, message = F, warning = F, fig.width = 6.2, fig.height = 6.2, results = "hide", fig.cap = "**Illustration of the procedure with an empirical network**. (a) The initial visitation network. (b) The directed network in which the direction of control is determined based on the mutual dependences and assymetries. (c) One of the possible maximum matchings calculated using the procedures illustrated in the Figures \\@ref(fig:fig-direction-of-control) and \\@ref(fig:ig-finding-all-matchings)."}
 par(mfrow=c(2,2), mar=c(0,0,0,0))
 n <- keep_largest_component(net$SA_exp)
 replace_names <- data.frame(sp_name = igraph::V(n)$name) %>%
@@ -870,11 +870,11 @@ net_prop %>%
 # knitr::kable(meta)
 ```
 
-# S3: Visitation as a proxy for species interdependence
+# Visitation as a proxy for species interdependence
 
 Visitation frequency has been shown to be an appropriate surrogate for inter-specific effects in pollination networks [@Vazquez2005; @Bascompte2006]. 
 Nevertheless visitation is not equivalent to pollen deposition and might be insufficient to reflect the dependencies of plants on animals and vice versa [@Alarcon2010; @King2013]. 
-We therefore investigated the effect of calculating the dependencies using visitation or pollination effectiveness and importance---two metrics more proximate to plant reproductive success (Figure S4).
+We therefore investigated the effect of calculating the dependencies using visitation or pollination effectiveness and importance---two metrics more proximate to plant reproductive success (Figure \@ref(fig:fig-visitation-vs-deposition-vs-importance)).
 We did this by comparing *(i)* the manageability of the community and *(ii)* the percentage of interactions that maintained the direction of dependency. 
 To do that, we used data collected by @Ballantyne2015 from a low diversity pollination community at a dry lowland heathland in Dorset, UK  (50° 43.7'N 2° 07.2'W). 
 First, deposition networks were quantified using the mean single visit deposition---the number of conspecific pollen grains effectively deposited on a virgin stigma during a single visit by a particular animal [@NeEman2010; @King2013; @Ballantyne2015]. 
@@ -928,7 +928,7 @@ p <- net[meta$net_name[meta$study == "ballantyne" & meta$count != "binary"]] %>%
 cowplot::plot_grid(p[[1]][[2]], p[[1]][[1]], p[[2]][[2]], p[[2]][[1]], p[[3]][[2]], p[[3]][[1]], ncol = 2, rel_widths = c(1.5,2), labels = c("(a)", "", "(b)","", "(c)"), label_size = 8)  
 ```
 
-At a network scale, despite marked differences in the distribution of weights of the three networks (Figure S4), the driver node density *n~D~* was consistent among the three different approaches (`r 1-round(n_driver$n_driver[n_driver$net_name == "bal_eff"], digits = 2)` for deposition, `r 1-round(n_driver$n_driver[n_driver$net_name == "bal_vis"], digits = 2)` for the visitation, and `r 1-round(n_driver$n_driver[n_driver$net_name == "bal_imp"], digits = 2)` for the pollinator importance network).
+At a network scale, despite marked differences in the distribution of weights of the three networks (Figure \@ref(fig:fig-visitation-vs-deposition-vs-importance)), the driver node density *n~D~* was consistent among the three different approaches (`r 1-round(n_driver$n_driver[n_driver$net_name == "bal_eff"], digits = 2)` for deposition, `r 1-round(n_driver$n_driver[n_driver$net_name == "bal_vis"], digits = 2)` for the visitation, and `r 1-round(n_driver$n_driver[n_driver$net_name == "bal_imp"], digits = 2)` for the pollinator importance network).
 
 The choice of weighting used can also have an impact on at the species level.
 Therefore we calculated *f~D~* and *f~S~* (the frequency at which each species is classified as a driver or superior node, respectively, within the set of all possible matchings in a network) and calculated it's correlation among all three weighting schemes.
@@ -1000,7 +1000,7 @@ mapply(my_paste, correlations$r, correlations$P) %>%
 
 Altogether, evidence supports the idea that visitation is a suitable metric to estimate the mutual dependency of species pairs. First, it is directly related to pollinator foraging. Second, it produces results consistent, at least within our controllability framework, with plant reproductive success (as estimated by the importance metric). 
 
-# S4: Sensitivity analysis
+# Sensitivity analysis
 
 Our approach is fundamentaly based on the network structure. 
 Often, the majority of the interactions that determine this structure are weak, which in our networks means that most interactions are formed by a small number of observed pollination visits, and therefore those weak intercations are less conspicuous in the field than strong ones. 
@@ -1012,8 +1012,8 @@ We removed links from the full network with a probability inversly proportional 
 We repeated the procedure ten times for each portion level and each network to obtain a total sample size of $n=2000$.
 
 Overall, the results of the sensitivity analysis indicate that our approach might be useful for management even in the absence of complete sampling. 
-Specifically as the proportion of sampled interaction decreassed, the variability of $n_D$ increassed, but was overall very similar when compared to that obtained using all available interactions (Figure S5a). 
-Similarly, the correlation between the relative frequency with which species are classified as a driver ($f_D$) or as a superior node ($f_S$) was correlated ever for *extreme* levels of undersampling (Figure S5b). 
+Specifically as the proportion of sampled interaction decreassed, the variability of $n_D$ increassed, but was overall very similar when compared to that obtained using all available interactions (Figure \@ref(fig:fig-subsampling-sensitivity)a). 
+Similarly, the correlation between the relative frequency with which species are classified as a driver ($f_D$) or as a superior node ($f_S$) was correlated ever for *extreme* levels of undersampling (Figure \@ref(fig:fig-subsampling-sensitivity)b). 
 For instance, we found that with a sampling level of 0.5, the mean spearman correlation coefficient was 0.66 for $f_D$ and 0.76 for $f_S$. 
 Finally, the resulst suggest that the relative ranking of species is better conserved in $f_S$ than for $f_D$ troughout all levels subsampling levels.
 
@@ -1053,17 +1053,17 @@ cowplot::plot_grid(p1, p2, ncol = 1, align = "v", rel_heights = c(1,1), labels =
 # 	dplyr::summarise(correlation = mean(correlation))
 ```
 
-# S5: Chosing the direction of control
+# Chosing the direction of control
 
 Our decision to adopt the direction of asymmetries as the direction of control, while coherent with ecological processes, confers several advantages. 
 First it is consistent with previous studies, which facilitates the comparability between our findings and those in other systems explored using structural controlability. 
 Second, it reduces the number of control cycles in the network—which require special treatment in our approach. 
 And third, the reduced number of links, facilitates the computation of all possible maximum matchings.
 
-For ilustration, we show all maximum cardinality matchings for an example network in which links are weighted based on the mutual dependences (Figure S6). 
+For ilustration, we show all maximum cardinality matchings for an example network in which links are weighted based on the mutual dependences (Figure \@ref(fig:fig-matchings-bidirectional)). 
 We note, however, that using mutual dependences, or any set up that can lead to bidirectional links, is problematic for a couple of reasons. 
-First, having two links between interacting species and using our maximum matching approach to calculate the control configurations, can result in matchings that include cycle inducing links (Figure S7). 
-Strictly speaking these configurations are maximum matchings in the alternative bipartite configuration (Figure S1e) but not in the directed network (Figure S1f). 
+First, having two links between interacting species and using our maximum matching approach to calculate the control configurations, can result in matchings that include cycle inducing links (Figure \@ref(fig:fig-matchings-bidirectional-no)). 
+Strictly speaking these configurations are maximum matchings in the alternative bipartite configuration (Figure \@ref(fig:fig-direction-of-control)e) but not in the directed network (Figure \@ref(fig:fig-direction-of-control)f). 
 While bidirectional links are the norm when using mutual dependences, they only appear in the asymmetry-weighted networks whenever the mutual dependences between two species are strictly symmetric. 
 In this special case, we include two links weighted with 0.5 to reflect the fact that the species affect each other in the same proportion. 
 
@@ -1148,7 +1148,7 @@ legend(0.3, 0.3, legend = c("superior node", "non-superior node"),
 
 ```
 
-```{r  fig-matchings-bidirectional-no, echo = F, message = F, warning = F, fig.width = 6.2, fig.height = 2.4, results = "hide", fig.cap= "**Cycles in a bidirectional network**. Our approach finds twelve configurations for Figure S6a that are matchings in the alternative bipartite representation, but not actual matchings in the directed network."}
+```{r  fig-matchings-bidirectional-no, echo = F, message = F, warning = F, fig.width = 6.2, fig.height = 2.4, results = "hide", fig.cap= "**Cycles in a bidirectional network**. Our approach finds twelve configurations for Figure \\@ref(fig:fig-matchings-bidirectional)a that are matchings in the alternative bipartite representation, but not actual matchings in the directed network."}
 
 par(mfrow=c(2,6), mar=c(0,0,0,0))
 5:length(nets) %>%
@@ -1192,17 +1192,11 @@ par(mfrow=c(2,6), mar=c(0,0,0,0))
 ```
 
 We consider two approaches to tackle this limitation. 
-The first approach, is to calculate the matching(s) as usual and then, before calculating $f_S$ and $f_D$, filter out the cycle (Figure S7). 
-In the special case that the network has no maximal matchings that correspond to feasible control configurations, because they all include cycles, we reduce the size of the cliques we enumerate in $H$ (Figure S2) and repeat. 
-The second approach is, instead of calculating the matching(s) for the network with bidirectional cycles, we calculate the matching(s) of $2^n$ unidirectional versions of the network, where $n$ is the number of cycles in the network (Figure S8).
+The first approach, is to calculate the matching(s) as usual and then, before calculating $f_S$ and $f_D$, filter out the cycle containing matchings (Figure \@ref(fig:fig-matchings-bidirectional-no)). 
+In the special case that the network has no maximal matchings that correspond to feasible control configurations, because they all include cycles, we reduce the size of the cliques we enumerate in $H$ (Figure \@ref(fig:fig-finding-all-matchings)) and repeat. 
+The second approach is, instead of calculating the matching(s) for the network with bidirectional cycles, we calculate the matching(s) of $2^n$ unidirectional versions of the network, where $n$ is the number of cycles in the network (Figure \@ref(fig:fig-tackle-cycles)).
 We then average over the unidirectional networks to find the overall $f_S$ and $f_D$ for a given species. 
 
-The number of maximal matchings increases disproportionally fast with the number of links in a network. 
-For instance, our example network in Figure 1, which is composed of unidirectional links weighted by the asymmetry, has two different maximum matchings. 
-In contrast, the equivalent network with bidirectional links has 16 different maximum matchings (Figure S6 and S7). 
-To further ilustrate the implications of this growth, some of our empirical networks had approximately ten thousand different maximum matchings using asymmetries but one hundred million when using mutual dependences. 
-This exponential growth, and the computational cost of either filtering matchings with cycles or calculating the matchings for $2^n$ networks, surpassed the capabilities of the available computational resources and rendered us unable to calculate all possible maximum matchings when using mutual dependences in most of our bidirectional networks.
-Nevertheless, as most of our networks weighted by asymmetry had between zero and four cycles, we successfully used the second approach explained in the previous paragraph to calculate the all maximum matchings for these networks.
 
 ```{r fig-tackle-cycles, echo = F, message = F, warning = F, fig.width = 3.3, fig.height = 1.5, results = "hide", fig.cap= "**Dealing with cycles**. The network on the left, which has *n = 2* cycles, can be decomposed in *2^n^* unidirectional networs."}
 layout(matrix(c(1,2,3, 1,4, 5), ncol = 3, byrow = TRUE), widths = c(2, 1,1))
@@ -1243,9 +1237,16 @@ per %>%
 
 ```
 
+The number of maximal matchings increases disproportionally fast with the number of links in a network. 
+For instance, our example network in Figure 1, which is composed of unidirectional links weighted by the asymmetry, has two different maximum matchings. 
+In contrast, the equivalent network with bidirectional links has 16 different maximum matchings (Figure \@ref(fig:fig-matchings-bidirectional) and \@ref(fig:fig-matchings-bidirectional-no)). 
+To further ilustrate the implications of this growth, some of our empirical networks had approximately ten thousand different maximum matchings using asymmetries but one hundred million when using mutual dependences. 
+This exponential growth, and the computational cost of either filtering matchings with cycles or calculating the matchings for $2^n$ networks, surpassed the capabilities of the available computational resources and rendered us unable to calculate all possible maximum matchings when using mutual dependences in most of our bidirectional networks.
+Nevertheless, as most of our networks weighted by asymmetry had between zero and four cycles, we successfully used the second approach explained in the previous paragraph to calculate the all maximum matchings for these networks.
+
 We highlight that althoug the direction of control might affect the $f_S$ and $f_D$, it doesn't affect strongly the network's relative density of driver nodes $n_D$. 
 We reached this conclusion by calculating the $n_D$ obtained assuming that (a) the direction of control is governed by the asymmetry or (b) bidirectional dependences, (c) that plants depend on pollinators, and that (d) pollinators depend on plants. 
-Although the $n_D$ values were quantitatively different between the approaches (Figure S9), the Spearman correlation among these four options suggested a very high agreement (Table S3).
+Although the $n_D$ values were quantitatively different between the approaches (Figure \@ref(fig:fig-alternative-assumptions)), the Spearman correlation among these four options suggested a very high agreement (Table S3).
 
 ```{r fig-alternative-assumptions, echo = F, message = F, warning = F, fig.width = 4, fig.height = 1.6, results = "hide", fig.cap= "**Absolute differences among asumptions on the direction of control.**"}
 
@@ -1265,10 +1266,10 @@ a_m_driver %>%
   ggplot(aes(x = type, y = n_driver_rel), parse = T) +
   geom_boxplot(size = 0.25, colour = "grey10",
 							 outlier.shape = 21, outlier.size = 1) +
-  coord_flip() + 
+  coord_flip() +
   xlab("") +
-  ylab(expression(n[D])) + 
-  fer_theme + 
+  ylab(expression(n[D])) +
+  fer_theme +
   theme(plot.margin = grid::unit(c(0,1,2,0), "mm"))
 
 ```
