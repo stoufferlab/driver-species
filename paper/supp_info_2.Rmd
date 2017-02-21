@@ -1452,7 +1452,9 @@ d_sp %>%
 
 We then examined how the relative importance of species changes with the chosen threshold. 
 We observe, that regardless of the matching weight's threshold species tend to be superior nodes in all or none of the matchings, which equates to $f_S$ values of one or zero, and the contrast between important and unimportant species is maintained (Figure \@ref(fig:fig-f-s-rankings)).
-Contrastingly, species' $f_D$ reach intermediate levels of importance and show higher variability across thresholds (Figure \@ref(fig:fig-f-d-rankings)).
+Contrastingly, species' $f_D$ reach intermediate levels of importance and show higher variability across thresholds (Figure \@ref(fig:fig-f-d-rankings)). 
+We note here that we were unable to compute all the maximum cardinality matchings for one of our networks (uninvaded community in site 8). 
+We estimate the number of matchings to be more than one billion, which surpassed our available computational resources.
 
 ```{r fig-f-s-rankings, echo = F, message = F, warning = F, fig.width = 6.2, fig.height = 9, results = "hide", fig.cap="**Frequency with which a species was classified as a superior node ($f_S$) as a function of the matching weight threshold**. Rows correspond to study sites."}
 sites <- net_prop %>% dplyr::arrange(study, site, inv) %$% site %>% unique()
@@ -1474,6 +1476,9 @@ threshold_data <- d_sp %>%
 			dplyr::mutate(site_num = site_num -1, # to account for ballantynes
 										inv = plyr::mapvalues(inv, c(T, F), 
 																					c("invaded", "uninvaded")))
+# not finished note
+note <- data.frame(site_num = 8, inv = "invaded", text = "results not available")
+
 p <- c("f_s", "f_d") %>%
 	plyr::llply(function(x){
 		threshold_data %>% 
@@ -1483,8 +1488,9 @@ p <- c("f_s", "f_d") %>%
 			# dplyr::group_by() %>%
 			# reshape2::melt(measure.vars = c("f_s", "f_d"), value.name = "f") %>% 
 			# dplyr::group_by() %>% View
-			ggplot(aes_string(x = "threshold", y = x)) +
-			geom_line(aes(group = species), size = 0.2) +
+			ggplot() +
+			geom_line(aes_string(x = "threshold", group = "species", y = x), size = 0.2) +
+			geom_text(data = note, aes(label = text), x = 0.5, y = 0.5, size = 3) +
 			# geom_point(size = 0.5) +
 			facet_grid(site_num ~ inv) +
 			fer_theme
@@ -1509,14 +1515,14 @@ Nevertheless, the differences are marginal and any threshold $<= 0.9$ is likely 
 correlation_matrix <- c("f_s", "f_d") %>%
 	plyr::llply(function(x){
 		threshold_data %>%
-			plyr::daply("net_name", get_corr_matrix, column = x) %>%
+			plyr::daply("net_name", get_corr_matrix, column = x) %>% 
 			plyr::aaply(c(2, 3), mean)
 	})
 
 correlation_matrix_o <- correlation_matrix[[1]]
 correlation_matrix_o[upper.tri(correlation_matrix_o)] <- 
 	correlation_matrix[[2]][upper.tri(correlation_matrix[[2]])]
-c_m <- round(correlation_matrix_o, 2)
+c_m <- round(correlation_matrix_o, 3)
 c_m[is.na(c_m)] <- "—"
 
 xtable::xtable(c_m, caption = "\\textbf{Spearman correlation coefficient among different matching weight thresholds}. The upper triangle shows values for $f_D$ and the lower triangle shows values for $f_S$") %>%
