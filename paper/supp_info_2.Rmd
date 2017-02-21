@@ -1053,9 +1053,24 @@ Finally, we also investigated whether the asymmetry of mutual dependency, which 
 ```{r table-correlations-visitation-vs-efficiency, echo = FALSE, warning = F, message = F, results = "asis"}
 d_sp <- driver %>%
   plyr::ldply(function(x) {
-    get_frequencies(x) %>%
+    o <- get_frequencies(x) %>%
       dplyr::mutate(type = attr(x, "type"),
                     scaled = attr(x, "scaled"))
+    net_names_with_extension <- unique(o$net_name) %>% as.character()
+    net_names_without_extension <- 
+    	strsplit(net_names_with_extension, "_", fixed = T) %>%
+    	lapply(function(x){ 
+    		if(x[length(x)] %in% LETTERS) {
+    			x[-length(x)]
+    		} else {
+    			x
+    		}
+    		}) %>%
+    	lapply(paste, collapse = "_") %>% unlist()
+    o %>% dplyr::mutate(
+    	net_name = plyr::mapvalues(net_name, net_names_with_extension,
+    														 net_names_without_extension)
+    )
   }) %>%
   dplyr::inner_join(meta)
 
@@ -1063,7 +1078,7 @@ correlations <- d_sp %>%
 	dplyr::filter(study == "ballantyne",
 								threshold == 0.5,
 								type == "asymmetry",
-								scaled == F) %>%
+								scaled == F) %>% 
 	dplyr::group_by(net_name, threshold, type, scaled) %>%
 	dplyr::mutate(d_weight = d_weight/max(d_weight),
 								d_rank = rank(-d_weight, ties.method = "average")) %>%
