@@ -24,6 +24,8 @@ library(magrittr)
 library(dplyr)
 library(latex2exp)
 library(ggplot2)
+library(glmulti)
+library(lme4)
 
 "../code/functions" %>% 
 	list.files(full.names = T) %>%
@@ -562,17 +564,17 @@ p2 <- par_res %>%
 	theme(axis.title.y = element_text(vjust = 1, margin = margin(1,-3,1,1, unit = "lines")))
 
 cowplot::plot_grid(p1, p2, ncol = 1, align = "v") +
-	cowplot::draw_plot_label(label = c("a)", "b)"), size = 8, fontface = "plain", y = c(1, 0.5))
+	cowplot::draw_plot_label(label = c("(a)", "(b)"), size = 8, fontface = "bold", y = c(1, 0.5))
 # pdf("../paper/figures/fig_3.pdf", height = 1.7, width = 3.245, family = "Times", compress = F, title = "Figure 3")
 # f3
 # dev.off()
 
 ```
 
-When exploring the effect of network structure itself, we observed that the manageability of empirical networks was, in general, not significantly different to the manageability of network randomisations that maintained the degree or the strength of individual species (Figure 4). 
-However, when comparing the empirical network to randomisations that maintained the network structure but randomised only the direction of the asymmetries, we found that empirical networks showed a significant tendency to have smaller values of manageability.
+When exploring the effect of network structure itself, we observed that the driver node density $n_D$ of empirical networks was, in general, not significantly different to the manageability of network randomisations that maintained the degree of individual species (Figure 4). 
+However, we found that the $n_D$ of empirical networks was significantly larger to that of randomisations that maintained the network structure but that differed only on the direction of the asymmetries.
 
-```{r fig_randomisations, echo = FALSE, warning = FALSE, message = FALSE, fig.width = 3.245, fig.height = 1.6, fig.cap = "The manageability of empirical networks compared to network randomisations. For each randomisation approach, we show the standarised rank of the empirical value compared to the set of randomisations. A scaled mean rank—akin to a p-value— less than 0.025 or greater than 0.975 (the areas shaded in light grey) suggests a significant difference between the empirical network and its randomisations. The empirical manageability is much smaller than that of network randomisations in which the direction of asymmetries has been randomised. In contrast, the manageability of networks in which the species degrees were randomly shuffled were not significantly different to the manageability of the empirical networks. Dark grey and white boxplots represent manageabilities obtained using interactions weighted by mutual dependences and asymmetries respectively. All boxes are as in Figure 3a."}
+```{r fig_randomisations, echo = FALSE, warning = FALSE, message = FALSE, fig.width = 3.245, fig.height = 1.6, fig.cap = "**The driver node density _n~D~_ of empirical networks compared to network randomisations**. For each randomisation approach, we show the standarised rank of the empirical value compared to the set of randomisations. A scaled mean rank—akin to a p-value— less than 0.025 or greater than 0.975 (the areas shaded in light grey) suggests a significant difference between the empirical network and its randomisations. The empirical _n~D~_ is much smaller than that of network randomisations in which the direction of asymmetries has been randomised. In contrast, the manageability of networks in which the species degrees were randomly shuffled were not significantly different. All boxes are as in Figure 3a."}
 r <- r_w %>%
   dplyr::bind_rows(dplyr::mutate(r_d, type = "weight")) %>%
   dplyr::inner_join(meta) %>%
@@ -607,12 +609,13 @@ z_scores %>%
                 m_n = replace(m_n, m_n == 3, 3.5)) %>%
   dplyr::filter(!method %in% c("r00_both", "r00_ind", "r00_samp", 
   														 "swsh_both")) %>% # the maintain degree randomise strength option
-  ggplot(aes(x = method, y = -1 * z_s)) +
+	dplyr::filter(type == "weight") %>%
+  ggplot(aes(x = method, y = z_s)) +
   geom_rect(aes(xmin = 0.5, xmax = 2.5, ymin = -Inf, ymax = qlogis(0.025)), fill = "#f0f0f0") +
   geom_rect(aes(xmin = 0.5, xmax = 2.5, ymin = Inf, ymax = qlogis(0.975)), fill = "#f0f0f0") +
 
   # geom_hline(yintercept = c(-0), linetype = 2, alpha = 0.7, size = 0.25) + 
-  geom_vline(aes(xintercept = 1.5), alpha = 0.6, size = 0.25) +
+  # geom_vline(aes(xintercept = 1.5), alpha = 0.6, size = 0.25) +
    geom_hline(yintercept = 0, size = 0.25, linetype = 2, colour = "grey30") +
   geom_boxplot(aes(fill = type), size = 0.3,
                colour = "grey10", outlier.shape = 21, outlier.size = 1) +
@@ -628,7 +631,7 @@ z_scores %>%
                      labels = plogis(qlogis(c(0.001, 0.025, 0.5, 0.975,0.999)))) + 
   xlab("") +
     coord_flip() +
-  ylab("mean rank of empirical manageability") + 
+  ylab(expression(paste("empirical ", n[D], " rank (scaled)"))) + 
   fer_theme +
   theme(
         legend.position = "none",
@@ -639,29 +642,150 @@ z_scores %>%
 
 ## Relative importance
 
-```{r}
-d_sp <- driver %>%
-  plyr::ldply(function(x) {
-    get_frequencies(x) %>%
-      dplyr::mutate(type = attr(x, "type"),
-                    scaled = attr(x, "scaled"))
-  }) %>% 
-	dplyr::filter(scaled == FALSE)
+Invasive species were classified as superior nodes *and* driver nodes in every single network they were present; that is, they always had the highest relative *f~S~* and *f~D~* (Figure 5a). 
+The model results suggest that this differences among invasive and native species are underpinned, not by any intrinsic property of the invasive species but instead, by species properties that apply to invasive and native species alike (Table 1). 
+Specifically, we found that a species is more likely to be classified as a superior node if it had a large dependence strength (its sum of the dependences). 
+To a smaller extent, visitation strength (its sum of visits) and the species degree also had a positive relationship with $f_S$. 
+In contrast, the relationships between species structural properties and $f_D$ was more convoluted (Table 1). 
+Both invasive species (which for example tend to have a large degree, and high dependence strength) and pollinators (which generally have a smaller degree and dependence strength) were classified as driver nodes in a large proportion of the considered matchings.
 
-d_sp_bi <- driver_bi %>%
-  get_frequencies() %>%
-      dplyr::mutate(type = "z_bi",
-                    scaled = FALSE)
+```{r glmulti-functions, include = FALSE, warning = FALSE, message = FALSE, results = "hide"}
+glmer.glmulti<-function(formula,data,random="",...){
+  glmer(paste(deparse(formula, width.cutoff = 500),random),data=data,...)
+}
 
-d_sp <- dplyr::bind_rows(d_sp, d_sp_bi) %>%
-  dplyr::inner_join(meta) 
+setMethod('getfit', 'glmerMod', function(object, ...) {
+  summ <- coef(summary(object))
+  summ1 <- summ[,1:2,drop=FALSE]
+  ## if (length(dimnames(summ)[[1]])==1) {
+  ##     summ1 <- matrix(summ1, nr=1,
+  ##                     dimnames=list(c("(Intercept)"),
+  ##                     c("Estimate","Std. Error")))
+  ## }
+  cbind(summ1, df=rep(times =10000,length(fixef(object))))
+})
 ```
 
+```{r fig-dependency-fs, echo = FALSE, warning = FALSE, message = FALSE, fig.width = 3.245, fig.height = 3.2, fig.cap = "**Relatiosnships between _f~S~_ and _f~D~_ and species' structural properties**. (a) In all networks were they were present, invasive species were classified as superior (_f~S~_) and driver (_f~D~_) nodes in all possible control configurations. (b) Dependency strength is the single most important factor explaining _f~S~_. Visitation strength and  degree also had an important albeit comparatively smaller effect (dashed lines correspond to ± one standard deviation on these factors). Invasive species are depicted as circles."}
+data <- mo 
+trans <- function(x, orig){
+  x * attr(orig, "scaled:scale") + attr(orig, "scaled:center")
+}
+
+b_trans <- function(x, orig){
+  (x - attr(orig, "scaled:center")) / attr(orig, "scaled:scale")
+}
+
+pred_data <- data.frame(de = rep(b_trans(exp(c(seq(
+	log(trans(min(data$de, na.rm = T), data$de)),
+	log(trans(max(data$de, na.rm = T), data$de)),
+                                length = 500))), data$de),3),
+            d = rep(c(-1,0,1), each = 500),
+            vi = rep(c(-1,0,1), each = 500),
+            type = rep(c("exp", "mean", "exp"), each = 500),
+            # vi = seq(min(data$vi), max(data$vi), length.out = 500),
+            eig_cen = mean(data$eig_cen, na.rm = T),
+            n = mean(data$n, na.rm = T),
+            guild = "pla")  %>%
+  dplyr::filter(!(n == 2 & vi == -2),
+                !(n == -2 & vi == 2)) %>%
+  dplyr::mutate(q = predict.glmulti(mod[[1]],
+                                    select = 2L,
+                                    newdata = .,
+                                    re.form = NA)$averages %>%
+                  as.vector(),
+                p = plogis(q)) %>%
+  dplyr::mutate(de = de * attr(data$de, "scaled:scale") + attr(data$de, "scaled:center"),
+                vi = vi * attr(data$vi, "scaled:scale") + attr(data$vi, "scaled:center"))
+
+data_pp <- data
+data_pp$pred_ri <- plogis(predict.glmulti(mod[[1]], re.form = NA, select = 1L))
+data_pp$de_s <- data$de * attr(data$de, "scaled:scale") + attr(data$de, "scaled:center")
+data_pp <- lapply(data_pp, as.vector) %>% as.data.frame
+
+p1 <- pred_data %>%
+  ggplot() +
+  geom_line(aes(x = de, y = p, linetype = type, colour = type, group = interaction(n, vi)), show.legend = F, size = 0.5) +
+  scale_x_log10(expand = c(0,0)) +
+   geom_point(data = dplyr::arrange(data_pp, invasive) %>% dplyr::filter(invasive == T), aes(x = de_s, y = pred_ri, fill = invasive, shape = guild, size = invasive), show.legend = F) +
+    scale_shape_manual(values = c(21, 23)) +
+  scale_size_manual(values = c(1.5,1.5)) +
+  scale_fill_manual(values = c("white","#e41a1c")) + 
+  scale_color_manual(values = c("#525252", "black")) +
+  scale_linetype_manual(values = c(2, 1)) +
+  xlab("dependency strength") +
+  ylab(expression(f[S])) +
+  fer_theme
+
+# invasive comparison plot
+p2 <- mo %>%
+	# dplyr::filter(guild == "pla") %>%
+	dplyr::select(invasive, f_s, f_d) %>%
+	reshape2::melt(measure.vars = c("f_s", "f_d")) %>%
+	ggplot(aes(y = value, x = invasive, colour = variable)) + 
+	geom_boxplot(size = 0.3, outlier.shape = 21, outlier.size = 1)  +
+    # coord_flip() +
+  ylab("proportion") + 
+	scale_x_discrete(name = "", labels = c("native", "invasive")) +
+  fer_theme +
+  theme(legend.position = c(0.99,0.02),
+  			legend.direction = "horizontal",
+  			legend.justification = c(1,0),
+				plot.margin = grid::unit(c(2, 1, 0, 0), "mm"), 
+				# panel.grid.minor.x = element_blank(),
+				panel.grid.minor.y = element_blank()) +
+	scale_color_manual(values = RColorBrewer::brewer.pal(5, "Greys")[c(5,4)],
+										 name = "", 
+										 labels = c(expression(f[S]), expression(f[D])))
+
+cowplot::plot_grid(p2, p1, ncol = 1, labels = c("(a)", "(b)"), label_size = 8, 
+									 hjust = 0, vjust = 1.1, align = "v", rel_heights = c(1,1.16))
+```
+
+```{r table-species-model-coef, echo = FALSE, warning = FALSE, message = FALSE, results = "asis", sanitize = FALSE, cache = T}
+coef_tables <- mod %>%
+	plyr::llply(function(x){
+		x %>%
+			coef.glmulti(select = 0.95) %>%
+  as.data.frame()  %>%
+  dplyr::add_rownames("factor") %>%
+  dplyr::mutate(pare = grepl("(", factor, fixed =T),
+                factor = plyr::mapvalues(factor, 
+                                         c("de", "n", "vi", "eig_cen", 
+                                           "guildpol", "d", "invasiveTRUE"),
+                                         c("dependency strength", 
+                                           "contribution to nestedness",
+                                           "visitation strength",
+                                           "eigen-centrality", 
+                                           "guild (pollinator)", "degree", "invasive sp."))) %>% 
+  magrittr::set_names(c("factor", "est.", "var", "mod.", "imp.", "C.I.", "pare")) %>%
+			dplyr::mutate(absEstimate = abs(est.)/C.I.) %>%
+  dplyr::arrange(-pare, -imp., -absEstimate, factor) %>% 
+  dplyr::select(-pare, - absEstimate)
+	})
+
+coef_tables %<>%
+	plyr::llply(function(x){
+		x %>%
+  magrittr::set_names(c(" ", "est.", "var", "mod.", "imp.", "C.I.")) %>%
+			dplyr::select(-var, -mod.)
+	})
+
+attr(coef_tables, "subheadings") <- paste0("$", names(mod), "$")
+coef_tables %>%
+	xtable::xtableList(caption = "\\textbf{Factors determining species importance}. Factor estimates correspond to the average over all models that accounted for 95\\% of the AIC evidence.",
+										 digits =  c(0, 0, 2, 2, 2),
+										 display = c("d", "s", "f", "f", "G")) %>%
+	print(booktabs = T, include.rownames = F,  caption.placement = "top", size = "\\small",comment = F, sanitize.text.function = function(x){x})
+```
 
 # Appendix 1: Glossary 
 
 Driver node
   ~ An unmatched node in a maximal cardinality matching or a maximum matching. From the control perspective, driver nodes are those to which external control signals must be applied in order to gain full control of the network.
+  
+*n~D~*
+  ~ The density of driver nodes
   
 Matched/unmatched link
   ~ A link is refered to as *matched* if it is part of a matching, and *unmatched* otherwise.
