@@ -60,19 +60,21 @@ driver <- mapply(function(x, y){
 }, driver, prop)
 driver_bi <- "../data/processed/matching_frequency_bi" %>% 
   read_allRDS()
+mod <- readRDS("../data/processed/detailed_species_models.rds")
+mo <- readRDS("../data/processed/detailed_species_models_data.rds")
 ```
 
 ```{r plot theme, echo = FALSE, warning = F, message = F}
 fer_theme <- theme_bw() +
-	theme(text = element_text(family = "Times"),
-	      title = element_text(size = 7.5, hjust = 0),
-	      legend.title = element_text(size = 9),
-	      legend.text = element_text(size = 8),
-				axis.text = element_text(size = 8),
-				axis.title = element_text(size = 9, hjust = 0.5), 
-				strip.text = element_text(size = 9, hjust = 0), 
+	theme(text = element_text(family = "Helvetica"),
+	      title = element_text(size = 7, hjust = 0),
+	      legend.title = element_text(size = 8),
+	      legend.text = element_text(size = 7),
+				axis.text = element_text(size = 7),
+				axis.title = element_text(size = 8, hjust = 0.5), 
+				strip.text = element_text(size = 8, hjust = 0), 
 				strip.background = element_blank(),
-				plot.margin = grid::unit(c(5, 0, 2, 0), "mm"),
+				plot.margin = grid::unit(c(5, 0.5, 2, 0), "mm"),
 				panel.grid = element_blank())
 ```
 
