@@ -774,6 +774,48 @@ coef_tables %>%
 	print(booktabs = T, include.rownames = F,  caption.placement = "top", size = "\\small",comment = F, sanitize.text.function = function(x){x})
 ```
 
+# Discussion
+
+Our results reveal that the structural differences among associated with biotic invasions are reflected in a potential decrease in our ability to alter the state of the community post invasion. 
+Furthermore, invasive mutualists were always driver species in the communities they invade.
+As driver species, they occupy a particularly dominant role in which changes on their abundance have the potential to propagate broadly trough the community and in turn affect the abundances of many other species. 
+
+At a community level, we demonstrate that the manageability of mutualistic networks is strongly governed by the asymmetric nature of mutual dependencies—which constitute the foundations of the structure and stability of mutualistic networks [@Memmott2004; @Vazquez2004; @Bascompte2006; @Lever2014; @Astegiano2015]. 
+Indeed, our empirical networks exhibit markedly lower levels of manageability compared to randomisations in which the visitation network was unchanged but where the observed patterns of dependence were broken. 
+However, consistent with previous results [@Liu2011], we show that the manageability of empirical networks was indistinguishable from that of networks with a random structure that maintained the degree or strength of each species in the community. 
+Therefore, the asymmetries at the species level (specialization-generalization asymmetries) and the link level (interaction's dependence asymmetries) appear to be sufficiently constrained by the distribution of species degree and strength [@Melian2002].
+Generally speaking, this strong relationship between the asymmetric dependences and manageability might explain why invasive species reduce the manageability of their communities. 
+Invasive species have been previously found to exacerbate the asymmetries in the network and ostensibly increase the stability of their community [@Aizen2008; @Bartomeus2008; @Henriksson2016].
+
+The changes in the asymmetries we found in the invaded networks are also reflected at a species level by the high relative importance of invasive species.
+However, we found that invasive plants are not inherently different to their native counterparts [@Stouffer2014].
+Invasive plants, just like any other mutualist in our data set, tend to be driver species to the degree to which their interaction partners are collectively more dependent on them than the other way around.
+Previous studies have found that super-generalists, like invasive species, play a central role in their networks [@Vila2009; @Palacio2016].
+Our results take this one step further and indicate that dependence strength, rather than generalism or other metrics of centrality, is the factor that best explains how important a species is for its community's dynamics.
+XXX - ADD STUFF ABOUT FS AND FD FOR MANAGEMENT AND CONTRASTS TO RUTHS
+
+Because of their effects on other species in the community, driver species might be natural candidates for management interventions. 
+For instance, despite inconsistent outcomes in practice [@Suding2004; @Rodewald2015; @Smith2016], our results suggest that current restoration approaches that focus on direct eradication of invasive species might indeed be an effective way to modify ecosystem state. 
+Nevertheless, our results also indicate that removals must be exercised with caution as invaded communities tend to be highly dependent on invaders and therefore acutely vulnerable to their eradication [@Traveset2013; @Albrecht2014]. 
+Although useful for identifying conservation priorities, our approach is different to previous attempts to quantify species importance that concentrate on measures of centrality, position, co-extinction or uniqueness [@Jordan2006; @Jordan2009; @Lai2012; @McDonald-Madden2016]. 
+XXX ADD CAVEATS - MACDONALDMADDEN 2016 - NETWORK METRICS - POPULATION DENSITIES CONTROLED BY OTHER THINGS BUT POLLINATION 
+Instead the concept of driver species is more akin to the original concept of keystone species, which illustrated how changes on the abundance of a key species in turn affect the abundances of other members of the community [@Paine1969; @Paine1995]. 
+However, while keystone species were traditionally identified by gauging how a community's population dynamics respond to a perturbation [@Mills1993], the driver species concept operates the other way round; namely, it uses the community dynamics, underpinned by the interspecific effects, to infer the effects of a perturbation. 
+While it is challenging to quantify the dependence of species in an ecological community, a purely experimental approach that identifies dynamically important species in a similar manner might be even more difficult to implement. 
+
+Overall, our investigation confirms the conclusions of previous studies that suggested that, in contrast to other types of complex systems, the structure of ecological networks renders them remarkably difficult to control [@Liu2011; @Ruths2014]. 
+In a hypothetical situation in which the goal were to regulate the abundances of all species in a pollination community, our results indeed suggest that we would need to directly intervene with the abundances of at least 40-90% of those species.
+Fully controlling an ecological community is no doubt an idealistaion, as designing and implementing the management interventions needed is currently impractical. 
+Nevertheless, the ''manageability'' of an ecological community, which is related to the number of species that would require a directed intervention, can provide a simple, straightforward, and theoretically-informed indication of the degree to which the community is self-regulated and therefore how difficult it might be to modify its state in one way or another. 
+XXX - ADD STUFF RELATING TO OTHER TYPES OF INTERACTIONS
+
+In this study, we illustrate how a control-theoretic approach can be adopted when estimating the effect of invasions—a major driver of global change—on mutualistic communities.
+Notably, it can also be extended to understand the structural effects of other kind of perturbations and for systems governed by different types of interactions. 
+Moreover, we see great potential by explicitly integrating control theory with dynamic models of species densities [@Cornelius2013; @Gibson2016]. 
+From an ecological perspective, this integration can provide even deeper insights into the relationship between controllability and species coexistence.
+It can also help identify potential trade-offs between persistence at the species and the community level. 
+From a conservation perspective, the combined approach can shift our focus beyond the identification of ideal targets for intervention to design informed interventions that legitimately achieve restoration goals.
+
 # Appendix 1: Glossary 
 
 Driver node
