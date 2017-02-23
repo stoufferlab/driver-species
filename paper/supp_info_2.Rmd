@@ -489,7 +489,7 @@ We then calculate the complement graph of *L(B)* and identify all the maximal cl
 Here some extra definitions are neccessary. 
 First, the complement of *L(B)*, *H*, is a graph with the same nodes as *L(B)* but that has a link between two given nodes if and only if there is not a link in *L(B)*. 
 Second, a clique is a subset of nodes such that any two of them are linked. 
-Lastly, a maximum clique is a clique such that there are no cliques with more nodes. 
+Lastly, a maximum clique is a clique such that there are no cliques with more nodes [@Gutin2013]. 
 In this example, there are two maximum cliques: that one formed by 1, 3 and 5, and the one formed by 2, 3 and 5. 
 The final step is then to map these cliques into the original network to obtain all possible maximum cardinality matchings as shown in Figure 1 in the main text.
 
