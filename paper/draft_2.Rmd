@@ -10,6 +10,8 @@ output:
 header-includes:
 - \usepackage{setspace}
 - \usepackage{float}
+- \usepackage{booktabs}
+- \usepackage{caption} 
 documentclass: artikel1
 bibliography: references.bib
 ---

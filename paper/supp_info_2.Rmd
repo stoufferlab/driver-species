@@ -14,7 +14,8 @@ header-includes:
 - \usepackage{float}
 - \renewcommand{\thefigure}{S\arabic{figure}}
 - \renewcommand{\thetable}{S\arabic{table}}
-- \usepackage[tableposition=top]{caption}
+- \usepackage{booktabs}
+- \usepackage[tableposition=top]{caption} 
 documentclass: artikel1
 bibliography: references.bib
 nocite: | 
@@ -982,7 +983,7 @@ net_prop %>%
 								 "$AS$" = "web.asymmetry") %>%
 	xtable::xtable(caption = "\\textbf{Properties of the analysed plant-pollinator communities}. Invasive plants were \\textit{Carpobrotus affine acinaciformis} (car), \\textit{Opuntia stricta} (op), and \\textit{Impatients grandulifera} (imp). All properties, with the exception of the networks' total species richness ($R$), correspond to the network's largest component. We show the number of species ($n_s$), the number of plants ($n_p$), the number of pollinators ($n_a$), the network connectance ($c$), the network assymetry ($AS$), and the network nestedness (NODF index). British networks were assembled by Lopezaraiza-Mikel et al. (2007), Spanish were networks assembled by Bartomeus et al. (2008).") %>%
 	print(#floating.environment = "sidewaystable", 
-		comment = FALSE, sanitize.text.function = function(x){x}, include.rownames = FALSE, caption.placement = "top")
+		comment = FALSE, sanitize.text.function = function(x){x}, include.rownames = FALSE, caption.placement = "top", booktabs = T)
 
 # knitr::kable(meta)
 ```
@@ -1124,7 +1125,7 @@ mapply(my_paste, correlations$r, correlations$P) %>%
   matrix(ncol = length(dir_net_b)) %>% magrittr::set_colnames(nam) %>%
   magrittr::set_rownames(nam) %>% `[<-`(lower.tri(.), lt) %>% 
   xtable::xtable(caption = "\\textbf{Agreement among network weighting schemes}. Spearman correlation coeffcients (with p-value) of species' $f_D$ and the percentage of interactions that share the direction of dependency obtained using the three weighting schemes and an unweighted scheme.") %>%
-	print(comment = FALSE, include.rownames = TRUE, caption.placement = "top")
+	print(comment = FALSE, include.rownames = TRUE, caption.placement = "top", booktabs = T)
 	
 ```
 
@@ -1421,7 +1422,7 @@ corr_matrix <- corr_matrix[-(nrow(corr_matrix)), ]
 
  corr_matrix %>% 
   xtable::xtable(caption = "\\textbf{Agreement among assumptions on the direction of control}. Spearman correlation coefficients of the number of driver nodes $n_D$ four different assumptions of the direction of control..") %>%
-	print(comment = FALSE, include.rownames = TRUE, caption.placement = "top")
+	print(comment = FALSE, include.rownames = TRUE, caption.placement = "top", booktabs = T)
 
 ```
 
@@ -1511,7 +1512,7 @@ With the exception of using a threshold of 1 (only maximum matchings are accepte
 For convenience, we use an intermediate level of 0.5. 
 Nevertheless, the differences are marginal and any threshold $<= 0.9$ is likely to produce very similar results. 
 
-```{r table-correlations-thresholds, echo = F, message = F, warning = F, results = "asis", sanitize = F}
+```{r table-correlations-thresholds, echo = F, message = F, warning = F, results = "asis", sanitize = F, cache = T}
 correlation_matrix <- c("f_s", "f_d") %>%
 	plyr::llply(function(x){
 		threshold_data %>%
@@ -1526,7 +1527,7 @@ c_m <- round(correlation_matrix_o, 3)
 c_m[is.na(c_m)] <- "—"
 
 xtable::xtable(c_m, caption = "\\textbf{Spearman correlation coefficient among different matching weight thresholds}. The upper triangle shows values for $f_D$ and the lower triangle shows values for $f_S$") %>%
-	print(comment = FALSE, include.rownames = TRUE, caption.placement = "top")
+	print(comment = FALSE, include.rownames = TRUE, caption.placement = "top", booktabs = T)
 ```
 
 # References
