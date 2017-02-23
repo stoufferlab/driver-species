@@ -1530,4 +1530,37 @@ xtable::xtable(c_m, caption = "\\textbf{Spearman correlation coefficient among d
 	print(comment = FALSE, include.rownames = TRUE, caption.placement = "top", booktabs = T)
 ```
 
+# Statistical models
+
+```{r table-nd-coef, echo = FALSE, warning = FALSE, message = FALSE, results = "asis", sanitize = FALSE}
+library(glmulti)
+
+manag_table <- manag_models %>%
+			coef.glmulti(select = 0.95) %>%
+  as.data.frame() %>%
+  tibble::rownames_to_column("factor") %>%
+  dplyr::mutate(pare = grepl("(", factor, fixed =T),
+                factor = plyr::mapvalues(factor, 
+                												 c("studylopezaraiza", "invTRUE",
+                												 	"I(n_links/(n_pla * n_pol))",
+                												 	"I(n_pla + n_pol)", 
+                												 	"I(n_pla/n_pol)"),
+                												 c("study site", "invasion status",
+                												 	"connectance", "spp. richness", 
+                												 	"ratio plant/pollinator"))) %>%
+  dplyr::arrange(-pare, -Importance, factor) %>% 
+  dplyr::select(-pare) %>%
+  magrittr::set_names(c(" ", "est.", "var", "mod.", "imp.", "C.I.")) %>%
+			dplyr::select(-var, -mod.)
+
+
+manag_table %>%
+	xtable::xtable(caption = "\\textbf{Coefficients of the $n_D$ models}. Estimates are averaged over the models that accounted for 95\\% of the evidence weight.",
+										 digits =  c(0, 0, 2, 2, 2),
+										 display = c("d", "s", "f", "f", "G")) %>%
+	print(booktabs = T, include.rownames = F,  caption.placement = "top", comment = F, sanitize.text.function = function(x){x})
+
+```
+
+
 # References
