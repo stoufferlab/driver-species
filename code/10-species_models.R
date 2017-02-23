@@ -11,28 +11,52 @@ setwd("~/github/driver-species/")
   plyr::l_ply(source)
 
 driver <- c("./data/processed/matching_frequency") %>% 
-  list.files(full.names = T) %>%
-  lapply(list.files, full.names = T) %>% 
-  unlist() %>% 
-  lapply(read_allRDS)
+	list.files(full.names = T) %>%
+	lapply(list.files, full.names = T) %>% 
+	unlist() %>% 
+	lapply(read_allRDS)
 prop <- expand.grid(c("asymmetry", "max_dep"), 
-                    c("scaled_FALSE", "scaled_TRUE")) %>% plyr::alply(1)
+										c("scaled_FALSE", "scaled_TRUE")) %>% plyr::alply(1)
 driver <- mapply(function(x, y){
-  attr(x, "type") <- as.character(y[,1])
-  attr(x, "scaled") <- stringr::str_split(as.character(y[,2]), "_") %>% unlist() %>% extract(2) %>% as.logical()
-  return(x)
+	attr(x, "type") <- as.character(y[,1])
+	attr(x, "scaled") <- stringr::str_split(as.character(y[,2]), "_") %>% unlist() %>% extract(2) %>% as.logical()
+	return(x)
 }, driver, prop)
 
 meta <- readr::read_csv("data/ntw_info.csv") %>% dplyr::tbl_df()
 s_p <- readRDS("./data/processed/species_properties.rds") %>% dplyr::tbl_df()
 
-# extract frequency
 d_sp <- driver %>%
-  plyr::ldply(function(x) {
-    get_frequencies(x) %>%
-      dplyr::mutate(type = attr(x, "type"),
-                    scaled = attr(x, "scaled"))
-  })
+	plyr::ldply(function(x) {
+		o <- get_frequencies(x) %>%
+			dplyr::mutate(type = attr(x, "type"),
+										scaled = attr(x, "scaled"))
+		net_names_with_extension <- unique(o$net_name) %>% as.character()
+		net_names_without_extension <- 
+			strsplit(net_names_with_extension, "_", fixed = T) %>%
+			lapply(function(x){ 
+				if(x[length(x)] %in% LETTERS) {
+					x[-length(x)]
+				} else {
+					x
+				}
+			}) %>%
+			lapply(paste, collapse = "_") %>% unlist()
+		o %>% dplyr::mutate(
+			net_name = plyr::mapvalues(net_name, net_names_with_extension,
+																 net_names_without_extension)
+		)
+	}) %>%
+	dplyr::inner_join(meta) %>% 
+	dplyr::filter(threshold == 0.5, scaled == F, type == "asymmetry",
+								!grepl("bal", net_name)) %>%
+	dplyr::mutate(f_s = d_freq / n_matchings, 
+								f_d = (n_matchings - m_freq) / n_matchings) %>%
+	dplyr::group_by(net_name, threshold, species) %>%
+	dplyr::summarise(f_s = mean(f_s),
+									 f_d = mean(f_d), 
+									 inv = dplyr::first(inv)) %>%
+	dplyr::group_by()
 
 # merge with species information
 drivers <- dplyr::inner_join(d_sp, s_p) %>% 
@@ -50,7 +74,7 @@ guild <- c("pla", "pol") %>%
 
 # insert guild information
 drivers <- drivers %>%
-  dplyr::inner_join(guild) %>%
+  dplyr::inner_join(guild) %>% 
   dplyr::inner_join(meta)
 
 # drivers %>%
@@ -62,13 +86,13 @@ drivers <- drivers %>%
 # geom_violin(aes(fill = guild))
 
 # explore correlations
-factor_correlations <- drivers %>%
-  plyr::dlply("guild", function(x){
-    x %>% 
-      dplyr::select(nestedcontribution, degree, d_strength, v_strength, eig_cen) %>%
-      as.matrix() %>%
-      cor()
-  })
+# factor_correlations <- drivers %>%
+#   plyr::dlply("guild", function(x){
+#     x %>% 
+#       dplyr::select(nestedcontribution, degree, d_strength, v_strength, eig_cen) %>%
+#       as.matrix() %>%
+#       cor()
+#   })
 
 # basic models
 library(lme4)
@@ -102,10 +126,6 @@ invasive_sp <- dplyr::filter(meta, inv) %>%
 
 # calculate a lot of models
 mo <- drivers %>%
-  dplyr::filter(threshold == 0.5,
-                type == "asymmetry",
-                scaled == F, 
-                study != "ballantyne") %>%
   dplyr::rename_("n" = "nestedcontribution",
                  "S_d" = "d_s_m",
                  "S_v" = "v_s_m",
@@ -113,6 +133,7 @@ mo <- drivers %>%
                  "de" = "d_strength",
                  "vi" = "v_strength")  %>%
   dplyr::full_join(invasive_sp) %>% 
+	dplyr::filter(!is.na(threshold)) %>%
   dplyr::mutate(invasive = replace(invasive, is.na(invasive), FALSE)) %>%
   dplyr::mutate(n = scale(n)[,1],
                 S_d = scale(S_d),
@@ -129,17 +150,24 @@ to_exclude <- c("de", "eig_cen", "n", "vi", "invasive") %>%
   combn(2) %>% 
   apply(2, function(x) paste(x[1], x[2], sep = ":")) 
 
-mod <- glmulti("d_reim", c("d", "de", "guild", "eig_cen","n", "vi", "invasive"),
-             # exclude = to_exclude, 
-             data = mo,
-             family = "binomial",
-             fitfunction = glmer.glmulti, 
-             level = 1,
-             crit = "aic", 
-             method = "g", 
-             marginality = T,
-             includeobjects = F, 
-             random = " + (1 | net_name)")
+mod <- c("f_s", "f_d") %>%
+	plyr::llply(function(x){
+		glmulti(x, c("d", "de", "guild", "eig_cen","n", "vi", "invasive"),
+						# exclude = to_exclude, 
+						data = mo,
+						family = "binomial",
+						fitfunction = glmer.glmulti, 
+						level = 1,
+						crit = "aic", 
+						method = "g", 
+						marginality = T,
+						includeobjects = F, 
+						random = " + (1 | net_name)",
+						plotty = F)
+	})
+
+names(mod) <- c("f_s", "f_d")
+
 # 
 # objects <- lapply(mod@objects, function(x){
 #   if(is.null(x@optinfo$conv$lme4$code)) return(NULL)
@@ -208,5 +236,5 @@ mod <- glmulti("d_reim", c("d", "de", "guild", "eig_cen","n", "vi", "invasive"),
 saveRDS(mod, file = "./data/processed/detailed_species_models.rds", ascii = T, compress = F)
 saveRDS(mo, file = "./data/processed/detailed_species_models_data.rds", ascii = T, compress = F)
 
-saveRDS(factor_correlations, file = "./data/processed/species_models_correlations.rds", ascii = T, compress = F)
+# saveRDS(factor_correlations, file = "./data/processed/species_models_correlations.rds", ascii = T, compress = F)
 
