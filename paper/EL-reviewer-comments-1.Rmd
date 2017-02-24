@@ -145,27 +145,39 @@ In its current form, it is unlikely that readers will be able to understand or r
 
 - L74 “we expand previous theory of the control of complex systems to an ecological context”. Do you mean apply? Please clarify your contribution without ambiguity.
 
-    *The sentence now reads "To bridge this gap, we develop methods to apply previous theory on the control of complex systems into an ecological context and implement them using empirical data, while taking into account the quantitative differences that exist among species interactions."*
+    *The sentence now reads "To bridge this gap, we outline an approach to apply theory on the control of complex systems in an ecological context and implement them using empirical data."*
 
 - Section Manageability (L94). Please first define manageability before maximum matching. Also, the maximum matching paragraph is difficult to understand. Reword.
 
-    *We have pretty much rewritten the "Theoretical framework" section following the reviewers advise. We start with a brief introduction to structural controllability (Lines XXX), follow with a definition of manageability (Lines XXX) and finalise with details and computational considerations for its calculation.*
+    *In response to this and other comments, we have rewritten most of the "Theoretical framework" section. We start with a brief introduction to structural controllability, follow with a definition of manageability and finalise with details and computational and methodological considerations regarding its calculation.*
 
 - Section Relative importance (L121). It seems that the abstract refers to this section as being a novel way to identify communities’ driver species. However it is very unclear that this is a novel contribution. Please clarify in the text and provide details in supplementary information. It is also unclear from the Methods section.
 
-     *Thanks for the observation. We have reworded large segments of this section. Specifically now explain how the approach builds on existing structural controllability theory by incorporating the weight of the interactions. Moreover, now we included more details about the rationale behind our approach. By being more specific we hope the reader to be able to identify the theretic and computational novelties of our approach with respect to existing "ranking" methods. We also strive to further clarify the novelty in the discussion section (Lines XXX). TO DO*
+     *Thanks for the observation. As above, we have also reworded large segments of this section to make more clear what are and what are not novel contributions. Specifically, we now explain how the approach builds on existing structural controllability theory by incorporating the weight of the interactions. In addition, although the concept of driver and superior nodes are not novel in the control theory literature, most of the previous studies tend to focus on __a single__ matching. We instead exploit the fact that a single network may have multiple control configurations and evaluate the role of species in each of them. We now dedicate a large proportion of the discussion to these new metrics and how (even if not independent) they are conceptually different to previous attempts to rank species by importance. We also include extra development in the Supporting Information S7. Moreover, now we included more details about the rationale behind our approach. By being more specific we hope the reader to be able to identify the theoretic and computational novelties of our approach with respect to existing "ranking" methods.*
 
 - Discussion. McDonaldMadden et al (2016) actually show that network metrics are not useful to prioritise the management of foodweb, i.e. to determine which species should be managed first (if required). Please edit current text and analyse differences with your work.
 
+    *Thank you. We acknowledge we did a poor job reflecting our work in the previous literature. We now include a paragraph in the discussion to explore the similarities and differences of our work with previous indices based on structural metrics. We explain how "our approach ... is not based on a single structural metric but acknowledges the existence of multiple management strategies; some more optimal than others in specific contexts". We also concur that more flexible approaches like ours and the one implemented by @McDonald-Madden2016* "that take a network-wide approach might prove more useful to guide ecosystem management if we want to go beyond using network metrics to minimise topological species loss".*
+
 - Discussion. Please provide some insight into how your method/analysis/results would differ for non- pollinator invaded networks.
+
+    *We now brifly mention in the Discussion how "because of the degree constraints imposed by bipartite networks, our pollination specific results might not be relevant to other ecological systems, the approach we propose is applicable wherever species abundances are influenced by their interactions".*
 
 - Discussion. Please discuss the caveats of your approach. I suggest moving some of the statistical analyses in sup info if word limit is an issue.
 
+    *We agree we did not discuss with enough detail the assumptions and caveats of our approach. As such, as we explain our methods we try to highlight the rationale behind them while being more explicit about the assumptions and limitations. Moreover, in the discussion, we now provide a fairer assessment of the extent to which our approach might be useful for practical applications.*
+
 - The maximum matching algorithm is computationally expensive as noted by the authors. In Ruths & Ruths (2014) the authors come with an interesting alternative to calculate the minimum number of independent controls (driver species) using only the number of source nodes, external dilation points and internal dilation points; and a heuristic using source and sink nodes. What is the profile of the pollinator networks studied? Would the Ruths & Ruths approach be an easier way of reaching the same conclusions? Would it bring complementary information?
+
+    *Calculating __one__ maximum matching for ecological networks with a few hundred species is not a computationally expensive operation, and therefore we use directly the algorithm and not the approximation proposed by @Ruths2014. Our most expensive computation was to find __all__ the possible maximum cardinality matchings to calculate species-level metrics. Lamentably the network's control profile does not provide species-level information and hence we couldn't use it to our advantage. Nevertheless, as suggested by you and another reviewed, we have included a section where in the Supporting information *(S2) where we explain that our networks are external dilation dominated. The @Ruths2016 has provided us with very useful insight on the selection of the direction of control and the utility of the concept of driver nodes for management applications.*
 
 - A few typos in main text and sup info.
 
+    *We have spell-checked all the text, and hope this time no typos have escaped from us.*
+
 - Is there a compelling reason to change controllability to “manageability”? Walters did the same thing with “adaptive management” in lieu of “adaptive control”. 30 years later, no one remembers where “adaptive management” originally came from and it has become a keyword in ecology. As a result, ecologists have been cut from the theoretical advances in control theory and most often have no clue that these are the same thing.
+
+    *Thank you for pointing this out. We maintain the word throughout our manuscript because it is more intuitive to develop the intuition of readers more familiar with ecological and conservation terminology. However, we do not use the word "manageability" in lieu of "controllability" in our manuscript anymore, and maintain the control theory terminology, especially in the methods section. In addition we have enriched the references so that its easier for the readers  to trace back our approach to the control literature.*
 
 ## Referee 3
 
