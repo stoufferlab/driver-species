@@ -12,11 +12,13 @@ header-includes:
 - \usepackage{float}
 - \usepackage{booktabs}
 - \usepackage{caption} 
+- \usepackage{lineno}
 documentclass: artikel1
 bibliography: references.bib
 ---
 
 \doublespacing
+\linenumbers
 
 ```{r libraries, echo = F, include = F}
 library(igraph)
@@ -125,32 +127,68 @@ label_pos_y <- 1
 pal <- RColorBrewer::brewer.pal(5, "PuOr")
 ```
 
+**E. Fernando Cagua^1\*^, Kate L Wootton^1,2§^, Daniel B. Stouffer^1#^**
+
+^1^ Centre for Integrative Ecology, School of Biological Sciences, University of Canterbury, Private Bag 4800, Christchurch 8041, New Zealand
+
+^2^ Current address: Stockolm, Cold & dark place in the Arctic Circle
+
+^\*^ efc29@uclive.ac.nz 
+^§^ kate.l.wootton@gmail.com
+^#^ daniel.stouffer@canterbury.ac.nz
+
+* **Running title:** Manageability of pollination networks.
+  
+* **Keywords:** Network control, ecological networks, species importance, driver species, food webs, mutualism, management interventions, food web, interaction asymmetry, mutual dependence
+  
+* **Article type:** Letter.
+  
+* **Number of words:** ~ () abstract; ~ 5450 main text.
+  
+* **Number of references:** 72
+  
+* **Number of displays:** 5 figures; 1 table.
+  
+* **Correspondence to:** Daniel Stouffer (daniel.stouffer@canterbury.ac.nz) - +64 3 364 2729 - Centre for Integrative Ecology, School of Biological Sciences, University of Canterbury, Private Bag 4800, Christchurch 8140, New Zealand
+
+* **Authorship:** DBS conceived the idea; EFC, DBS and KLW contributed to the development of the theoretical framework. EFC performed all analysis. EFC and DBS wrote the manuscript. 
+
+* **Data accessibility:** All data used in this manuscript have already been published by @Lopezaraiza-Mikel2007, @Bartomeus2008, and @Ballantyne2015. The reader should refer to the original sources to access the data.
+
+\newpage
+
+# Abstract
+
+150 words
+
+\newpage
+
 # Introduction
 
-Complex systems are characterised by relationships in which the whole is often greater than the sum of its parts [@Jorgensen1998; @Levin1999; @Montoya2006].
+Complex systems are chahave bracterised by relationships in which the whole is often greater than the sum of its parts [@Jorgensen1998; @Levin1999; @Montoya2006].
 Within community ecology, a complex systems approach has led to the development of a variety of analytical and simulation tools with which to understand, for example, the role of species when embedded in an intricate network of interactions [@Pascual2005; @Bascompte2009; @Stouffer2012]. 
 The inherent complexity of nature, however, has regularly hindered—or at least greatly complicated—our ability to find management solutions to the many problems ecological communities face. 
 To overcome this obstacle, we require a framework that allows us to explain, predict, and manage ecological communities, particularly when they are confronted with perturbations [@Sole2001; @Green2005].
-Ideally, such a framework needs to be able to account for their complex structure and the dynamics that determine the species abbundances and the state of the community. 
+Ideally, such a framework needs to be able to account for their complex structure and the dynamics that determine the species abundances and the state of the community. 
 
 Among the various possibilities, *control theory* appears to be a strong candidate. This method, widely used in engineering to determine and supervise the behaviour of dynamical systems [@Motter2015], is well equipped to deal with the many feedbacks present in ecological communities [@Liu2015]. 
-Research in the this area has established a strong link between the structure of complex networks and their *controllability*—the relative ability of manipulating network components to drive the system to a desired state [@Liu2011; @Cornelius2013; @Ruths2014]. 
+Research in this area has established a strong link between the structure of complex networks and their *controllability*—the relative ability to manipulate network components to drive the system to a desired state [@Liu2011; @Cornelius2013; @Ruths2014]. 
 These advances suggest that it is in principle possible to alter a whole ecological community's composition by modifying the abundances of only a few species.
 Furthermore, applications of control theory to ecological networks can also take into account the extent to which changes in the abundances of one species may ripple through the community [@Cornelius2013].
 Therefore, control theory could also be harnessed to provide an indication of which species are most relevant from a structural and dynamic perspective.
 
-This information is valuable not only from an ecological perspective, but it might be also relevant to address management and conservation challenges.  
+This information is valuable not only from an ecological perspective, but it might be also relevant to address management and conservation challenges. 
 This is particularly true in the context of biotic invasions, where identifying key players in the community is a prerequisite to informed attempts to either alter the state of invaded ecosystem and maintain the state of uninvaded ones.
 Despite recent advances in network theory, practical challenges to the conservation of interaction networks persist [@Tylianakis2010], and the link between the structure of complex networks and our ability to manage and conserve them, is still ambiguous [@Bluthgen2010; @Kaiser-Bunbury2015].
 To complicate things further, biotic invasions can induce dramatic changes in the patterns of interactions that determine the structure of ecological networks [@Baxter2004; @Tylianakis2008; @Ehrenfeld2010a]. 
-Understanding how the differences in network structure before and after the invasion impact our ability to manage the communities doububle challenge, it is a critical first step towards a fully informed recovery. 
+Understanding how the differences in network structure before and after the invasion impact our ability to manage the communities double challenge, it is a critical first step towards a fully informed recovery. 
 Despite the apparent overlap, a control-theoretic perspective has not been adopted in an invasion context. 
 This is perhaps because of a lack of appropriate methodological tools that can account for the observed variation in the strength of interspecific effects that are characteristic of ecological networks [@Liu2011; @Isbell2013].
 
 To bridge this gap, we outline an approach to apply theory on the control of complex systems in an ecological context and implement them using empirical data.
 Specifically, we use a set of ten pairs of uninvaded and invaded plant-pollinator communities to investigate the link between invasion, network structure and ecological management. 
 While doing so, we focus on two particular questions.
-First, grounded on the difficulties usually involved with invasive species erradication and ecosystem restoration [@Woodford2016], we ask whether invaded networks have lower levels of "manageability" than their uninvaded counterparts; that is, whether they require a greater proportion of species to be managed to achieve the same level of control. 
+First, grounded on the difficulties usually involved with invasive species eradication and ecosystem restoration [@Woodford2016], we ask whether invaded networks have lower levels of "manageability" than their uninvaded counterparts; that is, whether they require a greater proportion of species to be managed to achieve the same level of control. 
 Second, we ask whether some species are more important than others at driving the population dynamics of the community and which factors determine this importance. 
 We focus on these two particular applications for a variety of reasons. 
 First, biotic invasions are known to produce tractable changes in the structure of ecological networks, and these changes can be particularly pronounced in mutualistic networks between plants and pollinators where biotic invasions have been shown to modify the strength of species interactions and the degree of network nestedness and connectivity [@Olesen2002; @Aizen2008; @Bartomeus2008; @Vila2009; @Traveset2013]. 
@@ -166,8 +204,8 @@ Disregarding practical considerations, any network could hypothetically be fully
 At the core of control theory of complex networks, however, rests the idea that the state of a node depends on the state of the nodes it interacts with, and the particular form of this dependence is determined both by the dynamic relationship among interacting nodes as well as the structure of the links in the network. 
 This principle can, therefore, be harnessed to find a subset of *driver nodes* to which to apply external input signals which then drive the state of every other node in the network to a desired configuration.
 
-Conveniently, in a network with linear dynamics the information necessary to determine the minimum number of driver nodes *D* is fully contained in the network structure [@Kalman1963; @Liu2011; @Motter2015]. 
-We, therefore, start here from the assumption that that an ecological network can, at least near equilibrium points, be described by $\frac{dx}{dt} = Ax + Bu(t)$, where the change over time of its state ($\frac{dx}{dt}$) depends on its current state *x* (for example the species' populations), an external time-varying input *u(t)*, and the matrices *A* and *B*, which encapsulate information about the network structure and how the species respond to the external input, respectively. 
+Conveniently, in a network with linear dynamics, the information necessary to determine the minimum number of driver nodes *D* is fully contained in the network structure [@Kalman1963; @Liu2011; @Motter2015]. 
+We, therefore, start here from the assumption that an ecological network can, at least near equilibrium points, be described by $\frac{dx}{dt} = Ax + Bu(t)$, where the change over time of its state ($\frac{dx}{dt}$) depends on its current state *x* (for example the species' populations), an external time-varying input *u(t)*, and the matrices *A* and *B*, which encapsulate information about the network structure and how the species respond to the external input, respectively. 
 Even though linearity might be a strong assumption, it has been shown that fundamental insight about the control of complex systems can be gained without a detailed knowledge of the nonlinear dynamics and the system parameters [@Liu2015], an important step towards ultimately understanding the controllability of systems with nonlinear dynamics [@Liu2011]. 
 This means that structural controllability can be applied to a wide range of readily available network representations of ecological communities to provide a strong indication of our ability to control them. 
 Moreover, we show here how quantitative data about species interactions can help us move past some of the limitations of structural controllability by better approximating the role of interspecific dynamical relationships without being overly dependent on the specific choices of how these dynamics are modelled or characterised.
@@ -335,8 +373,8 @@ Ecologically, these distinctions are acutely relevant because management and con
 Maximum matchings in a network are often not unique, and each different maximum matching indicates a unique path that can potentially be used to control the network. 
 We harness this property and use a network's complete set of multiple maximum matchings to characterise a species' relative importance in driving the state of the community. 
 One possibility is to characterise a species by the frequency *f~D~* with which it is classified as a driver node.
-However, the profile of our networks indicates that a large proportion of driver nodes are so, because of external interventions are required to achieve **full** controllability, and not because they influence the abbundance of other species (Supporting Information S2).
-Furthermore, the role of driver nodes is still ambiguous when **full** network controllability is unfeasible or undesired—which is often the case in ecological settings.
+However, the profile of our networks indicates that a large proportion of driver nodes are so, because of external interventions are required to achieve **full** controllability, and not because they influence the abundance of other species (Supporting Information S2).
+Furthermore, the precise role of driver nodes is still ambiguous when full control is unfeasible or undesired—often the case in ecological settings.
 We therefore also calculate the frequency *f~S~* with which a species is classified as superior nodes since this is the frequency with which they form part of possible control paths.
 
 Most commonly, structural controllability assumes unweighted networks—links exist or not, and hence *f~D~* and *f~S~* can be calculated by computing all possible maximum cardinality matchings. 
@@ -365,7 +403,7 @@ Further details about the empirical networks can be found in the Supporting Info
 We then specified the structure of all networks using pollinator visitation frequency, which has been shown to be an appropriate surrogate for interspecific effects in pollination networks [@Vazquez2005; @Bascompte2006]. 
 To further examine whether this decision would influence our results, we also evaluated the effect of using pollinator efficiency or pollinator importance as alternative measures of species interactions in a different data set that lacked invasive species [@NeEman2010; @Ballantyne2015], and we found quantitatively similar results for all three of these options (Supporting Information S4).
 In addition, because our approach depends to a large degree on the network topology, we evaluated the robustness of our results to the undersampling of ecological interactions.
-Specifically, we calculated *n~D~*, and species relative importance for 500 random subsamples of each empirical network in which the weakest links were more likely to be removed. 
+Specifically, we calculated *n~D~* and species relative importance for 500 random subsamples of each empirical network in which the weakest links were more likely to be removed. 
 The sensitivity analysis indicated that, even in the absence of complete sampling, a control theoretic approach can still be applied (Supporting Information S5).
 
 ### Manageability
@@ -405,7 +443,7 @@ Their removal represented an average loss of `r sp_lost`% of the species and `r 
 
 Recall that the aforementioned maximum-matching approach requires a directed network in which a link between species *i* and *j* pointing to species *j* indicates that the abundance of *j* can be affected by the abundance of *i*.
 This implies that we need first to identify a directionality for the links between species that is consistent with the dynamics of the community (Figure 2). 
-In some ecological networks, establishing the directionality can appear relatively straightforward, for example when links represent biomass transfer or energy flow. 
+In some ecological networks, establishing the directionality can appear relatively straightforward, for example when links represent biomass transfer or energy flow [@Isbell2013]. 
 Interspecific effects in pollination networks, however, are not strictly directed since the benefit is mutual between interacting species. 
 Nevertheless, the relative extent to which a given pair of interacting species affect each other can be quantified by the magnitude of the mutual dependence between them [@Bascompte2006]. 
 The dependence of plant *i* on pollinator *j*, *d~ij~*, is the proportion of the visits coming from pollinator *j* compared to all pollinator visits to plant *i*. 
@@ -468,9 +506,9 @@ text(label_pos_x, label_pos_y, "(c)", adj = c(0,0), font = 2)
 
 Given the respective dependences, the extent to which a species *i* affects species *j* relative to the extent to which *j* affects *i* can be summarised by the interaction asymmetry [@Bascompte2006] given by $$a(i,j) = \frac{\left | d_{ij}-d_{ji} \right |}{max\left ( d_{ij}, d_{ji} \right )}.$$
 Previous research has shown that mutual dependences are often highly asymmetric in natural communities [@Bascompte2006]; in other words, if a plant species is largely dependent on a pollinator species, then that pollinator tends to depend rather weakly on the plant (or vice versa). 
-We therefore simplified the network so that interacting species are connected by only one directed link when mutual dependences are asymmetric (Figure 2c).
+We, therefore, simplified the network so that interacting species are connected by only one directed link when mutual dependences are asymmetric (Figure 2c).
 This simplification, while maintaining ecological realism, is advantageous for several reasons. 
-First, it is consistent with previous advances in structural controlability; second, it avoids complications related to the introduction of artificial control cycles; and third it significantly reduces the computational resources necessary for the application of our approach (Supporting Information S6).
+First, it is consistent with previous advances in structural controllability; second, it avoids complications related to the introduction of artificial control cycles; and third it significantly reduces the computational resources necessary for the application of our approach (Supporting Information S6).
 Furthermore, we show that changing to unidirectional interactions determined by the observed direction of asymmetry, as a surrogate of bidirectional mutual dependences does not alter the relative *n~D~* of different networks (Table S3).
 
 To find a maximum matching, we adopted a strategy based on an alternative bipartite representation of the directed network in which the two levels indicate the outgoing and incoming links to each node (Supporting Information S1). 
@@ -486,9 +524,9 @@ Coefficient estimates were averaged following @Buckland1997a while confidence in
 
 We next explored whether real networks differ in their architecture from random ones in a concerted way that affects manageability. 
 Previous research indicates a direct link between a network's degree distribution and the number of nodes necessary to fully control it [@Liu2011], but the strength and applicability of this relationship have not been tested for in weighted ecological networks. 
-We therefore compared the driver-node density *n~D~* of the empirical networks to networks generated by a null model that maintained each species' strength (its total sum of visits) while allowing their degrees (its number of interactions) to vary. 
+We, therefore, compared the driver-node density *n~D~* of the empirical networks to networks generated by a null model that maintained each species' strength (its total sum of visits) while allowing their degrees (its number of interactions) to vary. 
 Randomisations were generated using the function `commsim` in vegan 2.3-3 [@Oksanen2016]. 
-After generating the randomised networks, we then calculated the mutual dependences and interaction asymmetries of each, and determined *n~D~* using our maximum-matching framework.
+After generating the randomised networks, we then calculated the mutual dependences and interaction asymmetries of each and determined *n~D~* using our maximum-matching framework. 
 Finally, we calculated the average rank (akin to a p-value) of *n~D~* for each empirical network compared to the corresponding one of each set of 999 randomisations [@Veech2012].
 
 Beyond network structure, the dependence asymmetry plays a fundamental role in determining the direction of control in each two-species interaction and therefore has the potential to influence the network *n~D~* results above. 
@@ -500,10 +538,10 @@ Similar to the other null models, we calculated the average rank of the empirica
 
 Our second key question was related to how species differ in their ability to drive the population dynamics of the community. 
 To quantify this importance, we computed all maximal cardinality matchings in each network. 
-We then calculated the frequency with which each species *i* is deemed to be a driver (*f~D~*) or a superior node (*f~S~*) in the set of matchings that had a matching weight greater or equal to 0.5 times the weight of the maximum matching. 
+We then calculated the frequency with which each species *i* is deemed to be a driver (*f~D~*) or a superior node (*f~S~*) in the set of matchings that had a matching weight greater or equal to 0.8 times the weight of the maximum matching. 
 We selected this threshold as it provided a high agreement between networks quantified by visitation and pollination efficiency as well as between our weighting/directionality assumptions; however, the choice of this threshold had a negligible impact on any results (Supporting Information S7).
 
-Details about the compuational procedure to find all maximum cardinality matchings of a network can be found in Supporting Information S1 and Figure S2.
+Details about the computational procedure to find all maximum cardinality matchings of a network can be found in Supporting Information S1 and Figure S2.
 
 #### Statistical analysis
 
@@ -511,7 +549,7 @@ We then examined whether any species-level structural properties can predict our
 We used a set of generalised linear mixed-effects models (with binomial error structure) with the relative frequencies as the response variables. 
 As predictors in this model, we included measures of centrality (degree and eigen-centrality), which have been found to be strong predictors of importance in a coextinction context [@Memmott2004]; a measure related to network robustness (contribution to nestedness), as nestedness has been proposed as one of the key properties that promote stability in mutualistic networks [@Saavedra2011]; and two measures of strength of association and dependence (visitation and dependence strength), as their distribution determines the extent of interspecific effects [@Bascompte2006].
 To facilitate comparison among the continuous variables we scaled so that they all had a mean of zero and a standard deviation of one.
-In addition, we also included guild (plant or pollinator), and wether the species is invasive or not, as categorical fixed effects.
+In addition, we also included guild (plant or pollinator), and whether the species is invasive or not, as categorical fixed effects.
 Although the importance of plants and pollinators or invasive and non-invasive species could respond differently to our structural metrics, our data set did not contain enough variation to include the corresponding interactions terms for these latter two predictors. 
 All network metrics were calculated using the R package bipartite 2.06 [@Dormann2008]. 
 Lastly, we allowed for variation between different communities by including the network identity as a random effect [@Bates2015]. 
@@ -522,17 +560,26 @@ Candidate models and estimates were assessed using the same procedure as in the 
 ## Manageability
 
 All of the networks studied had a driver node density *n~D~* between `r round(min(dplyr::filter(n_driver, type == "weight")$n_dr_p), digits = 2)` and `r round(max(dplyr::filter(n_driver, type == "weight")$n_dr_p), digits = 2)` (mean `r round(mean(dplyr::filter(n_driver, type == "weight")$n_dr_p), digits = 2)`. 
-In addition, we found that, when controlling for potential species richness effects, the *n~D~* of invaded communities was smaller to those of non invaded communities (Figure 3a; Table S5). 
-Nevertheless of the various covariates we explored, the ratio of plant to pollinator showed the strongest relationship with *n~D~* (Table S4). 
-Specifically, we found that as the proportion of pollinators increasses and the ratio plant/pollinator balances, *n~D~* decreasses (all our communities had more pollinators than plants). 
-Other coovariates—connectance (link density) and species richness—had a neggative and comparatively less important relationship with *n~D~*.
+In addition, we found that, when controlling for potential species richness effects, the *n~D~* of invaded communities was smaller to those of non-invaded communities (Figure 3a; Table S5). 
+Nevertheless, of the various covariates we explored, the ratio of plant to pollinator showed the strongest relationship with *n~D~* (Table S4). 
+Specifically, we found that as the proportion of pollinators increases and the ratio plant/pollinator balances, *n~D~* decreases (all our communities had more pollinators than plants). 
+Other coovariates—connectance (link density) and species richness—had a negative and comparatively less important relationship with *n~D~*.
 
-```{r fig_explaining-n-driver, echo = FALSE, warning = FALSE, message = FALSE, fig.width = 3.245, fig.height = 3.2, fig.cap = "**Coovariates of driver node density**. (a) Invaded communities have lower proportion of driver nodes *n~D~* than uninvaded communities even when controlling for factors related to species richness. The boxes cover the 25th–75th percentiles, the middle lines mark the median, and the maximum length of the whiskers is 1.5 times the interquartile range. All points outside this range are indicated by the circles. (b) Out of the richness metrics, the ratio of plants to pollinators showed an important relationship with *n~D~*. In both plots, residuals correspond to the partial working residuals of the invasion status in our generalised linear mixed model."}
+```{r fig_explaining-n-driver, echo = FALSE, warning = FALSE, message = FALSE, fig.width = 3.245, fig.height = 4.8, fig.cap = "**Driver node density**. (a) Density distribution of the proportion of driver nodes (_n~D~_) for the twenty studied networks. (b) Invaded communities have lower proportion of *n~D~* than uninvaded communities even when controlling for factors related to species richness. The boxes cover the 25th–75th percentiles, the middle lines mark the median, and the maximum length of the whiskers is 1.5 times the interquartile range. All points outside this range are indicated by the circles. (c) Out of the richness metrics, the ratio of plants to pollinators showed an important relationship with *n~D~*. In both plots, residuals correspond to the partial working residuals of the invasion status in our generalised linear mixed model."}
 
 par_res <- as.data.frame(residuals(manag_models@objects[[5]], "partial"))
 names(par_res) <- paste0(make.names(names(par_res)), "_res")
 par_res %<>%
   dplyr::bind_cols(manag_models@objects[[1]]$data)
+
+p0 <- manag_models@objects[[1]]$data %>% 
+	ggplot(aes(x = n_dr_p)) + 
+	stat_density(size = 0.4, geom = "line") +
+	fer_theme +
+	xlab(expression(n[D])) +
+	ylab("density distribution") +
+	theme(axis.title.y = element_text(vjust = 1, margin = margin(1,-3,1,1, unit = "lines")))
+
 
 p1 <- par_res %>%
   ggplot(aes(x = inv, y = inv_res)) +
@@ -558,8 +605,8 @@ p2 <- par_res %>%
 	scale_y_continuous(name = expression(paste(n[D], " partial residuals"))) +
 	theme(axis.title.y = element_text(vjust = 1, margin = margin(1,-3,1,1, unit = "lines")))
 
-cowplot::plot_grid(p1, p2, ncol = 1, align = "v") +
-	cowplot::draw_plot_label(label = c("(a)", "(b)"), size = 8, fontface = "bold", y = c(1, 0.5))
+cowplot::plot_grid(p0, p1, p2, ncol = 1, align = "v") +
+	cowplot::draw_plot_label(label = c("(a)", "(b)", "(c)"), size = 8, fontface = "bold", y = c(1, 0.66, 0.33))
 # pdf("../paper/figures/fig_3.pdf", height = 1.7, width = 3.245, family = "Times", compress = F, title = "Figure 3")
 # f3
 # dev.off()
@@ -641,7 +688,7 @@ Invasive species were classified as superior nodes *and* driver nodes in every s
 The model results suggest that this differences among invasive and native species are underpinned, not by any intrinsic property of the invasive species but instead, by species properties that apply to invasive and native species alike (Table 1). 
 Specifically, we found that a species is more likely to be classified as a superior node if it had a large dependence strength (its sum of the dependences). 
 To a smaller extent, visitation strength (its sum of visits) and the species degree also had a positive relationship with $f_S$. 
-In contrast, the relationships between species structural properties and $f_D$ was more convoluted (Table 1). 
+In contrast, the relationships between species structural properties and $f_D$ were more convoluted (Table 1). 
 Both invasive species (which for example tend to have a large degree, and high dependence strength) and pollinators (which generally have a smaller degree and dependence strength) were classified as driver nodes in a large proportion of the considered matchings.
 
 ```{r glmulti-functions, include = FALSE, warning = FALSE, message = FALSE, results = "hide"}
@@ -767,6 +814,7 @@ coef_tables %<>%
 	})
 
 attr(coef_tables, "subheadings") <- paste0("$", names(mod), "$")
+attr(coef_tables, "message") <- "\\footnotesize Confidence intervals correspond to an alpha risk of 0.05."
 coef_tables %>%
 	xtable::xtableList(caption = "\\textbf{Factors determining species importance}. Factor estimates correspond to the average over all models that accounted for 95\\% of the AIC evidence.",
 										 digits =  c(0, 0, 2, 2, 2),
