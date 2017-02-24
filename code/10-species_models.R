@@ -48,7 +48,7 @@ d_sp <- driver %>%
 		)
 	}) %>%
 	dplyr::inner_join(meta) %>% 
-	dplyr::filter(threshold == 0.5, scaled == F, type == "asymmetry",
+	dplyr::filter(threshold == 0.8, scaled == F, type == "asymmetry",
 								!grepl("bal", net_name)) %>%
 	dplyr::mutate(f_s = d_freq / n_matchings, 
 								f_d = (n_matchings - m_freq) / n_matchings) %>%
