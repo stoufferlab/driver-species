@@ -127,7 +127,7 @@ label_pos_y <- 1
 pal <- RColorBrewer::brewer.pal(5, "PuOr")
 ```
 
-**E. Fernando Cagua^1\*^, Kate L Wootton^1,2§^, Daniel B. Stouffer^1#^**
+**E. Fernando Cagua^1\*^, Kate L. Wootton^1,2§^, Daniel B. Stouffer^1#^**
 
 ^1^ Centre for Integrative Ecology, School of Biological Sciences, University of Canterbury, Private Bag 4800, Christchurch 8041, New Zealand
 
@@ -882,9 +882,6 @@ Not only from a purely ecological perspective, but also from a conservation pers
 Driver node
   ~ An unmatched node in a maximal cardinality matching or a maximum matching. From the control perspective, driver nodes are those to which external control signals must be applied in order to gain full control of the network.
   
-*n~D~*
-  ~ The density of driver nodes
-  
 Matched/unmatched link
   ~ A link is refered to as *matched* if it is part of a matching, and *unmatched* otherwise.
   
@@ -905,7 +902,6 @@ Maximal cardinality matching
   
 Maximum matching
   ~ A matching with the largest possible matching size *and* matching weight. 
-
 Superior node
   ~ The node at the start of a matched link. From the control perspective, superior nodes make up the chain(s) that propagate the control signal(s) through the network.
   
