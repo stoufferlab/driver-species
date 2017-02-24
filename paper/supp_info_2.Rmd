@@ -1172,7 +1172,7 @@ p2 <- f_sampling %>%
 	ylab("spearman correlation") +
 	scale_fill_brewer(labels = expression(f[D], f[S]), name = "") +
 	fer_theme +
-	theme(legend.position = c(0.875,0.175), legend.justification = "center", 
+	theme(legend.position = c(0.875,0.2), legend.justification = "center", 
 				legend.direction = "horizontal", legend.key = element_blank())
 
 cowplot::plot_grid(p1, p2, ncol = 1, align = "v", rel_heights = c(1,1), labels = c("(a)", "(b)"), label_size = 8)
