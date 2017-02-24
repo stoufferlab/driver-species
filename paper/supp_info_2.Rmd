@@ -991,9 +991,9 @@ net_prop %>%
 # Visitation as a proxy for species interdependence
 
 Visitation frequency has been shown to be an appropriate surrogate for inter-specific effects in pollination networks [@Vazquez2005; @Bascompte2006]. 
-Nevertheless visitation is not equivalent to pollen deposition and might be insufficient to reflect the dependencies of plants on animals and vice versa [@Alarcon2010; @King2013]. 
-We therefore investigated the effect of calculating the dependencies using visitation or pollination effectiveness and importance---two metrics more proximate to plant reproductive success (Figure \@ref(fig:fig-visitation-vs-deposition-vs-importance)).
-We did this by comparing *(i)* the manageability of the community and *(ii)* the percentage of interactions that maintained the direction of dependency. 
+Nevertheless visitation is not equivalent to pollen deposition and might be insufficient to reflect the dependences of plants on animals and vice versa [@Alarcon2010; @King2013]. 
+We therefore investigated the effect of calculating the dependences using visitation or pollination effectiveness and importance---two metrics more proximate to plant reproductive success (Figure \@ref(fig:fig-visitation-vs-deposition-vs-importance)).
+We did this by comparing *(i)* the manageability of the community and *(ii)* the percentage of interactions that maintained the direction of dependence. 
 To do that, we used data collected by @Ballantyne2015 from a low diversity pollination community at a dry lowland heathland in Dorset, UK  (50° 43.7'N 2° 07.2'W). 
 First, deposition networks were quantified using the mean single visit deposition---the number of conspecific pollen grains effectively deposited on a virgin stigma during a single visit by a particular animal [@NeEman2010; @King2013; @Ballantyne2015]. 
 Second, visitation networks were constructed counting the visits to flowers during Single Visit Depositions. 
@@ -1049,7 +1049,7 @@ At a network scale, despite marked differences in the distribution of weights of
 The choice of weighting used can also have an impact on at the species level.
 Therefore we calculated *f~D~* and *f~S~* (the frequency at which each species is classified as a driver or superior node, respectively, within the set of all possible matchings in a network) and calculated it's correlation among all three weighting schemes.
 Although visitation and deposition produce moderately different results, we found a very strong agreement between the order produced by visitation and importance (Table S2). 
-Finally, we also investigated whether the asymmetry of mutual dependency, which defines the direction of control, was consistent among the three possible weighting schemes. We found again that the direction of the dominant dependency was maintained was consistent for 95\% of the interactions weighted by visitation or importance, the two most appropriate metrics for pollinator and plant dependency (Table S2).
+Finally, we also investigated whether the asymmetry of mutual dependence, which defines the direction of control, was consistent among the three possible weighting schemes. We found again that the direction of the dominant dependence was maintained was consistent for 95\% of the interactions weighted by visitation or importance, the two most appropriate metrics for pollinator and plant dependence (Table S2).
 
 ```{r table-correlations-visitation-vs-efficiency, echo = FALSE, warning = F, message = F, results = "asis"}
 d_sp <- driver %>%
@@ -1124,12 +1124,12 @@ nam <- c("unweighted","deposition", "importance", "visitation")
 mapply(my_paste, correlations$r, correlations$P) %>%
   matrix(ncol = length(dir_net_b)) %>% magrittr::set_colnames(nam) %>%
   magrittr::set_rownames(nam) %>% `[<-`(lower.tri(.), lt) %>% 
-  xtable::xtable(caption = "\\textbf{Agreement among network weighting schemes}. Spearman correlation coeffcients (with p-value) of species' $f_D$ and the percentage of interactions that share the direction of dependency obtained using the three weighting schemes and an unweighted scheme.") %>%
+  xtable::xtable(caption = "\\textbf{Agreement among network weighting schemes}. Spearman correlation coeffcients (with p-value) of species' $f_D$ and the percentage of interactions that share the direction of dependence obtained using the three weighting schemes and an unweighted scheme.") %>%
 	print(comment = FALSE, include.rownames = TRUE, caption.placement = "top", booktabs = T)
 	
 ```
 
-Altogether, evidence supports the idea that visitation is a suitable metric to estimate the mutual dependency of species pairs. First, it is directly related to pollinator foraging. Second, it produces results consistent, at least within our controllability framework, with plant reproductive success (as estimated by the importance metric). 
+Altogether, evidence supports the idea that visitation is a suitable metric to estimate the mutual dependence of species pairs. First, it is directly related to pollinator foraging. Second, it produces results consistent, at least within our controllability framework, with plant reproductive success (as estimated by the importance metric). 
 
 # Sensitivity analysis
 

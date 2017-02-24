@@ -192,7 +192,7 @@ First, grounded on the difficulties usually involved with invasive species eradi
 Second, we ask whether some species are more important than others at driving the population dynamics of the community and which factors determine this importance. 
 We focus on these two particular applications for a variety of reasons. 
 First, biotic invasions are known to produce tractable changes in the structure of ecological networks, and these changes can be particularly pronounced in mutualistic networks between plants and pollinators where biotic invasions have been shown to modify the strength of species interactions and the degree of network nestedness and connectivity [@Olesen2002; @Aizen2008; @Bartomeus2008; @Vila2009; @Traveset2013]. 
-Second, plant-pollinator networks provide an ideal framework to answer these questions. 
+Second, although species are involved in multiple types of interactions, plant-pollinator networks provide an ideal framework to answer these questions. 
 On the one hand, community networks that quantify relative levels of interaction are readily available. 
 On the other, the bipartite nature of pollination networks makes it possible to simplify assumptions of how these interactions translate into interspecific effects. 
 
@@ -547,7 +547,7 @@ Details about the computational procedure to find all maximum cardinality matchi
 
 We then examined whether any species-level structural properties can predict our metrics of species importance—the frequency to which a species was a driver or a superior node (*f~D~* and *f~S~*, respectively).
 We used a set of generalised linear mixed-effects models (with binomial error structure) with the relative frequencies as the response variables. 
-As predictors in this model, we included measures of centrality (degree and eigen-centrality), which have been found to be strong predictors of importance in a coextinction context [@Memmott2004]; a measure related to network robustness (contribution to nestedness), as nestedness has been proposed as one of the key properties that promote stability in mutualistic networks [@Saavedra2011]; and two measures of strength of association and dependence (visitation and dependence strength), as their distribution determines the extent of interspecific effects [@Bascompte2006].
+As predictors in this model, we included measures of centrality (degree and eigen-centrality), which have been found to be strong predictors of importance in a coextinction context [@Memmott2004]; a measure related to network robustness (contribution to nestedness), as nestedness has been proposed as one of the key properties that promote stability in mutualistic networks [@Saavedra2011]; and two measures of strength of association and dependence (visitation and dependence strength, this is the sum of visits a species receives or performs, and the sum of dependences of all species on the focal species, respectively), as their distribution determines the extent of interspecific effects [@Bascompte2006].
 To facilitate comparison among the continuous variables we scaled so that they all had a mean of zero and a standard deviation of one.
 In addition, we also included guild (plant or pollinator), and whether the species is invasive or not, as categorical fixed effects.
 Although the importance of plants and pollinators or invasive and non-invasive species could respond differently to our structural metrics, our data set did not contain enough variation to include the corresponding interactions terms for these latter two predictors. 
@@ -686,7 +686,7 @@ z_scores %>%
 
 Invasive species were classified as superior nodes *and* driver nodes in every single network they were present; that is, they always had the highest relative *f~S~* and *f~D~* (Figure 5a). 
 The model results suggest that this differences among invasive and native species are underpinned, not by any intrinsic property of the invasive species but instead, by species properties that apply to invasive and native species alike (Table 1). 
-Specifically, we found that a species is more likely to be classified as a superior node if it had a large dependence strength (its sum of the dependences). 
+Specifically, we found that a species is more likely to be classified as a superior node if it had a large species strength (the sum of the dependences of other species on the species of interest). 
 To a smaller extent, visitation strength (its sum of visits) and the species degree also had a positive relationship with $f_S$. 
 In contrast, the relationships between species structural properties and $f_D$ were more convoluted (Table 1). 
 Both invasive species (which for example tend to have a large degree, and high dependence strength) and pollinators (which generally have a smaller degree and dependence strength) were classified as driver nodes in a large proportion of the considered matchings.
@@ -708,7 +708,7 @@ setMethod('getfit', 'glmerMod', function(object, ...) {
 })
 ```
 
-```{r fig-dependency-fs, echo = FALSE, warning = FALSE, message = FALSE, fig.width = 3.245, fig.height = 3.2, fig.cap = "**Relatiosnships between _f~S~_ and _f~D~_ and species' structural properties**. (a) In all networks were they were present, invasive species were classified as superior (_f~S~_) and driver (_f~D~_) nodes in all possible control configurations. (b) Dependency strength is the single most important factor explaining _f~S~_. Visitation strength and  degree also had an important albeit comparatively smaller effect (dashed lines correspond to ± one standard deviation on these factors). Invasive species are depicted as circles."}
+```{r fig-dependency-fs, echo = FALSE, warning = FALSE, message = FALSE, fig.width = 3.245, fig.height = 3.2, fig.cap = "**Relatiosnships between _f~S~_ and _f~D~_ and species' structural properties**. (a) In all networks were they were present, invasive species were classified as superior (_f~S~_) and driver (_f~D~_) nodes in all possible control configurations. (b) Dependence strength is the single most important factor explaining _f~S~_. Visitation strength and  degree also had an important albeit comparatively smaller effect (dashed lines correspond to ± one standard deviation on these factors). Invasive species are depicted as circles."}
 data <- mo 
 trans <- function(x, orig){
   x * attr(orig, "scaled:scale") + attr(orig, "scaled:center")
@@ -755,7 +755,7 @@ p1 <- pred_data %>%
   scale_fill_manual(values = c("white","#e41a1c")) + 
   scale_color_manual(values = c("#525252", "black")) +
   scale_linetype_manual(values = c(2, 1)) +
-  xlab("dependency strength") +
+  xlab("dependence strength") +
   ylab(expression(f[S])) +
   fer_theme
 
@@ -795,7 +795,7 @@ coef_tables <- mod %>%
                 factor = plyr::mapvalues(factor, 
                                          c("de", "n", "vi", "eig_cen", 
                                            "guildpol", "d", "invasiveTRUE"),
-                                         c("dependency strength", 
+                                         c("species strength", 
                                            "contribution to nestedness",
                                            "visitation strength",
                                            "eigen-centrality", 
@@ -828,7 +828,7 @@ Contrary to our initial hypothesis, we found some evidence that invaded communit
 Our results reveal, however, that this effect is comparatively small and the structural differences among different networks are more importantly related to potential differences in our ability to alter the state of the community.
 Despite the small effect of invasion status at a network level, we found that invasive mutualists occupy a particularly dominant role in their communities. 
 Not only changes on their abundance have the potential to propagate broadly trough the community and in turn, affect the abundances of many other species, but they are also indispensable to fully control the plant-pollinator network. 
-At a community level, we demonstrate that the manageability of mutualistic networks is strongly governed by the asymmetric nature of mutual dependencies—which constitute the foundations of the structure and stability of mutualistic networks [@Memmott2004; @Vazquez2004; @Bascompte2006; @Lever2014; @Astegiano2015]. 
+At a community level, we demonstrate that the manageability of mutualistic networks is strongly governed by the asymmetric nature of mutual dependences—which constitute the foundations of the structure and stability of mutualistic networks [@Memmott2004; @Vazquez2004; @Bascompte2006; @Lever2014; @Astegiano2015]. 
 Moreover, these mutual dependences seem to be importantly constrained by the concerted effects of both, the patterns of species richness at each trophic guild, and the species' degree distribution [@Melian2002; @Bluthgen2007]. 
 Indeed, the difference between the driver node density (*n~D~*) of our empirical networks and that of randomisations depended strongly on the evaluated null model. 
 While the empirical *n~D~* was indistinguishable from that of networks with a random structure that maintained the degree or strength of each species in the community, it was much larger than that of randomisations in which the directed network was unchanged but where the observed patterns of dependence were broken.
@@ -863,6 +863,7 @@ Our approach, however, is not based on a single structural metric but acknowledg
 Our, and other flexible approaches that take a network-wide approach might prove more useful to guide ecosystem management if we want to go beyond using network metrics to minimise topological species loss [@McDonald-Madden2016].
 
 Despite its conceptual advantages, our approach still relies on knowledge of the network of interaction between species. 
+We do not argue that management decisions should be based on a single technique. 
 Nevertheless, our results and previous basic research show that as long as the proportion of sampled links is enough to provide indication of the actual degree distribution (and in turn the species dependences), *n~D~*, *f~S~* and *f~D~* can still provide a simple, straightforward, and theoretically-informed indication of the degree to which the community is self-regulated and therefore how difficult it might be to modify its state in one way or another using some of the species that integrate it [Supporting Information S5; @Nepusz2012]. 
 
 In this study, we illustrate how a control-theoretic approach can be adopted in network ecology to evaluate the effect of invasions and another kind of perturbations. 
