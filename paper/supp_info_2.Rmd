@@ -1,6 +1,7 @@
 ---
-title: "Biotic invasions fuck with the manageability of pollination networks"
+title: "The manageability of pollination networks in an invasion context"
 subtitle: "Supporting Information"
+author: "E. Fernando Cagua, Kate L. Wootton, Daniel B. Stouffer"
 classoption: a4paper
 csl: ecology-letters.csl
 output:
@@ -210,6 +211,7 @@ nets <- 1:length(as_all_mat) %>%
 
 nets <- nets[order(!unlist(lapply(nets, function(x) x$has_cycles)), unlist(lapply(nets, function(x) x$matching_weight)), decreasing = T)]
 ```
+
 
 # Finding a complex network's matchings
 
