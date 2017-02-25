@@ -43,6 +43,8 @@ In the previous manuscript, we referred to species that were classified as super
 Because of the strong similarities with the term *driver node*, which has been used in previous literature and we also use in our manuscript, it was extremely easy to misinterpret the terms and follow our rationale. 
 Now, we have removed the term driver species and instead focus on two well-defined metrics: $f_D$ and $f_S$, which correspond to the frequency to which a species is classified as a driver or superior node, respectively. 
 
+In addition, we now focus on the results obtained when we use the asymmetry of the dependences to direct the networks. We do so, because thanks to the reviewers comments, we identyfied some problems with the application of structural controllability when we use the mutual dependences to direct the network. Specifically, the problems arise from an absolute dominance of cycles and difficulties to the use of the maximum maximum matching algorithm to find a minimum set of driver nodes $D$.
+
 Finally, we have made important modifications to the section in which we explain the theoretical underpinnings of structural controllability. 
 We hope it is easier to follow both for experts and newcomers. 
 We also have included a significant amount of detail and extra examples in the supplementary material to simplify the lives of those interested in applying the proposed approach or replicating our results. 
@@ -157,7 +159,7 @@ In its current form, it is unlikely that readers will be able to understand or r
 
 - Discussion. McDonaldMadden et al (2016) actually show that network metrics are not useful to prioritise the management of foodweb, i.e. to determine which species should be managed first (if required). Please edit current text and analyse differences with your work.
 
-    *Thank you. We acknowledge we did a poor job reflecting our work in the previous literature. We now include a paragraph in the discussion to explore the similarities and differences of our work with previous indices based on structural metrics. We explain how "our approach ... is not based on a single structural metric but acknowledges the existence of multiple management strategies; some more optimal than others in specific contexts". We also concur that more flexible approaches like ours and the one implemented by @McDonald-Madden2016* "that take a network-wide approach might prove more useful to guide ecosystem management if we want to go beyond using network metrics to minimise topological species loss".*
+    *Thank you. We acknowledge we did a poor job reflecting our work in the previous literature. We now include a paragraph in the discussion to explore the similarities and differences of our work with previous indices based on structural metrics. We explain how "our approach ... is not based on a single structural metric but acknowledges the existence of multiple management strategies; some more optimal than others in specific contexts". We also concur that more flexible approaches like ours and the one implemented by @McDonald-Madden2016 "that take a network-wide approach might prove more useful to guide ecosystem management if we want to go beyond using network metrics to minimise topological species loss".*
 
 - Discussion. Please provide some insight into how your method/analysis/results would differ for non- pollinator invaded networks.
 
@@ -169,7 +171,7 @@ In its current form, it is unlikely that readers will be able to understand or r
 
 - The maximum matching algorithm is computationally expensive as noted by the authors. In Ruths & Ruths (2014) the authors come with an interesting alternative to calculate the minimum number of independent controls (driver species) using only the number of source nodes, external dilation points and internal dilation points; and a heuristic using source and sink nodes. What is the profile of the pollinator networks studied? Would the Ruths & Ruths approach be an easier way of reaching the same conclusions? Would it bring complementary information?
 
-    *Calculating __one__ maximum matching for ecological networks with a few hundred species is not a computationally expensive operation, and therefore we use directly the algorithm and not the approximation proposed by @Ruths2014. Our most expensive computation was to find __all__ the possible maximum cardinality matchings to calculate species-level metrics. Lamentably the network's control profile does not provide species-level information and hence we couldn't use it to our advantage. Nevertheless, as suggested by you and another reviewed, we have included a section where in the Supporting information *(S2) where we explain that our networks are external dilation dominated. The @Ruths2016 has provided us with very useful insight on the selection of the direction of control and the utility of the concept of driver nodes for management applications.*
+    *Calculating __one__ maximum matching for ecological networks with a few hundred species is not a computationally expensive operation, and therefore we use directly the algorithm and not the approximation proposed by @Ruths2014. Our most expensive computation was to find __all__ the possible maximum cardinality matchings to calculate species-level metrics. Lamentably the network's control profile does not provide species-level information and hence we couldn't use it to our advantage. Nevertheless, as suggested by you and another reviewed, we have included a section where in the Supporting information (S2) where we explain that our networks are external dilation dominated. The approach of @Ruths2014 has provided us with very useful insight on the selection of the direction of control and the utility of the concept of driver nodes for management applications.*
 
 - A few typos in main text and sup info.
 
@@ -183,18 +185,17 @@ In its current form, it is unlikely that readers will be able to understand or r
 
 In this work Cagua et al apply tools rooted in control theory to ecological networks and discuss how this approach could be used for management of natural systems, with emphasis on the effects of invasive species. This is an exciting work. It presents to ecologists a novel way of studying the relationship between topology and dynamics that is less dependent (when compared to other methods) on particular choices about how dynamics are modeled. The authors illustrate the potential of this approach by exploring how invasive species change system dynamics and manageability. My only concern about this manuscript is that the authors need to be more careful and more explicit about some limitations of this approach and the generality of their results, specially considering the implications of their results for management.
 
- - Only one type of interaction is being considered here when species are involved in multiple types of interactions. An assumption that is not explicit in the text is that all the factors controlling population densities are the interactions between plants and pollinators. The boundaries of a network, including the types of interactions that are considered or not, are often arbitrarily defined. However, this approach is highly dependent on the topology of the network and thus on how we define the network. I know this limitation applies to any study on system dynamics, but it becomes more serious when we argue that management decisions can be based on a single technique. I have two suggestions. First, the authors should discuss in detail these assumptions and their limitations. 
+- Only one type of interaction is being considered here when species are involved in multiple types of interactions. An assumption that is not explicit in the text is that all the factors controlling population densities are the interactions between plants and pollinators. The boundaries of a network, including the types of interactions that are considered or not, are often arbitrarily defined. However, this approach is highly dependent on the topology of the network and thus on how we define the network. I know this limitation applies to any study on system dynamics, but it becomes more serious when we argue that management decisions can be based on a single technique. I have two suggestions. First, the authors should discuss in detail these assumptions and their limitations.
 
-    *PARTIAL ANSWER: We have included some comments about the general limitations of the structural controlability approach in the "Theoretical Framework" section (Lines XXX). Furthermore*
+    *We have now included comments about the general limitations of the structural controllability appriach in the "Theoretical Framework" section. Furthermore, we are now explicit abuout the fact that species have multiple types of interactions and therefore our approach can only provide a partial picture when only one type of interaction is included. We do so both the Introduction and the Discussion. Finally, we are also explicit about the fact that we do not advocate for management decisions to be based solely on our approach, but how it can "provide a simple, straightforward, and theoretically-informed indication of the degree to which the community is self-regulated and therefore how difficult it might be to modify its state in one way or another using some of the species that integrate it".*
 
-Second, It would be helpful if the authors could test the robustness of their results to sampling. The results show that invasive species change manageability. This suggests that manageability may be sensitive to sampling. A sensitivity analysis where species are added and removed from the network under different wiring schemes would help us understand the behavior of the manageability index when networks are undersampled and would allow a more informed discussion on how the choices we make when delimiting the network affect estimates of controllability. Weak links should not have a strong effect on controllability and considering the networks were built using visitation frequency, most of the strong interactions were likely sampled. Still, it would be great to show that the method is robust and this would make it easier to justify that even in the absence of complete sampling this technique is in fact useful for management.
+- Second, It would be helpful if the authors could test the robustness of their results to sampling. The results show that invasive species change manageability. This suggests that manageability may be sensitive to sampling. A sensitivity analysis where species are added and removed from the network under different wiring schemes would help us understand the behavior of the manageability index when networks are undersampled and would allow a more informed discussion on how the choices we make when delimiting the network affect estimates of controllability. Weak links should not have a strong effect on controllability and considering the networks were built using visitation frequency, most of the strong interactions were likely sampled. Still, it would be great to show that the method is robust and this would make it easier to justify that even in the absence of complete sampling this technique is in fact useful for management.
 
-
-See more specific comments below.
+    *As suggested we have conducted a sensitivity analysis in which we remove links from our empirical networks with a probability inversely proportional to their strength. Due to space constraints, we have included the analysis in the Supporting Information S5. We found that our results are consistent even in serious cases of undersampling.*
 
 - Ln 25. I don't think that the statement that you "expand theory on the controllability of complex systems" is accurate. It is not clear to me how these results contribute to expand the general theory
 
-    *Thank you. We have apologise for the imprecision. The sentence now reads "To bridge this gap, we develop methods to apply previous theory on the control of complex systems into an ecological context and implement them using empirical data, while taking into account the quantitative differences that exist among species interactions", which better reflects our contribution.*
+    *Thank you. We have apologise for the imprecision. The sentence now reads "To bridge this gap, we outline an approach to apply theory on the control of complex systems in an ecological context and implement them using empirical data.*
 
 - Ln 52, typo: presents
 
@@ -202,15 +203,15 @@ See more specific comments below.
 
 - Ln 59. Please rewrite this sentence. it's not clear what "they" refers to here.
 
-    *Thanks. The subject was intended to be "control theory". We have rephrased the sentence to improve clarity and it now reads "Therefore, control theory can potentially provide an indication of which species are most relevant from a structural and dynamic perspective, a particularly important feature given that these species should underpin informed attempts to both alter or maintain the ecosystem state".* 
+    *Thanks. The subject was intended to be "control theory". We have rephrased the sentence to improve clarity and it now reads "Therefore, control theory could also be harnessed to provide an indication of which species are most relevant from a structural and dynamic perspective".* 
 
 - Ln 78. It is not clear why this is the direction of the hypothesis. Did you already have any indication that networks with invasive species should have lower manageability? Is there any theoretical explanation for this expectation?
 
-    *We based the direction of the hypothesis in the general feeling of failure of several restoration ecology programmes. However, in retrospect, we realise that the academic evidence to substantiate the hypotheis was insufficient. We have reframed the sentence to indicate that invaded communities might have different levels of manageability but without an a priori expectation on the direction of this difference. REVISE, CHECK WITH WARWICK*
+    *We based the direction of the hypothesis in the general feeling of failure of several restoration ecology programmes. However, in retrospect, we realise that we presented insuficient academic evidence to substantiate the hypotheis. Although the results have changed after the discovery of a mistake on the analysis, we have not changed the original direction of the hypothesis. Nevertheless, we have reframed the sentence to explain it better: "... grounded on the difficulties usually involved with invasive species eradication and ecosystem restoration [@Woodford2016], we ask whether invaded networks have lower levels of "manageability" than their uninvaded counterparts; that is, whether they require a greater proportion of species to be managed to achieve the same level of control"*
 
 - Ln 95-98. It is very hard to keep track of all those definitions - matching, matched nodes, matched links, matching size, matching weight, maximum matching. I found myself going back and forth several times between the framework, methods and results sections. A glossary would help a lot.
 
-    *Thanks. We have rewritten a large section of the methods and tried to be more clear when defining new terms by providing some examples and using a more logical sequence to go from one concept to the next (Lines XXX). We have also included a short glossary with the most important definitions. TO DO*
+    *Thanks. We have rewritten a large section of the methods and tried to be more clear when defining new terms by providing some examples and using a more logical sequence to go from one concept to the next. We have also included a short glossary with the most important definitions at the end of the manuscript.*
 
 - Ln 99. Indicate how the matching is represented in the figure. e.g.,  "(dark grey links in Figure 1a)". Figure 1.Indicate the driver nodes in these networks
 
@@ -218,7 +219,7 @@ See more specific comments below.
 
 - Ln 128. Be clear about the meaning of resources here. I understand you mean financial resources not  resources in the ecological sense.
 
-    *Indeed. We apologise for the imprecision. We indeed mean financial resources. We have modified the sentence to improve clarity and it now reads "Ecologically, these distinctions are relevant because management and conservation resources are limited and therefore ecological interventions should ideally be focused on species that might provide the largest impact."*
+    *We apologise for the imprecision as we meant financial resources. We have modified the sentence to improve clarity and it now reads "Ecologically, these distinctions are relevant because management and conservation resources are limited and therefore ecological interventions should ideally be focused on species that might provide the largest impact."*
 
 - Ln 236. Typo: missing period
 
@@ -228,20 +229,32 @@ See more specific comments below.
 
     *Thanks. We corrected it.*
 
-Ln 303-305. Please explain here which is the response variable that the ratio of plant to pollinator can explain.
+- Ln 303-305. Please explain here which is the response variable that the ratio of plant to pollinator can explain.
 
-Ln 326. "The strength of the dependency" has been defined as species strength by Bascompte et al. 2006. Why are you using a different term here?  When you say strength of the dependency it is not clear if you mean strength of dependencies of a given species on other species or the strength of the dependencies of all species on the species of interest. Moreover sometimes you use dependence and others dependency.
+    *We eliminated ambiguity by rephrasing the sentence. It now reads "... of the various covariates we explored, the ratio of plant to pollinator showed the strongest relationship with n~D~".*
 
-Ln 336. Liu et al. 2011 found that driver nodes were often peripheral nodes in the network instead of network hubs. Here you find the opposite. How can you explain these differences?
+- Ln 326. "The strength of the dependency" has been defined as species strength by Bascompte et al. 2006. Why are you using a different term here?  When you say strength of the dependency it is not clear if you mean strength of dependencies of a given species on other species or the strength of the dependencies of all species on the species of interest. Moreover sometimes you use dependence and others dependency.
 
-Ln 343 and Figure 4. Here and in the figure legend you say the level of manageability of empirical networks is lower, but in the figure you show an index that goes in the opposite direction, i.e.,  we see lower values for the randomization. It would be better to present these results in a more intuitive way.
+    *We apologise for the potential confusion. By "the strength of dependency we meant species strength as defined by @Bascompte2006. We have modified the text in the Methods and the Results to avoid potential confusion. We also stick to dependence troughout the manuscript*
 
-Ln 362. Again the idea that supergeneralists tend to be driver species contrasts with Liu et al. results. This should be explored in more detail in the discussion.
+- Ln 336. Liu et al. 2011 found that driver nodes were often peripheral nodes in the network instead of network hubs. Here you find the opposite. How can you explain these differences?
 
-Ln 372. It is important to say that vulnerability is related change, but that it is had to predict in which direction the system will change
+    *Our results agree in fact agree with those of @Liu2011. However, this was confusing because our poor choice of terminology (we used driver species as a term to refer to species with a high probability of being superior nodes). Using our results, and insight obtained from @Ruths2014, we now explain that peripheral nodes tend to be driver because they are needed to achieve full control, but that network hubs are also often driver nodes, as they act as source nodes from which control signals can be transferred. Furthermore, our analysis at the species level is now more comprehensive, as it includes information on their role as both driver and superior nodes.*
 
-Figure 5 legend. Please include here the definition of dependency strength so the reader does not need to go back and forth.
+- Ln 343 and Figure 4. Here and in the figure legend you say the level of manageability of empirical networks is lower, but in the figure you show an index that goes in the opposite direction, i.e.,  we see lower values for the randomization. It would be better to present these results in a more intuitive way.
 
+    *Figure 4 represents the rank of the emprical network compared to that of the randomisations. We have now included explanatory arrows and modified the axis titles and the caption to facilitate the interpretation. Hopefully now it's much easier to understand.*
 
+- Ln 362. Again the idea that supergeneralists tend to be driver species contrasts with Liu et al. results. This should be explored in more detail in the discussion.
+
+    *Following from the clarifications provided in the response two the comment for Line 336. We hope the discussion, which clearly distinguishes between driver and superior nodes explicates the apparent contrasting results.*
+
+- Ln 372. It is important to say that vulnerability is related change, but that it is had to predict in which direction the system will change
+
+    *Thank you. We have implemented this suggestion and the text now reads "Not only it is hard to predict the direction in which the system will change, but also, invaded communities tend to be highly dependent on invaders and therefore acutely vulnerable to their eradication"*
+
+- Figure 5 legend. Please include here the definition of dependency strength so the reader does not need to go back and forth.
+
+    *Done.* 
 
 ## References
