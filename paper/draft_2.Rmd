@@ -144,7 +144,7 @@ pal <- RColorBrewer::brewer.pal(5, "PuOr")
   
 * **Article type:** Letter.
   
-* **Number of words:** ~ () abstract; ~ 5450 main text.
+* **Number of words:** ~ () abstract; approx. 5460 main text.
   
 * **Number of references:** 72
   
@@ -736,7 +736,7 @@ setMethod('getfit', 'glmerMod', function(object, ...) {
 })
 ```
 
-```{r fig-dependency-fs, echo = FALSE, warning = FALSE, message = FALSE, fig.width = 3.245, fig.height = 3.2, fig.cap = "**Relatiosnships between _f~S~_ and _f~D~_ and species' structural properties**. (a) In all networks were they were present, invasive species were classified as superior (_f~S~_) and driver (_f~D~_) nodes in all possible control configurations. (b) Dependence strength is the single most important factor explaining _f~S~_. Visitation strength and  degree also had an important albeit comparatively smaller effect (dashed lines correspond to ± one standard deviation on these factors). Invasive species are depicted as circles."}
+```{r fig-dependency-fs, echo = FALSE, warning = FALSE, message = FALSE, fig.width = 3.245, fig.height = 3.2, fig.cap = "**Relatiosnships between _f~S~_ and _f~D~_ and species' structural properties**. (a) In all networks were they were present, invasive species were classified as superior (_f~S~_) and driver (_f~D~_) nodes in all possible control configurations. (b) Species strength (the sum of the dependences of other species on the species of interest) is the single most important factor explaining _f~S~_. Visitation strength and  degree also had an important albeit comparatively smaller effect (dashed lines correspond to ± one standard deviation on these factors). Invasive species are depicted as circles."}
 data <- mo 
 trans <- function(x, orig){
   x * attr(orig, "scaled:scale") + attr(orig, "scaled:center")
@@ -783,7 +783,7 @@ p1 <- pred_data %>%
   scale_fill_manual(values = c("white","#e41a1c")) + 
   scale_color_manual(values = c("#525252", "black")) +
   scale_linetype_manual(values = c(2, 1)) +
-  xlab("dependence strength") +
+  xlab("species strength") +
   ylab(expression(f[S])) +
   fer_theme
 
@@ -881,7 +881,8 @@ Importantly, this is irrespective of whether controlling the entire network is d
 In fact, because superior nodes are invariantly at the beginning of a matching link, species with a high *f~S~* are more likely to be the subjects of management interventions when controlling the abundances of a target set of species—and not the entire network—is desired [@Gao2014]. 
 An important advantage is that the target set of species does not has to be the same set to which interventions are applied. 
 For instance, despite inconsistent outcomes in practice [@Suding2004; @Rodewald2015; @Smith2016], our results suggest that current restoration approaches that focus on direct eradication of invasive species might indeed be an effective way to modify ecosystem state. 
-Nevertheless, our results also indicate that removals must be exercised with caution as invaded communities tend to be highly dependent on invaders and therefore acutely vulnerable to their eradication [@Traveset2013; @Albrecht2014]. 
+Nevertheless, our results also indicate that removals must be exercised with caution. 
+Not only it is hard to predict the direction in which the system will change, but also, invaded communities tend to be highly dependent on invaders and therefore acutely vulnerable to their eradication [@Traveset2013; @Albrecht2014]. 
 
 Although *f~S~*, in particular, is promising for identifying species priorities, our approach is different to previous attempts to quantify species importance. 
 Existing metrics usually harness species features like centrality, position, co-extinction or uniqueness, to infer their effect on other species [@Allesina2004; @Jordan2006; @Jordan2009; @Lai2012]. 
