@@ -28,6 +28,7 @@ library(latex2exp)
 library(ggplot2)
 library(glmulti)
 library(lme4)
+library(grid)
 
 "../code/functions" %>% 
 	list.files(full.names = T) %>%
@@ -616,7 +617,7 @@ cowplot::plot_grid(p0, p1, p2, ncol = 1, align = "v") +
 When exploring the effect of network structure itself, we observed that the driver node density $n_D$ of empirical networks was, in general, not significantly different to the manageability of network randomisations that maintained the degree of individual species (Figure 4). 
 However, we found that the $n_D$ of empirical networks was significantly larger to that of randomisations that maintained the network structure but that differed only on the direction of the asymmetries.
 
-```{r fig_randomisations, echo = FALSE, warning = FALSE, message = FALSE, fig.width = 3.245, fig.height = 1.6, fig.cap = "**The driver node density _n~D~_ of empirical networks compared to network randomisations**. For each randomisation approach, we show the standarised rank of the empirical value compared to the set of randomisations. A scaled mean rank—akin to a p-value— less than 0.025 or greater than 0.975 (the areas shaded in light grey) suggests a significant difference between the empirical network and its randomisations. The empirical _n~D~_ is much smaller than that of network randomisations in which the direction of asymmetries has been randomised. In contrast, the manageability of networks in which the species degrees were randomly shuffled were not significantly different. All boxes are as in Figure 3a."}
+```{r fig_randomisations, echo = FALSE, warning = FALSE, message = FALSE, fig.width = 3.245, fig.height = 1.7, fig.cap = "**The driver node density _n~D~_ of empirical networks compared to network randomisations**. For each randomisation approach, we show the standarised rank of the empirical value compared to the set of randomisations. A scaled mean rank—akin to a p-value— less than 0.025 or greater than 0.975 (the areas shaded in light grey) suggests a significant difference between the empirical network and its randomisations. The empirical _n~D~_ is much smaller than that of network randomisations in which the direction of asymmetries has been randomised. In contrast, the manageability of networks in which the species degrees were randomly shuffled were not significantly different. All boxes are as in Figure 3a."}
 r <- r_w %>%
   dplyr::bind_rows(dplyr::mutate(r_d, type = "weight")) %>%
   dplyr::inner_join(meta) %>%
@@ -644,7 +645,7 @@ z_scores <- r$method %>%
 
 z_scores_method_order <- c("r0","swsh_both", "quasiswap_count","r00_ind", "r00_samp", "r00_both")
 
-z_scores %>%
+p1 <- z_scores %>%
   dplyr::group_by() %>%
   dplyr::mutate(method = factor(method, levels = z_scores_method_order),
                 m_n = as.numeric(method),
@@ -675,11 +676,38 @@ z_scores %>%
     coord_flip() +
   ylab(expression(paste("empirical ", n[D], " rank (scaled)"))) + 
   fer_theme +
-  theme(
-        legend.position = "none",
-				plot.margin = grid::unit(c(2, 1, 2, 0), "mm"), 
+  theme(legend.position = "none",
+				plot.margin = grid::unit(c(-1, 1, 2, 0), "mm"), 
 				# panel.grid.minor.x = element_blank(),
-				panel.grid.minor.y = element_blank())
+				panel.grid.minor.y = element_blank(),
+				plot.background = element_blank())
+
+library(ggrepel)
+
+p2 <- data_frame(x = c(-0.05,0.05),
+					 xend = c(-1,1), 
+					 y = 0, yend = 0, 
+					 xtext = c(-0.5, 0.5),
+					 label = c("smaller\nthan random", "larger\nthan random")) %>%
+	ggplot(aes(x = x, y = y)) + 
+	geom_segment(aes(xend = xend, yend = yend), 
+							 arrow = arrow(angle = 15,
+							 							length = unit(3, "mm"), 
+							 							type = "open"), 
+							 size = 0.3, colour = "grey30") +
+	geom_label(aes(x = xtext, label = label), size = 2.2, y = 0.1, 
+						 label.size = 0, lineheight = 0.8, colour = NA,
+						 fill = "white") +
+	geom_text(aes(x = xtext, label = label), size = 2.2, y = 0.1, 
+						label.size = 0, lineheight = 0.8, colour = "grey10",
+						fill = "white") +
+	scale_x_continuous(expand = c(0,0)) +
+	scale_y_continuous(expand = c(0,0)) +
+	theme(plot.background = element_blank(), 
+				plot.margin = margin(0,0,0,0)) +
+	theme_void()
+
+cowplot::plot_grid(p2, p1, ncol = 1, align = "v", rel_heights = c(1.5,10))
 ```
 
 ## Relative importance
