@@ -560,9 +560,9 @@ Candidate models and estimates were assessed using the same procedure as in the 
 
 ## Manageability
 
-All of the networks studied had a driver node density *n~D~* between `r round(min(dplyr::filter(n_driver, type == "weight")$n_dr_p), digits = 2)` and `r round(max(dplyr::filter(n_driver, type == "weight")$n_dr_p), digits = 2)` (mean `r round(mean(dplyr::filter(n_driver, type == "weight")$n_dr_p), digits = 2)`. 
-In addition, we found that, when controlling for potential species richness effects, the *n~D~* of invaded communities was smaller to those of non-invaded communities (Figure 3a; Table S5). 
-Nevertheless, of the various covariates we explored, the ratio of plant to pollinator showed the strongest relationship with *n~D~* (Table S4). 
+All of the networks studied had a driver node density *n~D~* between `r round(min(dplyr::filter(n_driver, type == "weight")$n_dr_p), digits = 2)` and `r round(max(dplyr::filter(n_driver, type == "weight")$n_dr_p), digits = 2)` (mean `r round(mean(dplyr::filter(n_driver, type == "weight")$n_dr_p), digits = 2)`; Figure 3a). 
+In addition, we found that, when controlling for potential species richness effects, the *n~D~* of invaded communities was smaller to those of non-invaded communities (Figure 3b; Table S5). 
+Nevertheless, of the various covariates we explored, the ratio of plant to pollinator showed the strongest relationship with *n~D~* (Table S4; Figure 3c). 
 Specifically, we found that as the proportion of pollinators increases and the ratio plant/pollinator balances, *n~D~* decreases (all our communities had more pollinators than plants). 
 Other coovariates—connectance (link density) and species richness—had a negative and comparatively less important relationship with *n~D~*.
 
@@ -932,6 +932,7 @@ Maximal cardinality matching
   
 Maximum matching
   ~ A matching with the largest possible matching size *and* matching weight. 
+  
 Superior node
   ~ The node at the start of a matched link. From the control perspective, superior nodes make up the chain(s) that propagate the control signal(s) through the network.
   

@@ -1560,7 +1560,7 @@ manag_table %>%
 	xtable::xtable(caption = "\\textbf{Coefficients of the $n_D$ models}. Estimates are averaged over the models that accounted for 95\\% of the evidence weight.",
 										 digits =  c(0, 0, 2, 2, 2),
 										 display = c("d", "s", "f", "f", "G")) %>%
-	print(booktabs = T, include.rownames = F,  caption.placement = "top", comment = F, sanitize.text.function = function(x){x})
+	print(booktabs = T, include.rownames = F,  caption.placement = "top", comment = F, sanitize.text.function = function(x){x}, table.placement = "H")
 
 ```
 
