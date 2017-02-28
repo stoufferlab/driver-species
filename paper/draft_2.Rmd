@@ -166,34 +166,34 @@ It is generally unknown how the disruptions caused by perturbations like biotic 
 
 # Introduction
 
-Complex systems are chahave bracterised by relationships in which the whole is often greater than the sum of its parts [@Jorgensen1998; @Levin1999; @Montoya2006].
+Complex systems are characterised by relationships in which the whole is often greater than the sum of its parts [@Jorgensen1998; @Levin1999; @Montoya2006].
 Within community ecology, a complex systems approach has led to the development of a variety of analytical and simulation tools with which to understand, for example, the role of species when embedded in an intricate network of interactions [@Pascual2005; @Bascompte2009; @Stouffer2012]. 
 The inherent complexity of nature, however, has regularly hindered—or at least greatly complicated—our ability to find management solutions to the many problems ecological communities face. 
 To overcome this obstacle, we require a framework that allows us to explain, predict, and manage ecological communities, particularly when they are confronted with perturbations [@Sole2001; @Green2005].
 Ideally, such a framework needs to be able to account for their complex structure and the dynamics that determine the species abundances and the state of the community. 
 
-Among the various possibilities, *control theory* appears to be a strong candidate. This method, widely used in engineering to determine and supervise the behaviour of dynamical systems [@Motter2015], is well equipped to deal with the many feedbacks present in ecological communities [@Liu2016]. 
+Among the various possibilities, *control theory* appears to be a strong candidate [@Isbell2013]. This method, widely used in engineering to determine and supervise the behaviour of dynamical systems [@Motter2015], is well equipped to deal with the many feedbacks present in ecological communities [@Liu2016]. 
 Research in this area has established a strong link between the structure of complex networks and their *controllability*—the relative ability to manipulate network components to drive the system to a desired state [@Liu2011; @Cornelius2013; @Ruths2014]. 
 These advances suggest that it is in principle possible to alter a whole ecological community's composition by modifying the abundances of only a few species.
 Furthermore, applications of control theory to ecological networks can also take into account the extent to which changes in the abundances of one species may ripple through the community [@Cornelius2013].
 Therefore, control theory could also be harnessed to provide an indication of which species are most relevant from a structural and dynamic perspective.
 
-This information is valuable not only from an ecological perspective, but it might be also relevant to address management and conservation challenges. 
+This information is valuable not only for basic ecology, but it might be also relevant to address more applied management and conservation challenges. 
 This is particularly true in the context of biotic invasions, where identifying key players in the community is a prerequisite to informed attempts to either alter the state of invaded ecosystem and maintain the state of uninvaded ones.
-Despite recent advances in network theory, practical challenges to the conservation of interaction networks persist [@Tylianakis2010], and the link between the structure of complex networks and our ability to manage and conserve them, is still ambiguous [@Bluthgen2010; @Kaiser-Bunbury2015].
+Despite recent advances in network theory, practical challenges to the conservation of interaction networks persist [@Tylianakis2010], and the link between the structure of complex networks and our ability to manage and conserve them is still ambiguous [@Bluthgen2010; @Kaiser-Bunbury2015].
 To complicate things further, biotic invasions can induce dramatic changes in the patterns of interactions that determine the structure of ecological networks [@Baxter2004; @Tylianakis2008; @Ehrenfeld2010a]. 
-Understanding how the differences in network structure before and after the invasion impact our ability to manage the communities double challenge, it is a critical first step towards a fully informed recovery. 
+Understanding how the differences in network structure before and after the invasion impact our ability to manage the communities is thus a double challenge, but it is also the critical first step towards a fully informed recovery. 
 Despite the apparent overlap, a control-theoretic perspective has not been adopted in an invasion context. 
 This is perhaps because of a lack of appropriate methodological tools that can account for the observed variation in the strength of interspecific effects that are characteristic of ecological networks [@Liu2011; @Isbell2013].
 
-To bridge this gap, we outline an approach to apply theory on the control of complex systems in an ecological context and implement them using empirical data.
+To bridge this gap, we outline an approach to apply theory on the control of complex systems in an ecological context and implement it using empirical data.
 Specifically, we use a set of ten pairs of uninvaded and invaded plant-pollinator communities to investigate the link between invasion, network structure and ecological management. 
 While doing so, we focus on two particular questions.
-First, grounded on the difficulties usually involved with invasive species eradication and ecosystem restoration [@Woodford2016], we ask whether invaded networks have lower levels of "manageability" than their uninvaded counterparts; that is, whether they require a greater proportion of species to be managed to achieve the same level of control. 
+First, grounded in the difficulties usually involved with invasive-species eradication and ecosystem restoration [@Woodford2016], we ask whether invaded networks have lower levels of "manageability" than their uninvaded counterparts; that is, whether they require a greater proportion of species to be managed to achieve the same level of control. 
 Second, we ask whether some species are more important than others at driving the population dynamics of the community and which factors determine this importance. 
 We focus on these two particular applications for a variety of reasons. 
-First, biotic invasions are known to produce tractable changes in the structure of ecological networks, and these changes can be particularly pronounced in mutualistic networks between plants and pollinators where biotic invasions have been shown to modify the strength of species interactions and the degree of network nestedness and connectivity [@Olesen2002; @Aizen2008; @Bartomeus2008; @Vila2009; @Traveset2013]. 
-Second, although species are involved in multiple types of interactions, plant-pollinator networks provide an ideal framework to answer these questions. 
+Biotic invasions are known to produce tractable changes in the structure of ecological networks, and these changes can be particularly pronounced in mutualistic networks between plants and pollinators where biotic invasions have been shown to modify the strength of species interactions and the degree of network nestedness and connectivity [@Olesen2002; @Aizen2008; @Bartomeus2008; @Vila2009; @Traveset2013]. 
+Furthermore, although species are involved in multiple types of interactions, plant-pollinator networks provide an ideal framework to answer these questions. 
 On the one hand, community networks that quantify relative levels of interaction are readily available. 
 On the other, the bipartite nature of pollination networks makes it possible to simplify assumptions of how these interactions translate into interspecific effects. 
 
