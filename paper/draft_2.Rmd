@@ -161,7 +161,7 @@ pal <- RColorBrewer::brewer.pal(5, "PuOr")
   
 * **Correspondence to:** Daniel Stouffer (daniel.stouffer@canterbury.ac.nz) - +64 3 364 2729 - Centre for Integrative Ecology, School of Biological Sciences, University of Canterbury, Private Bag 4800, Christchurch 8140, New Zealand
 
-* **Authorship:** DBS conceived the idea; all authors contributed to the development of the theoretical framework. EFC performed all analysis. EFC and DBS wrote the manuscript. 
+* **Authorship:** DBS conceived the idea; all authors contributed to the development of the theoretical framework. EFC performed all analysis. EFC and DBS wrote the manuscript. All authors contributed to its revision.
 
 * **Data accessibility:** All data used in this manuscript have already been published by @Lopezaraiza-Mikel2007, @Bartomeus2008, and @Ballantyne2015. The reader should refer to the original sources to access the data.
 
@@ -220,7 +220,7 @@ At the core of control theory of complex networks, however, rests the idea that 
 This principle can therefore be harnessed to find a subset of *driver nodes* to which to apply external input signals which then drive the state of every other node in the network to a desired configuration.
 
 Conveniently the information necessary to determine the minimum number of driver nodes *D* in a network with linear dynamics is fully contained in the network structure [@Kalman1963; @Liu2011; @Motter2015]. 
-We, therefore, start here from the assumption that an ecological network can, at least near equilibrium points, be described by $\frac{dx}{dt} = Ax + Bu(t)$, where the change over time of its state ($\frac{dx}{dt}$) depends on its current state *x* (for example the species' abundances), an external time-varying input *u(t)*, and two matrices *A* and *B*, which encapsulate information about the network structure and how the species respond to the external input, respectively. 
+We therefore start here from the assumption that an ecological network can, at least near equilibrium points, be described by $\frac{dx}{dt} = Ax + Bu(t)$, where the change over time of its state ($\frac{dx}{dt}$) depends on its current state *x* (for example the species' abundances), an external time-varying input *u(t)*, and two matrices *A* and *B*, which encapsulate information about the network structure and how the species respond to the external input, respectively. 
 Even though linearity might be a strong assumption, it has been shown that fundamental insight about the control of complex systems can be gained without a detailed knowledge of the nonlinear dynamics and the system parameters [@Liu2016], an important step towards ultimately understanding the controllability of systems with nonlinear dynamics [@Liu2011]. 
 This means that structural controllability can be applied to a wide range of readily available network representations of ecological communities to provide a strong indication of our ability to control them. 
 Moreover, we show here how quantitative data about species interactions can help us move past some of the limitations of structural controllability by better approximating the role of interspecific dynamical relationships without being overly dependent on the specific choices of how these dynamics are modelled or characterised.
@@ -418,7 +418,7 @@ We then specified the structure of all networks using pollinator visitation freq
 To further examine whether this decision would influence our results, we also evaluated the effect of using pollinator efficiency or pollinator importance as alternative measures of species interactions in a different data set that lacked invasive species [@NeEman2010; @Ballantyne2015], and we found quantitatively similar results for all three of these options (Supporting Information S4).
 In addition, because our approach depends to a large degree on the network topology, we evaluated the robustness of our results to the undersampling of ecological interactions.
 Specifically, we calculated *n~D~* and species relative importance for 500 random subsamples of each empirical network in which the weakest links were more likely to be removed. 
-The sensitivity analysis indicated that, even in the absence of complete sampling, a control theoretic approach can still be applied (Supporting Information S5).
+The sensitivity analysis indicated that, even in the absence of complete sampling, a control-theoretic approach can still be applied (Supporting Information S5).
 
 ### Manageability
 
@@ -566,7 +566,7 @@ In addition, we also included guild (plant or pollinator) and whether the specie
 Although the importance of plants and pollinators or invasive and non-invasive species could respond differently to our structural metrics, our data set did not contain enough variation to include the corresponding interactions terms for these latter two predictors. 
 All network metrics were calculated using the R package bipartite 2.06 [@Dormann2008]. 
 Lastly, we allowed for variation between different communities by including the network identity as a random effect [@Bates2015]. 
-Candidate models and estimates were assessed using the same procedure as in the  models *n~D~*.
+Candidate models and estimates were assessed using the same procedure as in the  models for *n~D~*.
 
 # Results
 
@@ -726,10 +726,10 @@ cowplot::plot_grid(p2, p1, ncol = 1, align = "v", rel_heights = c(1.5,10))
 
 Invasive species were classified as superior nodes *and* driver nodes in every single network they were present; that is, they always had the highest relative *f~S~* and *f~D~* (Figure 5a). 
 The model results suggest that these differences between invasive and native species are not underpinned by any intrinsic property of the invasive species, instead, they are due to species properties that apply to invasive and native species alike (Table 1). 
-Specifically, we found that a species is more likely to be classified as a superior node if it had a large species strength (the sum of the dependences of other species on the species of interest). 
-To a smaller extent, visitation strength (its sum of visits) and the species degree also had a positive relationship with $f_S$. 
-In contrast, the relationships between species structural properties and $f_D$ were more convoluted (Table 1). 
-Both invasive species (which for example tend to have a large degree, and high dependence strength) and pollinators (which generally have a smaller degree and dependence strength) were classified as driver nodes in a large proportion of the considered matchings.
+Specifically, we found that a species is more likely to be classified as a superior node if it had a large species strength (the sum of the dependences of all other species on the species of interest). 
+To a smaller extent, visitation strength (a species' sum of visits) and the species degree also had a positive relationship with $f_S$. 
+In contrast, the relationships between species structural properties and $f_D$ were more less clear cut (Table 1). 
+Both invasive species (which for example tend to have a large degree, and high dependence strength) and pollinators (which generally have a smaller degree and dependence strength) were classified as driver nodes in a large proportion of the matchings.
 
 ```{r glmulti-functions, include = FALSE, warning = FALSE, message = FALSE, results = "hide"}
 glmer.glmulti<-function(formula,data,random="",...){
@@ -879,7 +879,7 @@ Indeed, the difference between the driver-node density (*n~D~*) of our empirical
 While the empirical *n~D~* was indistinguishable from that of networks with a random structure that maintained the degree of each species in the community, it was larger than that of randomisations in which the directed network was unchanged but where the observed patterns of dependence were broken.
 
 Invasive species have been previously found to exacerbate the asymmetries in their communities [@Aizen2008; @Bartomeus2008; @Henriksson2016]. 
-Although this might cause differences both at the community and the species level, we found that invasive plants are not inherently different to their native counterparts [@Stouffer2014].
+Although this might cause differences both at the community and the species level, we found that invasive plants are not inherently different to their native counterparts [@Stouffer2014; Emer2016a].
 Invasive plants, just like any other mutualist in our data set, tend to be classified as a superior node with a frequency (*f~S~*) proportional to the degree to which their interaction partners are collectively more dependent on them than the other way around.
 Previous studies have found that supergeneralists, like invasive species, play a central role in their networks [@Vila2009; @Palacio2016].
 Our results take this one step further and indicate that dependence strength, rather than generalism or other metrics of centrality, is the factor that best explains the cascading effects a species could trigger on its community.
@@ -906,7 +906,7 @@ Existing metrics usually harness species featuresi, like centrality, position, c
 In contrast, our control-based approach tackles that question directly.
 Although they are relatively simple to calculate, it has been shown that classic species-level network metrics do not necessarily reveal the best set of species to manage [@Eklof2013; @McDonald-Madden2016].
 Our approach, however, is not based on a single structural metric but instead acknowledges the existence of multiple management strategies.
-By allowing for the fact that some strategies are better than others depending on the context, control theory implicitly highlights that management decisions should (DBS) not be based on a single technique. 
+By allowing for the fact that some strategies are better than others depending on the context, control theory implicitly highlights that management decisions should not be based on a single technique. 
 As such, ours and other flexible approaches that take a network-wide approach might prove more useful to guide ecosystem management if we want to go beyond using network metrics to minimise topological species loss [@McDonald-Madden2016].
 
 Despite its conceptual advantages, our approach still relies on knowledge of the network of interaction between species. 
