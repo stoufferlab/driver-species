@@ -1457,7 +1457,7 @@ In contrast, species' $f_D$ reached intermediate levels of importance and showed
 We note here that we were unable to compute all the maximal cardinality matchings for one of our networks (uninvaded community in site 8). 
 This is because, we estimated the number of matchings to be more than one billion, and this surpassed our available computational resources.
 
-```{r fig-f-s-rankings, echo = F, message = F, warning = F, fig.width = 6.2, fig.height = 9, results = "hide", fig.cap="**Frequency with which a species was classified as a superior node ($f_S$) as a function of the matching weight threshold**. Rows correspond to network pairs.", cache = T}
+```{r fig-f-s-rankings, echo = F, message = F, warning = F, fig.width = 6.2, fig.height = 9, results = "hide", fig.cap="**Relative requency with which a species was classified as a superior node ($f_S$) as a function of the matching weight threshold**. Rows correspond to network pairs.", cache = T}
 sites <- net_prop %>% dplyr::arrange(study, site, inv) %$% site %>% unique()
 threshold_data <- d_sp %>%
 			dplyr::filter(scaled == FALSE, 
@@ -1500,7 +1500,7 @@ p <- c("f_s", "f_d") %>%
 p[[1]] + ylab(expression(f[S]))
 ```
 
-```{r fig-f-d-rankings, echo = F, message = F, warning = F, fig.width = 6.2, fig.height = 9, results = "hide", fig.cap= "**Frequency with which a species was classified as a driver node ($f_D$) as a function of the matching weight threshold**. Rows correspond to network pairs.", cache = T}
+```{r fig-f-d-rankings, echo = F, message = F, warning = F, fig.width = 6.2, fig.height = 9, results = "hide", fig.cap= "**Relative frequency with which a species was classified as a driver node ($f_D$) as a function of the matching weight threshold**. Rows correspond to network pairs.", cache = T}
 p[[2]] + ylab(expression(f[D]))
 
 ```
