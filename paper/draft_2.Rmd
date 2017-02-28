@@ -578,7 +578,7 @@ Nevertheless, of the various covariates we explored, the ratio of plants to poll
 Specifically, we found that, as the proportion of pollinators increases and the ratio plant/pollinator approaches unity, *n~D~* decreases (all our communities had more pollinators than plants). 
 Other covariates—connectance (link density) and species richness—had negative, but comparatively less important relationships with *n~D~*.
 
-```{r fig_explaining-n-driver, echo = FALSE, warning = FALSE, message = FALSE, fig.width = 3.245, fig.height = 4.8, fig.cap = "**Driver-node density**. (a) Histogram of the driver-node density (_n~D~_) for the twenty studied networks. (b) Invaded communities have lower *n~D~* than uninvaded communities even when controlling for factors related to species richness. The boxes cover the 25th–75th percentiles, the middle lines mark the median, and the maximum length of the whiskers is 1.5 times the interquartile range. (c) Out of the richness metrics, the ratio of plants to pollinators showed a strong, negative relationship with *n~D~*. In both plots, partial residuals correspond to the partial working residuals of the invasion status in our generalised linear mixed model."}
+```{r fig_explaining-n-driver, echo = FALSE, warning = FALSE, message = FALSE, fig.width = 3.245, fig.height = 4.8, fig.cap = "**Driver-node density**. (a) Histogram of the driver-node density (_n~D~_) for the twenty networks. (b) Invaded communities have lower *n~D~* than uninvaded communities even when controlling for factors related to species richness. The boxes cover the 25th–75th percentiles, the middle lines mark the median, and the maximum length of the whiskers is 1.5 times the interquartile range. (c) Out of the richness metrics, the ratio of plants to pollinators showed a strong, negative relationship with *n~D~*. In both plots, partial residuals correspond to the partial working residuals of the invasion status in our generalised linear mixed model."}
 
 par_res <- as.data.frame(residuals(manag_models@objects[[5]], "partial"))
 names(par_res) <- paste0(make.names(names(par_res)), "_res")
@@ -879,7 +879,7 @@ Indeed, the difference between the driver-node density (*n~D~*) of our empirical
 While the empirical *n~D~* was indistinguishable from that of networks with a random structure that maintained the degree of each species in the community, it was larger than that of randomisations in which the directed network was unchanged but where the observed patterns of dependence were broken.
 
 Invasive species have been previously found to exacerbate the asymmetries in their communities [@Aizen2008; @Bartomeus2008; @Henriksson2016]. 
-Although this might cause differences both at the community and the species level, we found that invasive plants are not inherently different to their native counterparts [@Stouffer2014; Emer2016a].
+Although this might cause differences both at the community and the species level, we found that invasive plants are not inherently different to their native counterparts [@Stouffer2014; @Emer2016a].
 Invasive plants, just like any other mutualist in our data set, tend to be classified as a superior node with a frequency (*f~S~*) proportional to the degree to which their interaction partners are collectively more dependent on them than the other way around.
 Previous studies have found that supergeneralists, like invasive species, play a central role in their networks [@Vila2009; @Palacio2016].
 Our results take this one step further and indicate that dependence strength, rather than generalism or other metrics of centrality, is the factor that best explains the cascading effects a species could trigger on its community.
@@ -920,7 +920,7 @@ How important it is to include several interaction types for our understanding o
 What are the implications for species coexistence? 
 Which are the trade-offs between persistence at the species and the community level? 
 Answering each of these questions might require its evaluation in different ecological systems, an explicit integration of control theory with numerical models of species densities [@Cornelius2013; @Gibson2016], and experimental tests on simple communities. 
-Nevertheless, the potential rewards are encouraging from both an ecological perspective as well as a conservation perspective, where an integrated approach can shift our focus beyond the identification of ideal targets for intervention to the design of informed interventions that legitimately achieve restoration goals.
+Nevertheless, the potential rewards are encouraging from both an ecological and conservation perspective, where an integrated approach can shift our focus beyond the identification of ideal targets for intervention to the design of informed interventions that legitimately achieve restoration goals.
 
 # Appendix 1: Glossary 
 
