@@ -554,7 +554,7 @@ Our second key question was related to how species differ in their ability to dr
 To quantify this importance, we computed all maximal cardinality matchings in each network. 
 We then calculated the frequency with which each species *i* is deemed to be a driver (*f~D~*) or a superior node (*f~S~*) in the set of matchings that had a matching weight greater or equal to 0.8 times the weight of the maximum matching. 
 We selected this threshold as it provided a high agreement between networks quantified by visitation and pollination efficiency as well as between our weighting/directionality assumptions; however, the choice of this threshold had a negligible impact on any results (Supporting Information S7).
-Details about the computational procedure to find all maximum cardinality matchings of a network can be found in Supporting Information S1 and Figure S2.
+Details about the computational procedure to find all maximal cardinality matchings of a network can be found in Supporting Information S1 and Figure S2.
 
 #### Statistical analysis
 
