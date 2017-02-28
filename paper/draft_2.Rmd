@@ -210,40 +210,39 @@ On the other, the bipartite nature of pollination networks makes it possible to 
 
 ## Theoretical framework
 
-Disregarding practical considerations, any network could hypothetically be fully controlled if we control the state of every single node individually.
+Disregarding practical considerations, any network (community) could hypothetically be fully controlled if we control the state of every single node (species) individually.
 At the core of control theory of complex networks, however, rests the idea that the state of a node depends on the state of the nodes it interacts with, and the particular form of this dependence is determined both by the dynamic relationship among interacting nodes as well as the structure of the links in the network. 
-This principle can, therefore, be harnessed to find a subset of *driver nodes* to which to apply external input signals which then drive the state of every other node in the network to a desired configuration.
+This principle can therefore be harnessed to find a subset of *driver nodes* to which to apply external input signals which then drive the state of every other node in the network to a desired configuration.
 
-Conveniently, in a network with linear dynamics, the information necessary to determine the minimum number of driver nodes *D* is fully contained in the network structure [@Kalman1963; @Liu2011; @Motter2015]. 
-We, therefore, start here from the assumption that an ecological network can, at least near equilibrium points, be described by $\frac{dx}{dt} = Ax + Bu(t)$, where the change over time of its state ($\frac{dx}{dt}$) depends on its current state *x* (for example the species' populations), an external time-varying input *u(t)*, and the matrices *A* and *B*, which encapsulate information about the network structure and how the species respond to the external input, respectively. 
+Conveniently the information necessary to determine the minimum number of driver nodes *D* in a network with linear dynamics is fully contained in the network structure [@Kalman1963; @Liu2011; @Motter2015]. 
+We, therefore, start here from the assumption that an ecological network can, at least near equilibrium points, be described by $\frac{dx}{dt} = Ax + Bu(t)$, where the change over time of its state ($\frac{dx}{dt}$) depends on its current state *x* (for example the species' abundances), an external time-varying input *u(t)*, and two matrices *A* and *B*, which encapsulate information about the network structure and how the species respond to the external input, respectively. 
 Even though linearity might be a strong assumption, it has been shown that fundamental insight about the control of complex systems can be gained without a detailed knowledge of the nonlinear dynamics and the system parameters [@Liu2016], an important step towards ultimately understanding the controllability of systems with nonlinear dynamics [@Liu2011]. 
 This means that structural controllability can be applied to a wide range of readily available network representations of ecological communities to provide a strong indication of our ability to control them. 
 Moreover, we show here how quantitative data about species interactions can help us move past some of the limitations of structural controllability by better approximating the role of interspecific dynamical relationships without being overly dependent on the specific choices of how these dynamics are modelled or characterised.
 
 ### Manageability
 
-The number of driver nodes *D* can provide a structural indication of how difficult its control might be.
+The number of driver nodes *D* can provide a structural indication of how difficult a network's control might be.
 This is because systems that require a large number of external input signals are intuitively more difficult or costly to control.
 In an ecological context, external inputs that modify the state of a node can be thought of as management interventions.
-Therefore, the density of driver nodes $n_D = \frac{D}{S}$, where *S* is the total number of species in the community, can be seen as a metric of the extent to which network structure can be harnessed for network control.
-For instance, while a hypothetical "network" in which species do not interact but instead function independently from each other would require direct interventions in every single species to achieve full control, a linear food chain would require just one species to be directly controlled to harness cascading effects through the trophic levels that compose it. 
+Therefore, the density of driver nodes $n_D = \frac{D}{S}$, where *S* is the total number of species in the community, can be seen as a measure of the extent to which network structure can be harnessed for network control.
+For instance, while a hypothetical "network" in which species do not interact but instead function independently from each other would require direct interventions for every single species to achieve full control, a linear food chain would require just one species to be directly controlled to harness cascading effects through the trophic levels that compose it. 
 From this perspective, it is possible to use *n~D~* as an index of the manageability of an ecological community, understood in the context of how difficult is to modify the abundances of species in the community using external interventions—a common theme in ecosystem management, conservation, and restoration.
 
 It has been recently shown that calculating *D* is equivalent to finding a maximum matching in the network [@Liu2011].
 In a directed network, a *matching* consists of a subset of links in which no two of them share a common starting or ending node (Figure 1, Supporting Information S1).
 A given matching has *maximal cardinality* if the number of matched links (also referred to as the *matching size*) is the largest possible.
 A maximal cardinality matching is then called a *maximum matching* if the sum of the weights of the matched links (also referred to as *matching weight*) is again the largest possible [@West2001].
-Note that this implies that for unweighted binary networks, all maximal cardinality matchings are also maximum matchings.
 
-Once we have the subset of links that constitute a matching, we can also classify the nodes in the network (Figure 1).
+Once we have the subset of links that constitute a matching, we can also classify the nodes in the network based on that matching (Figure 1).
 A node is said to be *matched* if it is at the end of a matched link and *unmatched* otherwise. 
 A node is also said to be *superior* if it is at the start of a matched link.
 Note that a node cannot be superior if it has no outgoing links.
-Notably, these node categories are what help us to link a maximum matching back to the concept of network controllability as follows.
+Notably, these node categories are what help us to link a maximum matching back to the concept of network controllability, as follows.
 Unmatched nodes are the *driver nodes* *D* because they have no superior in the network and must be directly controlled by an external input [@Liu2011].
 Each matched node, on the other hand, can be controlled by its superior.
 
-```{r figure 1, echo = F, message = F, warning = F, fig.width = 6.2, fig.height = 1.9, results= "hide", fig.pos = "t", fig.cap = "**Matchings of a simple network**. (a) We start with a network in which the direction of the links indicates the potential direction of control; for example a link from *a~1~* to *p~1~* indicates that the state of *p~1~* is influenced by the state of *a~1~*. (b & c) This network has two maximal cardinality matchings; that is, two configurations in which it would be possible to exert full control of the network via external input signals to a minimal set of nodes. In both cases, the three matched links (purple arrows) represent the control paths through the network and provide an indication of the matched nodes (purple), which are controlled by superior nodes within the network (circular nodes). Unmatched nodes (orange) are called driver nodes because full network control requires external signals to be applied to them. Out of the two maximal cardinality matchings only one (c) has maximum weight and therefore is also a maximum matching. Further examples can be found in the Supporting Information S1."}
+```{r figure 1, echo = F, message = F, warning = F, fig.width = 6.2, fig.height = 1.9, results= "hide", fig.pos = "t", fig.cap = "**Matchings of a simple network**. (a) We start with a network in which the direction of the links indicates the potential direction of control; for example a link from *a~1~* to *p~1~* indicates that the state of *p~1~* is influenced by the state of *a~1~*. The numbers indicate the weight of each link. (b & c) This network has two maximal cardinality matchings; that is, two configurations in which it would be possible to exert full control of the network via external input signals to a minimal set of nodes. In both cases, the three matched links (purple arrows) represent the control paths through the network and provide an indication of the matched nodes (purple), which are controlled by superior nodes within the network (circular nodes). Unmatched nodes (orange) are called driver nodes because full network control requires external signals to be applied to them. Out of the two maximal cardinality matchings only one (c) has maximum weight and therefore is also a maximum matching. Further examples can be found in the Supporting Information S1."}
 layout(matrix(c(1, 1, 2, 4, 3, 4), 2, 3),
   	heights=c(8,2))
 par( mar=c(0,0,0,0))
@@ -350,12 +349,12 @@ E(as_net)$weight <- round(E(as_net)$weight, 1)
 as_net <- base_as_net
 
 plot.new()
-legend(0.25, 0.8, legend = c("unmatched link", "matched link"), horiz = TRUE,
+legend(0.20, 0.8, legend = c("unmatched link", "matched link"), horiz = TRUE,
 			 lty = 1, 
 			 col = pal[c(1, 5)],
 			 lwd = 2, cex = 0.9, xjust=0.5, yjust=0.8, bty = "n")
 
-legend(0.8, 0.8, legend = c("unmatched node", "matched node"), horiz = TRUE,
+legend(0.835, 0.8, legend = c("unmatched node (driver)", "matched node"), horiz = TRUE,
 			 pch = 21, 
 			 pt.bg = pal[c(2, 4)],
 			 col = pal[c(1,5)],
@@ -379,20 +378,20 @@ In the "Empirical application" section below, we explain our approach to determi
 ### Relative importance
 
 While calculating *n~D~* provides an indication of the manageability of an ecological community, it does not provide information about the identity of the species that compose the set of driver nodes. 
-Ecologically, these distinctions are acutely relevant because management and conservation resources are limited, and therefore ecological interventions should ideally be focused on the set of species that might provide the largest impact. 
-Maximum matchings in a network are often not unique, and each different maximum matching indicates a unique path that can potentially be used to control the network. 
-We harness this property and use a network's complete set of multiple maximum matchings to characterise a species' relative importance in driving the state of the community. 
-One possibility is to characterise a species by the frequency *f~D~* with which it is classified as a driver node.
-However, the profile of our networks indicates that a large proportion of driver nodes are so, because of external interventions are required to achieve **full** controllability, and not because they influence the abundance of other species (Supporting Information S2).
+Ecologically, potential differences between species are acutely relevant because management and conservation resources are limited, and therefore ecological interventions should ideally be focused on the set of species that might provide the largest impact. 
+Moreover, maximum matchings in a network are often not unique, and each different maximum matching indicates a unique path that can potentially be used to control the network. 
+We harness this property and use a network's complete set of maximum matchings to characterise each species' relative importance in driving the state of the community. 
+One possibility is to characterise a species by the frequency *f~D~* with which it is classified as a driver node within this set of matchings.
+However, the profile of our networks indicates that a large proportion of driver nodes are classified as such, because of external interventions that are required to achieve **full** controllability and not because they influence the abundance of other species (Supporting Information S2).
 Furthermore, the precise role of driver nodes is still ambiguous when full control is unfeasible or undesired—often the case in ecological settings.
 We therefore also calculate the frequency *f~S~* with which a species is classified as superior nodes since this is the frequency with which they form part of possible control paths.
 
-Most commonly, structural controllability assumes unweighted networks—links exist or not, and hence *f~D~* and *f~S~* can be calculated by computing all possible maximum cardinality matchings. 
-However, we take the link weights into account when calculating the matchings because it has been shown that the weights can reveal significant ecological patterns and processes that might be undetectable in unweighted networks [@Scotti2007; @Tylianakis2007; @Vazquez2007; @Kaiser-Bunbury2010a]. 
-For example, a species *A* interacts with both species *B* and *C* but depends strongly on *B* and only weakly on *C*. 
+Most commonly, structural controllability assumes unweighted networks—links exist or not, and hence *f~D~* and *f~S~* can be calculated by computing all possible maximum-cardinality matchings. 
+However, we take the link weights into account when calculating the matchings here because it has been shown that the weights can reveal significant ecological patterns and processes that might be undetectable in unweighted networks [@Scotti2007; @Tylianakis2007; @Vazquez2007; @Kaiser-Bunbury2010a]. 
+For example, a species *A* may interact with both species *B* and *C* but depends strongly on *B* and only weakly on *C*. 
 Intuitively, a management intervention designed to indirectly modify the abundance of a species *A* is more likely to succeed if the abundance of *B*, rather than *C*, is directly controlled.
 A complication of including the interaction weight when calculating the maximum matching, however, is that empirical interaction strengths are to some extent stochastic and depend on proximate factors such as sampling method and intensity [@Gibson2011].
-We circumvent this issue by calculating all maximal cardinality matchings and subsequently ranking them by their matching weight. 
+We overcome this issue by calculating all maximal cardinality matchings and then ranking them by their matching weight. 
 By following this approach, we effectively give priority to the species that participate in the pathways that potentially have the largest impact on the community while acknowledging the limitations associated with sampling and its potential restrictions [@Jordano2016]. 
 
 ## Empirical application
@@ -451,7 +450,7 @@ Their removal represented an average loss of `r sp_lost`% of the species and `r 
 
 #### Weighting & directing links
 
-Recall that the aforementioned maximum-matching approach requires a directed network in which a link between species *i* and *j* pointing to species *j* indicates that the abundance of *j* can be affected by the abundance of *i*.
+As we noted earlier, the aforementioned maximum-matching approach requires a directed network in which a link between species *i* and *j* pointing to species *j* indicates that the abundance of *j* can be affected by the abundance of *i*.
 This implies that we need first to identify a directionality for the links between species that is consistent with the dynamics of the community (Figure 2). 
 In some ecological networks, establishing the directionality can appear relatively straightforward, for example when links represent biomass transfer or energy flow [@Isbell2013]. 
 Interspecific effects in pollination networks, however, are not strictly directed since the benefit is mutual between interacting species. 
@@ -514,33 +513,33 @@ text(label_pos_x, label_pos_y, "(c)", adj = c(0,0), font = 2)
 
 ```
 
-Given the respective dependences, the extent to which a species *i* affects species *j* relative to the extent to which *j* affects *i* can be summarised by the interaction asymmetry [@Bascompte2006] given by $$a(i,j) = \frac{\left | d_{ij}-d_{ji} \right |}{max\left ( d_{ij}, d_{ji} \right )}.$$
+Given the respective dependences, the extent to which a species *i* affects species *j* relative to the extent to which *j* affects *i* can be summarised by the interaction asymmetry [@Bascompte2006] given by $$a(i,j) = a(j,i) = \frac{\left | d_{ij}-d_{ji} \right |}{max\left ( d_{ij}, d_{ji} \right )}.$$
 Previous research has shown that mutual dependences are often highly asymmetric in natural communities [@Bascompte2006]; in other words, if a plant species is largely dependent on a pollinator species, then that pollinator tends to depend rather weakly on the plant (or vice versa). 
 We, therefore, simplified the network so that interacting species are connected by only one directed link when mutual dependences are asymmetric (Figure 2c).
 This simplification, while maintaining ecological realism, is advantageous for several reasons. 
 First, it is consistent with previous advances in structural controllability; second, it avoids complications related to the introduction of artificial control cycles; and third it significantly reduces the computational resources necessary for the application of our approach (Supporting Information S6).
-Furthermore, we show that changing to unidirectional interactions determined by the observed direction of asymmetry, as a surrogate of bidirectional mutual dependences does not alter the relative *n~D~* of different networks (Table S3).
+Furthermore, we show that changing to unidirectional interactions determined by the observed direction of asymmetry, as a surrogate of bidirectional mutual dependences, does not alter the relative *n~D~* of different networks (Table S3).
 
-To find a maximum matching, we adopted a strategy based on an alternative bipartite representation of the directed network in which the two levels indicate the outgoing and incoming links to each node (Supporting Information S1). 
-Once we had this alternative representation, then, on each network, we used the maximum bipartite matching algorithm implemented in the `max_bipartite_match` function of igraph 1.0.1 [@Csardi2006a].
+To find a maximum matching in a network with interaction directions and weights determined by the asymmetry, we adopted a strategy based on an alternative bipartite representation of the directed network with two levels that indicate the outgoing and incoming links to each node (Supporting Information S1). 
+Once we had this alternative representation we used the maximum bipartite matching algorithm implemented in the `max_bipartite_match` function of igraph 1.0.1 [@Csardi2006a] on each network.
 
 #### Statistical analysis
 
-Although understanding the variability of manageability across ecological networks is a useful result in itself, we also wanted to test whether invasion status had an impact on the observed *n~D~*. 
-We, therefore, used a set of generalised linear models (with binomial error structure) to investigate the effect of invasion status while also controlling for factors related to species richness, since one might naively expect to see a negative relationship between richness and manageability [@Menge1995]. 
+Although understanding the variability of manageability across ecological networks is a useful result in itself, we also wanted to test whether invasion status or other predictors had an impact on the observed *n~D~*. 
+We, therefore, used a set of generalised linear models (with binomial error structure) to investigate the effect of invasion status while also including covariates related to species richness, since one might naively expect to see a negative relationship between richness and manageability [@Menge1995]. 
 These covariates included the total number of species, plant richness, pollinators richness, the ratio of plant to pollinator richness, the link density (connectance), and the study site (as a two-level factor). 
 Candidate models were compared using AICc and the relative importance of the explanatory variables was evaluated using the sum of Akaike weights over candidate models that accounted for 95% of the evidence [@Burnham2003; @Bates2015; @Barton2016]. 
 Coefficient estimates were averaged following @Buckland1997a while confidence intervals were calculated following @Lukacs2010.
 
 We next explored whether real networks differ in their architecture from random ones in a concerted way that affects manageability. 
 Previous research indicates a direct link between a network's degree distribution and the number of nodes necessary to fully control it [@Liu2011], but the strength and applicability of this relationship have not been tested for in weighted ecological networks. 
-We, therefore, compared the driver-node density *n~D~* of the empirical networks to networks generated by a null model that maintained each species' strength (its total sum of visits) while allowing their degrees (its number of interactions) to vary. 
-Randomisations were generated using the function `commsim` in vegan 2.3-3 [@Oksanen2016]. 
+We therefore compared the driver-node density *n~D~* of the empirical networks to networks generated by a null model that maintained each species' strength (its total sum of visits) while allowing their degrees (its number of interactions) to vary. 
+Randomisations were generated using the quasiswap-count algorithm and the function `commsim` in vegan 2.3-3 [@Oksanen2016]. 
 After generating the randomised networks, we then calculated the mutual dependences and interaction asymmetries of each and determined *n~D~* using our maximum-matching framework. 
 Finally, we calculated the average rank (akin to a p-value) of *n~D~* for each empirical network compared to the corresponding one of each set of 999 randomisations [@Veech2012].
 
 Beyond network structure, the dependence asymmetry plays a fundamental role in determining the direction of control in each two-species interaction and therefore has the potential to influence the network *n~D~* results above. 
-We, therefore, performed an additional randomisation in which we kept the structure of each network constant but randomised the direction of the interaction asymmetries. 
+We therefore performed an additional randomisation in which we kept the structure of each network constant but randomised the direction of the interaction asymmetries. 
 That is, we first calculated the observed asymmetries for each community and then shuffled the direction of the link between each pair of species. 
 Similar to the other null models, we calculated the average rank of the empirical *n~D~* when compared to that of the randomisations.
 
@@ -550,20 +549,19 @@ Our second key question was related to how species differ in their ability to dr
 To quantify this importance, we computed all maximal cardinality matchings in each network. 
 We then calculated the frequency with which each species *i* is deemed to be a driver (*f~D~*) or a superior node (*f~S~*) in the set of matchings that had a matching weight greater or equal to 0.8 times the weight of the maximum matching. 
 We selected this threshold as it provided a high agreement between networks quantified by visitation and pollination efficiency as well as between our weighting/directionality assumptions; however, the choice of this threshold had a negligible impact on any results (Supporting Information S7).
-
 Details about the computational procedure to find all maximum cardinality matchings of a network can be found in Supporting Information S1 and Figure S2.
 
 #### Statistical analysis
 
-We then examined whether any species-level structural properties can predict our metrics of species importance—the frequency to which a species was a driver or a superior node (*f~D~* and *f~S~*, respectively).
+We then examined whether any species-level structural properties could predict our metrics of species importance—the frequency to which a species was a driver or a superior node (*f~D~* and *f~S~*, respectively).
 We used a set of generalised linear mixed-effects models (with binomial error structure) with the relative frequencies as the response variables. 
-As predictors in this model, we included measures of centrality (degree and eigen-centrality), which have been found to be strong predictors of importance in a coextinction context [@Memmott2004]; a measure related to network robustness (contribution to nestedness), as nestedness has been proposed as one of the key properties that promote stability in mutualistic networks [@Saavedra2011]; and two measures of strength of association and dependence (visitation and dependence strength, this is the sum of visits a species receives or performs, and the sum of dependences of all species on the focal species, respectively), as their distribution determines the extent of interspecific effects [@Bascompte2006].
-To facilitate comparison among the continuous variables we scaled so that they all had a mean of zero and a standard deviation of one.
-In addition, we also included guild (plant or pollinator), and whether the species is invasive or not, as categorical fixed effects.
+As predictors in this model, we included measures of centrality (degree and eigen-centrality), which have been found to be strong predictors of importance in a coextinction context [@Memmott2004]; a measure related to network robustness (contribution to nestedness), as nestedness has been proposed as one of the key properties that promote stability in mutualistic networks [@Saavedra2011]; a measure of strength of association (visitation strength, the sum of visits a species receives or performs) and a measure of strength of dependence (species strength, the sum of dependences of all species on the focal species), as their distribution determines the extent of interspecific effects [@Bascompte2006].
+To facilitate comparison among the continuous variables, we scaled them so that they all had a mean of zero and a standard deviation of one.
+In addition, we also included guild (plant or pollinator) and whether the species is invasive or not as categorical fixed effects.
 Although the importance of plants and pollinators or invasive and non-invasive species could respond differently to our structural metrics, our data set did not contain enough variation to include the corresponding interactions terms for these latter two predictors. 
 All network metrics were calculated using the R package bipartite 2.06 [@Dormann2008]. 
 Lastly, we allowed for variation between different communities by including the network identity as a random effect [@Bates2015]. 
-Candidate models and estimates were assessed using the same procedure as in the *n~D~* models.
+Candidate models and estimates were assessed using the same procedure as in the  models *n~D~*.
 
 # Results
 
@@ -745,7 +743,7 @@ setMethod('getfit', 'glmerMod', function(object, ...) {
 })
 ```
 
-```{r fig-dependency-fs, echo = FALSE, warning = FALSE, message = FALSE, fig.width = 3.245, fig.height = 3.2, fig.cap = "**Relatiosnships between _f~S~_ and _f~D~_ and species' structural properties**. (a) In all networks were they were present, invasive species were classified as superior (_f~S~_) and driver (_f~D~_) nodes in all possible control configurations. (b) Species strength (the sum of the dependences of other species on the species of interest) is the single most important factor explaining _f~S~_. Visitation strength and  degree also had an important albeit comparatively smaller effect (dashed lines correspond to ± one standard deviation on these factors). Invasive species are depicted as circles."}
+```{r fig-dependency-fs, echo = FALSE, warning = FALSE, message = FALSE, fig.width = 3.245, fig.height = 3.2, fig.cap = "**Relatiosnships between _f~S~_ and _f~D~_ and species' structural properties**. (a) In all networks were they were present, invasive species were classified as superior (_f~S~_) and driver (_f~D~_) nodes in all possible control configurations. (b) Species strength (the sum of the dependences of other species on the species of interest) is the single most important factor explaining _f~S~_. Visitation strength and  degree also had an important albeit comparatively smaller effect (dashed lines correspond to one standard deviation on these factors). Invasive species are depicted as circles."}
 data <- mo 
 trans <- function(x, orig){
   x * attr(orig, "scaled:scale") + attr(orig, "scaled:center")
@@ -851,9 +849,8 @@ coef_tables %<>%
 	})
 
 attr(coef_tables, "subheadings") <- paste0("$", names(mod), "$")
-attr(coef_tables, "message") <- "\\footnotesize Confidence intervals correspond to an alpha risk of 0.05."
 coef_tables %>%
-	xtable::xtableList(caption = "\\textbf{Factors determining species importance}. Factor estimates correspond to the average over all models that accounted for 95\\% of the AIC evidence.",
+	xtable::xtableList(caption = "\\textbf{Factors determining species importance}. Factor estimates correspond to the average over all models that accounted for 95\\% of the AIC evidence. Confidence intervals correspond to $\\alpha = 0.05$.",
 										 digits =  c(0, 0, 2, 2, 2),
 										 display = c("d", "s", "f", "f", "G")) %>%
 	print(booktabs = T, include.rownames = F,  caption.placement = "top", size = "\\small",comment = F, sanitize.text.function = function(x){x})
@@ -952,4 +949,6 @@ EFC acknowledges the support from the University of Canterbury Doctoral Scholars
 DBS acknowledges the support of a Marsden Fast-Start grant and a Rutherford Discovery Fellowship, administered by the Royal Society of New Zealand.
 
 # References
+
+
 
