@@ -1,6 +1,5 @@
 ---
 title: "Response to reviewer comments ELE-00738-2016"
-date: "28 February 2017"
 output: pdf_document
 csl: ecology-letters.csl
 classoption: a4paper
