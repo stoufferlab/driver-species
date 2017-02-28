@@ -869,10 +869,10 @@ coef_tables %>%
 # Discussion
 
 Contrary to our initial hypothesis, we found some evidence that invaded communities might be easier to manage than uninvaded ones from a control-theoretic perspective. 
-Our results reveal, however, that this effect is comparatively small and the structural differences among different networks are more strongly related to potential differences in our ability to alter the state of the community via external interventions.
+Our results reveal, however, that this effect is comparatively small, and the structural differences among different networks are more strongly related to potential differences in our ability to alter the state of the community via external interventions.
 Despite the small effect of invasion status at a network level, we found that invasive mutualists occupy a particularly dominant role in their communities for two reasons. 
-(FDO revision) First, as species with a high *f~S~*, changes on their abundance have the potential to propagate broadly through the community and in turn, affect the abundances of many other species. 
-Second, as species with a high *f~D~*, they are also indispensable to fully control the plant-pollinator network. 
+First, as species with a high *f~S~*, changes on their abundance have the potential to propagate broadly through the community and, in turn, affect the abundances of many other species. 
+Second, as species with a high *f~D~*, they are also indispensable when it comes to fully controlling the plant-pollinator network. 
 At a community level, we demonstrate that the manageability of mutualistic networks is strongly governed by the asymmetric nature of mutual dependences—which constitute the foundations of the structure and stability of mutualistic networks [@Memmott2004; @Vazquez2004; @Bascompte2006; @Lever2014; @Astegiano2015]. 
 Moreover, these mutual dependences seem to be constrained by the effects of both the patterns of species richness at each trophic guild and a network's degree distribution [@Melian2002; @Bluthgen2007]. 
 Indeed, the difference between the driver-node density (*n~D~*) of our empirical networks and that of randomisations depended strongly on the null model's randomisation approach. 
@@ -885,28 +885,28 @@ Previous studies have found that supergeneralists, like invasive species, play a
 Our results take this one step further and indicate that dependence strength, rather than generalism or other metrics of centrality, is the factor that best explains the cascading effects a species could trigger on its community.
 
 Because of the ability that our approach has to infer the magnitude of the effects that each species has on others in the community, it is tantalising to use it to select promising candidates for management interventions. 
-To this end, the two indices we employed to characterise a species provide two complementary pieces of information. 
-(FDO revise grammar) Our first index, the frequency with which a species is classified as a driver node (*f~D~*) provides an indication of the likelihood that a species is part of the set of species that need to be manipulated in order to control of *all* species in the community. 
-The driver-node concept has received considerable attention in the structural-control literature and indeed shows substantial potential to provide useful ecological insight. 
+To this end, the two indices we have used to characterise a species provide two complementary pieces of information. 
+Our first index *f~D~*---the frequency with which a species is classified as a driver node---provides an indication of the likelihood that a species forms part of the set of species that must be manipulated in order to control *all* species in the community. 
+This driver-node concept has received considerable attention in the structural-control literature and indeed shows substantial potential to provide useful ecological insight. 
 Nevertheless, we anticipate two caveats that hinder its direct utility for management applications.
-First, unlike some other types of complex systems, fully controlling an ecological community is almost certainly out of reach for all but the simplest ones, due to either the number of required interventions or the difficulties of their implementation [@Motter2015]. 
-For instance, our results suggest that full control of the pollination networks would require direct interventions on 40-90% of the species.
-Second, @Ruths2014 established that driver nodes arise due to distinct mechanisms and therefore species with markedly different network metrics can be driver nodes in their community (Supporting information S2).
+First, unlike some other types of complex systems, fully controlling an ecological community is almost certainly out of reach for all but the simplest, due to either the number of required interventions or the practical difficulties of their implementation [@Motter2015]. 
+For instance, our results suggest that full control of the pollination networks would require direct interventions on anywhere from 40--90% of the species.
+Second, @Ruths2014 established that driver nodes arise due to distinct mechanisms and therefore species with markedly different network metrics can act as driver nodes in their community (Supporting Information S2).
 
 Our second index *f~S~* is, however, directly related to the likelihood a species affects the abundance of another species in all of the control strategies considered. 
-Importantly, this is irrespective of whether controlling the entire network is desired/feasible or not. 
-In fact, because superior nodes are invariably at the beginning of a matched link, species with a high *f~S~* are more likely to be the subjects of management interventions when controlling the abundances of a target set of species—as opposed to the entire network—is desired [@Gao2014]. 
+Importantly, this is irrespective of whether controlling the entire network is ultimately desired and/or feasible. 
+In fact, because superior nodes are always at the beginning of a matched link, species with a high *f~S~* are more likely to be the subjects of management interventions when controlling the abundances of a target set of species—as opposed to the entire network—is desired [@Gao2014]. 
 An important advantage here is that the target set of species does not have to be the same set to which interventions are applied. 
 For instance, despite inconsistent outcomes in practice [@Suding2004; @Rodewald2015; @Smith2016], our results suggest that current restoration approaches that focus on direct eradication of invasive species might indeed be an effective way to modify ecosystem state. 
 Nevertheless, our results also indicate that removals must be exercised with caution. 
 Not only it is hard to predict the direction in which the system will change, but invaded communities also tend to be highly dependent on invaders and therefore acutely vulnerable to their eradication [@Traveset2013; @Albrecht2014]. 
 
-(FDO check) Despite the apparent similarities, our approach is different to previous attempts to quantify species importance. 
-Existing metrics usually harness species features like centrality, position, co-extinction or uniqueness, to infer their effect on other species [@Allesina2004; @Jordan2006; @Jordan2009; @Lai2012]. 
+Despite the apparent similarities, our approach is different to previous attempts to quantify species importance in a few key ways.
+Existing metrics usually harness species featuresi, like centrality, position, co-extinction or uniqueness, to infer their effect on other species [@Allesina2004; @Jordan2006; @Jordan2009; @Lai2012]. 
 In contrast, our control-based approach tackles that question directly.
 Although they are relatively simple to calculate, it has been shown that classic species-level network metrics do not necessarily reveal the best set of species to manage [@Eklof2013; @McDonald-Madden2016].
 Our approach, however, is not based on a single structural metric but instead acknowledges the existence of multiple management strategies.
-(FDO check) By allowing for the fact that some are more optimal than others in different contexts, control theory implicitly highlights that management decisions should be based on a single technique. 
+By allowing for the fact that some strategies are better than others depending on the context, control theory implicitly highlights that management decisions should (DBS) not be based on a single technique. 
 As such, ours and other flexible approaches that take a network-wide approach might prove more useful to guide ecosystem management if we want to go beyond using network metrics to minimise topological species loss [@McDonald-Madden2016].
 
 Despite its conceptual advantages, our approach still relies on knowledge of the network of interaction between species. 
