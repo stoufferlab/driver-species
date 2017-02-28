@@ -1,5 +1,5 @@
 ---
-title: "The manageability of pollination networks in an invasion context"
+title: "Quantifying the manageability of pollination networks in an invasion context"
 classoption: a4paper
 csl: ecology-letters.csl
 output:
@@ -152,7 +152,7 @@ pal <- RColorBrewer::brewer.pal(5, "PuOr")
   
 * **Correspondence to:** Daniel Stouffer (daniel.stouffer@canterbury.ac.nz) - +64 3 364 2729 - Centre for Integrative Ecology, School of Biological Sciences, University of Canterbury, Private Bag 4800, Christchurch 8140, New Zealand
 
-* **Authorship:** DBS conceived the idea; EFC, DBS and KLW contributed to the development of the theoretical framework. EFC performed all analysis. EFC and DBS wrote the manuscript. 
+* **Authorship:** DBS conceived the idea; all authors contributed to the development of the theoretical framework. EFC performed all analysis. EFC and DBS wrote the manuscript. 
 
 * **Data accessibility:** All data used in this manuscript have already been published by @Lopezaraiza-Mikel2007, @Bartomeus2008, and @Ballantyne2015. The reader should refer to the original sources to access the data.
 
