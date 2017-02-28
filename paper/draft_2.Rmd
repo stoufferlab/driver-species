@@ -153,7 +153,7 @@ pal <- RColorBrewer::brewer.pal(5, "PuOr")
   
 * **Article type:** Letter.
   
-* **Number of words:** 183 abstract; approx. 5460 main text.
+* **Number of words:** 160 abstract; approx. 5600 main text.
   
 * **Number of references:** 72
   
@@ -169,7 +169,12 @@ pal <- RColorBrewer::brewer.pal(5, "PuOr")
 
 # Abstract
 
-It is generally unknown how the disruptions caused by perturbations like biotic invasions affect our ability to manage ecological communities. Here, we capitalise on recent advances in control theory to assess the "manageability" of ten pairs of uninvaded and invaded plant-pollinator communities. We found that the manageability of the studied networks is strongly determined by the relative richness of plants and pollinators, which in turns constraint the species' degree distribution. Furthermore, we characterise species potential to be candidates for management interventions using metrics that explore the entire space of control strategies. Specifically, we use the extent to which species (i) are necessary to steer the state of the community,  and (ii) are able to affect the abundance of other species. Remarkably, we found that invasive plants have a dominant position in every community in which they were found and that this dominance is underpinned by the high asymmetry in the dependence of their interaction partners. Our results highlight the advantages of using a control theoretic framework to answer ecological questions, at the same time it provides insight into the design of informed management interventions.
+Here, we capitalise on recent advances in control theory to assess the "manageability" of ten pairs of uninvaded and invaded plant-pollinator communities. 
+We found that the manageability of the networks is most strongly determined by the relative richness of plants to pollinators, which in turn constraints the species' degree distribution. 
+We also characterise species' potential to be candidates for management interventions by exploring the entire space of control strategies. 
+Specifically, we determine the extent to which species (i) are necessary to steer the state of the community and (ii) are able to affect the abundance of other species. 
+We found that invasive plants have a dominant position in every community in which they were found and that this dominance is underpinned by the high asymmetry in the dependence of their interaction partners. 
+Our results highlight the advantages of using a control theoretic framework to explore ecological questions as well as provide insight into the design of informed management interventions.
 
 \newpage
 
