@@ -141,7 +141,7 @@ pal <- RColorBrewer::brewer.pal(5, "PuOr")
 
 ^1^ Centre for Integrative Ecology, School of Biological Sciences, University of Canterbury, Private Bag 4800, Christchurch 8041, New Zealand
 
-^2^ Current address: Stockolm, Cold & dark place in the Arctic Circle
+^2^ Current address: Department of Ecology, Swedish University of Agricultural Sciences, Box 7044, SE-750 07 Uppsala, Sweden
 
 ^\*^ efc29@uclive.ac.nz 
 ^§^ kate.l.wootton@gmail.com
@@ -520,7 +520,7 @@ text(label_pos_x, label_pos_y, "(c)", adj = c(0,0), font = 2)
 
 Given the respective dependences, the extent to which a species *i* affects species *j* relative to the extent to which *j* affects *i* can be summarised by the interaction asymmetry [@Bascompte2006] given by $$a(i,j) = a(j,i) = \frac{\left | d_{ij}-d_{ji} \right |}{max\left ( d_{ij}, d_{ji} \right )}.$$
 Previous research has shown that mutual dependences are often highly asymmetric in natural communities [@Bascompte2006]; in other words, if a plant species is largely dependent on a pollinator species, then that pollinator tends to depend rather weakly on the plant (or vice versa). 
-We, therefore, simplified the network so that interacting species are connected by only one directed link when mutual dependences are asymmetric (Figure 2c).
+We therefore simplified the network so that interacting species are connected by only one directed link when mutual dependences are asymmetric (Figure 2c).
 This simplification, while maintaining ecological realism, is advantageous for several reasons. 
 First, it is consistent with previous advances in structural controllability; second, it avoids complications related to the introduction of artificial control cycles; and third it significantly reduces the computational resources necessary for the application of our approach (Supporting Information S6).
 Furthermore, we show that changing to unidirectional interactions determined by the observed direction of asymmetry, as a surrogate of bidirectional mutual dependences, does not alter the relative *n~D~* of different networks (Table S3).
@@ -531,7 +531,7 @@ Once we had this alternative representation we used the maximum bipartite matchi
 #### Statistical analysis
 
 Although understanding the variability of manageability across ecological networks is a useful result in itself, we also wanted to test whether invasion status or other predictors had an impact on the observed *n~D~*. 
-We, therefore, used a set of generalised linear models (with binomial error structure) to investigate the effect of invasion status while also including covariates related to species richness, since one might naively expect to see a negative relationship between richness and manageability [@Menge1995]. 
+We therefore used a set of generalised linear models (with binomial error structure) to investigate the effect of invasion status while also including covariates related to species richness, since one might naively expect to see a negative relationship between richness and manageability [@Menge1995]. 
 These covariates included the total number of species, plant richness, pollinators richness, the ratio of plant to pollinator richness, the link density (connectance), and the study site (as a two-level factor). 
 Candidate models were compared using AICc and the relative importance of the explanatory variables was evaluated using the sum of Akaike weights over candidate models that accounted for 95% of the evidence [@Burnham2003; @Bates2015; @Barton2016]. 
 Coefficient estimates were averaged following @Buckland1997a while confidence intervals were calculated following @Lukacs2010.
