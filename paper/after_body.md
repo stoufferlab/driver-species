@@ -1,0 +1,3 @@
+\newpage
+\listoftables
+\listoffigures
