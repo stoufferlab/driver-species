@@ -1,5 +1,5 @@
 ---
-title: "The manageability of pollination networks in an invasion context"
+title: "Quantifying the manageability of pollination networks in an invasion context"
 subtitle: "Supporting Information"
 author: "E. Fernando Cagua, Kate L. Wootton, Daniel B. Stouffer"
 classoption: a4paper
