@@ -567,13 +567,13 @@ Candidate models and estimates were assessed using the same procedure as in the 
 
 ## Manageability
 
-All of the networks studied had a driver node density *n~D~* between `r round(min(dplyr::filter(n_driver, type == "weight")$n_dr_p), digits = 2)` and `r round(max(dplyr::filter(n_driver, type == "weight")$n_dr_p), digits = 2)` (mean `r round(mean(dplyr::filter(n_driver, type == "weight")$n_dr_p), digits = 2)`; Figure 3a). 
+All of the networks studied had a driver-node density *n~D~* between `r round(min(dplyr::filter(n_driver, type == "weight")$n_dr_p), digits = 2)` and `r round(max(dplyr::filter(n_driver, type == "weight")$n_dr_p), digits = 2)` (mean `r round(mean(dplyr::filter(n_driver, type == "weight")$n_dr_p), digits = 2)`; Figure 3a). 
 In addition, we found that, when controlling for potential species richness effects, the *n~D~* of invaded communities was smaller to those of non-invaded communities (Figure 3b; Table S5). 
-Nevertheless, of the various covariates we explored, the ratio of plant to pollinator showed the strongest relationship with *n~D~* (Table S4; Figure 3c). 
-Specifically, we found that as the proportion of pollinators increases and the ratio plant/pollinator balances, *n~D~* decreases (all our communities had more pollinators than plants). 
-Other coovariates—connectance (link density) and species richness—had a negative and comparatively less important relationship with *n~D~*.
+Nevertheless, of the various covariates we explored, the ratio of plants to pollinators showed the strongest relationship with *n~D~* (Table S4; Figure 3c). 
+Specifically, we found that, as the proportion of pollinators increases and the ratio plant/pollinator approaches unity, *n~D~* decreases (all our communities had more pollinators than plants). 
+Other covariates—connectance (link density) and species richness—had negative, but comparatively less important relationships with *n~D~*.
 
-```{r fig_explaining-n-driver, echo = FALSE, warning = FALSE, message = FALSE, fig.width = 3.245, fig.height = 4.8, fig.cap = "**Driver node density**. (a) Density distribution of the proportion of driver nodes (_n~D~_) for the twenty studied networks. (b) Invaded communities have lower proportion of *n~D~* than uninvaded communities even when controlling for factors related to species richness. The boxes cover the 25th–75th percentiles, the middle lines mark the median, and the maximum length of the whiskers is 1.5 times the interquartile range. All points outside this range are indicated by the circles. (c) Out of the richness metrics, the ratio of plants to pollinators showed an important relationship with *n~D~*. In both plots, residuals correspond to the partial working residuals of the invasion status in our generalised linear mixed model."}
+```{r fig_explaining-n-driver, echo = FALSE, warning = FALSE, message = FALSE, fig.width = 3.245, fig.height = 4.8, fig.cap = "**Driver-node density**. (a) Histogram of the driver-node density (_n~D~_) for the twenty studied networks. (b) Invaded communities have lower *n~D~* than uninvaded communities even when controlling for factors related to species richness. The boxes cover the 25th–75th percentiles, the middle lines mark the median, and the maximum length of the whiskers is 1.5 times the interquartile range. (c) Out of the richness metrics, the ratio of plants to pollinators showed a strong, negative relationship with *n~D~*. In both plots, partial residuals correspond to the partial working residuals of the invasion status in our generalised linear mixed model."}
 
 par_res <- as.data.frame(residuals(manag_models@objects[[5]], "partial"))
 names(par_res) <- paste0(make.names(names(par_res)), "_res")
@@ -584,8 +584,8 @@ p0 <- manag_models@objects[[1]]$data %>%
 	ggplot(aes(x = n_dr_p)) + 
 	stat_density(size = 0.4, geom = "line") +
 	fer_theme +
-	xlab(expression(n[D])) +
-	ylab("density distribution") +
+	xlab(expression(paste("driver-node density (", n[D], ")"))) +
+	ylab("density") +
 	theme(axis.title.y = element_text(vjust = 1, margin = margin(1,-3,1,1, unit = "lines")))
 
 
@@ -609,7 +609,7 @@ p2 <- par_res %>%
 	geom_smooth(method = "lm", se = F, colour = "black", size = 0.5) +
 	geom_point(shape = 21) + 
 	fer_theme +
-	scale_x_continuous(name = "ratio plant / pollinators") +
+	scale_x_continuous(name = "ratio of plants to pollinators") +
 	scale_y_continuous(name = expression(paste(n[D], " partial residuals"))) +
 	theme(axis.title.y = element_text(vjust = 1, margin = margin(1,-3,1,1, unit = "lines")))
 
@@ -621,10 +621,10 @@ cowplot::plot_grid(p0, p1, p2, ncol = 1, align = "v") +
 
 ```
 
-When exploring the effect of network structure itself, we observed that the driver node density $n_D$ of empirical networks was, in general, not significantly different to the manageability of network randomisations that maintained the degree of individual species (Figure 4). 
-However, we found that the $n_D$ of empirical networks was significantly larger to that of randomisations that maintained the network structure but that differed only on the direction of the asymmetries.
+When exploring the effect of network structure itself, we observed that the driver-node density $n_D$ of empirical networks was, in general, not significantly different to the manageability of network randomisations that maintained the degree of individual species (Figure 4). 
+However, we found that the $n_D$ of empirical networks was significantly larger than that of randomisations that maintained the network structure but that differed only on the direction of the asymmetries.
 
-```{r fig_randomisations, echo = FALSE, warning = FALSE, message = FALSE, fig.width = 3.245, fig.height = 1.7, fig.cap = "**The driver node density _n~D~_ of empirical networks compared to network randomisations**. For each randomisation approach, we show the standarised rank of the empirical value compared to the set of randomisations. A scaled mean rank—akin to a p-value— less than 0.025 or greater than 0.975 (the areas shaded in light grey) suggests a significant difference between the empirical network and its randomisations. The empirical _n~D~_ is much smaller than that of network randomisations in which the direction of asymmetries has been randomised. In contrast, the manageability of networks in which the species degrees were randomly shuffled were not significantly different. All boxes are as in Figure 3a."}
+```{r fig_randomisations, echo = FALSE, warning = FALSE, message = FALSE, fig.width = 3.245, fig.height = 1.7, fig.cap = "**The driver-node density _n~D~_ of empirical networks compared to network randomisations**. For each randomisation approach, we show the standarised rank of the empirical value compared to the set of randomisations. A scaled mean rank—akin to a p-value— less than 0.025 or greater than 0.975 (the areas shaded in light grey) suggests a significant difference between the empirical network and its randomisations. The empirical _n~D~_ is much larger than that of network randomisations in which the direction of asymmetries has been randomised. In contrast, the manageability of networks in which the species degrees were randomly shuffled were not significantly different. All boxes are as in Figure 3a."}
 r <- r_w %>%
   dplyr::bind_rows(dplyr::mutate(r_d, type = "weight")) %>%
   dplyr::inner_join(meta) %>%
@@ -673,7 +673,7 @@ p1 <- z_scores %>%
   scale_fill_manual(values = c("white", "#bdbdbd")) +
   scale_x_discrete(
     labels = rev(c("random degree", # "maintain degree\nrandomise strength", 
-    							 "random\nassymetry")),
+    							 "random\nasymmetry")),
     # breaks = c(#"r00_samp", #"swsh_both",
     					 # "quasiswap_count", "r0"),
     expand = c(0,0)) +
@@ -720,7 +720,7 @@ cowplot::plot_grid(p2, p1, ncol = 1, align = "v", rel_heights = c(1.5,10))
 ## Relative importance
 
 Invasive species were classified as superior nodes *and* driver nodes in every single network they were present; that is, they always had the highest relative *f~S~* and *f~D~* (Figure 5a). 
-The model results suggest that this differences among invasive and native species are underpinned, not by any intrinsic property of the invasive species but instead, by species properties that apply to invasive and native species alike (Table 1). 
+The model results suggest that these differences between invasive and native species are not underpinned by any intrinsic property of the invasive species, instead, they are due to species properties that apply to invasive and native species alike (Table 1). 
 Specifically, we found that a species is more likely to be classified as a superior node if it had a large species strength (the sum of the dependences of other species on the species of interest). 
 To a smaller extent, visitation strength (its sum of visits) and the species degree also had a positive relationship with $f_S$. 
 In contrast, the relationships between species structural properties and $f_D$ were more convoluted (Table 1). 
@@ -743,7 +743,7 @@ setMethod('getfit', 'glmerMod', function(object, ...) {
 })
 ```
 
-```{r fig-dependency-fs, echo = FALSE, warning = FALSE, message = FALSE, fig.width = 3.245, fig.height = 3.2, fig.cap = "**Relatiosnships between _f~S~_ and _f~D~_ and species' structural properties**. (a) In all networks were they were present, invasive species were classified as superior (_f~S~_) and driver (_f~D~_) nodes in all possible control configurations. (b) Species strength (the sum of the dependences of other species on the species of interest) is the single most important factor explaining _f~S~_. Visitation strength and  degree also had an important albeit comparatively smaller effect (dashed lines correspond to one standard deviation on these factors). Invasive species are depicted as circles."}
+```{r fig-dependency-fs, echo = FALSE, warning = FALSE, message = FALSE, fig.width = 3.245, fig.height = 3.2, fig.cap = "**Relationships between _f~S~_ and _f~D~_ and species structural properties**. (a) In all networks were they were present, invasive species were classified as superior (_f~S~_) and driver (_f~D~_) nodes in all possible control configurations. (b) Species strength (the sum of the dependences of other species on the species of interest) is the single most important factor explaining _f~S~_. Visitation strength and degree also had an important albeit comparatively smaller effect (dashed lines correspond to one standard deviation of these factors). Invasive species are depicted as circles."}
 data <- mo 
 trans <- function(x, orig){
   x * attr(orig, "scaled:scale") + attr(orig, "scaled:center")
@@ -783,7 +783,7 @@ data_pp <- lapply(data_pp, as.vector) %>% as.data.frame
 p1 <- pred_data %>%
   ggplot() +
   geom_line(aes(x = de, y = p, linetype = type, colour = type, group = interaction(n, vi)), show.legend = F, size = 0.5) +
-  scale_x_log10(expand = c(0,0)) +
+  scale_x_log10(expand = c(0,0), breaks = c(0.01, 0.1, 1, 10, 100)) +
    geom_point(data = dplyr::arrange(data_pp, invasive) %>% dplyr::filter(invasive == T), aes(x = de_s, y = pred_ri, fill = invasive, shape = guild, size = invasive), show.legend = F) +
     scale_shape_manual(values = c(21, 23)) +
   scale_size_manual(values = c(1.5,1.5)) +
@@ -798,22 +798,26 @@ p1 <- pred_data %>%
 p2 <- mo %>%
 	# dplyr::filter(guild == "pla") %>%
 	dplyr::select(invasive, f_s, f_d) %>%
+	dplyr::mutate(invasive = plyr::mapvalues(invasive, c(F,T), c("native", "invasive"))) %>%
 	reshape2::melt(measure.vars = c("f_s", "f_d")) %>%
-	ggplot(aes(y = value, x = invasive, colour = variable)) + 
+	ggplot(aes(y = value, x = variable)) + 
 	geom_boxplot(size = 0.3, outlier.shape = 21, outlier.size = 1)  +
     # coord_flip() +
   ylab("proportion") + 
-	scale_x_discrete(name = "", labels = c("native", "invasive")) +
+	scale_x_discrete(labels = parse(text = c("f[S]", "f[D]")), name = "") +
+	# scale_x_discrete(name = "", labels = c("native", "invasive")) +
   fer_theme +
   theme(legend.position = c(0.99,0.02),
   			legend.direction = "horizontal",
   			legend.justification = c(1,0),
-				plot.margin = grid::unit(c(2, 1, 0, 0), "mm"), 
+				plot.margin = grid::unit(c(-1, 1, -3, 0), "mm"), 
 				# panel.grid.minor.x = element_blank(),
-				panel.grid.minor.y = element_blank()) +
+				panel.grid.minor.y = element_blank(),
+				strip.text = element_text(size = 8, hjust = 1, vjust = -1)) +
 	scale_color_manual(values = RColorBrewer::brewer.pal(5, "Greys")[c(5,4)],
 										 name = "", 
-										 labels = c(expression(f[S]), expression(f[D])))
+										 labels = c(expression(f[S]), expression(f[D]))) +
+	facet_grid(~invasive)
 
 cowplot::plot_grid(p2, p1, ncol = 1, labels = c("(a)", "(b)"), label_size = 8, 
 									 hjust = 0, vjust = 1.1, align = "v", rel_heights = c(1,1.16))
@@ -864,7 +868,7 @@ Despite the small effect of invasion status at a network level, we found that in
 Not only changes on their abundance have the potential to propagate broadly trough the community and in turn, affect the abundances of many other species, but they are also indispensable to fully control the plant-pollinator network. 
 At a community level, we demonstrate that the manageability of mutualistic networks is strongly governed by the asymmetric nature of mutual dependences—which constitute the foundations of the structure and stability of mutualistic networks [@Memmott2004; @Vazquez2004; @Bascompte2006; @Lever2014; @Astegiano2015]. 
 Moreover, these mutual dependences seem to be importantly constrained by the concerted effects of both, the patterns of species richness at each trophic guild, and the species' degree distribution [@Melian2002; @Bluthgen2007]. 
-Indeed, the difference between the driver node density (*n~D~*) of our empirical networks and that of randomisations depended strongly on the evaluated null model. 
+Indeed, the difference between the driver-node density (*n~D~*) of our empirical networks and that of randomisations depended strongly on the evaluated null model. 
 While the empirical *n~D~* was indistinguishable from that of networks with a random structure that maintained the degree or strength of each species in the community, it was much larger than that of randomisations in which the directed network was unchanged but where the observed patterns of dependence were broken.
 
 Invasive species have been previously found to exacerbate the asymmetries in their communities [@Aizen2008; @Bartomeus2008; @Henriksson2016]. 
@@ -876,7 +880,7 @@ Our results take this one step further and indicate that dependence strength, ra
 Because of the ability that our approach has to infer the magnitude of the effects that each species has on others in the community, it is tantalising to use it to select promising candidates for management interventions. 
 The two indices we employed to characterise a species provide two complementary pieces of information. 
 Our first index, the frequency with which a species is classified as a driver node (*f~D~*) provides an indication of the likelihood the species is part of the set of species that need to be intervened in order to control of *all* species in the community. 
-The driver node concept has received considerable attention in the structural control literature and indeed shows substantial potential to provide useful ecological insight. 
+The driver-node concept has received considerable attention in the structural control literature and indeed shows substantial potential to provide useful ecological insight. 
 Nevertheless, we anticipate two caveats that hinder its direct utility for management applications.
 First, unlike other types of complex systems, fully controlling an ecological community is realistically out of reach for all but the most simple ones; either because of the number of required interventions or the difficulties of their implementation [@Motter2015]. 
 For instance, our results suggest that full control of the pollination network would require direct interventions on 40-90% of the species.
