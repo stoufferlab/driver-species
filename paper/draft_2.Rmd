@@ -522,7 +522,7 @@ Given the respective dependences, the extent to which a species *i* affects spec
 Previous research has shown that mutual dependences are often highly asymmetric in natural communities [@Bascompte2006]; in other words, if a plant species is largely dependent on a pollinator species, then that pollinator tends to depend rather weakly on the plant (or vice versa). 
 We therefore simplified the network so that interacting species are connected by only one directed link when mutual dependences are asymmetric (Figure 2c).
 This simplification, while maintaining ecological realism, is advantageous for several reasons. 
-First, it is consistent with previous advances in structural controllability; second, it avoids complications related to the introduction of artificial control cycles; and third it significantly reduces the computational resources necessary for the application of our approach (Supporting Information S6).
+First, it is consistent with previous advances in structural controllability; second, it avoids complications related to the introduction of artificial control cycles [@Ruths2014]; and third it significantly reduces the computational resources necessary for the application of our approach (Supporting Information S6).
 Furthermore, we show that changing to unidirectional interactions determined by the observed direction of asymmetry, as a surrogate of bidirectional mutual dependences, does not alter the relative *n~D~* of different networks (Table S3).
 
 To find a maximum matching in a network with interaction directions and weights determined by the asymmetry, we adopted a strategy based on an alternative bipartite representation of the directed network with two levels that indicate the outgoing and incoming links to each node (Supporting Information S1). 
@@ -905,7 +905,7 @@ Despite the apparent similarities, our approach is different to previous attempt
 Existing metrics usually harness species featuresi, like centrality, position, co-extinction or uniqueness, to infer their effect on other species [@Allesina2004; @Jordan2006; @Jordan2009; @Lai2012]. 
 In contrast, our control-based approach tackles that question directly.
 Although they are relatively simple to calculate, it has been shown that classic species-level network metrics do not necessarily reveal the best set of species to manage [@Eklof2013; @McDonald-Madden2016].
-Our approach, however, is not based on a single structural metric but instead acknowledges the existence of multiple management strategies.
+Our approach, however, is not based on a single structural metric but instead acknowledges the existence of multiple management strategies. 
 By allowing for the fact that some strategies are better than others depending on the context, control theory implicitly highlights that management decisions should not be based on a single technique. 
 As such, ours and other flexible approaches that take a network-wide approach might prove more useful to guide ecosystem management if we want to go beyond using network metrics to minimise topological species loss [@McDonald-Madden2016].
 
