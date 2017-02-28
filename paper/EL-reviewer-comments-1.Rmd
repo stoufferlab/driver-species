@@ -1,6 +1,6 @@
 ---
 title: "Response to reviewer comments ELE-00738-2016"
-date: "14 December 2016"
+date: "28 February 2017"
 output: pdf_document
 classoption: a4paper
 bibliography: references.bib
@@ -10,46 +10,35 @@ header-includes:
 
 \onehalfspacing
 
-Dear Prof. Jonathan Chase, 
-
-We are grateful for the opportunity to resubmit a revised manuscript for your consideration. 
-We have endeavored to incorporate all reviewers' feedback into the manuscript and we feel the attached draft constitutes an important improvement from the previous version. 
-We were impressed by the quality of the reviews; they all were thoughtful, clear, and constructive. 
-It is evident that all three anonymous reviewers have given a fair and careful consideration to our manuscript. 
-We would like to thank them for the truly valuable feedback. 
-
-The reviewers identified major limitations in our manuscript. 
-Specifically with regards to the terminology, the underlying  structural control, and the lack of detail in the presentation of the empirical networks. 
-In the current version, we have thoroughly addressed all these concerns and improved both the robustness of the analyisis and the clarity of the concepts. 
-Detailed responses to each comment, one by one, are provided in the corresponding section. 
-
-Fernando Cagua
-
-******************************************
-
 ## Response to the handling editor
 
 We are thankful for the encouraging assessment that our work "has excellent potential" and "could have major impacts on applied ecology". 
 We have fully addressed the flaws pointed by all the reviewers and, in the process, took advantage of this opportunity to incorporate some further changes that in our opinion improved the quality and thoroughness of our assessment.
 
-The most substantial change is related to the result that ecological invasions reduce the manageability of the studied pollination networks. 
+The most substantial change is related to the earlier result that ecological invasions reduce the manageability of the studied pollination networks. 
 After revising the manuscript, we found that the effect of invasion is actually the opposite of what we initially reported. 
 This result arises from a regression in which the response variable was the proportion of driver nodes. 
-Our previous conclusion arose from a trivial mistake on the implementation of this regression for which we are extremely apologetic. 
-The regression indicates that the invasion status is *inversely* related to $n_D$ (the density of driver nodes) and **not** to our previous definition of manageability $m = 1 - n_D$. In catching this error, the editor and reviewers will note that revised result now contradicts our hypothesis and has also led to our having to amend the title of the paper. Nevertheless, we hope that you will agree that both our overall objective and the applicability of our approach is maintained. 
+Our previous conclusion arose from a mistake in our implementation of this regression for which we are extremely apologetic. 
+In actual form, the regression indicates that the invasion status is *inversely* related to $n_D$ (the density of driver nodes) as opposed to our previous definition of manageability $m = 1 - n_D$. 
+After catching this error, the editor and reviewers will now note that revised result now contradicts our hypothesis and has also led to our having to amend the title of the paper. Nevertheless, we hope that you will agree that both our overall objective and the applicability of our approach is maintained. 
 
-Upon reflection, we also suspect that the root of the mistake was, as you and the reviewers helped point out, that our definition of manageability and its relation to existing concept of controllability were confusing. In the revised paper, we refrain from giving a mathematical definition of manageability and instead focus on $n_D$, an unambiguous metric clearly defined in the structural controllability literature. We also extend these attempts to use the existing nomenclature rather than introduce new terms in our investigation of the relative importance of species. 
+Upon reflection, we also suspect that the root of the mistake was, as you and the reviewers helped point out, that our definition of manageability and its relation to the existing concept of controllability were overly confusing. 
+In the revised paper, we refrain from giving a mathematical definition of manageability and instead focus on $n_D$, an unambiguous metric clearly defined in the structural controllability literature. 
+We also extend these attempts to use the existing nomenclature rather than introduce new terms in our investigation of the relative importance of species. 
 In the previous manuscript, we referred to species that were classified as superior nodes in all possible control strategies as *driver species*. 
-Because of the strong similarities with the term *driver node*, which has been used in previous literature and we also use in our manuscript, it was extremely easy to misinterpret the terms and follow our rationale. 
-Now, we have removed the term driver species and instead focus on two well-defined metrics: $f_D$ and $f_S$, which correspond to the frequency to which a species is classified as a driver or superior node, respectively. 
+Because of the strong similarities with the term *driver node*, which has been used in previous literature and that we also use in our manuscript, it was extremely easy to misinterpret the terms and completely follow our rationale. 
+We have now removed the term driver species and instead focus on two well-defined metrics: $f_D$ and $f_S$, which correspond to the frequency to which a species is classified as a driver or superior node, respectively. 
 
-In addition, we now focus on the results obtained when we use the asymmetry of the dependences to direct the networks. We do so, because thanks to the reviewers comments, we identyfied some problems with the application of structural controllability when we use the mutual dependences to direct the network. Specifically, the problems arise from an absolute dominance of cycles and difficulties to the use of the maximum maximum matching algorithm to find a minimum set of driver nodes $D$.
+In addition, we now focus exclusively on the results obtained when we use the asymmetry of the dependences to direct the networks. 
+We do so, because thanks to the reviewers comments, we identyfied some novel problems with the application of structural controllability when we use the mutual dependences into direct the network. 
+Specifically, the problems arise from an absolute dominance of cycles and difficulties to the use of the maximum maximum matching algorithm to find a minimum set of driver nodes $D$. 
+We elaborate on these on the new version in Lines 212--224 and Supporting Information S6. 
 
 Finally, we have made important modifications to the section in which we explain the theoretical underpinnings of structural controllability. 
 We hope it is easier to follow both for experts and newcomers. 
 We also have included a significant amount of detail and extra examples in the supplementary material to simplify the lives of those interested in applying the proposed approach or replicating our results. 
 
-## Referee 1
+## Reviewer 1
 
 In ms ELE-00738-2016, the authors seek to apply ideas from control theory (specifically, structural controllability) to bipartite ecological networks. The main idea of structural control theory, at least in the recent applied literature, is that some nodes are recipients of external, time-varying control signals that proceed to propagate through a network in such a way as to drive the state of every node in the network to a desired configuration in finite time. There tend to be many ways to do this, and nodes can further be characterized by the frequency with which they exist on key paths leading through the network.
 
@@ -69,7 +58,7 @@ I expound on this overview in some detail below. I regret that I cannot be more 
 
 - Lines 95-97: "The number of nodes necessary to fully control a complex network can be calculated by counting the number of unmatched nodes in the network's maximum matching (Liu et al. 97 2011)." This statement must be contextualized by the assumed nature of the dynamical relationships in this framework. It therefore seems to me that this statement should be preceded by a discussion of those details (indeed, the authors argue that this is necessary in the Introduction, on lines 48-49). Furthermore, the authors need to discuss the appropriateness of this framework to ecological systems. The input control signals that drive even relatively simple networks to specified states can be very sensitive to initial conditions and complicated (indeed, they usually aren't calculated at all). How can a control scheme be implemented even in principle if nodes represent species populations and a control signal calls for a fractional change in a node state variable over the course of minutes? 
 
-    *Thanks to this comment and those from other reviewers have helped us identify some shortcomings on the way we were introducing the control framework in the paper. We have largely rewritten the 'Theoretical framework' section. We start by offering a brief overview of control theory. In this overview, we emphasise our assumptions regarding the dynamical nature of the interactions. And follow with a brief discussion that indicates how structural controllability is unable to provide information about the particulars of the control signal and the feasibility of its application. Without disregard the usefulness of the proposed approach, we also mention at the end of the discussion how recently developed numerical methods [@Cornelius2013] might offer exciting results in this regard.*
+    *Thanks for this comment and those from other reviewers have helped us identify some shortcomings on the way we were introducing the control framework in the paper. In reposnse, we have largely rewritten the 'Theoretical framework' section. We start by offering a brief overview of control theory. In this overview, we emphasise our assumptions regarding the dynamical nature of the interactions. We then follow with a brief discussion that indicates how structural controllability is unable to provide information about the particulars of the control signal and the feasibility of its application. Without disregarding the usefulness of the proposed approach, we also mention at the end of the discussion how recently developed numerical methods [e.g. @Cornelius2013] might offer exciting results in this regard.*
     
 - Furthermore, how do the authors interpret the methods by which cycles are controlled in linear control theory (see e.g. doi 10.1126/science.1242063 and its supplementary material) in the context of ecological management? How frequent are cycles in the authors' ecological networks? I should emphasize that I am a fan of control theory and I think it is interesting to apply it as the authors do in this ms. However, the caveats that come along with the points I outline above need to be made clear for the reader. The authors might be interested in doi 10.1063/1.4931570 for a discussion of some relevant ideas.
 
