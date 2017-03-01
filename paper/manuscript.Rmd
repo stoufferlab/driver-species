@@ -169,12 +169,12 @@ pal <- RColorBrewer::brewer.pal(5, "PuOr")
 
 # Abstract
 
-Here, we capitalise on recent advances in control theory to assess the "manageability" of ten pairs of uninvaded and invaded plant-pollinator communities. 
-We found that the manageability of the networks is most strongly determined by the relative richness of plants to pollinators, which in turn constraints the species' degree distribution. 
-We also characterise species' potential to be candidates for management interventions by exploring the entire space of control strategies. 
-Specifically, we determine the extent to which species (i) are necessary to steer the state of the community and (ii) are able to affect the abundance of other species. 
-We found that invasive plants have a dominant position in every community in which they were found and that this dominance is underpinned by the high asymmetry in the dependence of their interaction partners. 
-Our results highlight the advantages of using a control theoretic framework to explore ecological questions as well as provide insight into the design of informed management interventions.
+Here, we leverage recent advances in control theory to assess the "manageability" of ten pairs of uninvaded and invaded plant-pollinator communities. 
+We found that the networks' manageability is most strongly determined by the ratio of plants to pollinator richness, which in turn constrains the networks' degree distribution. 
+We also characterise species' suitability for inclusion in management interventions by exploring the entire space of control strategies. 
+Specifically, we measure the extent to which species (i) are necessary to steer the state of the community and (ii) are able to affect the abundance of other species. 
+We found that invasive plants have a dominant position in every invaded community and that this dominance is underpinned by high asymmetry in the dependence of their interaction partners. 
+Our results highlight the advantages of the control-theoretic framework for ecological questions and provide novel insight into the design of informed management interventions.
 
 \newpage
 
