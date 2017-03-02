@@ -153,7 +153,7 @@ pal <- RColorBrewer::brewer.pal(5, "PuOr")
   
 * **Article type:** Letter.
   
-* **Number of words:** 148 abstract; approx. 4,974 main text.
+* **Number of words:** 148 abstract; approx. 4,970 main text.
   
 * **Number of references:** 65
   
@@ -241,7 +241,7 @@ Notably, these node categories are what helps us to link a maximum matching back
 Unmatched nodes are the *driver nodes* *D* because they have no superior in the network and must be directly controlled by an external input [@Liu2011].
 Each matched node, on the other hand, can be controlled by its superior.
 
-```{r figure 1, echo = F, message = F, warning = F, fig.width = 6.2, fig.height = 1.9, results= "hide", fig.pos = "t", fig.cap = "**Matchings of a simple network**. (a) We start with a network in which the direction of the links indicates the potential direction of control; for example a link from *a~1~* to *p~1~* indicates that the state of *p~1~* is influenced by the state of *a~1~*. The numbers indicate the weight of each link. (b & c) This network has two maximal cardinality matchings; that is, two configurations in which it would be possible to exert full control of the network via external input signals to a minimal set of nodes. In both cases, the three matched links (purple arrows) represent the control paths through the network and provide an indication of the matched nodes (purple), which are controlled by superior nodes within the network (circular nodes). Unmatched nodes (orange) are called driver nodes because full network control requires external signals to be applied to them. Out of the two maximal cardinality matchings only one (c) has maximum weight and therefore is also a maximum matching. Further examples can be found in the Supporting Information S1."}
+```{r figure 1, echo = F, message = F, warning = F, fig.width = 6.2, fig.height = 1.9, results= "hide", fig.pos = "t", fig.cap = "**Matchings of a simple network**. (a) We start with a network in which the direction of the links indicates the potential direction of control; for example a link from *a~1~* to *p~1~* indicates that the state of *p~1~* is influenced by the state of *a~1~*. The numbers indicate the weight of each link. (b & c) This network has two maximal cardinality matchings; that is, two configurations in which it would be possible to exert full control of the network via external input signals to a minimal set of nodes. In both cases, the three matched links (purple arrows) represent the control paths through the network and provide an indication of the matched nodes (purple), which are controlled by superior nodes within the network (circular nodes). Unmatched nodes (orange) are called driver nodes because full network control requires external signals to be applied to them. Out of the two maximal cardinality matchings only one (c) has maximum weight and therefore is also a maximum matching. Further examples can be found in Supporting Information S1."}
 layout(matrix(c(1, 1, 2, 4, 3, 4), 2, 3),
   	heights=c(8,2))
 par( mar=c(0,0,0,0))
@@ -406,7 +406,7 @@ Four pairs were obtained from natural or semi-natural vegetation communities in 
 These networks are comprised of `r lop[1]`--`r lop[6]` species (mean `r round(lop[4])`), and non-invaded plots were obtained by experimentally removing all the flowers of the invasive species *Impatients grandulifera*.
 The other six pairs were obtained from lower diversity Mediterranean shrublands in Cap de Creus National Park, Spain [@Bartomeus2008].
 These networks are comprised of `r bar[1]`--`r bar[6]` species (mean `r round(bar[4])`); in contrast to the above, uninvaded communities were obtained from plots that had not yet been colonised by either of the invasive species *Carpobrotus affine acinaciformis* or *Opuntia stricta*. 
-Further details about the empirical networks can be found in the Supporting Information S3.
+Further details about the empirical networks can be found in Supporting Information S3.
 
 We then specified the structure of all networks using pollinator visitation frequency, which has been shown to be an appropriate surrogate for interspecific effects in pollination networks [@Vazquez2005; @Bascompte2006]. 
 To further examine whether this decision would influence our results, we also evaluated the effect of using pollinator efficiency or pollinator importance as alternative measures in a different data set that lacked invasive species [@NeEman2010; @Ballantyne2015], and we found quantitatively similar results for all three options (Supporting Information S4).
@@ -535,7 +535,7 @@ Beyond network structure, the dependence asymmetry plays a fundamental role in d
 We therefore performed an additional randomisation in which we kept the structure of each network constant but randomised the direction of the interaction asymmetries. 
 That is, we first calculated the observed asymmetries for each community and then shuffled the direction of the link between each pair of species. 
 
-Additional details about the statistical models and the randomisations can be found in the Supporting Information S7.
+Additional details about the statistical models and the randomisations can be found in Supporting Information S7.
 
 ### Relative importance
 
@@ -552,7 +552,7 @@ We used a set of generalised linear mixed-effects models (with binomial error st
 As predictors in this model, we included measures of centrality (degree and eigen-centrality), which have been found to be strong predictors of importance in a coextinction context [@Memmott2004]; a measure related to network robustness (contribution to nestedness), as nestedness has been proposed as one of the key properties that promote stability in mutualistic networks [@Saavedra2011]; a measure of strength of association (visitation strength, the sum of visits a species receives or performs) and a measure of strength of dependence (species strength, the sum of dependences of all species on the focal species), as their distribution determines the extent of interspecific effects [@Bascompte2006].
 In addition, we also included guild (plant or pollinator) and whether the species is invasive or not as categorical fixed effects.
 Lastly, we allowed for variation between different communities by including the network identity as a random effect [@Bates2015]. 
-Supplementary details about the statistical models can be found in the Supporting Information S7.
+Supplementary details about the statistical models can be found in Supporting Information S7.
 
 # Results
 
@@ -935,7 +935,7 @@ Superior node
   
 ## Acknowledgments 
 
-The authors thank Dr. Takeuki Uno for the insight provided to find the set of all maximum matching algorithms, and Jason Tylianakis, Bernat Bramon Mora, Guadalupe Peralta, Rogini Runghen, Warwick Allen, Matthew Hutchinson, and Marilia Gaiarsa for feedback and valuable discussions. 
+The authors thank Jane Memmott and coauthors, and eveyone that has made their data available to us, Takeuki Uno for the insight provided to find the set of all maximum matching algorithms, and Jason Tylianakis, Bernat Bramon Mora, Guadalupe Peralta, Rogini Runghen, Warwick Allen, Matthew Hutchinson, and Marilia Gaiarsa for feedback and valuable discussions. 
 EFC acknowledges the support from the University of Canterbury Doctoral Scholarship, the University of Canterbury Meadow Mushrooms Postgraduate Scholarship, a New Zealand International Doctoral Research Scholarship, and a travel grant from the European Space Agency. 
 DBS acknowledges the support of a Marsden Fast-Start grant and a Rutherford Discovery Fellowship, administered by the Royal Society of New Zealand.
 
