@@ -1425,6 +1425,32 @@ corr_matrix <- corr_matrix[-(nrow(corr_matrix)), ]
 
 ```
 
+# Statistical methods
+
+## Manageability
+
+### Genrealised linear models for *n~D~* 
+
+Candidate models were compared using AICc and the relative importance of the explanatory variables was evaluated using the sum of Akaike weights over candidate models that accounted for 95% of the evidence [@Burnham2003; @Bates2015; @Barton2016]. 
+Coefficient estimates were averaged following @Buckland1997a while confidence intervals were calculated following @Lukacs2010.
+Only models that accounted for 95% of the evidence weight were considered to quantify the relative importance of the fixed effects. 
+
+### Network randomisations
+
+Randomisations that maintained the degree of the visitation networks were generated using the quasiswap-count algorithm and the function `commsim` in vegan 2.3-3 [@Oksanen2016]. 
+After generating the randomised networks, we then calculated the mutual dependences and interaction asymmetries of each and determined *n~D~* using our maximum-matching framework. 
+Finally, we calculated the average rank (akin to a p-value) of *n~D~* for each empirical network compared to the corresponding values of each set of 999 randomisations [@Veech2012].
+
+Similar as in the previous null model, to evaluate the effect of the direction of the asymmetries, we calculated the average rank of the empirical *n~D~* when compared to that of the randomisations.
+
+## Relative importance
+
+### Genrealised mixed effects models for *f~S~* and *f~D~*
+
+To facilitate comparison among the continuous variables, we scaled them so that they all had a mean of zero and a standard deviation of one. 
+Although the importance of plants and pollinators or invasive and non-invasive species could respond differently to our structural metrics, our data set did not contain enough variation to include the corresponding interactions terms for these latter two predictors. 
+All network metrics were calculated using the R package bipartite 2.06 [@Dormann2008]. 
+Candidate models and estimates were assessed using the same procedure as in the  models for *n~D~*.
 
 # Matching's weight threshold
 
@@ -1529,7 +1555,7 @@ xtable::xtable(c_m, caption = "\\textbf{Spearman correlation coefficient among d
 	print(comment = FALSE, include.rownames = TRUE, caption.placement = "top", booktabs = T)
 ```
 
-# Statistical models
+# *n~D~* models results
 
 ```{r table-nd-coef, echo = FALSE, warning = FALSE, message = FALSE, results = "asis", sanitize = FALSE}
 library(glmulti)
