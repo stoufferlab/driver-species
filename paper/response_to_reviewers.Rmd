@@ -1,5 +1,5 @@
 ---
-title: "Response to reviewer comments ELE-00738-2016"
+title: "Response to comments ELE-00205-2017"
 output: pdf_document
 csl: ecology-letters.csl
 classoption: a4paper
@@ -10,7 +10,24 @@ header-includes:
 
 \onehalfspacing
 
-## Response to the handling editor
+Dear Dr Jonathan Chase, 
+
+We are thankful for the opportunity to resubmit the manuscript for consideration. 
+In the response to the handling editor section below, we have endeavoured to explain how our approach does still provide ecological insight despite the assumption of linearity. 
+To aid in the review process we have included in this document as well the response to the reviewers' and editor's comments of the previous submission (ELE-00738-2016). 
+
+Before we dive into the responses, we would like to remark that the major concern identified by the new handling editor—the assumption of linearity—was not overlooked in the previous round of review. 
+In the initial version of the manuscript, we mainly focus on details of the method and the study system and only mention in passing that our approach is based on a linearization of the network of interactions. 
+Reviewer 3 and 1 in particular, did not find this to be a fundamental problem, although they encouraged us to be explicit about this assumption and thoroughly discuss the implications of this simplification. 
+In hindsight, perhaps we focused executively on the potential limitations of our approach and did a poor job justifying its advantages.
+
+We hope this response and the modifications made to the main text are convincing enough for the manuscript to be reconsidered for publication at Ecology Letters. 
+
+****
+
+# Response to comments ELE-00738-2016
+
+## To the handling editor
 
 We are thankful for the encouraging assessment that our work "has excellent potential" and "could have major impacts on applied ecology". 
 We have fully addressed the flaws pointed by all the reviewers and, in the process, took advantage of this opportunity to incorporate some further changes that in our opinion improved the quality and thoroughness of our assessment.
@@ -38,7 +55,7 @@ Finally, we have made important modifications to the section in which we explain
 We hope it is easier to follow both for experts and newcomers. 
 We also have included a significant amount of detail and extra examples in the supplementary material to simplify the lives of those interested in applying the proposed approach or replicating our results. 
 
-## Reviewer 1
+## Reviewer 1 (ELE-00738-2016)
 
 In ms ELE-00738-2016, the authors seek to apply ideas from control theory (specifically, structural controllability) to bipartite ecological networks. The main idea of structural control theory, at least in the recent applied literature, is that some nodes are recipients of external, time-varying control signals that proceed to propagate through a network in such a way as to drive the state of every node in the network to a desired configuration in finite time. There tend to be many ways to do this, and nodes can further be characterized by the frequency with which they exist on key paths leading through the network.
 
@@ -120,7 +137,7 @@ I have several comments here. First, shouldn't this be "all possible maximum mat
 
     *Thanks for pointing this out. We have added the period.*
 
-## Referee 2
+## Referee 2 (ELE-00738-2016)
 
 This manuscript proposes to apply the methods published in previous papers (e.g. Liu et al, Nature 2011) on the controllability of complex systems to invaded pollination networks. Note that controllability is rebranded “manageability” (unless it has a different meaning in this paper?). The manuscript also proposes to identify the nodes to manage or driver species. This is a fascinating area of research.
 
@@ -169,7 +186,7 @@ In its current form, it is unlikely that readers will be able to understand or r
 
     *Thank you for pointing this out. We still use the word within our manuscript because we found it is useful for to develop their intuition relative to ecological and conservation terminology. However, we do not use the word "manageability" as exchangable with "controllability" anymore and maintain the control-theory terminology, especially in the methods section. In addition, we have added additional references so that its easier for the readers to link back our approach to the control literature.*
 
-## Referee 3
+## Referee 3 (ELE-00738-2016)
 
 In this work Cagua et al apply tools rooted in control theory to ecological networks and discuss how this approach could be used for management of natural systems, with emphasis on the effects of invasive species. This is an exciting work. It presents to ecologists a novel way of studying the relationship between topology and dynamics that is less dependent (when compared to other methods) on particular choices about how dynamics are modeled. The authors illustrate the potential of this approach by exploring how invasive species change system dynamics and manageability. My only concern about this manuscript is that the authors need to be more careful and more explicit about some limitations of this approach and the generality of their results, specially considering the implications of their results for management.
 
