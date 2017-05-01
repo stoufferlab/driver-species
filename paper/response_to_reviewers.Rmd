@@ -12,14 +12,14 @@ header-includes:
 
 Dear Dr Jonathan Chase, 
 
-We are thankful for the opportunity to resubmit the manuscript for consideration. 
-In the response to the handling editor section below, we have endeavoured to explain how our approach does still provide ecological insight despite the assumption of linearity. 
-To aid in the review process we have included in this document as well the response to the reviewers' and editor's comments of the previous submission (ELE-00738-2016) and have updated the references to line numbers when appropriate. 
+We are thankful for the opportunity to resubmit our manuscript for consideration. 
+In our response to the handling editor section (below), we have endeavoured to explain how our approach still provides ecological insight despite the assumption of linearity. 
+To aid in the review process, we have included the response to the reviewers' and editor's comments of the previous submission (ELE-00738-2016) in this document as well and have updated the references to line numbers when appropriate. 
 
-Before we dive into the responses, we would like to remark that the major concern identified by the new handling editor—the assumption of linearity—was not overlooked in the previous round of review. 
-In the initial version of the manuscript, we mainly focus on details of the method and the study system and only mention in passing that our approach is based on a linearization of the network of interactions. 
-Reviewer 3 and 1 in particular, did not find this to be a fundamental problem, although they encouraged us to be explicit about this assumption and thoroughly discuss the implications of this simplification. 
-In hindsight, perhaps we focused executively on the potential limitations of our approach and did a poor job justifying its advantages.
+Before we dive into the detailed responses, we would like to draw your attention to the fact that the major concern identified by the new handling editor—the assumption of linearity—was not actually overlooked in the previous round of review. 
+In the initial version of the manuscript, we mainly focused on details of the method and the study system and only mentioned in passing that our approach is based on a linearization of the network of interactions. 
+Reviewers 3 and 1 in particular did not find this to be a fundamental problem; nevertheless they encouraged us to be explicit about this assumption and thoroughly discuss the implications of this simplification. 
+In hindsight, perhaps these changes focused too intensely on the potential limitations of our approach and did a poorer job of justifying its advantages.
 
 We hope this response and the modifications made to the main text are convincing enough for the manuscript to be reconsidered for publication at Ecology Letters. 
 
