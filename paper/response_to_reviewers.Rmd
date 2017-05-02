@@ -18,44 +18,48 @@ To aid in the review process, we have included the response to the reviewers' an
 
 Before we dive into the detailed responses, we would like to draw your attention to the fact that the major concern identified by the new handling editor—the assumption of linearity—was not actually overlooked in the previous round of review. 
 In the initial version of the manuscript, we mainly focused on details of the method and the study system and only mentioned in passing that our approach is based on a linearization of the network of interactions. 
-Reviewers 3 and 1 in particular did not find this to be a fundamental problem; nevertheless they encouraged us to be explicit about this assumption and thoroughly discuss the implications of this simplification. 
+Reviewers 3 and 1 in particular did not find this to be a fundamental problem; nevertheless, they encouraged us to be explicit about this assumption and thoroughly discuss the implications of this simplification. 
 In hindsight, perhaps these changes focused too intensely on the potential limitations of our approach and did a poorer job of justifying its advantages.
 
 We hope this response and the modifications made to the main text are convincing enough for the manuscript to be reconsidered for publication at Ecology Letters. 
 
 ## Response to the handling editor
 
-We agree with the handling editor that the most notable limitation of our approach is that it is based on a linear approximation of the dynamics of the system. 
-Naturally, it is important to take this limitation into account when applying the framework. 
-We disagree, however, with the conclusion that this limitation renders the approach ecologically irrelevant. 
+We agree with the handling editor that the most notable assumption of our approach is that it is based on a linear approximation of the dynamics of the system. 
+Naturally, it is important to take this into account when applying the framework. 
+We disagree, however, with the conclusion that this detail renders the approach ecologically irrelevant. 
 
-We approach the editor's comments in two stages. 
-First, we argue that linear models can be useful to describe the dynamics of ecological communities, and pollination communities in particular. 
-Additionally, we believe that the editor's observations potentially arises from a misunderstanding of the scope and goals of our study.
-Therefore, we then provide some further clarification in this regard and to structural controllability. 
-Finally, we provide a detailed account of the editions we have done to the manuscript in order to prevent this kind of misunderstandings. 
+We will approach the editor's comments in two stages below. 
+First, we will argue that linear models can be useful to describe the dynamics of ecological communities and pollination communities in particular. 
+Second, we believe that the editor's observations potentially arises from our failure to clearly delineate the scope and goals of our study.
+Therefore, we then provide some further clarification in this regard and to the goals of structural controllability in general. 
+Finally, we provide a detailed account of the edits we have made in the manuscript in order to prevent this kind of misunderstandings going forward. 
 
-While ecological systems are inherently non-linear, variations of Lokta-Volterra and other linear response models have been widely and recently used in ecology to describe both multitrophic ecological communities [@Heckmann2012; @Heath2014] and mutualistic pollination networks [@Lever2014; @Rohr2014; @Valdovinos2016]. 
-Importantly several studies have found that, despite the lack of realism, parametrizations with linear responses can provide a good starting point to investigate community stability (ref), population size [@Mackinson2003], and relative species importance [@Zhao2016]. 
+While ecological systems are inherently non-linear, variations of Lokta-Volterra and other models with linear functional response have been widely used in ecology to describe both multitrophic ecological communities [@Heckmann2012; @Heath2014] and mutualistic pollination networks [@Lever2014; @Rohr2014; @Valdovinos2016]. 
+Importantly several studies have found that despite the lack of "realism", parametrizations with linear responses still provide a valuable starting point to investigate community stability [@Allesina2012], population size [@Mackinson2003], and relative species importance [@Zhao2016]. 
 Similarly, we view the structural controllability as a *starting point* to investigate the way ecological communities could be steered from an equilibrium point to another in an informed fashion.
 
-Furthermore, the editor points out that a structural controllability approach would not be useful in ecological systems because it will be "only valid in an infinitesimal border" around an initial equilibrium point. 
-This comment would be completely appropriate if the local linear approximation at the equilibrium point were used to *design* the—inherently non-local—control trajectory that drives the system to an alternative state. 
-Our manuscript, however, has a different aim. 
-We use the structure of interaction network and determine the set of possible "control interventions" to gain network and species-level ecological that could be used in management settings.
+An ecological system near equilibrium can be linearised by $\frac{dx}{dt} = \mathbf{A}x + \mathbf{B}u(t)$. 
+Here, $\mathbf{B}$ is the "input matrix" and $u(t)$ is the input or control vector. 
+The matrix $\mathbf{B}$ has size $S \times D$, where $S$ is the number of species in the community and $D$ is the number of species whose abundances are modified by the input vector. 
+The editor points out that a structural controllability approach would not be useful in ecological systems because it will be "only valid in an infinitesimal border" around an initial equilibrium point. 
+This comment would be completely appropriate if our aim were to *design the control trajectory* that drives the system from an equilibrium point to an alternate stable state. 
+In other words, it would be inappropriate to design $u(t)$ based exclusively a local linear approximation at the initial equilibrium point. 
+Our manuscript, however, has a completely different aim. 
 
-In our manuscript, a control intervention is a set of species with which full control of the community could be gained. 
-The control interventions we study are optimal from a structural point of view.
-However, in practice, some of these interventions would be more appropriate than others depending on several factors like the starting and end state of the community, the feasibility of modifying the abundance of some species, the available resources, and naturally the particular dynamics of the system. 
-As the behaviour of the community is governed by both structure and dynamics, by extension, our approach is ill suited to design a specific control trajectory. 
-Again, we emphasise that this was not our objective and that the development of numerical approaches like the one proposed by @Cornelius2013 might be more promising in this regard. 
+We use the structure of interaction network to determine the set of nodes that could be used to control the system. 
+This is, we use information contained in $\mathbf{A}$ to determine $\mathbf{B}$ (and by extension $D$). 
+Our most novel contributions are to use $D$ and knowledge of all the possible ways in which $\mathbf{B}$ can be parameterised in order to gain insight of the controllability of the network and role of the species that compose it.
+Understanding $\mathbf{B}$ is a prerequisite to designing $u(t)$, regardless of whether we are interested on controllability near an equilibrium point or along a linearisation of the system's nominal trajectory outside of equilibrium.
+Even existing numerical approaches that operate in a fully nonlinear setting like those proposed by @Cornelius2013 require previous knowledge of the set of nodes (species) to which to apply the control signal.
 
-Nevertheless, we see the fact that we focus on structure as and advantage rather than a disadvantage. 
+We see the fact that we focus on $\mathbf{B}$ and the network structure as an advantage rather than a disadvantage. 
 As one of the previous reviewers highlighted, our manuscript "...presents to ecologists a novel way of studying the relationship between topology and dynamics that is less dependent (when compared to other methods) on particular choices about how dynamics are modelled". 
 It can, therefore, be used to gain insight from different ecological systems and is readily applicable to currently available data. 
-Furthermore, by focusing on the network structure, the conclusions obtained will be locally valid, not only close to equilibrium points but anywhere as long as the species interactions remain. 
 
-Specifically, we made the following modifications to the manuscript. 
+As it has been acknowledged in the control theory literature, "while many complex systems are characterised by nonlinear interactions between the components, the first step in any control challenge is to establish the controllability of the locally linearized system... Before we can explore the fully nonlinear dynamical setting, which is mathematically much harder, we must understand the impact of the topological characteristics on linear controllability, serving as a prerequisite of nonlinear controllability" [@Liu2016]. 
+
+Along similar lines to the above, we made the following modifications to the manuscript. 
 In the intro we ...
 As before, in the methods section, we start by stating the assumption of linearity (Lines XXX). 
 However, we now also explicitly explain how this assumption does not invalidate the gained insight (Lines XXX). 
