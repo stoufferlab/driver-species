@@ -44,12 +44,12 @@ Here, $\mathbf{B}$ is the "input matrix" and $u(t)$ is the control vector.
 The matrix $\mathbf{B}$ has size $S \times D$, where $S$ is the number of species in the community and $D$ is the number of species whose abundances are modified by the control vector. 
 The editor points out that a structural-controllability approach would not be useful in linear ecological systems because it will be "only valid in an infinitesimal border" around an initial equilibrium point. 
 This comment would be completely appropriate if our aim were to design the time-varying control trajectory that drives the system from one equilibrium point another. 
-In other words, it would be inappropriate to design $u(t)$ based exclusively on a local linear approximation at the initial equilibrium.  
+In other words, it would be wrong to design $u(t)$ based exclusively on a local linear approximation at the initial equilibrium. 
 Our manuscript, however, has a completely different aim. 
 
 We instead use the structure of interaction network to determine the set of nodes that could be used to control the system. 
 That is, we use the information contained in $\mathbf{A}$ to generate a supportable estimate of $\mathbf{B}$ (and by extension $D$). 
-Our most novel contributions are to use $D$ and knowledge of all the possible ways in which $\mathbf{B}$ can be structured in order to gain insight of the controllability of the network and the role of the species that compose it.
+Our most novel contributions are to use $D$ and knowledge of all the possible ways in which $\mathbf{B}$ can be str uctured in order to gain insight of the controllability of the network and the role of the species that compose it.
 Understanding $\mathbf{B}$ is a prerequisite to designing $u(t)$, regardless of whether we are interested in controllability near an equilibrium point or along a linearisation of the system's nominal trajectory outside of equilibrium.
 Indeed, even existing numerical approaches that operate in a fully nonlinear setting like those proposed by @Cornelius2013 require previous knowledge of the set of nodes (species) to which to apply the control signal.
 
