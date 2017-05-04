@@ -153,7 +153,7 @@ pal <- RColorBrewer::brewer.pal(5, "PuOr")
   
 * **Article type:** Letter.
   
-* **Number of words:** 148 abstract; approx. 4,970 main text.
+* **Number of words:** 148 abstract; approx. 5,006 main text.
   
 * **Number of references:** 65
   
@@ -214,12 +214,12 @@ At the core of control theory of complex networks, however, sits the idea that t
 This principle can be leveraged to find a subset of *driver nodes* to which to apply external input signals which then drive the state of every other node in the network to a desired configuration [@Liu2016].
 
 Conveniently the information necessary to determine the minimum number of driver nodes *D* in a system with linear dynamics is fully contained in the network structure [@Kalman1963; @Liu2011; @Motter2015]. 
-Such a system can be described by $\frac{dx}{dt} = Ax + Bu(t)$, where the change of its state over time ($\frac{dx}{dt}$) depends on its current state *x* (for example, the species' abundances), an external time-varying input *u(t)* (the control vector), and two matrices *A* and *B*, which encode information about the network structure and how the species respond to the external input, respectively. 
-If *S* is the number of species in the community, the matrix *A* has size $S \times $S whereas the matrix *B* has size $S \times D$.
+Such a system can be described by $\frac{dx}{dt} = \mathbf{A}x + \mathbf{B}u(t)$, where the change of its state over time ($\frac{dx}{dt}$) depends on its current state *x* (for example, the species' abundances), an external time-varying input *u(t)* (the control signal), and two matrices *A* and *B*, which encode information about the network structure and how the species respond to the external input, respectively. 
+If *S* is the number of species in the community, the matrix **A** has size $S \times S$ whereas the matrix **B** has size $S \times D$.
 
-The goal of structural controllability, which we employ here, is to use the information contained in $\mathbf{A}$ to generate a supportable estimate of $\mathbf{B}$ (and by extension $D$).
+The goal of structural controllability, which we employ here, is to use the information contained in **A** to generate a supportable estimate of **B** (and by extension *D*).
 This focus allows us to gain insight of the inherent controllability of a network, and the roles of the species that compose it, without being overly dependent on the particular choices of how the system dynamics are modelled or characterised. 
-The trade-off is that, because of the assumption that ecological communities can be modeled with linear functional responses, structural controllability is not sufficient to fully design a the time-varying control signal *u(t)* that can drive the system from one particular equilibrium to another.	
+The trade-off is that, because of the assumption that ecological communities can be modelled with linear functional responses, structural controllability is not sufficient to fully design a the time-varying control signal *u(t)* that can drive the system from one particular equilibrium to another. 
 Nevertheless, the lessons gained when assuming linearity---at both the network and the species level---are a prerequisite for understanding nonlinear control [@Liu2011; @Liu2016].
 
 ### Manageability
@@ -615,8 +615,8 @@ cowplot::plot_grid(p0, p1, p2, ncol = 1, align = "v") +
 
 ```
 
-When exploring the effect of network structure itself, we observed that the driver-node density $n_D$ of empirical networks was, in general, not significantly different to the manageability of network randomisations that maintained the degree of individual species (Figure 4). 
-However, we found that the $n_D$ of empirical networks was significantly larger than that of randomisations that maintained the network structure but that differed only in the direction of the asymmetries.
+When exploring the effect of network structure itself, we observed that the driver-node density *n~D~* of empirical networks was, in general, not significantly different to the manageability of network randomisations that maintained the degree of individual species (Figure 4). 
+However, we found that the *n~D~* of empirical networks was significantly larger than that of randomisations that maintained the network structure but that differed only in the direction of the asymmetries.
 
 ```{r fig_randomisations, echo = FALSE, warning = FALSE, message = FALSE, fig.width = 3.245, fig.height = 1.7, fig.cap = "**The driver-node density _n~D~_ of empirical networks compared to network randomisations**. For each randomisation approach, we show the standarised rank of the empirical value compared to the set of randomisations. A scaled mean rank—akin to a p-value— less than 0.025 or greater than 0.975 (the areas shaded in light grey) suggests a significant difference between the empirical network and its randomisations. The empirical _n~D~_ is much larger than that of network randomisations in which the direction of asymmetries has been randomised. In contrast, the manageability of networks in which the species degrees were randomly shuffled were not significantly different. All boxes are as in Figure 3a."}
 r <- r_w %>%
@@ -716,8 +716,8 @@ cowplot::plot_grid(p2, p1, ncol = 1, align = "v", rel_heights = c(1.5,10))
 Invasive species were classified as superior nodes *and* driver nodes in every single network they were present; that is, they always had the highest relative *f~S~* and *f~D~* (Figure 5a). 
 The model results suggest that these differences between invasive and native species are not underpinned by any intrinsic property of the invasive species; instead, they are due to species properties that apply to invasive and native species alike (Table 1). 
 Specifically, we found that a species is more likely to be classified as a superior node if it had a large species strength (the sum of the dependences of all other species on the species of interest). 
-To a smaller extent, visitation strength (a species' sum of visits) and degree also had a positive relationship with $f_S$. 
-In contrast, the relationships between species structural properties and $f_D$ were less clear cut (Table 1). 
+To a smaller extent, visitation strength (a species' sum of visits) and degree also had a positive relationship with *f~S~*. 
+In contrast, the relationships between species structural properties and *f~D~* were less clear cut (Table 1). 
 Both invasive species (which generally have a larger degree and high dependence strength) and pollinators (which generally have a smaller degree and low dependence strength) were classified as driver nodes in a large proportion of matchings.
 
 ```{r glmulti-functions, include = FALSE, warning = FALSE, message = FALSE, results = "hide"}
