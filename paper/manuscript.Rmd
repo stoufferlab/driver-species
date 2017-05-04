@@ -210,17 +210,17 @@ Second, we ask whether some species are more important than others at driving th
 ## Theoretical framework
 
 Disregarding practical considerations, any network (community) could hypothetically be fully controlled if we control the state of every single node (species) individually.
-At the core of control theory of complex networks, however, rests the idea that the state of a node depends on the state of the nodes it interacts with, and the form of this dependence is determined by both the dynamic relationship among interacting nodes and the structure of the links in the network. 
-This principle can therefore be harnessed to find a subset of *driver nodes* to which to apply external input signals which then drive the state of every other node in the network to a desired configuration [@Liu2016].
+At the core of control theory of complex networks, however, sits the idea that the state of any given node depends on the state of the nodes it interacts with, and the form of this dependence is determined by both the dynamic relationship among interacting nodes and the structure of the links in the network. 
+This principle can be leveraged to find a subset of *driver nodes* to which to apply external input signals which then drive the state of every other node in the network to a desired configuration [@Liu2016].
 
 Conveniently the information necessary to determine the minimum number of driver nodes *D* in a system with linear dynamics is fully contained in the network structure [@Kalman1963; @Liu2011; @Motter2015]. 
-Such a system can be described by $\frac{dx}{dt} = Ax + Bu(t)$, where the change of its state over time ($\frac{dx}{dt}$) depends on its current state *x* (for example the species' abundances), an external time-varying input *u(t)* (the control vector), and two matrices *A* and *B*, which encapsulate information about the network structure and how the species respond to the external input, respectively. 
-The matrix *B* has size $S \times D$, where *S* is the number of species in the community. 
-Briefly, the focus of structural controllability, which we employ here, is to use the information contained in $\mathbf{A}$ to generate a supportable estimate of $\mathbf{B}$ (and by extension $D$).
+Such a system can be described by $\frac{dx}{dt} = Ax + Bu(t)$, where the change of its state over time ($\frac{dx}{dt}$) depends on its current state *x* (for example, the species' abundances), an external time-varying input *u(t)* (the control vector), and two matrices *A* and *B*, which encode information about the network structure and how the species respond to the external input, respectively. 
+If *S* is the number of species in the community, the matrix *A* has size $S \times $S whereas the matrix *B* has size $S \times D$.
 
-This focus allows us to gain insight of the controllability of the network and the role of the species that compose it without being overly dependent on the particular choices of how the system dynamics are modelled or characterised. 
-The trade-off is that, because of the assumption that ecological communities can be modeled with linear functional responses, at least near equilibrium points, structural controllability is not adequate to design a the time varying control signal *u(t)* that can drive the system from one particular equilibrium to another.	
-Nevertheless, the lessons gained when assuming linearity—both at the network and the species level—are a prerequisite for understanding nonlinear control [@Liu2011; @Liu2016].
+The goal of structural controllability, which we employ here, is to use the information contained in $\mathbf{A}$ to generate a supportable estimate of $\mathbf{B}$ (and by extension $D$).
+This focus allows us to gain insight of the inherent controllability of a network, and the roles of the species that compose it, without being overly dependent on the particular choices of how the system dynamics are modelled or characterised. 
+The trade-off is that, because of the assumption that ecological communities can be modeled with linear functional responses, structural controllability is not sufficient to fully design a the time-varying control signal *u(t)* that can drive the system from one particular equilibrium to another.	
+Nevertheless, the lessons gained when assuming linearity---at both the network and the species level---are a prerequisite for understanding nonlinear control [@Liu2011; @Liu2016].
 
 ### Manageability
 
@@ -898,9 +898,9 @@ Our approach, however, is not based on a single structural metric but instead ac
 By allowing for the fact that some strategies are better than others depending on the context, control theory implicitly highlights that management decisions should not be based on a single technique. 
 As such, ours and other flexible approaches that take a network-wide approach might prove more useful to guide ecosystem management [@McDonald-Madden2016].
 
-In this study, we illustrate how a control-theoretic approach can be better adopted in network ecology to evaluate the effect of invasions and other kinds of perturbations. 
-We study the different ways a management intervention can be structured and provide a starting point for the study controllability of ecological systems.
-Although our pollination specific results might not be directly translatable to other ecological systems because of the degree constraints imposed by bipartite networks, the approach we propose is applicable wherever species abundances are influenced by their interactions, and exciting open questions lie ahead. 
+In this study, we illustrate how a control-theoretic approach can be employed in network ecology to evaluate the effect of invasions and other kinds of perturbations. 
+We study the different ways a management intervention can be structured and provide a starting point for the continued study of controllability in ecological contexts.
+Although our pollination-specific results might not be directly translatable to other ecological networks that do not have bipartite structures, the approach we propose is applicable wherever species abundances are influenced by their interactions, and exciting open questions lie ahead. 
 How to design the precise "control signals" to reach a desired ecosystem state or conservation outcome? 
 What are the implications of assuming fully nonlinear dynamics?
 How important it is to include several interaction types for our understanding of manageability and species importance?
