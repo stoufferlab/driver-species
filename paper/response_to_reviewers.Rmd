@@ -59,11 +59,8 @@ It can, therefore, be used to gain insight from different ecological systems and
 
 As it has been acknowledged in the control theory literature, "while many complex systems are characterised by nonlinear interactions between the components, the first step in any control challenge is to establish the controllability of the locally linearized system... Before we can explore the fully nonlinear dynamical setting, which is mathematically much harder, we must understand the impact of the topological characteristics on linear controllability, serving as a prerequisite of nonlinear controllability" [@Liu2016]. 
 
-Along similar lines to the above, we made the following modifications to the manuscript. 
-In the intro we ...
-As before, in the methods section, we start by stating the assumption of linearity (Lines XXX). 
-However, we now also explicitly explain how this assumption does not invalidate the gained insight (Lines XXX). 
-Finally, in the discussion we ...
+Along similar lines to the above, we have rewritten the a couple of paragraphs at the beginning of the "Theoretical framework" subsection (Lines 84-99) where we clearly state the assumption of linearity and how it does not invalidate the gained insight. the following modifications to the manuscript. 
+In addition, we hade some minor modifications to the last paragraph of the discussion to make more clear our contribution and how it relates to posible future research (Lines 356-371). 
 
 ****
 
