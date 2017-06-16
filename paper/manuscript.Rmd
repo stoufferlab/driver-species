@@ -209,18 +209,27 @@ Second, we ask whether some species are more important than others at driving th
 
 ## Theoretical framework
 
-Disregarding practical considerations, any network (community) could hypothetically be fully controlled if we control the state of every single node (species) individually.
-At the core of control theory of complex networks, however, sits the idea that the state of any given node depends on the state of the nodes it interacts with, and the form of this dependence is determined by both the dynamic relationship among interacting nodes and the structure of the links in the network. 
-This principle can be leveraged to find a subset of *driver nodes* to which to apply external input signals which then drive the state of every other node in the network to a desired configuration [@Liu2016].
+At the core of representing ecological communities as complex systems sits the idea that the state of any given node depends on its state, the state of the nodes it interacts with, the state of the nodes they interact with, and so on. 
+These dependencies are given by the structure of the interactions, the dynamic relationships between nodes, and the mechanisms of self-regulation. 
+This representation has been very useful for our understanding of ecological communities and might be advantageous for a more formal approach to ecological management based on control theory. 
 
-Conveniently the information necessary to determine the minimum number of driver nodes *D* in a system with linear dynamics is fully contained in the network structure [@Kalman1963; @Liu2011; @Motter2015]. 
+The overall objective of control theory is to be able to steer a system from one state to another in finite time. 
+However, in complex systems like ecological communities, the large number of nodes and interactions as well as their non-linear dynamics render its control extremely challenging.
+On one theoretical extreme, for instance, any ecological community could be fully controlled if we control the state of every species independently. 
+On another, the mechanisms of self-regulation and the multiple feedback cycles found in ecological communities mean it is also theoretically possible to control the whole community by directly modifying the state of just a *single* species [@Cowan2012; @Markovsky2013]. 
+Although mathematically correct, neither of these options are practical in real-world applications: the first because it is infeasible to design and implement interventions that modify the abundance of every single species in a community, and the second because the control signal might require unreasonably large amounts of time, energy, or unattainable rapid changes on the state [@Yan2012; @Motter2015].
+Here we explore an intermediate point between these two trivial solutions.
+
+In particular, we leverage the principle of species interdependence to find an intermediate set of *driver nodes* to control the network [@Liu2016]. 
+When we focus on net interspecific effects, it is possible to identify a minimum number of nodes the control of which can theoretically drive the state of every other node in the network to a desired configuration. 
+Conveniently the information necessary to determine this minimum number of driver nodes *D* is fully contained in the network structure [@Kalman1963; @Liu2011; @Motter2015]. 
 Such a system can be described by $\frac{dx}{dt} = \mathbf{A}x + \mathbf{B}u(t)$, where the change of its state over time ($\frac{dx}{dt}$) depends on its current state *x* (for example, the species' abundances), an external time-varying input *u(t)* (the control signal), and two matrices *A* and *B*, which encode information about the network structure and how the species respond to the external input, respectively. 
 If *S* is the number of species in the community, the matrix **A** has size $S \times S$ whereas the matrix **B** has size $S \times D$.
 
 The goal of structural controllability, which we employ here, is to use the information contained in **A** to generate a supportable estimate of **B** (and by extension *D*).
 This focus allows us to gain insight of the inherent controllability of a network, and the roles of the species that compose it, without being overly dependent on the particular choices of how the system dynamics are modelled or characterised. 
-The trade-off is that, because of the assumption that ecological communities can be modelled with linear functional responses, structural controllability is not sufficient to fully design a the time-varying control signal *u(t)* that can drive the system from one particular equilibrium to another. 
-Nevertheless, the lessons gained when assuming linearity---at both the network and the species level---are a prerequisite for understanding nonlinear control [@Liu2011; @Liu2016].
+The trade-off of our approach is that, because of the assumption of linearity, structural controllability alone does not allow us to fully design the time-varying control signal *u(t)* that can drive the system from one particular equilibrium to another. 
+Nevertheless, the lessons gained when assuming linearity---at both the network and the species level---are a prerequisite for eventually understanding nonlinear control [@Liu2011; @Liu2016].
 
 ### Manageability
 
