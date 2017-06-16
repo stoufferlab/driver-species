@@ -1,7 +1,7 @@
 ---
 title: "Quantifying the manageability of pollination networks in an invasion context"
 classoption: a4paper
-csl: ecology-letters.csl
+csl: proceedings-of-the-royal-society-b.csl
 output:
   pdf_document:
     fig_crop: no
@@ -137,33 +137,13 @@ label_pos_y <- 1
 pal <- RColorBrewer::brewer.pal(5, "PuOr")
 ```
 
-**E. Fernando Cagua^1\*^, Kate L. Wootton^1,2§^, Daniel B. Stouffer^1#^**
+**E. Fernando Cagua^1^, Kate L. Wootton^1,2^, Daniel B. Stouffer^1^**
 
 ^1^ Centre for Integrative Ecology, School of Biological Sciences, University of Canterbury, Private Bag 4800, Christchurch 8041, New Zealand
 
 ^2^ Current address: Department of Ecology, Swedish University of Agricultural Sciences, Box 7044, SE-750 07 Uppsala, Sweden
 
-^\*^ efc29@uclive.ac.nz 
-^§^ kate.l.wootton@gmail.com
-^#^ daniel.stouffer@canterbury.ac.nz
-
-* **Running title:** Manageability of pollination networks.
-  
-* **Keywords:** Network control, ecological networks, species importance, driver species, food webs, mutualism, management interventions, food web, interaction asymmetry, mutual dependence
-  
-* **Article type:** Letter.
-  
-* **Number of words:** 148 abstract; approx. 5,006 main text.
-  
-* **Number of references:** 65
-  
-* **Number of displays:** 5 figures; 1 table.
-  
-* **Correspondence to:** Daniel Stouffer (daniel.stouffer@canterbury.ac.nz) - +64 3 364 2729 - Centre for Integrative Ecology, School of Biological Sciences, University of Canterbury, Private Bag 4800, Christchurch 8140, New Zealand
-
-* **Authorship:** DBS conceived the idea; all authors contributed to the development of the theoretical framework. EFC performed all analysis. EFC and DBS wrote the manuscript. All authors contributed to its revision.
-
-* **Data accessibility:** All data used in this manuscript have already been published by @Lopezaraiza-Mikel2007, @Bartomeus2008, and @Ballantyne2015. The reader should refer to the original sources to access the data.
+**Author for correspondence:** Daniel Stouffer (daniel.stouffer@canterbury.ac.nz) - +64 3 364 2729 - Centre for Integrative Ecology, School of Biological Sciences, University of Canterbury, Private Bag 4800, Christchurch 8140, New Zealand
 
 \newpage
 
@@ -175,6 +155,8 @@ We also characterise species' suitability for inclusion in management interventi
 Specifically, we measure the extent to which species (i) are necessary to steer the state of the community and (ii) are able to affect the abundance of other species. 
 We found that invasive plants have a dominant position in every invaded community and that this dominance is underpinned by high asymmetry in the dependence of their interaction partners. 
 Our results highlight the advantages of the control-theoretic framework for ecological questions and provide novel insight into the design of informed management interventions.
+
+**Keywords:** Network control theory, ecological networks, species importance, driver species, mutualism, management interventions
 
 \newpage
 
@@ -205,9 +187,7 @@ While doing so, we focus on two particular questions.
 First, grounded in the difficulties usually involved with invasive-species eradication and ecosystem restoration [@Woodford2016], we ask whether invaded networks have lower levels of "manageability" than their uninvaded counterparts; that is, whether they require a greater proportion of species to be managed to achieve the same level of control. 
 Second, we ask whether some species are more important than others at driving the population dynamics of the community and which factors determine this importance. 
 
-# Methods
-
-## Theoretical framework
+# Theoretical framework
 
 At the core of representing ecological communities as complex systems sits the idea that the state of any given node depends on its state, the state of the nodes it interacts with, the state of the nodes they interact with, and so on. 
 These dependencies are given by the structure of the interactions, the dynamic relationships between nodes, and the mechanisms of self-regulation. 
@@ -231,7 +211,7 @@ This focus allows us to gain insight of the inherent controllability of a networ
 The trade-off of our approach is that, because of the assumption of linearity, structural controllability alone does not allow us to fully design the time-varying control signal *u(t)* that can drive the system from one particular equilibrium to another. 
 Nevertheless, the lessons gained when assuming linearity---at both the network and the species level---are a prerequisite for eventually understanding nonlinear control [@Liu2011; @Liu2016].
 
-### Manageability
+## Manageability
 
 The number of driver nodes *D* provides a structural indication of how difficult a network's control might be.
 This is because systems that require a large number of external input signals are intuitively more difficult or costly to control.
@@ -384,9 +364,9 @@ n
 ```
 
 Note that this framework requires a directed network in which the direction of the links corresponds to the direction of control. 
-In the "Empirical application" section below, we explain our approach to determining the link direction in pollination networks. 
+In the "Methods" section below, we explain our approach to determining the link direction in pollination networks. 
 
-### Relative importance
+## Relative importance
 
 While calculating *n~D~* measures the manageability of an ecological community, it does not provide information about the identity of the species that compose the set of driver nodes. 
 Ecologically, potential differences between species are relevant because management and conservation resources are limited, and therefore ecological interventions should be focused on the set of species that might provide the largest impact. 
@@ -405,7 +385,7 @@ A complication of including the interaction weight when calculating the maximum 
 We overcome this issue by calculating all maximal cardinality matchings and then ranking them by their matching weight. 
 By following this approach, we effectively give priority to the species that participate in the pathways that potentially have the largest impact on the community while acknowledging the limitations associated with sampling and its potential restrictions [@Jordano2016]. 
 
-## Empirical application
+# Methods
 
 ```{r network summaries, include = F}
 lop <- filter(meta, study == "lopezaraiza") %>% mutate(size = n_pla + n_pol) %$% size %>% summary() 
@@ -426,7 +406,7 @@ Because our approach depends on the network topology, we also evaluated the robu
 Specifically, we calculated *n~D~* and species relative importance for 500 random subsamples of each empirical network in which the weakest links were more likely to be removed. 
 Our sensitivity analysis indicated that, even in the absence of complete sampling, a control-theoretic approach can still be applied (Supporting Information S5).
 
-### Manageability
+## Manageability
 
 ```{r component_lost, echo = F, eval = T}
 a <- net %>%
@@ -459,7 +439,7 @@ To simplify the analysis, if a network had more than one component (two species 
 Smaller components were present in eleven out of the twenty networks and were typically composed of just one plant and one pollinator. 
 Their removal represented an average loss of `r sp_lost`% of the species and `r int_lost`% of the interactions.
 
-#### Weighting & directing links
+### Weighting & directing links
 
 As we noted earlier, the maximum-matching approach requires a directed network in which a link from species *i* to species *j* indicates that the abundance of *j* can be affected by the abundance of *i*.
 This implies that we need first to identify a directionality for the links between species that is consistent with the dynamics of the community (Figure 2). 
@@ -534,7 +514,7 @@ Moreover, we found that changing to unidirectional interactions based on the dir
 To find a maximum matching in a network with interaction directions and weights determined by the asymmetry, we adopted a strategy based on an alternative bipartite representation of the directed network with two levels that indicate the outgoing and incoming links to each node (Supporting Information S1). 
 Once we had this alternative representation we used the maximum bipartite matching algorithm implemented in the `max_bipartite_match` function of igraph 1.0.1 [@Csardi2006a] on each network.
 
-#### Statistical analysis
+### Statistical analysis
 
 We also wanted to test whether invasion status or other predictors had an impact on the observed values of *n~D~*. 
 We therefore used a set of generalised linear models (with binomial error structure) to investigate the effect of invasion status while also including covariates related to species richness, since one might naively expect to see a negative relationship between richness and manageability [@Menge1995]. 
@@ -549,7 +529,7 @@ That is, we first calculated the observed asymmetries for each community and the
 
 Additional details about the statistical models and the randomisations can be found in Supporting Information S7.
 
-### Relative importance
+## Relative importance
 
 Our second key question was related to how species differ in their ability to drive the population dynamics of the community. 
 To quantify this importance, we computed all maximal cardinality matchings in each network. 
@@ -557,7 +537,7 @@ We then calculated the frequency with which each species *i* was a driver (*f~D~
 We selected this threshold as it provided a high agreement between networks quantified by visitation and pollination efficiency as well as between our weighting/directionality assumptions; however, the choice of this threshold had a negligible impact on any results (Supporting Information S8).
 Details about the computational procedure to find all maximal cardinality matchings of a network can be found in Supporting Information S1 and Figure S2.
 
-#### Statistical analysis
+### Statistical analysis
 
 We then examined whether any species-level structural properties could predict our metrics of species importance—the frequency with which a species was a driver or a superior node (*f~D~* and *f~S~*, respectively).
 We used a set of generalised linear mixed-effects models (with binomial error structure) with the relative frequencies as the response variables. 
@@ -947,11 +927,29 @@ Maximum matching
 Superior node
   ~ The node at the start of a matched link. From the control perspective, superior nodes make up the chains that propagate the control signals through the network.
   
+## Data accessibility
+
+All data used in this manuscript have already been published by @Lopezaraiza-Mikel2007, @Bartomeus2008, and @Ballantyne2015. The reader should refer to the original sources to access the data.
+
+## Competing interests
+
+We have no competing interests.
+
+## Author contributions
+
+DBS conceived the idea; all authors contributed to the development of the theoretical framework. EFC performed all analysis. EFC and DBS wrote the manuscript. All authors contributed to its revision.
+
 ## Acknowledgments 
 
 The authors thank Jane Memmott and coauthors, and eveyone that has made their data available to us, Takeuki Uno for the insight provided to find the set of all maximum matching algorithms, and Jason Tylianakis, Bernat Bramon Mora, Guadalupe Peralta, Rogini Runghen, Warwick Allen, Matthew Hutchinson, and Marilia Gaiarsa for feedback and valuable discussions. 
+
+## Funding
+
 EFC acknowledges the support from the University of Canterbury Doctoral Scholarship, the University of Canterbury Meadow Mushrooms Postgraduate Scholarship, a New Zealand International Doctoral Research Scholarship, and a travel grant from the European Space Agency. 
 DBS acknowledges the support of a Marsden Fast-Start grant and a Rutherford Discovery Fellowship, administered by the Royal Society of New Zealand.
+
+
+
 
 # References
 
