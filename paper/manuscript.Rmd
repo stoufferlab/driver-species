@@ -122,10 +122,12 @@ as_net <- example_net %>%
 	bipartite_digraph(type = "weight", weight.type = "asymmetry")
 
 fam <- "Helvetica"
+
 # layout is based on the bidirectional network
 set.seed(1)
-
-lay <- bi_net %>%
+bi_net_uw <- bi_net
+E(bi_net_uw)$weight <- 1
+lay <- bi_net_uw %>%
 	layout_nicely()
 v_c <- "white"
 l_c <- "black"
