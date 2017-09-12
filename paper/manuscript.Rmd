@@ -164,10 +164,10 @@ Our results highlight the advantages of the control-theoretic framework for ecol
 
 # Introduction
 
-In a complex system, the whole is often greater than the sum of its parts [@Jorgensen1998; @Levin1999; @Montoya2006].
-Within community ecology, a complex-systems approach has led to the development of analytical and simulation tools with which to understand, for example, the role of species embedded in a network of interactions [@Pascual2005; @Bascompte2009; @Stouffer2012]. 
+In a complex system, the whole is often greater than the sum of its parts [@Montoya2006].
+Within community ecology, a complex-systems approach has led to the development of analytical and simulation tools with which to understand, for example, the role of species embedded in a network of interactions [@Bascompte2009; @Stouffer2012]. 
 The inherent complexity of nature, however, has regularly hindered—or at least complicated—our ability to find management solutions to many problems ecological communities face. 
-To overcome this obstacle, we require a framework that allows us to explain, predict, and manage ecological communities, particularly when they are confronted with perturbations [@Sole2001; @Green2005].
+To overcome this obstacle, we require a framework that allows us to explain, predict, and manage ecological communities, particularly when they are confronted with perturbations [@Green2005].
 Ideally, such a framework is equipped to account for their complex structure and the dynamics that determine the species abundances and the state of the community. 
 
 Among the various possibilities, *control theory* appears to be a strong candidate [@Isbell2013]. Widely used in engineering to determine and supervise the behaviour of dynamical systems [@Motter2015], it is well equipped to deal with the many feedbacks present in ecological communities [@Liu2016]. 
@@ -179,7 +179,7 @@ Therefore, control theory could also be harnessed to help identify which species
 This information is valuable not only for basic ecology, but it might be also relevant to address more applied management and conservation challenges. 
 This is particularly true in the context of biotic invasions, where identifying key players in the community is a prerequisite to informed attempts to alter the state of invaded ecosystems and maintain the state of uninvaded ones.
 Despite recent advances in network theory, practical challenges to the conservation of interaction networks persist [@Tylianakis2010], and the link between the structure of complex networks and our ability to manage and conserve them is still ambiguous [@Bluthgen2010; @Kaiser-Bunbury2015].
-To complicate things further, biotic invasions can induce dramatic changes in the patterns of interactions that determine the structure of ecological networks [@Baxter2004; @Tylianakis2008; @Ehrenfeld2010a], in particular pollination [@Olesen2002; @Aizen2008; @Bartomeus2008; @Vila2009; @Traveset2013]. 
+To complicate things further, biotic invasions can induce dramatic changes in the patterns of interactions that determine the structure of ecological networks [@Tylianakis2008; @Ehrenfeld2010a], in particular pollination [@Olesen2002; @Aizen2008; @Bartomeus2008; @Vila2009; @Traveset2013]. 
 Understanding how the differences in network structure before and after invasion impact our ability to manage the communities is thus a double challenge, but it is also the critical first step towards a fully informed recovery. 
 Despite the apparent overlap, the control-theoretic perspective has not been adopted in an invasion context. 
 
@@ -853,7 +853,7 @@ Our results reveal, however, that this effect is comparatively small, and the st
 Despite the small effect of invasion status at the network level, we found that invasive mutualists occupy a particularly dominant role in their communities for two reasons. 
 First, as species with a high *f~S~*, changes on their abundance have the potential to propagate broadly through the community and, in turn, affect the abundances of many other species. 
 Second, as species with a high *f~D~*, they are also indispensable when it comes to fully controlling the plant-pollinator network. 
-At a community level, we demonstrate that the manageability of mutualistic networks is strongly governed by the asymmetric nature of mutual dependences—which constitute the foundations of the structure and stability of mutualistic networks [@Memmott2004; @Vazquez2004; @Bascompte2006; @Lever2014; @Astegiano2015]. 
+At a community level, we demonstrate that the manageability of mutualistic networks is strongly governed by the asymmetric nature of mutual dependences—which constitute the foundations of the structure and stability of mutualistic networks [@Memmott2004; @Vazquez2004; @Bascompte2006; @Astegiano2015]. 
 Moreover, these mutual dependences seem to be constrained by the effects of both the patterns of species richness at each trophic guild and a network's degree distribution [@Melian2002; @Bluthgen2007]. 
 Indeed, the difference between the driver-node density (*n~D~*) of our empirical networks and that of randomisations depended strongly on the null model's randomisation approach. 
 While the empirical *n~D~* was indistinguishable from that of networks with a random structure that maintained the degree of each species in the community, it was larger than that of randomisations in which the directed network was unchanged but where the observed patterns of dependence were broken.
