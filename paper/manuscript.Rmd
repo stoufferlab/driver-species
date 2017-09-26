@@ -5,29 +5,20 @@ csl: journal-of-ecology.csl
 output:
   pdf_document:
     fig_crop: no
-    includes:
-      after_body: after_body.md
   html_document: default
   word_document: default
 header-includes:
 - \usepackage{setspace}
 - \usepackage{float}
 - \usepackage{booktabs}
-- \usepackage{tocloft} 
 - \usepackage{caption}
-- \captionsetup{labelsep=none,textformat=empty}
 - \usepackage{lineno}
-- \usepackage[nomarkers,tablesfirst, nolists]{endfloat}
-- \cftpagenumbersoff{figure}
-- \cftpagenumbersoff{table}
 documentclass: artikel1
 bibliography: references.bib
 ---
 
 \doublespacing
 \linenumbers
-\renewcommand*\listfigurename{Figure legends}
-\renewcommand*\listtablename{Table legends}
 
 ```{r libraries, echo = F, include = F}
 library(igraph)
