@@ -918,31 +918,18 @@ Maximum matching
 Superior node
   ~ The node at the start of a matched link. From the control perspective, superior nodes make up the chains that propagate the control signals through the network.
   
-## Data accessibility
+## Acknowledgments 
 
-All data used in this manuscript have already been published by @Lopezaraiza-Mikel2007, @Bartomeus2008, and @Ballantyne2015. The reader should refer to the original sources to access the data.
-
-## Competing interests
-
-We have no competing interests.
+The authors thank Jane Memmott and coauthors, and eveyone that has made their data available to us, Takeuki Uno for the insight provided to find the set of all maximum matching algorithms, and Jason Tylianakis, Bernat Bramon Mora, Guadalupe Peralta, Rogini Runghen, Warwick Allen, Matthew Hutchinson, and Marilia Gaiarsa for feedback and valuable discussions. 
+EFC acknowledges the support from the University of Canterbury Doctoral Scholarship, the University of Canterbury Meadow Mushrooms Postgraduate Scholarship, a New Zealand International Doctoral Research Scholarship, and a travel grant from the European Space Agency. 
+DBS acknowledges the support of a Marsden Fast-Start grant and a Rutherford Discovery Fellowship, administered by the Royal Society of New Zealand.
 
 ## Author contributions
 
 DBS conceived the idea; all authors contributed to the development of the theoretical framework. EFC performed all analysis. EFC and DBS wrote the manuscript. All authors contributed to its revision.
 
-## Acknowledgments 
+## Data accessibility
 
-The authors thank Jane Memmott and coauthors, and eveyone that has made their data available to us, Takeuki Uno for the insight provided to find the set of all maximum matching algorithms, and Jason Tylianakis, Bernat Bramon Mora, Guadalupe Peralta, Rogini Runghen, Warwick Allen, Matthew Hutchinson, and Marilia Gaiarsa for feedback and valuable discussions. 
-
-## Funding
-
-EFC acknowledges the support from the University of Canterbury Doctoral Scholarship, the University of Canterbury Meadow Mushrooms Postgraduate Scholarship, a New Zealand International Doctoral Research Scholarship, and a travel grant from the European Space Agency. 
-DBS acknowledges the support of a Marsden Fast-Start grant and a Rutherford Discovery Fellowship, administered by the Royal Society of New Zealand.
-
-
-
+All data used in this manuscript have already been published by @Lopezaraiza-Mikel2007, @Bartomeus2008, and @Ballantyne2015. The reader should refer to the original sources to access the data.
 
 # References
-
-
-
