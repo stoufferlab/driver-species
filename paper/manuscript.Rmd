@@ -142,12 +142,10 @@ pal <- RColorBrewer::brewer.pal(5, "PuOr")
 
 # Abstract
 
-Here, we leverage recent advances in control theory to assess the "manageability" of ten pairs of uninvaded and invaded plant-pollinator communities. 
-We found that the networks' manageability is most strongly determined by the ratio of plants to pollinator richness, which in turn constrains the networks' degree distribution. 
-We also characterise species' suitability for inclusion in management interventions by exploring the entire space of control strategies. 
-Specifically, we measure the extent to which species (i) are necessary to steer the state of the community and (ii) are able to affect the abundance of other species. 
-We found that invasive plants have a dominant position in every invaded community and that this dominance is underpinned by high asymmetry in the dependence of their interaction partners. 
-Our results highlight the advantages of the control-theoretic framework for ecological questions and provide novel insight into the design of informed management interventions.
+* Despite important advances in network ecology, the link between network structure and management and conservation is still tenuous. Perhaps in part because of a lack of theoretical framework, efforts to link network and management have been mainly focused on network properties and less on mechanisms. 
+* Here, we leverage recent advances in control theory to assess the "manageability" of ecological networks. For simplicity we ilustrate its application using ten pairs of uninvaded and invaded plant-pollinator communities. Furthermore, we also characterise species' suitability for inclusion in management interventions by exploring the entire space of control strategies. Specifically, we measure the extent to which species (i) are necessary to steer the state of the community and (ii) are able to affect the abundance of other species. 
+* We found that the networks' manageability is most strongly determined by the ratio of plants to pollinator richness, which in turn constrains the networks' degree distribution. We also found that invasive plants have a dominant position in every invaded community and that this dominance is underpinned by high asymmetry in the dependence of their interaction partners. 
+* Our results provide novel insigt into the design of informed management interventions and lay foundations for further work on the control of ecological networks. 
 
 **Keywords:** Network control theory, ecological networks, species importance, driver species, mutualism, management interventions
 
