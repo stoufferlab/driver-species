@@ -147,7 +147,7 @@ pal <- RColorBrewer::brewer.pal(5, "PuOr")
 3. We found that the networks' manageability is most strongly determined by the ratio of plant to pollinator richness, which in turn constrains the networks' degree distribution. We also found that invasive plants have a dominant position in every invaded community and that this dominance is underpinned by high asymmetries in the dependences of their interaction partners. 
 4. Our results provide novel insight into the design of ecologically-informed management interventions and lay the foundation for further work on the control of ecological networks. 
 
-**Keywords:** Network control theory, ecological networks, species importance, driver species, mutualism, management interventions
+**Keywords:** Driver species, ecological networks, management interventions, mutualism, network control theory, species importance
 
 \newpage
 
