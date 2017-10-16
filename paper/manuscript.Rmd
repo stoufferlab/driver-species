@@ -145,7 +145,7 @@ pal <- RColorBrewer::brewer.pal(5, "PuOr")
 1. Despite important advances in network ecology, the link between the structure of an interaction network and management or conservation is still tenuous. Perhaps in part because of a lack of theoretical framework, efforts to strengthen this link have been mainly focused on whole-network properties instead of underlying mechanisms. 
 2. Here, we leverage recent advances in control theory to develop an approach to assess the "manageability" of ecological networks. We then illustrate its application using ten pairs of uninvaded and invaded plant-pollinator communities. We also characterise species' suitability for inclusion in management interventions by exploring the entire space of alternative control strategies. Specifically, we measure the extent to which species (i) are necessary to steer the state of the community and (ii) are able to affect the abundance of other species. 
 3. We found that the networks' manageability is most strongly determined by the ratio of plant to pollinator richness, which in turn constrains the networks' degree distribution. We also found that invasive plants have a dominant position in every invaded community and that this dominance is underpinned by high asymmetries in the dependences of their interaction partners. 
-4. Our results provide novel insight into the design of ecologically-informed management interventions and lay the foundation for further work on the control of ecological networks. 
+4. *Synthesis*. Our results provide novel insight into the design of ecologically-informed management interventions and lay the foundation for further work on the control of ecological networks. 
 
 **Keywords:** Driver species, ecological networks, management interventions, mutualism, network control theory, plant population and community dynamics, species importance
 
@@ -922,7 +922,7 @@ Superior node
 
 The authors thank Jane Memmott and coauthors, and eveyone that has made their data available to us, Takeuki Uno for the insight provided to find the set of all maximum matching algorithms, and Jason Tylianakis, Bernat Bramon Mora, Guadalupe Peralta, Rogini Runghen, Warwick Allen, Matthew Hutchinson, and Marilia Gaiarsa for feedback and valuable discussions. 
 EFC acknowledges the support from the University of Canterbury Doctoral Scholarship, the University of Canterbury Meadow Mushrooms Postgraduate Scholarship, a New Zealand International Doctoral Research Scholarship, and a travel grant from the European Space Agency. 
-DBS acknowledges the support of a Marsden Fast-Start grant and a Rutherford Discovery Fellowship, administered by the Royal Society of New Zealand.
+DBS acknowledges the support of a Marsden Fast-Start grant and a Rutherford Discovery Fellowship, administered by the Royal Society Te Aparangi.
 
 ## Author contributions
 
