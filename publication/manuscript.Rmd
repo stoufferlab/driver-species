@@ -1,0 +1,49 @@
+---
+title: "Network control"
+classoption: a4paper
+csl: journal-of-ecology.csl
+output: 
+  bookdown::pdf_document2: 
+    keep_tex: yes
+    number_sections: false
+toc: false
+header-includes:
+- \usepackage{setspace}
+- \usepackage{float}
+- \usepackage{booktabs}
+- \usepackage{caption}
+- \usepackage{lineno}
+documentclass: artikel1
+bibliography: references.bib
+---
+
+\doublespacing
+\linenumbers
+
+```{r example_network, include = F}
+loadd(example_net)
+	
+base_net <- example_net
+	bi_net <- example_net %>%
+		keep_largest_component() %>%
+		bipartite_digraph(type = "z-bi", weight.type = "asymetry") 
+	as_net <- example_net %>%
+		keep_largest_component() %>%
+		bipartite_digraph(type = "weight", weight.type = "asymmetry")
+	
+	fam <- "Helvetica"
+	
+	# layout is based on the bidirectional network
+	set.seed(1)
+	bi_net_uw <- bi_net
+	E(bi_net_uw)$weight <- 1
+	lay <- bi_net_uw %>%
+		layout_nicely()
+	v_c <- "white"
+	l_c <- "black"
+	l_s <- 0.9
+	ma <- c(0,0,0,0)
+	label_pos_x <- -1
+	label_pos_y <- 1
+```
+

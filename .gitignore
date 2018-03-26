@@ -33,3 +33,5 @@ paper/supporting_information_cache/
 paper/supporting_information_files/
 
 paper/manuscript_files/
+
+\.drake/
