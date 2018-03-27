@@ -13,6 +13,7 @@ library(tinytex)
 # required by paper or analysis
 library(latex2exp)
 library(igraph)
+library(ggplot2)
 
 # load functions
 f <- list.files("./functions/", full.names = T) %>% lapply(source)
@@ -39,5 +40,5 @@ vis_drake_graph(project_config, split_columns = T, targets_only = T)
 
 # execute plan
 # make(project_plan, parallelism = "parLapply", jobs = 7)
-make(project_plan)
+make(project_plan, graph = project_config$graph, config = project_config, session_info = T)
 

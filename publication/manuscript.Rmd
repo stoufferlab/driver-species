@@ -20,6 +20,21 @@ bibliography: references.bib
 \doublespacing
 \linenumbers
 
+**E. Fernando Cagua^1^, Kate L. Wootton^1,2^, Daniel B. Stouffer^1^**
+
+^1^ Centre for Integrative Ecology, School of Biological Sciences, University of Canterbury, Private Bag 4800, Christchurch 8041, New Zealand
+
+^2^ Current address: Department of Ecology, Swedish University of Agricultural Sciences, Box 7044, SE-750 07 Uppsala, Sweden
+
+**Author for correspondence:** Daniel Stouffer (daniel.stouffer@canterbury.ac.nz) - +64 3 364 2729 - Centre for Integrative Ecology, School of Biological Sciences, University of Canterbury, Private Bag 4800, Christchurch 8140, New Zealand
+
+\newpage
+
+# Introduction
+
+Networks have used to study the role of species in their community. Most approaches are rooted on the assumption that there is a link between a species centrality and its importance—its ability to modify the abundance of other species. However, recent studies show that definitions of role based on centrality, although simple, might not be a good proxy for the importance of a species for ecosystem functioning. Here we show that using a control theory can yield novel insights about a species role in the community.
+
+
 ```{r example_network, include = F}
 loadd(example_net)
 	
