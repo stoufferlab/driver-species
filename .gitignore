@@ -21,3 +21,13 @@ paper/supporting_information_files/
 paper/manuscript_files/
 \.drake/
 packrat/lib*/
+
+*.aux
+
+*.out
+
+publication/manuscript\.tex
+
+*.log
+
+publication/manuscript\.pdf
