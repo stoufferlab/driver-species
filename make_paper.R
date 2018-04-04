@@ -6,6 +6,9 @@
 
 # LIBRARIES AND FUNCTIONS -------------------------------------------------
 
+# make sure packrat is working
+if(!packrat:::isPackratModeOn()) packrat::on()
+
 library(drake)
 library(rmarkdown)
 library(tinytex)
