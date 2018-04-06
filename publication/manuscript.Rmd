@@ -1,5 +1,5 @@
 ---
-title: "Network control"
+title: "Ecological network control"
 classoption: a4paper
 csl: journal-of-ecology.csl
 output: 
@@ -34,50 +34,27 @@ bibliography: references.bib
 
 Within community ecology, a complex-systems approach has led to the development of analytical and simulation tools with which to understand the role of species embedded in a network of interactions [@Bascompte2009; @Stouffer2012]. 
 A particularly relevant dimension of a species role for ecosystem functioning is that which relates to its ability to alter the abundance of other species in the community. 
-This ability is often refered as species importance or "keystoness". 
+This ability is often referred as species importance or "keystoness". 
 A significant proportion of the network tools used to estimate a species ability to modify its community is based on the assumption that there is a link between a species centrality and its importance. 
 However, recent studies have shown that definitions of role based on centrality, although straightforward, might not adequately estimate the relative influence of a species on its community. 
 To overcome this issue, we require a framework that is equipped to account for the structure of the interactions in the community, but that also acknowledges the dynamics that determine species abundance and ultimately the state of the community.
 
 Among the various possibilities, *control theory* appears to be a strong candidate [@Isbell2013]. 
 Widely used in engineering to determine and supervise the behaviour of dynamical systems [@Motter2015], it is well equipped to deal with the many feedbacks present in ecological communities [@Liu2016]. 
-Furthermore, advances in this field have established a link between the structure of the network and the way nodes afect each other that is based, not on a-priori assumptions, but, on well-established advances on dynamical a complex systems theory. 
-Despite the coincidences, the concepts and approaches of control theory are not commonly applied in an ecological context. 
+Furthermore, advances in this field have established a link between the structure of the network and the way nodes affect each other that is based on well-established advances in both dynamical and complex systems theory. 
+As such, a priori assumptions about how particular node metrics, like centrality, are related to network functioning are not required
+Despite the coincidences between ecological and engineering systems, the concepts and approaches of control theory are not commonly applied in an ecological context. 
 This is, in part, because in contrast with ecology, research on the control of complex networks is generally more concerned with driving the state the system as a whole rather than the nodes that compose the network. 
-Here, we expand current methods of control theory and show how it can also be used to gain insight about the role of species in an ecological nework. 
+At its fundamental level, control theory is concerned with determining whether a system is at all controllable, this is, whether it can be driven to a desired state or not. 
+Our first contribution is to expand existing methods control theory to effectively link the *controllability* of a network with the role of particular nodes. 
 
-We outline the approach using a set of ten pairs of uninvaded and invaded plant-pollinator communities. 
-We use invaded communities because there is strong empirical evidence that the invasive species played a role shaping the abundances of other species in the networks and therefore they are ideal candidates to test whether theoretical observations match empirical evidence.
-
-
-
-
-and effectively link the *controllability* of an ecological network with the role of particular species. 
-To do that we use a set 
-
-Second we show plays in the context of affecting the abundance of other species. 
-
-t its fundamental level, control theory is concerned on determining whether a system is at all controllable, this is, wether it can be driven to a desired state or not. 
-In other words, the objective is to controllability is a property of the system as a whole
-
-Here we develop 
-
-
-
-
-On its fundamentals control theory is concerned on determining the 
-
-We think that part of the reason control theory is not widely 
-
-s state  suggest that it is in principle possible to alter a whole ecological community's composition by modifying the abundances of only a few species
-
-
-
-
-Research in this area has established a strong link between the structure of complex networks and their *controllability*—the relative ability to manipulate network components to drive the system to a desired state [@Liu2011; @Cornelius2013; @Ruths2014]. 
-These advances suggest that it is in principle possible to alter a whole ecological community's composition by modifying the abundances of only a few species.
-Applications of control theory to ecological networks can also take into account the extent to which changes in the abundances of one species may ripple through the community [@Cornelius2013].
-Therefore, control theory could also be harnessed to help identify which species are most relevant from a structural and dynamic perspective.
+After overcoming this first hurdle, we then apply the methods to an ecological problem and show how it can be used to gain insight into the role of species in an ecological network. 
+Specifically, we outline the approach using a set of ten pairs of uninvaded and invaded plant-pollinator communities. 
+We use invaded communities because there is strong empirical evidence showing that invasive species play an important role shaping the abundances of other species. Certainly so in the chosen networks [@Lopezaraiza-Mikel2007; @Bartomeus2008]. 
+Hence, this choice offers an opportunity to contrast theoretical observations with empirical evidence. 
+First, grounded in the difficulties usually involved with invasive-species eradication and ecosystem restoration [@Woodford2016], we ask whether invaded networks require a greater proportion of species to be managed to achieve the same level of control. 
+Second, we ask—from a control theoretic perspective—wether there are differences among species in the role they play at driving the population of other members of the community and the factors related to these differences. 
+Finally, we compare the proposed approach to current methods based on species centrality and show how these methods are indeed valuable but only paint a limited picture in regards to the "keystoness" of a species.
 
 ```{r example_network, include = F}
 loadd(example_net)
