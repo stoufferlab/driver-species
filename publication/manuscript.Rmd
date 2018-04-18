@@ -36,25 +36,41 @@ Within community ecology, a complex-systems approach has led to the development 
 A particularly relevant dimension of a species role for ecosystem functioning is that which relates to its ability to alter the abundance of other species in the community. 
 This ability is often referred as species importance or "keystoness". 
 A significant proportion of the network tools used to estimate a species ability to modify its community is based on the assumption that there is a link between a species centrality and its importance. 
-However, recent studies have shown that definitions of role based on centrality, although straightforward, might not adequately estimate the relative influence of a species on its community. 
-To overcome this issue, we require a framework that is equipped to account for the structure of the interactions in the community, but that also acknowledges the dynamics that determine species abundance and ultimately the state of the community.
+At first glance, this assumption makes sense because at the core of representing ecological communities as complex systems sits the idea that the abundance of any given species depends on its abundance, the abundance of the species it interacts with, the abundance of the species they interact with, and so on. 
+More central species are better connected and hence should be more likely to affect the abundance of other species in the network. 
+However, the relationship between centrality and role is rather phenomenological, and recent studies have shown that definitions of role based on centrality, although straightforward, might not adequately estimate the relative influence of a species on its community. 
+This has important consequences not only for the theoretical understanding of ecological communities but also for potential conservation applications. 
+An alternative, more mechanistically-grounded, approach to relate species to ecosystem functioning is needed.
 
-Among the various possibilities, *control theory* appears to be a strong candidate [@Isbell2013]. 
-Widely used in engineering to determine and supervise the behaviour of dynamical systems [@Motter2015], it is well equipped to deal with the many feedbacks present in ecological communities [@Liu2016]. 
-Furthermore, advances in this field have established a link between the structure of the network and the way nodes affect each other that is based on well-established advances in both dynamical and complex systems theory. 
-As such, a priori assumptions about how particular node metrics, like centrality, are related to network functioning are not required
-Despite the coincidences between ecological and engineering systems, the concepts and approaches of control theory are not commonly applied in an ecological context. 
-This is, in part, because in contrast with ecology, research on the control of complex networks is generally more concerned with driving the state the system as a whole rather than the nodes that compose the network. 
-At its fundamental level, control theory is concerned with determining whether a system is at all controllable, this is, whether it can be driven to a desired state or not. 
+Such an approach needs to account for the structure of the interactions in the community, just like centrality based methods, ideally without requiring a priori assumptions about how particular network metrics relate to changes in species abundance. 
+Species abundances are also influenced by the dynamic relationships between nodes, and the mechanisms of self-regulation. 
+However, ecosystem dynamics can be modeled in numerous ways and empirical support to one or another is still ambiguous. 
+Therefore, the alternative approach should also acknowledge ecosystem dynamics without being overly dependent on the particular choices of how they are characterised.
+
+*Control theory* is a widely studied branch of engineering used to determine and supervise the behaviour of dynamical systems [@Motter2015]. 
+It is inherently designed to deal with system feedbacks and its application has been recently expanded to complex networks [@Liu2016]. 
+In correspondence with ecological questions, advances in this field have determined a link between the structure of the network and the way nodes affect each other. 
+Unlike ecological approaches, however, this link is based, not on a priori assumptions, but on well-established advances in both dynamical and complex systems theory. 
+Among the various possibilities, control theory appears to be a strong candidate to be used to define a species role for ecosystem functioning [@Isbell2013]. 
+
+Despite the numerous coincidences, the concepts and approaches of control theory are not yet commonly applied in an ecological context. 
+Possibly, this is in part because, in contrast with ecology, research on the control of complex networks is generally more concerned with the state of the system as a whole than the nodes that compose the network. 
+At its fundamental level, control theory first determines whether a system is controllable or not, this is, it asks if a system can be driven to a desired state within a finite amount of time. 
+Nevertheless, it has been recently shown that asking for the controllability of a complex system is equivalent to asking whether there exists a non-trivial set of nodes with which is possible to control the state of the whole network. 
+We note that this set of nodes is not unique, and that an examination of the possible sets of nodes provides a means to connect nodes with its ability to modify their system. 
 Our first contribution is to expand existing methods control theory to effectively link the *controllability* of a network with the role of particular nodes. 
 
-After overcoming this first hurdle, we then apply the methods to an ecological problem and show how it can be used to gain insight into the role of species in an ecological network. 
+After overcoming this first hurdle, we can then apply the methods to an ecological problem and show how it can be used to gain insight into the role of species in an ecological network. 
 Specifically, we outline the approach using a set of ten pairs of uninvaded and invaded plant-pollinator communities. 
 We use invaded communities because there is strong empirical evidence showing that invasive species play an important role shaping the abundances of other species. Certainly so in the chosen networks [@Lopezaraiza-Mikel2007; @Bartomeus2008]. 
 Hence, this choice offers an opportunity to contrast theoretical observations with empirical evidence. 
 First, grounded in the difficulties usually involved with invasive-species eradication and ecosystem restoration [@Woodford2016], we ask whether invaded networks require a greater proportion of species to be managed to achieve the same level of control. 
-Second, we ask—from a control theoretic perspective—wether there are differences among species in the role they play at driving the population of other members of the community and the factors related to these differences. 
+Second, we ask—from a control theoretic perspective—whether there are differences among species in the role they play at driving the population of other members of the community and the factors related to these differences. 
 Finally, we compare the proposed approach to current methods based on species centrality and show how these methods are indeed valuable but only paint a limited picture in regards to the "keystoness" of a species.
+
+# Methods
+
+
 
 ```{r example_network, include = F}
 loadd(example_net)
