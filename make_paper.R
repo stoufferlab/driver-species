@@ -19,9 +19,11 @@ library(readr)
 library(dplyr)
 library(igraph)
 library(ggplot2)
+library(latex2exp)
 
 # load functions
 f <- list.files("./functions/", full.names = T) %>% lapply(source)
+f <- list.files("functions", full.names = T) %>% lapply(source)
 
 # DEFINE PLAN ----------------------------------------------------------------
 
@@ -34,6 +36,9 @@ read_data_plan <- drake_plan(
 reporting <- drake_plan(
 	# 'publication/supp_info.tex' = render('publication/supporting_information.Rmd', quiet = TRUE),
 	# 'publication/supp_info.pdf' = latexmk('publication/supp_info.tex', clean = FALSE),
+reporting_plan <- drake_plan(
+	'publication/supp-info.tex' = render('publication/supp-info.Rmd', quiet = TRUE),
+	'publication/supp-info.pdf' = latexmk('publication/supp-info.tex', clean = FALSE),
 	'publication/manuscript.tex' = render('publication/manuscript.Rmd', quiet = TRUE),
 	'publication/manuscript.pdf' = latexmk('publication/manuscript.tex', clean = FALSE),
 	file_targets = TRUE
