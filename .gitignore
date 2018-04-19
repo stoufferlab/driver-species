@@ -31,3 +31,7 @@ publication/manuscript\.tex
 *.log
 
 publication/manuscript\.pdf
+
+publication/supp-info\.tex
+
+publication/supp-info\.pdf
