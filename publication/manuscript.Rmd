@@ -30,6 +30,15 @@ bibliography: references.bib
 
 **Author for correspondence:** Daniel Stouffer (daniel.stouffer@canterbury.ac.nz) - +64 3 364 2729 - Centre for Integrative Ecology, School of Biological Sciences, University of Canterbury, Private Bag 4800, Christchurch 8140, New Zealand
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, 
+                      warning = FALSE)
+options(xtable.comment = FALSE, 
+        xtable.caption.placement = 'bottom',
+        xtable.size = 'small',
+        booktabs = TRUE)
+```
+
 \newpage
 
 # Introduction
@@ -86,7 +95,7 @@ The other six pairs were obtained from lower diversity Mediterranean shrublands 
 These networks are comprised of `r bar[1]`--`r bar[6]` species (mean `r round(bar[4])`); in contrast to the above, uninvaded communities were obtained from plots that had not yet been colonised by either of the invasive species *Carpobrotus affine acinaciformis* or *Opuntia stricta*.  
 Supplementary Information S\@ref(S-empirical-networks) 
 
-```{r example_network, include = F}
+```{r example-network, include = F, eval = F}
 loadd(example_net)
 	
 base_net <- example_net
