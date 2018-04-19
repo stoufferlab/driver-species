@@ -13,6 +13,8 @@ header-includes:
 - \usepackage{booktabs}
 - \usepackage{caption}
 - \usepackage{lineno}
+- \usepackage{xr}
+- \externaldocument[S-]{supp-info}
 documentclass: artikel1
 bibliography: references.bib
 ---
