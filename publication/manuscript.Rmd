@@ -70,7 +70,19 @@ Finally, we compare the proposed approach to current methods based on species ce
 
 # Methods
 
+```{r load-metadata}
+loadd(metadata)
+lop <- filter(metadata, study == "lopezaraiza") %>% mutate(size = n_pla + n_pol) %$% size %>% summary() 
+bar <- filter(metadata, study == "bartomeus") %>% mutate(size = n_pla + n_pol) %$% size %>% summary() 
+```
 
+We apply methods of control theory to ten paired pollination networks.
+Each network pair was composed of a community invaded by a plant and a community free of the invasive species. 
+Four pairs were obtained from natural or semi-natural vegetation communities in the city of Bristol, UK [@Lopezaraiza-Mikel2007]. 
+These networks are comprised of `r lop[1]`--`r lop[6]` species (mean `r round(lop[4])`), and non-invaded plots were obtained by experimentally removing all the flowers of the invasive species *Impatients grandulifera*.
+The other six pairs were obtained from lower diversity Mediterranean shrublands in Cap de Creus National Park, Spain [@Bartomeus2008].
+These networks are comprised of `r bar[1]`--`r bar[6]` species (mean `r round(bar[4])`); in contrast to the above, uninvaded communities were obtained from plots that had not yet been colonised by either of the invasive species *Carpobrotus affine acinaciformis* or *Opuntia stricta*.  
+Supplementary Information S\@ref(S-empirical-networks) 
 
 ```{r example_network, include = F}
 loadd(example_net)

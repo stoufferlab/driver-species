@@ -15,6 +15,8 @@ library(tinytex)
 
 # required by paper or analysis
 library(latex2exp)
+library(readr)
+library(dplyr)
 library(igraph)
 library(ggplot2)
 
@@ -24,6 +26,10 @@ f <- list.files("./functions/", full.names = T) %>% lapply(source)
 # DEFINE PLAN ----------------------------------------------------------------
 
 ilustrations <- drake_plan(example_net = generate_example_network())
+read_data_plan <- drake_plan(
+	metadata = read_metadata('data/ntw_info.csv'),
+	strings_in_dots = 'filenames'
+)
 
 reporting <- drake_plan(
 	# 'publication/supp_info.tex' = render('publication/supporting_information.Rmd', quiet = TRUE),
@@ -37,7 +43,7 @@ reporting <- drake_plan(
 # MAKE --------------------------------------------------------------------
 
 # set up plan
-project_plan <- rbind(ilustrations, reporting)
+project_plan <- rbind(read_data_plan, reporting_plan)
 project_config <- drake_config(project_plan)
 vis_drake_graph(project_config, split_columns = T, targets_only = T)
 
