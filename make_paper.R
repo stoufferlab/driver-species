@@ -14,28 +14,25 @@ library(rmarkdown)
 library(tinytex)
 
 # required by paper or analysis
-library(latex2exp)
 library(readr)
 library(dplyr)
 library(igraph)
 library(ggplot2)
 library(latex2exp)
 
+
 # load functions
-f <- list.files("./functions/", full.names = T) %>% lapply(source)
 f <- list.files("functions", full.names = T) %>% lapply(source)
 
 # DEFINE PLAN ----------------------------------------------------------------
 
-ilustrations <- drake_plan(example_net = generate_example_network())
 read_data_plan <- drake_plan(
 	metadata = read_metadata('data/ntw_info.csv'),
 	strings_in_dots = 'filenames'
 )
 
-reporting <- drake_plan(
-	# 'publication/supp_info.tex' = render('publication/supporting_information.Rmd', quiet = TRUE),
-	# 'publication/supp_info.pdf' = latexmk('publication/supp_info.tex', clean = FALSE),
+# ilustrations_plan <- drake_plan(example_net = generate_example_network())
+
 reporting_plan <- drake_plan(
 	'publication/supp-info.tex' = render('publication/supp-info.Rmd', quiet = TRUE),
 	'publication/supp-info.pdf' = latexmk('publication/supp-info.tex', clean = FALSE),
