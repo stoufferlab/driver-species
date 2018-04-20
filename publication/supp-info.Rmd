@@ -1,0 +1,37 @@
+---
+title: "Ecological network control"
+subtitle: "Supplementary Information"
+author: "Fernando Cagua, Kate L. Wootton, Daniel B. Stouffer"
+classoption: a4paper
+csl: journal-of-ecology.csl
+documentclass: artikel1
+output: 
+  bookdown::pdf_document2: 
+    keep_tex: yes
+    toc: false
+header-includes:
+  - \usepackage{booktabs}
+bibliography: references.bib
+---
+
+\renewcommand\thefigure{S\arabic{figure}}    
+\setcounter{figure}{0}   
+
+\renewcommand\thetable{S\arabic{table}}    
+\setcounter{table}{0}   
+
+\renewcommand{\thesection}{S\arabic{section}}
+\setcounter{section}{0}
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, 
+                      warning = FALSE)
+options(xtable.comment = FALSE, 
+        xtable.caption.placement = 'bottom',
+        xtable.size = 'small',
+        booktabs = TRUE)
+```
+
+# Details about epirical networks {#empirical-networks}
+
+Referencing
