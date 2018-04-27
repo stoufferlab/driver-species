@@ -33,5 +33,16 @@ read_data_plan <- drake::drake_plan(
   strings_in_dots = "literals"
 )
 
-project_plan <- rbind(read_data_plan)
-drake::make(project_plan)
+basic_analysis_plan <- drake::drake_plan(
+  network_properties = calc_ntws_properties(networks, properties = c(
+    "connectance", 
+    "web asymmetry", 
+    "ISA", 
+    "weighted NODF")), 
+  strings_in_dots = "literals"
+)
+
+
+project_plan <- rbind(read_data_plan, basic_analysis_plan)
+project_config <- drake::drake_config(project_plan)
+drake::make(project_plan, config = project_config)
