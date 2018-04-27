@@ -1,0 +1,6 @@
+Angelica sylvestris	1	1	1	10
+Heracleum sphondylium	2	2	49	10
+Stachys sylvatica	3	3	105	10
+Circaea lutetiana	4	4	105	10
+Geum urbanum	5	5	148	10
+Rubus fruticosus	6	6	954	10

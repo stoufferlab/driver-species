@@ -1,0 +1,61 @@
+Heracleum sphondylium	Agriotes pallidulus	1	8	1	1	1	8
+Heracleum sphondylium	Dasytes phiabeus	2	8	2	1	1	8
+Angelica sylvestris	Mordellistena neuwaldeggiana	3	8	3	1	1	8
+Heracleum sphondylium	Meligethes aeneus	4	8	4	9	9	8
+Heracleum sphondylium	Anaspis costai	5	8	5	1	1	8
+Impatiens glandulifera	Anaspis maculata	6	8	6	1	1	8
+Heracleum sphondylium	Anaspis regimbarti	7	8	7	2	2	8
+Heracleum sphondylium	Anaspis sp	8	8	8	1	1	8
+Heracleum sphondylium	Eusphalerum luteum	9	8	9	64	64	8
+Angelica sylvestris	Botanophila fugax	10	4	10	1	4	4
+Heracleum sphondylium	Botanophila fugax	10	4	10	2	4	4
+Impatiens glandulifera	Botanophila fugax	10	4	10	1	4	4
+Heracleum sphondylium	Drosophila immigrans	11	4	11	1	1	4
+Rubus fruticosus	Empis (s.s.) sp. nr. pennipes	12	4	12	1	1	4
+Heracleum sphondylium	Empis sp.	13	4	13	1	1	4
+Heracleum sphondylium	Holoclera ?lamellata	14	4	14	1	1	4
+Heracleum sphondylium	Holoclera flava	15	4	15	4	5	4
+Stachys sylvatica	Holoclera flava	15	4	15	1	5	4
+Geum urbanum	Rhamphomyia (Holoclera) nigripennis	16	4	16	1	1	4
+Geum urbanum	Lyciella rorida	17	4	17	1	1	4
+Heracleum sphondylium	Tricholauxania praeusta	18	4	18	1	1	4
+Impatiens glandulifera	Hydrotaea cinerea	19	4	19	1	1	4
+Angelica sylvestris	Diptera	20	4	20	1	1	4
+Impatiens glandulifera	Sepsis fulgens	21	4	21	1	1	4
+Heracleum sphondylium	Cheilosia illustrata	22	4	22	1	1	4
+Angelica sylvestris	Cheilosia soror	23	4	23	2	2	4
+Angelica sylvestris	Chrysogaster solstitialis	24	4	24	2	4	4
+Heracleum sphondylium	Chrysogaster solstitialis	24	4	24	2	4	4
+Heracleum sphondylium	Dasysyrphus albostriatus	25	4	25	1	1	4
+Heracleum sphondylium	Epistrophe grassulariae	26	4	26	1	1	4
+Angelica sylvestris	Episyrphus balteatus	27	4	27	1	8	4
+Impatiens glandulifera	Episyrphus balteatus	27	4	27	7	8	4
+Angelica sylvestris	Leucozona glaucia	28	4	28	4	4	4
+Impatiens glandulifera	Melangyna sp.	29	4	29	2	2	4
+Geum urbanum	Melanostoma scalare	30	4	30	1	1	4
+Heracleum sphondylium	Platycheirus albimanus	31	4	31	1	3	4
+Rubus fruticosus	Platycheirus albimanus	31	4	31	2	3	4
+Impatiens glandulifera	Syrphus ribesii	32	4	32	2	2	4
+Angelica sylvestris	Miridae 1	33	6	33	2	3	6
+Heracleum sphondylium	Miridae 1	33	6	33	1	3	6
+Heracleum sphondylium	Anthocoridae	34	6	34	1	2	6
+Impatiens glandulifera	Anthocoridae	34	6	34	1	2	6
+Heracleum sphondylium	Calocoris stysi	35	6	35	2	2	6
+Impatiens glandulifera	Hemiptera 1	36	6	36	1	1	6
+Impatiens glandulifera	Hemiptera	37	6	37	1	2	6
+Rubus fruticosus	Hemiptera	37	6	37	1	2	6
+Angelica sylvestris	Orthotylus/Lygocorus	38	6	38	3	34	6
+Heracleum sphondylium	Orthotylus/Lygocorus	38	6	38	30	34	6
+Impatiens glandulifera	Orthotylus/Lygocorus	38	6	38	1	34	6
+Impatiens glandulifera	Apis mellifera	39	1	39	40	40	1
+Impatiens glandulifera	Bombus pascuorum	40	1	40	1	1	1
+Impatiens glandulifera	Bombus pratorum	41	1	41	2	2	1
+Heracleum sphondylium	Bombus terrestris	42	1	42	1	9	1
+Impatiens glandulifera	Bombus terrestris	42	1	42	8	9	1
+Impatiens glandulifera	Lasioglossum calceatum	43	1	43	3	3	1
+Geum urbanum	Lasioglossum lativentris	44	1	44	1	1	1
+Impatiens glandulifera	Myrmica scabrinodis	45	1	45	11	11	1
+Heracleum sphondylium	Parasitica	46	1	46	6	6	1
+Impatiens glandulifera	Vespula vulgaris	47	1	47	5	5	1
+Angelica sylvestris	Microlepidoptera 1	48	9	48	1	2	9
+Impatiens glandulifera	Microlepidoptera 1	48	9	48	1	2	9

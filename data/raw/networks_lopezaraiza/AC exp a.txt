@@ -1,0 +1,11 @@
+Eupatorium cannabinum	1	1	2	10
+Senecio sp.	2	2	29	10
+Geranium robertianum	3	3	220	10
+Chamaenerion angustifolium	4	4	70	10
+Circaea lutetiana	5	5	380	10
+Epilobium hirsutum	6	6	11	10
+Epilobium sp.	7	7	30	10
+Rumex sp.	8	8	12	10
+Ranunculus sp.	9	9	17	10
+Geum urbanum	10	10	3	10
+Rubus fruticosus	11	11	2784	10

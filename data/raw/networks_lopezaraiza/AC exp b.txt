@@ -1,0 +1,35 @@
+Rubus fruticosus	Byturus tomentosus	1	8	1	10	10	8
+Rubus fruticosus	Antherophagus nigricornis	2	8	2	1	1	8
+Eupatorium cannabinum	Meligethes aeneus	3	8	3	1	12	8
+Rubus fruticosus	Meligethes aeneus	3	8	3	11	12	8
+Rubus fruticosus	Tachyporus sp.	4	8	4	1	1	8
+Rubus fruticosus	Botanophila fugax	5	4	5	1	1	4
+Rubus fruticosus	Bellardia pandia	6	4	6	1	1	4
+Circaea lutetiana	Parascaptomyza pallida	7	4	7	1	1	4
+Chamaenerion angustifolium	Rhamphomyia (s.s.) variabilis	8	4	8	2	2	4
+Rubus fruticosus	Lyciella rorida	9	4	9	1	1	4
+Rubus fruticosus	Phaonia basalis	10	4	10	3	3	4
+Rubus fruticosus	Epistrophe grassulariae	11	4	11	1	1	4
+Epilobium sp.	Episyrphus balteatus	12	4	12	1	12	4
+Rubus fruticosus	Episyrphus balteatus	12	4	12	11	12	4
+Eupatorium cannabinum	Eristalis pertinax	13	4	13	2	5	4
+Rubus fruticosus	Eristalis pertinax	13	4	13	3	5	4
+Rubus fruticosus	Helophilus pendulus	14	4	14	1	1	4
+Eupatorium cannabinum	Platycheirus albimanus	15	4	15	1	7	4
+Rubus fruticosus	Platycheirus albimanus	15	4	15	6	7	4
+Chamaenerion angustifolium	Platycheirus scutatus	16	4	16	1	1	4
+Rubus fruticosus	Miridae 1	17	6	17	1	1	6
+Rumex sp.	Calocoris stysi	18	6	18	1	1	6
+Rubus fruticosus	Hemiptera 2	19	6	19	1	1	6
+Rubus fruticosus	Hemiptera	20	6	20	1	1	6
+Rubus fruticosus	Orthotylus/Lygocorus	21	6	21	6	6	6
+Rubus fruticosus	Apis mellifera	22	1	22	2	2	1
+Rubus fruticosus	Bombus hortorum	23	1	23	2	2	1
+Rubus fruticosus	Bombus lapidarius	24	1	24	1	1	1
+Rubus fruticosus	Bombus lucorum	25	1	25	1	1	1
+Rubus fruticosus	Bombus pascuorum	26	1	26	1	1	1
+Rubus fruticosus	Bombus pratorum	27	1	27	3	3	1
+Rubus fruticosus	Bombus vestalis 	28	1	28	1	1	1
+Rubus fruticosus	Lasioglossum calceatum	29	1	29	1	1	1
+Rubus fruticosus	Parasitica	30	1	30	1	1	1
+Rubus fruticosus	Dolichovespula saxonica	31	1	31	2	2	1

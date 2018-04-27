@@ -1,0 +1,18 @@
+Rubus fruticosus	Byturus tomentosus	1	8	1	1	1	8
+Heracleum sphondylium	Meligethes aeneus	2	8	2	1	1	8
+Geum urbanum	Botanophila fugax	3	4	3	1	1	4
+Geum urbanum	Sciapus sp.	4	4	4	1	1	4
+Heracleum sphondylium	Fannia sp.	5	4	5	1	1	4
+Heracleum sphondylium	Epistrophe grassulariae	6	4	6	1	1	4
+Heracleum sphondylium	Episyrphus balteatus	7	4	7	2	3	4
+Rubus fruticosus	Episyrphus balteatus	7	4	7	1	3	4
+Heracleum sphondylium	Melanostoma scalare	8	4	8	2	2	4
+Rubus fruticosus	Platycheirus albimanus	9	4	9	3	3	4
+Heracleum sphondylium	Miridae 1	10	6	10	3	3	6
+Rubus fruticosus	Calocoris stysi	11	6	11	1	1	6
+Rubus fruticosus	Hemiptera	12	6	12	1	1	6
+Heracleum sphondylium	Orthotylus/Lygocorus	13	6	13	15	16	6
+Rubus fruticosus	Orthotylus/Lygocorus	13	6	13	1	16	6
+Heracleum sphondylium	Lasioglossum ?rutitarse	14	1	14	1	1	1
+Heracleum sphondylium	Parasitica 1	15	1	15	1	1	1
+Rubus fruticosus	Dolichovespula saxonica	16	1	16	1	1	1

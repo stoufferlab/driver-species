@@ -1,0 +1,9 @@
+Angelica sylvestris	1	1	35	10
+Heracleum sphondylium	2	2	180	10
+Impatiens glandulifera	3	3	4284	5
+Silene dioica	4	4	24	10
+Stachys sylvatica	5	5	185	10
+Circaea lutetiana	6	6	140	10
+Ranunculus sp.	7	7	2	10
+Geum urbanum	8	8	126	10
+Rubus fruticosus	9	9	73	10
