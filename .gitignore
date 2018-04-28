@@ -4,3 +4,14 @@
 .Ruserdata
 packrat/lib*/
 *.DS_Store
+
+*.aux
+*.log
+*.out
+*.tex
+paper/manuscript\.pdf
+paper/manuscript\.knit\.md
+paper/supp-info\.knit\.md
+paper/manuscript\.utf8\.md
+paper/supp-info\.utf8\.md
+paper/supp-info\.pdf

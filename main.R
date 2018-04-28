@@ -42,7 +42,13 @@ basic_analysis_plan <- drake::drake_plan(
   strings_in_dots = "literals"
 )
 
+reporting_plan <- drake::drake_plan(
+  render_pdf(drake::knitr_in('paper/supp-info.Rmd'), 
+             drake::file_out('paper/supp-info.pdf'), clean_md = FALSE),
+  render_pdf(drake::knitr_in('paper/manuscript.Rmd'), 
+             drake::file_out('paper/manuscript.pdf'), clean_md = FALSE)
+)
 
-project_plan <- rbind(read_data_plan, basic_analysis_plan)
+project_plan <- rbind(read_data_plan, basic_analysis_plan, reporting_plan)
 project_config <- drake::drake_config(project_plan)
 drake::make(project_plan, config = project_config)
