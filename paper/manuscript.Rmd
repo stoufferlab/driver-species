@@ -88,7 +88,6 @@ Finally, we compare the proposed approach to current methods based on species ce
 
 # Methods
 
-
 ```{r load-metadata}
 drake::loadd(metadata)
 lop <- dplyr::filter(metadata, study == "lopezaraiza") %>% 
@@ -97,7 +96,7 @@ bar <- dplyr::filter(metadata, study == "bartomeus") %>%
   dplyr::mutate(size = n_pla + n_pol) %$% size %>% summary() 
 ```
 
-We used ten paired pollination communities to test the control theoretic approach.
+We used ten paired pollination communities to apply the control theoretic approach.
 Each community pair was composed of a community invaded by a plant and a community free of the invasive species. 
 Four pairs correspond to natural or semi-natural vegetation communities in the city of Bristol, UK [@lopezaraizamikel_impact_2007]. 
 These communities are comprised of `r lop[1]`--`r lop[6]` species (mean `r round(lop[4])`), and non-invaded plots were obtained by experimentally removing all the flowers of the invasive species *Impatients grandulifera*.
@@ -105,8 +104,8 @@ The other six pairs were obtained from lower diversity Mediterranean shrublands 
 These communities are comprised of `r bar[1]`--`r bar[6]` species (mean `r round(bar[4])`); in contrast to the above, uninvaded communities were obtained from plots that had not yet been colonised by either of the invasive species *Carpobrotus affine acinaciformis* or *Opuntia stricta*. The structure of all these communities was defined by the pollinator visitation frequency, which has been shown to be an appropriate surrogate for interspecific effects in pollination networks [@vazquez_interaction_2005; @bascompte_asymmetric_2006]. 
 Full details about the empirical networks, the implications of using visitation frequency to quantify the strength of the associations, and the sensitivity of the control theoretic approach to undersampling of the interactions can be found in the Supplementary materials SX. 
 
-The first step before applying methods of control theory is to construct a directed network that can provide an indication of the extent to which species affect each others abundance. 
-In some ecological networks, establishing the directionality can appear relatively straightforward, for example when links represent biomass transfer or energy flow [@isbell_human_2013]. 
+The first step before applying methods of control theory is to construct a directed network that is able to provide an indication of the extent to which species affect each others abundance. 
+In some ecological networks, establishing the directionality can be relatively straightforward, for example when links represent biomass transfer or energy flow [@isbell_human_2013]. 
 In pollination networks, however, this directionallity is less obvious as both species can in theory benefit from the interaction. 
 We overcome that obstacle by noting that the extent to which species *i* affects species *j* relative to the extent to which *j* affects *i* can be summarised by the interaction asymmetry [@bascompte_asymmetric_2006]. 
 This asymmetry is given by $$a(i,j) = a(j,i) = \frac{\left | d_{ij}-d_{ji} \right |}{max\left ( d_{ij}, d_{ji} \right )},$$ where the dependence of plant *i* on pollinator *j*, *d~ij~*, is the proportion of the visits from pollinator *j* compared to all pollinator visits to plant *i*. 
