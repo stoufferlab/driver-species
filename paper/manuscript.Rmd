@@ -120,20 +120,25 @@ After constructing the directed network, we can now calculate the controllabilit
 A system is said to be controllable if it is possible to steer it from an initial to an arbitrary final state within finite time [@kalman_mathematical_1963]. 
 A simple dynamic system can be described by $\frac{dx}{dt} = Ax + Bu(t)$, where the change of its state over time ($\frac{dx}{dt}$) depends on its current state *x* (for example, the species' abundances), an external time-varying input *u(t)* (the control signal), and two matrices *A* and *B*, which encode information about the network structure and how species respond to external inputs, respectively. 
 In classic control theory, determining wether this system is controllable or not can easily be achieved by checking that its controllability matrix $R= [ \begin{matrix}B & AB & A^{2}B & ...& A^{n-1}B\end{matrix} ]$ has full rank. 
-In complex systems, however, employing this rank condition, or numerical approximations of it, is unfeasible because it is hard to fully parameterize *A* and *B*. 
+In complex systems, however, employing this rank condition, or numerical approximations of it, is unfeasible because it is hard to fully parameterize *A* and *B* (either the weights of the links change over time or because they are difficult to measures). 
 Here we use an approach based on structural controllability, which assumes that we are confident that the elements of *A* and *B* have either non-zero or zero values (there is an interaction or not), but that we less sure about the precise magitude of the non-zero values [@lin_structural_1974]. 
 Essentially controllability is translated into a topological problem: a network is controllable if there are no inaccessible nodes—nodes without incoming links—or dilations—*expansions* of the network (Fig X).
 
 We are often able to estimate *A* in ecological networks, as it represents the interactions between species. 
 Part of the control problem resides on estimating a supportable estimation of *B*, which represents the links between external inputs and species. 
 Naively, any ecological community (and any system for that matter) could be controlled if we control the state of every species independently. 
-Such approach is typically unpractical so we are interested in finding a minimum driver node set (effectively finding *B*) with which to make the system contr
+Such approach is typically unpractical, we are instead interested in finding a minimum driver node set (effectively finding *B*) with which to make the system controllable. 
+However, a brute force search of this minimum driver node set is computationally prohibitive for most networks as it involves the evaluation of $2^N$ different controllability matrices. 
+We employ a recently developed approach that shows that the control problem of finding the minimum driver node set can be mapped into a purely graph theoretic problem: maximum matching [@liu_controllability_2011; @liu_control_2016].
 
+Strictly speaking, a matching in an unweighted directed graph is defined as a set of links that do not share a common start or end nodes, a node is matched if its at the end of a matched link and unmatched if not, and the largest possible matching is called maximum  matching. 
+Maximum matching is a widely studied topic in graph theory and has been used in multiple real life applications, from dating apps and wireless communications to transplant donations and peer to peer file sharing.
+Although seemingly unrelated, maximum matching is also connected to the controllability of a network because, as recently shown [@liu_controllability_2011], a matching can be decomposed into a set of paths that reveal how the control signal flows across the links in a network to reach every node that compose it. 
+Unmatched nodes are the beginning of 
+The result is that the minimum driver node set corresponds exactly to the *unmatched* nodes, those that which the control signal 
 
+to can be decomposed into a set of paths
 
-Controllability is this
-But is hard to calculate.
-Therefore we use recent advances that show that it can be calculated using maximum matching algorithms. 
 
 A maximum matching is this. 
 And can be calculatid this way. 
