@@ -29,10 +29,6 @@ bibliography: references.bib
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, 
                       warning = FALSE)
-options(xtable.comment = FALSE, 
-        xtable.caption.placement = 'bottom',
-        xtable.size = 'small',
-        booktabs = TRUE)
 ```
 
 # Characteristics of the epirical networks {#empirical-networks}
@@ -80,13 +76,8 @@ net_prop %>%
 					"$c$"= "connectance", 
 					"NODF" = "weighted.NODF",
 					# "$\\bar{a}$" = "interaction.strength.asymmetry",
-					"$AS$" = "web.asymmetry") %>%
-	xtable::xtable(caption = "Properties of the analysed plant-pollinator communities. Here show the number of species ($n_s$), the number of plants ($n_p$), the number of pollinators ($n_a$), the network connectance ($c$), the network asymmetry ($AS$), and the network nestedness (NODF index). All properties correspond to the network's largest component. British networks were assembled by Lopezaraiza-Mikel et al. (2007), Spanish were networks assembled by Bartomeus et al. (2008).", 
-         label= "tab:table-network-properties") %>%
-	print(#floating.environment = "sidewaystable", 
-		comment = FALSE, sanitize.text.function = function(x){x}, include.rownames = FALSE, caption.placement = "top", booktabs = T)
-
-# knitr::kable(meta)
+					"$AS$" = "web.asymmetry") %>% 
+  knitr::kable(escape = FALSE, booktabs = TRUE, digits = 2, caption = "Properties of the analysed plant-pollinator communities. Here show the number of species ($n_s$), the number of plants ($n_p$), the number of pollinators ($n_a$), the network connectance ($c$), the network asymmetry ($AS$), and the network nestedness (NODF index). All properties correspond to the network's largest component. British networks were assembled by Lopezaraiza-Mikel et al. (2007), Spanish were networks assembled by Bartomeus et al. (2008).")
 ```
 
 # References
