@@ -137,7 +137,18 @@ Finally, the largest possible matching is called maximum matching.
 These definitions, however offer little insight about how maximum matching is related to structural controllability. 
 The key is to note that these definitions imply that a matched node can have only one matched link pointing to it, and similarly a superior node can have at most one link leaving from it. 
 The result is that a matching can actually be decomposed into a set of paths that reveal how a control signal can flow across the links in a network to reach every node that compose it. 
-And so, as recently shown [@liu_controllability_2011], the minimum driver node set corresponds exactly to the *unmatched* nodes, those that are not controlled by other nodes in the network. 
-The algorithm we use to find a maximum matching in a network is fully detailed in the Supplementary Information Section XX.
+And so, as recently shown [@liu_controllability_2011], the minimum driver node set corresponds exactly to the *unmatched* nodes, those that are not controlled by other nodes in the network.
+
+## Differences between invaded and uninvaded networks
+
+Our first main objective is to investigate whether the controllability of a community is associated to invasion status or not. 
+Finding out exactly, how difficult is to control a network depends strongly on the particularities of the desired control trayectory as well as the dynamical relationpip between nodes. 
+However, we are interested in understanding the controllability of a network in a more general sense, such that it can be applied even when the precise control scenario is known only incompletely. 
+We instead employ an indicator that follows from our approach: the size of the minimum driver node set. 
+This simple metric provides general indication of how difficult controlling a network might be, as systems that require a large number of external inputs to be fully controlled are intuitively more difficult or costly to manage. 
+Specifically, following the structural controllability literature, we use the size of the minimum driver node set relative to the total number of nodes $n_D = \frac{D}{S}$ as a measure of the extent to which the network structure can be harnessed to control the community.
+In an ecological context, external inputs can be thought of as management interventions that modify the abbundance of a particular species. 
+For instance, achieving full control in a "network" in which species do not interact at all is relatively difficult as we would require an intervention for every single species. 
+Conversely, the structure of a linear trophic chain can be harnessed to achieve full control using just one intervention targeted the top species; the control signal would then cascade trough the trophic levels and reach other species in the community. 
 
 # References
