@@ -9,7 +9,7 @@ output:
 toc: false
 header-includes:
 - \usepackage{geometry}
-- \geometry{right=3in,marginparwidth=2.5in}
+# - \geometry{right=3in,marginparwidth=2.5in}
 - \usepackage{setspace}
 - \usepackage{float}
 - \usepackage{booktabs}
@@ -139,6 +139,8 @@ The key is to note that these definitions imply that a matched node can have onl
 The result is that a matching can actually be decomposed into a set of paths that reveal how a control signal can flow across the links in a network to reach every node that compose it. 
 And so, as recently shown [@liu_controllability_2011], the minimum driver node set corresponds exactly to the *unmatched* nodes, those that are not controlled by other nodes in the network.
 
+The technical details of the algorithm we use to find a maximum matching in a network can be found in the Supplementary Information Section XX.
+
 ## Differences between invaded and uninvaded networks
 
 Our first main objective is to investigate whether the controllability of a community is associated to invasion status or not. 
@@ -150,5 +152,9 @@ Specifically, following the structural controllability literature, we use the si
 In an ecological context, external inputs can be thought of as management interventions that modify the abbundance of a particular species. 
 For instance, achieving full control in a "network" in which species do not interact at all is relatively difficult as we would require an intervention for every single species. 
 Conversely, the structure of a linear trophic chain can be harnessed to achieve full control using just one intervention targeted the top species; the control signal would then cascade trough the trophic levels and reach other species in the community. 
+
+After finding the minimum driver node set in each of our networks we want to test whether invasion status or other predictors are correlated to this metric of controllability. 
+We therefore use a set of generalised linear models (with binomial error structure) to investigate the effect of invasion status while also including covariates related to species richness, since one might naively expect to see a negative relationship between richness and controllability [@menge_indirect_1995]. 
+These covariates included the total number of species, plant richness, pollinators richness, the ratio of plant to pollinator richness, the link density (connectance), and the study site (as a two-level factor).
 
 # References
