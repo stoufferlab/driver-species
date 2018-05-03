@@ -130,20 +130,14 @@ Such approach is typically unpractical, we are instead interested in finding a m
 However, a brute force search of this minimum driver node set is computationally prohibitive for most networks as it involves the evaluation of $2^N$ different controllability matrices. 
 We employ a recently developed approach that shows that the control problem of finding the minimum driver node set can be mapped into a purely graph theoretic problem: maximum matching [@liu_controllability_2011; @liu_control_2016].
 
-Strictly speaking, a matching in an unweighted directed graph is defined as a set of links that do not share a common start or end nodes, a node is matched if its at the end of a matched link and unmatched if not, and the largest possible matching is called maximum  matching. 
-Maximum matching is a widely studied topic in graph theory and has been used in multiple real life applications, from dating apps and wireless communications to transplant donations and peer to peer file sharing.
-Although seemingly unrelated, maximum matching is also connected to the controllability of a network because, as recently shown [@liu_controllability_2011], a matching can be decomposed into a set of paths that reveal how the control signal flows across the links in a network to reach every node that compose it. 
-Unmatched nodes are the beginning of 
-The result is that the minimum driver node set corresponds exactly to the *unmatched* nodes, those that which the control signal 
-
-to can be decomposed into a set of paths
-
-
-A maximum matching is this. 
-And can be calculatid this way. 
-And gives this information. 
-But its not unique.
-This can provide extra information. 
-Therefore we calculate them all. 
+Maximum matching is a widely studied topic in graph theory and is commonly used in multiple applications, from dating apps and wireless communications to organ transplant allocation and peer to peer file sharing. 
+A matching in an unweighted directed graph is as a set of links that do not share a common start or end nodes. 
+A node is said to be superior if it is at the beginning of a matched link and called matched if it is at the end. 
+Finally, the largest possible matching is called maximum matching. 
+These definitions, however offer little insight about how maximum matching is related to structural controllability. 
+The key is to note that these definitions imply that a matched node can have only one matched link pointing to it, and similarly a superior node can have at most one link leaving from it. 
+The result is that a matching can actually be decomposed into a set of paths that reveal how a control signal can flow across the links in a network to reach every node that compose it. 
+And so, as recently shown [@liu_controllability_2011], the minimum driver node set corresponds exactly to the *unmatched* nodes, those that are not controlled by other nodes in the network. 
+The algorithm we use to find a maximum matching in a network is fully detailed in the Supplementary Information Section XX.
 
 # References
