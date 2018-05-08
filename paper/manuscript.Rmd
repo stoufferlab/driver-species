@@ -102,7 +102,7 @@ Four pairs correspond to natural or semi-natural vegetation communities in the c
 These communities are comprised of `r lop[1]`--`r lop[6]` species (mean `r round(lop[4])`), and non-invaded plots were obtained by experimentally removing all the flowers of the invasive species *Impatients grandulifera*.
 The other six pairs were obtained from lower diversity Mediterranean shrublands in Cap de Creus National Park, Spain [@bartomeus_contrasting_2008-1].
 These communities are comprised of `r bar[1]`--`r bar[6]` species (mean `r round(bar[4])`); in contrast to the above, uninvaded communities were obtained from plots that had not yet been colonised by either of the invasive species *Carpobrotus affine acinaciformis* or *Opuntia stricta*. The structure of all these communities was defined by the pollinator visitation frequency, which has been shown to be an appropriate surrogate for interspecific effects in pollination networks [@vazquez_interaction_2005; @bascompte_asymmetric_2006]. 
-Full details about the empirical networks, the implications of using visitation frequency to quantify the strength of the associations, and the sensitivity of the control theoretic approach to undersampling of the interactions can be found in the Supplementary materials SX. 
+Full details about the empirical networks, the implications of using visitation frequency to quantify the strength of the associations, and the sensitivity of the control theoretic approach to undersampling of the interactions can be found in the supplementary information section \@ref(S-empirical-networks), XX, and XX. 
 
 The first step before applying methods of control theory is to construct a directed network that is able to provide an indication of the extent to which species affect each others abundance. 
 In some ecological networks, establishing the directionality can be relatively straightforward, for example when links represent biomass transfer or energy flow [@isbell_human_2013]. 
@@ -121,7 +121,7 @@ A simple dynamic system can be described by $\frac{dx}{dt} = Ax + Bu(t)$, where 
 In classic control theory, determining wether this system is controllable or not can easily be achieved by checking that its controllability matrix $R= [ \begin{matrix}B & AB & A^{2}B & ...& A^{n-1}B\end{matrix} ]$ has full rank. 
 In complex systems, however, employing this rank condition, or numerical approximations of it, is unfeasible because it is hard to fully parameterize *A* and *B* (either the weights of the links change over time or because they are difficult to measures). 
 Here we use an approach based on structural controllability, which assumes that we are confident that the elements of *A* and *B* have either non-zero or zero values (there is an interaction or not), but that we less sure about the precise magitude of the non-zero values [@lin_structural_1974]. 
-Essentially controllability is translated into a topological problem: a network is controllable if there are no inaccessible nodes—nodes without incoming links—or dilations—*expansions* of the network (Fig X).
+Essentially controllability is translated into a topological problem: a network is controllable if there are no inaccessible nodes—nodes without incoming links—or dilations—*expansions* of the network (see supplementary information section  \@ref(S-structural-controllability) for more details).
 
 We are often able to estimate *A* in ecological networks, as it represents the interactions between species. 
 Part of the control problem resides on estimating a supportable estimation of *B*, which represents the links between external inputs and species. 
@@ -139,7 +139,7 @@ The key is to note that these definitions imply that a matched node can have onl
 The result is that a matching can actually be decomposed into a set of paths that reveal how a control signal can flow across the links in a network to reach every node that compose it. 
 And so, as recently shown [@liu_controllability_2011], the minimum driver node set corresponds exactly to the *unmatched* nodes, those that are not controlled by other nodes in the network.
 
-The technical details of the algorithm we use to find a maximum matching in a network can be found in the Supplementary Information Section XX.
+The technical details of the algorithm we use to find a maximum matching in a network can be found in the supplementary information section \@ref(S-one-maximum-matching).
 
 ## Differences between invaded and uninvaded networks
 
