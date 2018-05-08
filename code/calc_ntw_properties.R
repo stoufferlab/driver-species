@@ -25,11 +25,12 @@ calc_ntws_properties <- function(x, properties = c("connectance",
 #' @return a single row data frame 
 #'
 calc_ntw_properties <- function(x, properties){
+  types <- igraph::V(x)$type %>% unique()
 	keep_largest_component(x)
-	n_pla <- sum(igraph::V(x)$type == "pla")
-	n_pol <- sum(igraph::V(x)$type == "pol")
+	n_pla <- sum(igraph::V(x)$type == types[1])
+	n_pol <- sum(igraph::V(x)$type == types[2])
 	bipartite::networklevel(igraph::as_incidence_matrix(x, 
-																											types = igraph::V(x)$type == "pla",
+																											types = igraph::V(x)$type == types[1],
 																											attr = "weight"),
 													index = properties) %>%
 		as.list() %>% as.data.frame() %>%
