@@ -85,4 +85,15 @@ net_prop %>%
                caption = "Properties of the analysed plant-pollinator communities. Here show the number of species ($n_s$), the number of plants ($n_p$), the number of pollinators ($n_a$), the network connectance ($c$), the network asymmetry ($AS$), and the network nestedness (NODF index). All properties correspond to the network's largest component. British networks were assembled by Lopezaraiza-Mikel et al. (2007), Spanish were networks assembled by Bartomeus et al. (2008).")
 ```
 
+# Structural controllability {#structural-controllability}
+# Maximum matching 
+
+## Finding a single maximum matching {#one-maximum-matching}
+
+## Finding all possible maximum matchings
+
+## Finding all possible minimum driver node sets
+
+# Empirical vs. random expectation of controllability {#randomisations}
+
 # References
