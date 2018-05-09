@@ -15,3 +15,6 @@ paper/supp-info\.knit\.md
 paper/manuscript\.utf8\.md
 paper/supp-info\.utf8\.md
 paper/supp-info\.pdf
+paper/manuscript_files/
+paper/supp-info_files/
+paper/supp-info\.toc
