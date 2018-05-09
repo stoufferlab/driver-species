@@ -200,6 +200,12 @@ Version: 1.20
 Hash: 9c6b215d1d02b97586c8232e94533e6a
 Requires: evaluate, highr, markdown, stringr, yaml
 
+Package: latex2exp
+Source: CRAN
+Version: 0.4.0
+Hash: ba3213bf775f6d3dbe18ee7d1ff7b047
+Requires: magrittr, stringr
+
 Package: listenv
 Source: CRAN
 Version: 0.7.0
@@ -394,11 +400,6 @@ Package: xfun
 Source: CRAN
 Version: 0.1
 Hash: 5a219975e4ff4b0daf0ded026fe0dd2f
-
-Package: xtable
-Source: CRAN
-Version: 1.8-2
-Hash: 7293235cfcc14cdff1ce7fd1a0212031
 
 Package: yaml
 Source: CRAN
