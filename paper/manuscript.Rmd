@@ -123,6 +123,74 @@ In complex systems, however, employing this rank condition, or numerical approxi
 Here we use an approach based on structural controllability, which assumes that we are confident that the elements of *A* and *B* have either non-zero or zero values (there is an interaction or not), but that we less sure about the precise magitude of the non-zero values [@lin_structural_1974]. 
 Essentially controllability is translated into a topological problem: a network is controllable if there are no inaccessible nodes—nodes without incoming links—or dilations—*expansions* of the network (see supplementary information section  \@ref(S-structural-controllability) for more details).
 
+```{r, fig.cap="Consider the ", fig.height= 1.5, fig.width=3.5}
+drake::loadd(en_structural)
+
+# wether to save it as a pdf (for testing purposes)
+out_pdf <- F
+
+# format networks for plotting
+formated_en_structural <- en_structural %>%
+  purrr::map(~ fancify_vertex_name(.)) %>%
+  purrr::map(~ add_property(., element = "edge", attr_name = "color", 'TRUE ~ "black"')) %>%
+  purrr::map(~ add_property(., element = "edge", attr_name = "color", "type == 'a' ~ 'black'", "TRUE ~ 'azure4'")) %>%
+  purrr::map(~ add_property(., element = "vertex", attr_name = "color", "type == 'a' ~ 'white'", "TRUE ~ 'white'")) %>%
+  purrr::map(~ add_property(., element = "vertex", attr_name = "frame.color", "type == 'a' ~ 'black'", "TRUE ~ 'white'")) %>%
+  purrr::map(~ add_property(., element = "vertex", attr_name = "shape", "type == 'a' ~ 'circle'", "TRUE ~ 'square'")) %>%
+  purrr::map(~ add_property(., element = "vertex", attr_name = "size", "type == 'a' ~ 55", "TRUE ~ 25")) %>%
+  purrr::map(~ add_property(., element = "vertex", attr_name = "label.cex", "TRUE ~ 1")) %>%
+  purrr::map(~ add_property(., element = "vertex", attr_name = "label.color", "TRUE ~ 'black'"))
+
+if(out_pdf) pdf("test.pdf", width = 3.5, height = 1.5, paper='special') 
+
+# make graphics device layout one row on top for headings, one column on the
+# left for headings and one in the middle for separator line
+layout(matrix(c(8,1,7,2,
+                9,3,7,4,
+                10,5,7,6), nrow = 3, ncol = 4, byrow = TRUE),
+       heights= c(0.25, 1, 1), 
+       widths = c(0.2, 1, 0.05, 1))
+par(mar=c(0.0,0,0,0), bg = "white", xpd = NA)
+
+# 1
+plot.new()
+text(0.5,0.25, "not controllable", adj = c(0.5,0), font = 2, cex = 0.9)
+
+# 2
+plot.new()
+text(0.5,0.25, "controllable", adj = c(0.5,0), font = 2, cex = 0.9)
+
+# 3-6
+for (i in 2:length(formated_en_structural)){
+  set.seed(5)
+  types <- igraph::V(formated_en_structural[[i]])$type ==
+    dplyr::first(igraph::V(formated_en_structural[[i]])$type)
+  l <- igraph::layout_as_bipartite(formated_en_structural[[i]], types) %>%
+    rescale_layout(xlim = c(-1.75, 1.75), ylim = c(-0.6, 0.6))
+  plot_examples(formated_en_structural[[i]], 
+                vertex.size = 45,
+                layout = l,
+                frame = F, 
+                rescale = F, 
+                margin = rep(0, 4))
+}
+
+# 7
+plot.new()
+segments(0,0,0,1, lty = 2, lwd = 0.5)
+# 8
+plot.new()
+# 9
+plot.new()
+text(0.5,0.5, "inaccessible\nnode", adj = c(0.5,0.5), font = 1, cex = 0.9, srt = 90)
+# 10
+plot.new()
+text(0.5,0.5, "dilation", adj = c(0.5,0.5), font = 1, cex = 0.9, srt = 90)
+
+if(out_pdf) dev.off()
+
+```
+
 We are often able to estimate *A* in ecological networks, as it represents the interactions between species. 
 Part of the control problem resides on estimating a supportable estimation of *B*, which represents the links between external inputs and species. 
 Naively, any ecological community (and any system for that matter) could be controlled if we control the state of every species independently. 
