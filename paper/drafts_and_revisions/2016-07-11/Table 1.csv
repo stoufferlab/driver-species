@@ -1,0 +1,9 @@
+"factor","est.","No. mod.","imp.","C.I."
+"(Intercept)",3.07,15,1,2.01
+"dependency strength",36.29,15,1,14.09
+"visitation strength",1.41,15,1,1.1
+"contribution to nestedness",1.29,15,1,1.11
+"degree",0.73,7,0.4,3.09
+"eigen-centrality",-0.08,7,0.35,0.41
+"guild (pollinator)",0.2,7,0.3,1.23
+"invasive sp.",-8.87,7,0.26,125509.13
