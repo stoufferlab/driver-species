@@ -130,7 +130,7 @@ drake::loadd(en_structural)
 out_pdf <- F
 
 # format networks for plotting
-formated_en_structural <- en_structural %>%
+formatted_en_structural <- en_structural %>%
   purrr::map(~ fancify_vertex_name(.)) %>%
   purrr::map(~ add_property(., element = "edge", attr_name = "color", 'TRUE ~ "black"')) %>%
   purrr::map(~ add_property(., element = "edge", attr_name = "color", "type == 'a' ~ 'black'", "TRUE ~ 'azure4'")) %>%
@@ -161,18 +161,20 @@ plot.new()
 text(0.5,0.25, "controllable", adj = c(0.5,0), font = 2, cex = 0.9)
 
 # 3-6
-for (i in 2:length(formated_en_structural)){
+for (i in 2:length(formatted_en_structural)){
   set.seed(5)
-  types <- igraph::V(formated_en_structural[[i]])$type ==
-    dplyr::first(igraph::V(formated_en_structural[[i]])$type)
-  l <- igraph::layout_as_bipartite(formated_en_structural[[i]], types) %>%
+  types <- igraph::V(formatted_en_structural[[i]])$type ==
+    dplyr::first(igraph::V(formatted_en_structural[[i]])$type)
+  l <- igraph::layout_as_bipartite(formatted_en_structural[[i]], types) %>%
     rescale_layout(xlim = c(-1.75, 1.75), ylim = c(-0.6, 0.6))
-  plot_examples(formated_en_structural[[i]], 
-                vertex.size = 45,
+  plot_examples(formatted_en_structural[[i]], 
                 layout = l,
                 frame = F, 
                 rescale = F, 
-                margin = rep(0, 4))
+                margin = rep(0, 4), 
+                edge.arrow.size = 0.4,
+                edge.label.family = "sans", 
+                vertex.label.family = "sans")
 }
 
 # 7

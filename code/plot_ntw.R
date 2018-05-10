@@ -50,7 +50,7 @@ add_vertex_edge <- function(x, vertex_name, vertex_type, edges_from, edges_to, e
 #' @param ... parameters for plot.igraph
 #'
 #'
-plot_examples <- function(x, edge.arrow.size = 0.5, margin = c(0,0,0,0), ...){
+plot_examples <- function(x, ...){
   igraph::plot.igraph(x, 
                       vertex.label = igraph::V(x)$name_fancy, 
                       vertex.label.cex = igraph::V(x)$label.cex,
@@ -59,13 +59,12 @@ plot_examples <- function(x, edge.arrow.size = 0.5, margin = c(0,0,0,0), ...){
                       vertex.color = igraph::V(x)$color,
                       # vertex.label.family = fam,
                       # vertex.label.color = l_c,
-                      # edge.label = round(E(.)$weight,1), 
+                      edge.width = igraph::E(x)$width,
+                      edge.label = igraph::E(x)$label,
+                      edge.label.x = igraph::E(x)$label.x,
+                      edge.label.color = igraph::E(x)$label.color,
+                      edge.label.font = igraph::E(x)$label.font,
                       # edge.label.family = fam,
-                      edge.label.color = igraph::E(x)$color,
-                      edge.curved = edge.curved,
-                      edge.arrow.size = edge.arrow.size,
-                      margin = margin, 
-                      layout = layout, 
                       ...)
 }
 
