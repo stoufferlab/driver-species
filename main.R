@@ -43,7 +43,8 @@ basic_analysis_plan <- drake::drake_plan(
 )
 
 example_plots_plan <- drake::drake_plan(
-  en_structural = example_ntw_structural()
+  en_structural = example_ntw_structural(),
+  en_direction = example_ntw_directions()
 )
 
 reporting_plan <- drake::drake_plan(

@@ -31,3 +31,18 @@ example_ntw_structural <- function(){
   
 }
 
+
+example_ntw_directions <- function(){
+  en_vis <- list(
+    edges = dplyr::data_frame(from = c("p_1", "p_2", "p_2", "p_3", "p_3"), 
+                              to = c("a_1", "a_1", "a_2", "a_2", "a_1"), 
+                              weight = c(1, 2, 5, 1, 1)), 
+    vertex = dplyr::data_frame(name = c("p_1", "p_2", "p_3", "a_1", "a_2"), 
+                               type = c("p", "p", "p", "a", "a"))
+  )
+  
+  en_bip <- igraph::graph_from_data_frame(en_vis$edges, directed = F, vertices = en_vis$vertex) 
+  en_dir <- as_directed_network(en_bip, direction = "asymmetry", ties = "both", higher_level = "a")
+  
+  list(en_bip, en_dir)
+}

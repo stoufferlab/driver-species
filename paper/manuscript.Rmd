@@ -112,6 +112,74 @@ This asymmetry is given by $$a(i,j) = a(j,i) = \frac{\left | d_{ij}-d_{ji} \righ
 Previous research has shown that mutualistic interactions are often highly asymmetric in natural communities; in other words, if a plant species is largely dependent on a pollinator species, then that pollinator tends to depend rather weakly on the plant (or vice versa). 
 By creating a directed link based on the asymmetry of their dependence we are able to generate a network that is consistent with the dynamics of the community while satisfyingh the requirements of structural controllability. 
 
+```{r, fig.cap="Consider the 2", fig.height= 0.9, fig.width=3.5}
+drake::loadd(en_direction)
+
+# wether to save it as a pdf (for testing purposes)
+out_pdf <- F
+
+# graph attributes
+formatted_en_direction <- en_direction  %>%
+  purrr::map(~ fancify_vertex_name(.)) %>%
+  purrr::map(~ add_property(., element = "edge", attr_name = "color", 'TRUE ~ "black"')) %>%
+  purrr::map(~ add_property(., element = "edge", attr_name = "label.color", 'TRUE ~ "black"')) %>%
+  purrr::map(~ add_property(., element = "edge", attr_name = "label.font", 'TRUE ~ 2')) %>%
+  purrr::map(~ add_property(., element = "vertex", attr_name = "color", "TRUE ~ 'white'")) %>%
+  purrr::map(~ add_property(., element = "vertex", attr_name = "frame.color", "TRUE ~ 'black'")) %>%
+  purrr::map(~ add_property(., element = "vertex", attr_name = "size", "TRUE ~ 55")) %>%
+  purrr::map(~ add_property(., element = "vertex", attr_name = "label.cex", "TRUE ~ 1")) %>%
+  purrr::map(~ add_property(., element = "vertex", attr_name = "label.color", "TRUE ~ 'black'"))
+formatted_en_direction[[1]] %<>%
+  igraph::set_edge_attr("label", value = igraph::E(.)$weight)
+formatted_en_direction[[2]] %<>%
+  igraph::set_edge_attr("label", value = "")
+
+if(out_pdf) pdf("test.pdf", width = 3.5, height = 0.9) 
+
+# graph layout
+layout(matrix(c(1,5,2,
+                3,5,4), nrow = 2, ncol = 3, byrow = TRUE),
+       heights= c(0.35, 1), 
+       widths = c(1, 0.05, 1))
+par(mar=c(0.0,0,0,0), bg = "white", xpd = NA)
+
+# 1
+plot.new()
+text(0.5,0.25, "visitation network", adj = c(0.5,0), font = 2, cex = 0.9)
+
+# 2
+plot.new()
+text(0.5,0.25, "direction of control", adj = c(0.5,0), font = 2, cex = 0.9)
+
+# network layout
+l <- matrix(c(1,0,
+              2,0,
+              3,0,
+              1.5, 1,
+              2.5, 1), nrow = 5, ncol = 2, byrow = T)
+
+# 3-4
+for(i in 1:length(formatted_en_direction)){
+   set.seed(3)
+  types <- igraph::V(formatted_en_direction[[i]])$type ==
+    dplyr::first(igraph::V(formatted_en_direction[[i]])$type)
+  l <- l %>%
+    rescale_layout(xlim = c(-1, 1) * 1.75, ylim = c(-0.6, 0.7))
+  plot_examples(formatted_en_direction[[i]], 
+                layout = l, rescale = F, frame = F, margin = rep(0, 4), 
+                edge.arrow.size = 0.4,
+                edge.label.family = "sans", 
+                vertex.label.family = "sans")
+}
+
+# 5
+plot.new()
+segments(0,0,0,1, lty = 2, lwd = 0.5)
+
+if(out_pdf) dev.off()
+
+```
+
 After constructing the directed network, we can now calculate the controllability of the different networks and investigate wether there are differences between invaded and uninvaded communities. 
 
 ## Controllability
