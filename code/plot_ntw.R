@@ -96,3 +96,18 @@ rescale_layout <- function(layout, xlim, ylim){
 range02 <- function(x, newMin, newMax){ 
   (x - min(x))/(max(x)-min(x)) * (newMax - newMin) + newMin 
 }
+
+standalone_text <- function(text, x = 0.5, y = 0.5, adj = c(0.5,0.5), font = 1, cex = 0.9, srt = 0){
+  plot.new()
+  text(x, y, text, adj = adj, font = font, cex = cex, srt = srt)
+}
+
+standalone_vline <- function(lty = 1, lwd = 0.5){
+  plot.new()
+  segments(0.5,0,0.5,1, lty = lty, lwd = lwd)
+}
+
+standalone_hline <- function(lty = 1, lwd = 0.5){
+  plot.new()
+  segments(0,0.5,1,0.5, lty = lty, lwd = lwd)
+}
