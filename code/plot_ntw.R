@@ -60,6 +60,7 @@ plot_examples <- function(x, ...){
                       # vertex.label.family = fam,
                       # vertex.label.color = l_c,
                       edge.width = igraph::E(x)$width,
+                      edge.lty = igraph::E(x)$lty,
                       edge.label = igraph::E(x)$label,
                       edge.label.x = igraph::E(x)$label.x,
                       edge.label.color = igraph::E(x)$label.color,

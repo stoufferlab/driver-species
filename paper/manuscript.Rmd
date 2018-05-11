@@ -96,6 +96,60 @@ bar <- dplyr::filter(metadata, study == "bartomeus") %>%
   dplyr::mutate(size = n_pla + n_pol) %$% size %>% summary() 
 ```
 
+```{r prepare-graph-direction}
+drake::loadd(en_direction)
+# graph attributes
+formatted_en_direction <- en_direction  %>%
+  purrr::map(~ fancify_vertex_name(.)) %>%
+  purrr::map(~ add_property(., element = "edge", attr_name = "color", 'TRUE ~ "black"')) %>%
+  purrr::map(~ add_property(., element = "edge", attr_name = "label.color", 'TRUE ~ "black"')) %>%
+  purrr::map(~ add_property(., element = "edge", attr_name = "label.font", 'TRUE ~ 2')) %>%
+  purrr::map(~ add_property(., element = "vertex", attr_name = "color", "TRUE ~ 'white'")) %>%
+  purrr::map(~ add_property(., element = "vertex", attr_name = "frame.color", "TRUE ~ 'black'")) %>%
+  purrr::map(~ add_property(., element = "vertex", attr_name = "size", "TRUE ~ 55")) %>%
+  purrr::map(~ add_property(., element = "vertex", attr_name = "label.cex", "TRUE ~ 1")) %>%
+  purrr::map(~ add_property(., element = "vertex", attr_name = "label.color", "TRUE ~ 'black'"))
+
+formatted_en_direction[[1]] %<>%
+  igraph::set_edge_attr("width", value = igraph::E(.)$weight * 0.5)
+formatted_en_direction[[2]] %<>%
+  igraph::set_edge_attr("width", value = 1)
+
+direction_layout <- matrix(c(1,0,
+                             2,0,
+                             3,0,
+                             1.5, 1,
+                             2.5, 1), nrow = 5, ncol = 2, byrow = T)
+```
+
+```{r prepare-graph-structural}
+drake::loadd(en_structural)
+
+# format networks for plotting
+formatted_en_structural <- en_structural %>%
+  purrr::map(~ fancify_vertex_name(.)) %>%
+  purrr::map(~ add_property(., element = "edge", attr_name = "color", 'TRUE ~ "black"')) %>%
+  purrr::map(~ add_property(., element = "edge", attr_name = "lty", "type == 'a' ~ 1", "TRUE ~ 3")) %>%
+  purrr::map(~ add_property(., element = "vertex", attr_name = "color", "type == 'a' ~ 'white'", "TRUE ~ 'white'")) %>%
+  purrr::map(~ add_property(., element = "vertex", attr_name = "frame.color", "type == 'a' ~ 'black'", "TRUE ~ 'white'")) %>%
+  purrr::map(~ add_property(., element = "vertex", attr_name = "shape", "type == 'a' ~ 'circle'", "TRUE ~ 'square'")) %>%
+  purrr::map(~ add_property(., element = "vertex", attr_name = "size", "type == 'a' ~ 55", "TRUE ~ 45")) %>%
+  purrr::map(~ add_property(., element = "vertex", attr_name = "label.cex", "TRUE ~ 1")) %>%
+  purrr::map(~ add_property(., element = "vertex", attr_name = "label.color", "TRUE ~ 'black'"))
+```
+
+```{r example-network-common-plotting-par}
+plot_example_ntw <- function(x, ...){
+  plot_examples(x, rescale = F, 
+                frame = F, 
+                margin = rep(0, 4), 
+                edge.arrow.size = 0.4,
+                edge.label.family = "sans", 
+                vertex.label.family = "sans", ...)
+}
+
+```
+
 We used ten paired pollination communities to apply the control theoretic approach.
 Each community pair was composed of a community invaded by a plant and a community free of the invasive species. 
 Four pairs correspond to natural or semi-natural vegetation communities in the city of Bristol, UK [@lopezaraizamikel_impact_2007]. 
@@ -110,74 +164,68 @@ In pollination networks, however, this directionallity is less obvious as both s
 We overcome that obstacle by noting that the extent to which species *i* affects species *j* relative to the extent to which *j* affects *i* can be summarised by the interaction asymmetry [@bascompte_asymmetric_2006]. 
 This asymmetry is given by $$a(i,j) = a(j,i) = \frac{\left | d_{ij}-d_{ji} \right |}{max\left ( d_{ij}, d_{ji} \right )},$$ where the dependence of plant *i* on pollinator *j*, *d~ij~*, is the proportion of the visits from pollinator *j* compared to all pollinator visits to plant *i*. 
 Previous research has shown that mutualistic interactions are often highly asymmetric in natural communities; in other words, if a plant species is largely dependent on a pollinator species, then that pollinator tends to depend rather weakly on the plant (or vice versa). 
-By creating a directed link based on the asymmetry of their dependence we are able to generate a network that is consistent with the dynamics of the community while satisfyingh the requirements of structural controllability. 
+We then create a directed link between species *i* and *j* when $d_{ij}-d_{ji} \geq 0$ to establish the most likely direction of control between a species pair (Figure \@ref(fig:fig-example-networks)a). 
+By basing the direction of the links on the asymmetry of their dependence, we are able to generate a network that is consistent with the dynamics of the community while satisfyingh the requirements of structural controllability. 
 
-```{r, fig.cap="Consider the 2", fig.height= 0.9, fig.width=3.5}
-drake::loadd(en_direction)
-
-# wether to save it as a pdf (for testing purposes)
+```{r fig-example-networks, fig.width=3.5, fig.height=2.6, fig.cap="(a) To establish the direction of control we start with a weighted visitation network (right side). In this network, the width of the links correspond to the frequency of visitation. We then calculate the dependencies between species pairs and create a directed network (left side) in which the direction of the links correspond to the direction of the assymetry of their dependence. For instance, the population of plant $p_1$ is likely to be affected by the population of pollinator $a_1$ to a larger extent that the population of $a_1$ depends on $p_1$ because $a_1$ interacts more strongly with other species in the community; hence the direction of control between these two species can be simplyfied with a directed link from $a_1$ to $p_1$. (b) A system is structurally controllable if there are no inaccessible links or dilations. The network on the top left is not controllable because node $x_3$ is inaccessible from the input node $u_1$ in the system. The network in the bottom left is not controllable because there is a dilation in which node $x_2$ is being used to control two nodes simultaneously. Both systems can be made controllable by adding an extra input node (right panel)."}
 out_pdf <- F
+height1 <- 0.9
+height2 <- 1.5
 
-# graph attributes
-formatted_en_direction <- en_direction  %>%
-  purrr::map(~ fancify_vertex_name(.)) %>%
-  purrr::map(~ add_property(., element = "edge", attr_name = "color", 'TRUE ~ "black"')) %>%
-  purrr::map(~ add_property(., element = "edge", attr_name = "label.color", 'TRUE ~ "black"')) %>%
-  purrr::map(~ add_property(., element = "edge", attr_name = "label.font", 'TRUE ~ 2')) %>%
-  purrr::map(~ add_property(., element = "vertex", attr_name = "color", "TRUE ~ 'white'")) %>%
-  purrr::map(~ add_property(., element = "vertex", attr_name = "frame.color", "TRUE ~ 'black'")) %>%
-  purrr::map(~ add_property(., element = "vertex", attr_name = "size", "TRUE ~ 55")) %>%
-  purrr::map(~ add_property(., element = "vertex", attr_name = "label.cex", "TRUE ~ 1")) %>%
-  purrr::map(~ add_property(., element = "vertex", attr_name = "label.color", "TRUE ~ 'black'"))
-formatted_en_direction[[1]] %<>%
-  igraph::set_edge_attr("label", value = igraph::E(.)$weight)
-formatted_en_direction[[2]] %<>%
-  igraph::set_edge_attr("label", value = "")
+if(out_pdf) pdf("test.pdf", width = 3.5, height = height1 + height2 + 0.2, paper='special') 
 
-if(out_pdf) pdf("test.pdf", width = 3.5, height = 0.9) 
+c(01,10,12,11,91,
+  90,13,12,14,91, 
+  80,80,80,80,80, 
+  02,20,28,21,93,
+  22,24,28,25,93,
+  23,26,28,27,93) %>%
+  dplyr::dense_rank() %>%
+  matrix(nrow = 6, ncol = 5, byrow = T) %>%
+  layout(heights = c(height1 * 0.25, height1 * 0.75, height1 * 0.2, height2 * 0.1, height2 * 0.45, height2 * 0.45),
+         widths = c(0.2, 1, 0.05, 1, 0.2))
+par(mar = rep(0,4), bg = "white")
 
-# graph layout
-layout(matrix(c(1,5,2,
-                3,5,4), nrow = 2, ncol = 3, byrow = TRUE),
-       heights= c(0.35, 1), 
-       widths = c(1, 0.05, 1))
-par(mar=c(0.0,0,0,0), bg = "white", xpd = NA)
-
-# 1
-plot.new()
-text(0.5,0.25, "visitation network", adj = c(0.5,0), font = 2, cex = 0.9)
-
-# 2
-plot.new()
-text(0.5,0.25, "direction of control", adj = c(0.5,0), font = 2, cex = 0.9)
-
-# network layout
-l <- matrix(c(1,0,
-              2,0,
-              3,0,
-              1.5, 1,
-              2.5, 1), nrow = 5, ncol = 2, byrow = T)
-
-# 3-4
+## LABELS
+# 01
+standalone_text("(a)", y = 0.75)
+# 02
+standalone_text("(b)", y = 0.75)
+## FIGURE A
+# 10
+standalone_text("visitation network", y = 0.25, adj = c(0.5,0), font = 2)
+# 11
+standalone_text("direction of control", y = 0.25, adj = c(0.5,0), font = 2)
+# 12
+standalone_vline(lty = 2)
+# 13-14
 for(i in 1:length(formatted_en_direction)){
-   set.seed(3)
-  types <- igraph::V(formatted_en_direction[[i]])$type ==
-    dplyr::first(igraph::V(formatted_en_direction[[i]])$type)
-  l <- l %>%
-    rescale_layout(xlim = c(-1, 1) * 1.75, ylim = c(-0.6, 0.7))
-  plot_examples(formatted_en_direction[[i]], 
-                layout = l, rescale = F, frame = F, margin = rep(0, 4), 
-                edge.arrow.size = 0.4,
-                edge.label.family = "sans", 
-                vertex.label.family = "sans")
+  l <- rescale_layout(direction_layout, xlim = c(-1, 1) * 1.75, ylim = c(-0.6, 0.7))
+  plot_example_ntw(formatted_en_direction[[i]], layout = l)
 }
-
-# 5
-plot.new()
-segments(0,0,0,1, lty = 2, lwd = 0.5)
+## FIGURE B
+# 20
+standalone_text("not controllable", y = 0.25, adj = c(0.5,0), font = 2)
+# 21
+standalone_text("controllable", y = 0.25, adj = c(0.5,0), font = 2)
+# 22
+standalone_text("inaccessible\nnode", srt = 90)
+# 23
+standalone_text("dilation", srt = 90)
+# 24-27
+for (i in 2:length(formatted_en_structural)){
+  types <- igraph::V(formatted_en_structural[[i]])$type == dplyr::first(igraph::V(formatted_en_structural[[i]])$type)
+  l <- igraph::layout_as_bipartite(formatted_en_structural[[i]], types) %>%
+    rescale_layout(xlim = c(-1.75, 1.75), ylim = c(-0.6, 0.6))
+  plot_example_ntw(formatted_en_structural[[i]], layout = l)
+}
+# 28
+standalone_vline(lty = 2)
+## DIV LINES
+# 80
+standalone_hline()
 
 if(out_pdf) dev.off()
-
 ```
 
 After constructing the directed network, we can now calculate the controllability of the different networks and investigate wether there are differences between invaded and uninvaded communities. 
@@ -190,77 +238,7 @@ In classic control theory, determining wether this system is controllable or not
 In complex systems, however, employing this rank condition, or numerical approximations of it, is unfeasible because it is hard to fully parameterize *A* and *B* (either the weights of the links change over time or because they are difficult to measures). 
 Here we use an approach based on the structural controllability theorem [@lin_structural_1974], which assumes that we are confident that the elements of *A* and *B* have either non-zero or zero values (there is an interaction or not), but that we less sure about the precise magitude of the non-zero values. 
 Using this structural approach we can find out the controllability of a system under almost all non-zero parameter realisations.
-In addition, a graphical interpretation of the structural controllability theorem enables us to translate the control problem into a topological one: a network is controllable if there are no inaccessible nodes—nodes without incoming links—or dilations—*expansions* of the network (see supplementary information section  \@ref(S-structural-controllability) for more details).
-
-```{r, fig.cap="Consider the ", fig.height= 1.5, fig.width=3.5}
-drake::loadd(en_structural)
-
-# wether to save it as a pdf (for testing purposes)
-out_pdf <- F
-
-# format networks for plotting
-formatted_en_structural <- en_structural %>%
-  purrr::map(~ fancify_vertex_name(.)) %>%
-  purrr::map(~ add_property(., element = "edge", attr_name = "color", 'TRUE ~ "black"')) %>%
-  purrr::map(~ add_property(., element = "edge", attr_name = "color", "type == 'a' ~ 'black'", "TRUE ~ 'azure4'")) %>%
-  purrr::map(~ add_property(., element = "vertex", attr_name = "color", "type == 'a' ~ 'white'", "TRUE ~ 'white'")) %>%
-  purrr::map(~ add_property(., element = "vertex", attr_name = "frame.color", "type == 'a' ~ 'black'", "TRUE ~ 'white'")) %>%
-  purrr::map(~ add_property(., element = "vertex", attr_name = "shape", "type == 'a' ~ 'circle'", "TRUE ~ 'square'")) %>%
-  purrr::map(~ add_property(., element = "vertex", attr_name = "size", "type == 'a' ~ 55", "TRUE ~ 25")) %>%
-  purrr::map(~ add_property(., element = "vertex", attr_name = "label.cex", "TRUE ~ 1")) %>%
-  purrr::map(~ add_property(., element = "vertex", attr_name = "label.color", "TRUE ~ 'black'"))
-
-if(out_pdf) pdf("test.pdf", width = 3.5, height = 1.5, paper='special') 
-
-# make graphics device layout one row on top for headings, one column on the
-# left for headings and one in the middle for separator line
-layout(matrix(c(8,1,7,2,
-                9,3,7,4,
-                10,5,7,6), nrow = 3, ncol = 4, byrow = TRUE),
-       heights= c(0.25, 1, 1), 
-       widths = c(0.2, 1, 0.05, 1))
-par(mar=c(0.0,0,0,0), bg = "white", xpd = NA)
-
-# 1
-plot.new()
-text(0.5,0.25, "not controllable", adj = c(0.5,0), font = 2, cex = 0.9)
-
-# 2
-plot.new()
-text(0.5,0.25, "controllable", adj = c(0.5,0), font = 2, cex = 0.9)
-
-# 3-6
-for (i in 2:length(formatted_en_structural)){
-  set.seed(5)
-  types <- igraph::V(formatted_en_structural[[i]])$type ==
-    dplyr::first(igraph::V(formatted_en_structural[[i]])$type)
-  l <- igraph::layout_as_bipartite(formatted_en_structural[[i]], types) %>%
-    rescale_layout(xlim = c(-1.75, 1.75), ylim = c(-0.6, 0.6))
-  plot_examples(formatted_en_structural[[i]], 
-                layout = l,
-                frame = F, 
-                rescale = F, 
-                margin = rep(0, 4), 
-                edge.arrow.size = 0.4,
-                edge.label.family = "sans", 
-                vertex.label.family = "sans")
-}
-
-# 7
-plot.new()
-segments(0,0,0,1, lty = 2, lwd = 0.5)
-# 8
-plot.new()
-# 9
-plot.new()
-text(0.5,0.5, "inaccessible\nnode", adj = c(0.5,0.5), font = 1, cex = 0.9, srt = 90)
-# 10
-plot.new()
-text(0.5,0.5, "dilation", adj = c(0.5,0.5), font = 1, cex = 0.9, srt = 90)
-
-if(out_pdf) dev.off()
-
-```
+In addition, a graphical interpretation of the structural controllability theorem enables us to translate the control problem into a topological one: a network is controllable if there are no inaccessible nodes—nodes without incoming links—or dilations—*expansions* of the network (Figure \@ref(fig:fig-example-networks)b; see supplementary information section \@ref(S-structural-controllability) for more details).
 
 We are often able to estimate *A* in ecological networks, as it represents the interactions between species. 
 Part of the control problem resides on estimating a supportable estimation of *B*, which represents the links between external inputs and species. 
