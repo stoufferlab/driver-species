@@ -31,12 +31,6 @@ maximum_matching <- function(x, weighted = FALSE){
   
   m <- igraph::max_bipartite_match(x_bip)
   
-  igraph::V(x)$matched <- m %$%
-    matching %>%
-    extract(igraph::V(x_bip)$type) %>%
-    is.na(.) %>%
-    not()
-  
    matched_edges_bip <- m %$%
     matching %>%
     extract(igraph::V(x_bip)$type) %>% {
@@ -46,21 +40,13 @@ maximum_matching <- function(x, weighted = FALSE){
      dplyr::as_data_frame() %>%
      dplyr::filter(!is.na(from)) %>%
      as.matrix() %>%
-     t()
+     t() %>%
+     igraph::get.edge.ids(x_bip, ., error = F)
    
-   igraph::E(x_bip)$matched <- FALSE
-   igraph::E(x_bip)[igraph::get.edge.ids(x_bip, matched_edges_bip, error = F)]$matched <- TRUE
-   
-   matched_edges <- matched_edges_bip %>% stringi::stri_sub(., 1, -4)
-   
-   igraph::E(x)$matched <- FALSE
-   igraph::E(x)[igraph::get.edge.ids(x, matched_edges, error = F)]$matched <- TRUE
-   
-   x %<>%
+   x %>%
      igraph::set_graph_attr("matching_size", m$matching_size) %>%
-     igraph::set_graph_attr("bipartite_representation", x_bip)
-   
-   return(x)
+     igraph::set_graph_attr("bipartite_representation", x_bip) %>%
+     generate_matched_graph(matched_edges_bip)
 }
 
 get_input_graph <- function(x){
@@ -160,7 +146,23 @@ control_capacity <- function(x){
 
   V(x$input_graph)$control_capacity <- 0
   V(x$input_graph)[V(x$input_graph)$input_node]$control_capacity <- rep(cc, rle(comp$membership)$lengths)
+generate_matched_graph <- function(x, matched_edges_bip) {
   
-  V(x)[V(x$input_graph)$name]$control_capacity <- V(x$input_graph)$control_capacity
+  igraph::E(x$bipartite_representation)$matched <- FALSE
+  igraph::E(x$bipartite_representation)[matched_edges_bip]$matched <- TRUE
+  
+  # a matrix with the ends and tails of the matched edges
+  matched_edges <- matched_edges_bip %>% 
+    igraph::ends(x$bipartite_representation, .) %>% 
+    t() %>%
+    stringi::stri_sub(., 1, -4)
+  
+  igraph::E(x)$matched <- FALSE
+  igraph::E(x)[igraph::get.edge.ids(x, matched_edges, error = F)]$matched <- TRUE
+  
+  igraph::V(x)$matched <- FALSE
+  # need the ends of the matched edges, so select only the even ones
+  igraph::V(x)[matched_edges[c(F, T)]]$matched <- TRUE
+  
   x
 }
