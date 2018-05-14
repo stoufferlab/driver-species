@@ -155,6 +155,25 @@ control_capacity <- function(x){
   x %>%
     igraph::set_graph_attr("n_control_configurations", n_control_configurations)
 }
+
+all_matchings <- function(x){
+  
+  if(!"matching_size" %in% igraph::graph_attr_names(x) | 
+     !"matched" %in% igraph::vertex_attr_names(x) |
+     !"matched" %in% igraph::edge_attr_names(x)){
+    x %<>% maximum_matching()
+  }
+  
+  matched_edges_bip_list <- x$bipartite_representation %>%
+    igraph::make_line_graph() %>%
+    igraph::complementer() %>% 
+    igraph::max_cliques(min = x$matching_size, 
+                        max = x$matching_size)
+  
+  matched_edges_bip_list %>%
+    purrr::map(~ generate_matched_graph(x, .))
+}
+
 generate_matched_graph <- function(x, matched_edges_bip) {
   
   igraph::E(x$bipartite_representation)$matched <- FALSE
