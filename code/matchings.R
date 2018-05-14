@@ -64,3 +64,84 @@ maximum_matching <- function(x, weighted = FALSE){
    return(x)
 }
 
+get_input_graph <- function(x){
+  
+  driver <- igraph::V(x)[!igraph::V(x)$matched]
+  non_driver <- igraph::V(x)[igraph::V(x)$matched]
+  
+  input_graph <- . %>%
+    purrr::map(~get_control_adjacent(x, .)) %>%
+    purrr::map(make_graph_from_vertex) %>%
+    do.call(union_input_graphs, .)
+  
+  input_graph(driver) %>%
+    set_vertex_attr("input_node", value = TRUE)
+  
+  ig <- input_graph(driver) %>%
+    set_vertex_attr("input_node", value = TRUE) %>%
+    union_input_graphs(input_graph(non_driver) %>% 
+                         set_vertex_attr("input_node", value = F), 
+                       delete_graph_attr = F) 
+  
+  set_graph_attr(x, "input_graph", ig)
+  x
+}
+
+get_control_adjacent <- function(x, d){
+  
+  d_bip <- paste0(d$name, "..t")
+  
+  adjacent_bip <- igraph::V(x$bipartite_representation)[distances(x$bipartite_representation, d_bip) == 2] %>%
+    purrr::map_lgl(~is_adjacent(x$bipartite_representation, d_bip, .)) %>%
+    `names<-`(stringi::stri_sub(names(.), 1, -4))
+
+  igraph::V(x)[c(d$name, names(adjacent_bip[adjacent_bip]))]
+}
+
+
+is_adjacent <- function(xb, d_bip, pab){
+  xb %>%
+    igraph::shortest_paths(d_bip, pab, output = "epath") %$%
+    epath %>%
+    extract2(1)%>% 
+    {xor(.$matched[1], .$matched[2])}
+}
+
+make_graph_from_vertex <- function(v){
+  igraph::make_full_graph(length(v)) %>%
+    igraph::set_vertex_attr("name", value = v$name) %>%
+    igraph::set_vertex_attr("type", value = v$type) 
+}
+
+union_input_graphs <- function(..., delete_graph_attr = TRUE){
+  nets <- list(...)
+  
+  at <- igraph::vertex_attr_names(nets[[1]])
+  at <- at[at != "name"]
+  n_nets <- length(nets)
+  
+  joint_network <- nets %>%
+    do.call(igraph::union, .)
+  
+  for (i in 1:length(at)){
+    values <- 1:n_nets %>%
+      purrr::map(~ coalece_attribute(joint_network, at[i], .)) %>%
+      do.call(dplyr::coalesce, .)
+    for(j in 1:n_nets){
+      if(include_graph_attr){
+        joint_network %<>%
+          igraph::delete_graph_attr(paste("name", j, sep = "_")) %>%
+          igraph::delete_graph_attr(paste("loops", j, sep = "_"))
+      }
+      joint_network %<>%
+        igraph::delete_vertex_attr(paste(at[i], j, sep = "_"))
+    }
+    joint_network %<>%
+      set_vertex_attr(at[i], value = values)
+  }
+  joint_network
+}
+
+coalece_attribute <- function(x, y, n){
+  vertex_attr(x, name = paste(y, n, sep = "_"))
+}
