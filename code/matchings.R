@@ -51,7 +51,9 @@ maximum_matching <- function(x, weighted = FALSE){
 
 get_input_graph <- function(x){
   
-  if(!"matching_size" %in% graph_attr_names(x)){
+  if(!"matching_size" %in% igraph::graph_attr_names(x) | 
+     !"matched" %in% igraph::vertex_attr_names(x) |
+     !"matched" %in% igraph::edge_attr_names(x)){
     x %<>% maximum_matching()
   }
   
@@ -83,7 +85,6 @@ get_control_adjacent <- function(x, d){
 
   igraph::V(x)[c(d$name, names(adjacent_bip[adjacent_bip]))]
 }
-
 
 is_adjacent <- function(xb, d_bip, pab){
   xb %>%
@@ -123,29 +124,37 @@ union_input_graphs <- function(..., delete_graph_attr = TRUE){
         igraph::delete_vertex_attr(paste(at[i], j, sep = "_"))
     }
     joint_network %<>%
-      set_vertex_attr(at[i], value = values)
+      igraph::set_vertex_attr(at[i], value = values)
   }
   joint_network
 }
 
 coalece_attribute <- function(x, y, n){
-  vertex_attr(x, name = paste(y, n, sep = "_"))
+  igraph::vertex_attr(x, name = paste(y, n, sep = "_"))
 }
 
 control_capacity <- function(x){
   
-  if(!"input_graph" %in% graph_attr_names(x)){
+  if(!"input_graph" %in% igraph::graph_attr_names(x)){
     x %<>% get_input_graph()
   }
   
-  comp <- induced_subgraph(x$input_graph, V(x$input_graph)[V(x$input_graph)$input_node]) %>%
-    components() 
+  comp <- igraph::induced_subgraph(x$input_graph, 
+                                   igraph::V(x$input_graph)[igraph::V(x$input_graph)$input_node]) %>%
+    igraph::components() 
   
   n_control_configurations <- prod(comp$csize)
   cc <- 1 / comp$csize
 
-  V(x$input_graph)$control_capacity <- 0
-  V(x$input_graph)[V(x$input_graph)$input_node]$control_capacity <- rep(cc, rle(comp$membership)$lengths)
+  igraph::V(x$input_graph)$control_capacity <- 0
+  igraph::V(x$input_graph)[igraph::V(x$input_graph)$input_node]$control_capacity <- 
+    rep(cc, rle(comp$membership)$lengths)
+  
+  igraph::V(x)[igraph::V(x$input_graph)$name]$control_capacity <- 
+    igraph::V(x$input_graph)$control_capacity
+  x %>%
+    igraph::set_graph_attr("n_control_configurations", n_control_configurations)
+}
 generate_matched_graph <- function(x, matched_edges_bip) {
   
   igraph::E(x$bipartite_representation)$matched <- FALSE
