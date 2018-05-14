@@ -171,7 +171,8 @@ all_matchings <- function(x){
                         max = x$matching_size)
   
   matched_edges_bip_list %>%
-    purrr::map(~ generate_matched_graph(x, .))
+    purrr::map(~ generate_matched_graph(x, .)) %>%
+    return()
 }
 
 generate_matched_graph <- function(x, matched_edges_bip) {
