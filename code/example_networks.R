@@ -67,28 +67,3 @@ example_matchings_star <- function(){
   ) %$%
     igraph::graph_from_data_frame(edges, directed = T, vertices = vertex) 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
