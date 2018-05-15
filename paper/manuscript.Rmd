@@ -129,11 +129,11 @@ drake::loadd(en_structural)
 formatted_en_structural <- en_structural %>%
   purrr::map(~ fancify_vertex_name(.)) %>%
   purrr::map(~ add_property(., element = "edge", attr_name = "color", 'TRUE ~ "black"')) %>%
-  purrr::map(~ add_property(., element = "edge", attr_name = "lty", "type == 'a' ~ 1", "TRUE ~ 3")) %>%
-  purrr::map(~ add_property(., element = "vertex", attr_name = "color", "type == 'a' ~ 'white'", "TRUE ~ 'white'")) %>%
-  purrr::map(~ add_property(., element = "vertex", attr_name = "frame.color", "type == 'a' ~ 'black'", "TRUE ~ 'white'")) %>%
-  purrr::map(~ add_property(., element = "vertex", attr_name = "shape", "type == 'a' ~ 'circle'", "TRUE ~ 'square'")) %>%
-  purrr::map(~ add_property(., element = "vertex", attr_name = "size", "type == 'a' ~ 55", "TRUE ~ 45")) %>%
+  purrr::map(~ add_property(., element = "edge", attr_name = "lty", "control_type == 'a' ~ 1", "TRUE ~ 3")) %>%
+  purrr::map(~ add_property(., element = "vertex", attr_name = "color", "control_type == 'a' ~ 'white'", "TRUE ~ 'white'")) %>%
+  purrr::map(~ add_property(., element = "vertex", attr_name = "frame.color", "control_type == 'a' ~ 'black'", "TRUE ~ 'white'")) %>%
+  purrr::map(~ add_property(., element = "vertex", attr_name = "shape", "control_type == 'a' ~ 'circle'", "TRUE ~ 'square'")) %>%
+  purrr::map(~ add_property(., element = "vertex", attr_name = "size", "control_type == 'a' ~ 55", "TRUE ~ 45")) %>%
   purrr::map(~ add_property(., element = "vertex", attr_name = "label.cex", "TRUE ~ 1")) %>%
   purrr::map(~ add_property(., element = "vertex", attr_name = "label.color", "TRUE ~ 'black'"))
 ```
