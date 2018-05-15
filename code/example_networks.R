@@ -46,3 +46,49 @@ example_ntw_directions <- function(){
   
   list(en_bip, en_dir)
 }
+
+example_matchings_chain <- function(){
+  list(
+    edges = dplyr::data_frame(from = c("x_1", "x_2", "x_3"), 
+                              to =   c("x_2", "x_3", "x_4"), 
+                              control_type = c(rep("a", 3))), 
+    vertex = dplyr::data_frame(name = c("x_1", "x_2", "x_3", "x_4"), 
+                               control_type = c(rep("a", 4)))
+  ) %$%
+    igraph::graph_from_data_frame(edges, directed = T, vertices = vertex)
+}
+
+
+example_matchings_star <- function(){
+  list(
+    edges = dplyr::data_frame(from = c("x_1", "x_1", "x_1", "x_1"), 
+                              to   = c("x_2", "x_3", "x_4", "x_5")), 
+    vertex = dplyr::data_frame(name = c("x_1", "x_2", "x_3", "x_4", "x_5"))
+  ) %$%
+    igraph::graph_from_data_frame(edges, directed = T, vertices = vertex) 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
