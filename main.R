@@ -44,7 +44,11 @@ basic_analysis_plan <- drake::drake_plan(
 
 example_plots_plan <- drake::drake_plan(
   en_structural = example_ntw_structural(),
-  en_direction = example_ntw_directions()
+  en_direction = example_ntw_directions(), 
+  en_chain = example_ntw_matchings_chain(),
+  en_star = example_ntw_matchings_star(), 
+  fig_control_config = make_fig_control_configurations(en_chain, en_star, en_direction), 
+  fig_struct_control = make_fig_structural_control(en_direction, en_structural)
 )
 
 reporting_plan <- drake::drake_plan(
@@ -57,3 +61,4 @@ reporting_plan <- drake::drake_plan(
 project_plan <- rbind(read_data_plan, basic_analysis_plan, example_plots_plan, reporting_plan)
 project_config <- drake::drake_config(project_plan)
 drake::make(project_plan, config = project_config)
+
