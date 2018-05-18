@@ -110,16 +110,16 @@ make_fig_structural_control <- function(en_direction, en_structural, pdf_out = N
   }
   ## FIGURE B
   # 20
-  standalone_text("inaccessible node", y = 0.5, adj = c(0.5,0), font = 1)
-  # 21
   standalone_text("dilation", y = 0.5, adj = c(0.5,0), font = 1)
+  # 21
+  standalone_text("inaccessible node", y = 0.5, adj = c(0.5,0), font = 1)
   # 22
   standalone_text("controllable", srt = 90, font = 2)
   # 23
   standalone_text("not\ncontrollable", srt = 90, font = 2)
   # 24-27
-  for (i in c(3,5,2,4)){
-    if(i == 5)   text(-2.27, 1, "(b)", adj = c(0,1.2), font = 1)
+  for (i in c(5,3,4,2)){
+    if(i == 3)   text(-2.26, 1, "(b)", adj = c(0,1.3), font = 1)
 
     types <- igraph::V(formatted_en_structural[[i]])$control_type == dplyr::first(igraph::V(formatted_en_structural[[i]])$control_type)
     l <- igraph::layout_as_bipartite(formatted_en_structural[[i]], types) %>%
@@ -155,4 +155,4 @@ make_fig_structural_control <- function(en_direction, en_structural, pdf_out = N
   ))
 }
 
-# replayPlot(make_fig_structural_control(en_direction, en_structural, "test.pdf")$plot)
+replayPlot(make_fig_structural_control(en_direction, en_structural, "test.pdf")$plot)
