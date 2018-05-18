@@ -155,4 +155,4 @@ make_fig_structural_control <- function(en_direction, en_structural, pdf_out = N
   ))
 }
 
-replayPlot(make_fig_structural_control(en_direction, en_structural, "test.pdf")$plot)
+# replayPlot(make_fig_structural_control(en_direction, en_structural, "test.pdf")$plot)
