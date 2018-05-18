@@ -123,11 +123,11 @@ After constructing the directed network, we can now calculate the controllabilit
 
 A system is said to be controllable if it is possible to steer it from an initial to an arbitrary final state within finite time [@kalman_mathematical_1963]. 
 A simple dynamic system can be described by $\frac{dx}{dt} = Ax + Bu(t)$, where the change of its state over time ($\frac{dx}{dt}$) depends on its current state *x* (for example, the species' abundances), an external time-varying input *u(t)* (the control signal), and two matrices *A* and *B*, which encode information about the network structure and how species respond to external inputs, respectively. 
-In classic control theory, determining wether this system is controllable or not can easily be achieved by checking that its controllability matrix $R= [ \begin{matrix}B & AB & A^{2}B & ...& A^{n-1}B\end{matrix} ]$ has full rank. 
-In complex systems, however, employing this rank condition, or numerical approximations of it, is unfeasible because it is hard to fully parameterize *A* and *B* (either the weights of the links change over time or because they are difficult to measures). 
+In classic control theory, determining wether this system is controllable can easily be achieved by checking that its controllability matrix $R= [ \begin{matrix}B & AB & A^{2}B & ...& A^{n-1}B\end{matrix} ]$ has full rank. 
+In complex systems, however, employing this rank condition, or numerical approximations of it, is unfeasible because it is hard to fully parameterize *A* and *B* (either because the weight of the links change over time or because they are difficult to measure). 
 Here we use an approach based on the structural controllability theorem [@lin_structural_1974], which assumes that we are confident that the elements of *A* and *B* have either non-zero or zero values (there is an interaction or not), but that we less sure about the precise magitude of the non-zero values. 
 Using this structural approach we can find out the controllability of a system under almost all non-zero parameter realisations.
-In addition, a graphical interpretation of the structural controllability theorem enables us to translate the control problem into a topological one: a network is controllable if there are no inaccessible nodes—nodes without incoming links—or dilations—*expansions* of the network (Figure \@ref(fig:fig-example-networks)b; supplementary information section \@ref(S-structural-controllability)).
+Structural controllability also has a graphical interpretation that allow us to translate the control problem into a topological one: a network is controllable if there are no inaccessible nodes—nodes without incoming links—or dilations—*expansions* of the network (Figure \@ref(fig:fig-example-networks)b; supplementary information section \@ref(S-structural-controllability)).
 
 We are often able to estimate *A* in ecological networks, as it represents the interactions between species. 
 Part of the control problem resides on estimating a supportable estimation of *B*, which represents the links between external inputs and species. 
@@ -135,16 +135,17 @@ Naively, any ecological community (and any system for that matter) could be cont
 Such approach is typically unpractical. 
 We are instead interested in finding a minimum driver node set (effectively finding *B*) with which to make the system controllable. 
 However, a brute force search of this minimum driver node set is computationally prohibitive for most networks as it involves the evaluation of $2^N$ different controllability matrices. 
-We employ a recently developed approach that shows that the control problem of finding the minimum driver node set can be mapped into a purely graph theoretic problem: maximum matching [@liu_controllability_2011; @liu_control_2016].
+We employ a recently developed approach that shows that the control problem of finding the minimum driver node set can be mapped into a graph theoretic problem: maximum matching [@liu_controllability_2011; @liu_control_2016].
 
-Maximum matching is a widely studied topic in graph theory and is commonly used in multiple applications, from dating apps and wireless communications to organ transplant allocation and peer to peer file sharing. 
-A matching in an unweighted directed graph is defined as a set of links that do not share a common start or end nodes. 
-A node is said to be superior if it is at the beginning of a matched link and called matched if it is at the end. 
-Finally, the largest possible matching is called maximum matching. 
-These definitions, however, offer little insight about how maximum matching is related to structural controllability. 
-The key is to note that these definitions imply that a matched node can have only one matched link pointing to it, and similarly a superior node can have at most one link leaving from it. 
-The result is that a matching can actually be decomposed into a set of paths that reveal how a control signal can flow across the links in a network to reach every node that compose it (Figure 1cXX). 
-And so, as recently shown [@liu_controllability_2011], the minimum driver node set corresponds exactly to the *unmatched* nodes, those that are not controlled by other nodes in the network.
+Maximum matching is a widely studied topic in graph theory and is commonly used in multiple applications, ranging from dating apps and wireless communications to organ transplant allocation and peer to peer file sharing. 
+A matching in an unweighted directed graph is defined as a set of links that do not share a common start or end nodes; the largest possible matching is called maximum matching. 
+For example, in a network composed by jobs and job applicants, a matching is any pairing between applicants and positions that satisfies the basic constrain of any applicant being assigned to at most one position and visceversa.
+A maximum matching would then be such a pairing that maximises the number of applicants with jobs and the number of positions filled. 
+The definition of maximum matching, however, offer little insight about how it is related to structural controllability. 
+The key is to note that the conditions of structural controllability imply that there needs to be a one to one relationship between *superior* and *subordinate* nodes (Figure \@ref(fig:fig-example-networks)b, bottom left). 
+We use the maximum matching algorithm to pair superior to subordinate nodes in a way consistent with these conditions. 
+The result is that a matching can actually be decomposed into a set of paths that reveal how a control signal can flow across the links in a network to reach every node that compose it. 
+And so, as recently shown [@liu_controllability_2011], the minimum driver node set, those to which an external control signal should be applied to make the system controllable, corresponds exactly to the *unmatched* nodes in the network (Figure \@ref(fig:fig-control-configuration)).
 
 ```{r}
 drake::loadd(fig_control_config)
