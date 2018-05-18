@@ -205,7 +205,7 @@ add_control_nodes <- function(x, base_name = "u"){
   new_vertices_names <- paste(base_name, 1:n_new_vertices, sep = "_")
   
   x %>% 
-    igraph::add_vertices(n_new_vertices, name = new_vertices_names, contol_type = "b") %>%
+    igraph::add_vertices(n_new_vertices, name = new_vertices_names, control_type = "b") %>%
     igraph::add_edges(edges = rbind(new_vertices_names, driver_nodes$name), control_type = "b") %>%
     return()
 }
