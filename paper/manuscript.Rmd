@@ -138,13 +138,13 @@ We employ a recently developed approach that shows that the control problem of f
 
 Maximum matching is a widely studied topic in graph theory and is commonly used in multiple applications, ranging from dating apps and wireless communications to organ transplant allocation and peer to peer file sharing. 
 A matching in an unweighted directed graph is defined as a set of links that do not share a common start or end nodes; the largest possible matching is called maximum matching. 
-For example, in a network composed by jobs and job applicants, a matching is any pairing between applicants and positions that satisfies the basic constrain of any applicant being assigned to at most one position and visceversa.
-A maximum matching would then be such a pairing that maximises the number of applicants with jobs and the number of positions filled. 
-The definition of maximum matching, however, offer little insight about how it is related to structural controllability. 
-The key is to note that the conditions of structural controllability imply that there needs to be a one to one relationship between *superior* and *subordinate* nodes (Figure \@ref(fig:fig-example-networks)b, bottom left). 
-We use the maximum matching algorithm to pair superior to subordinate nodes in a way consistent with these conditions. 
+For example, in a network composed by jobs and job applicants, a matching is any pairing between applicants and positions that satisfies one basic constrain: an applicant can be assigned to at most one position and visceversa.
+Consequently, a maximum matching is an optimal pairing, one that maximises the number of applicants with jobs and the number of positions filled. 
+At first glance, however, is  hard to identify how exactlty matchings are related to structural controllability. 
+The key is to note that the conditions of structural controllability imply that, just like the one to one relationship between jobs and applicants, there needs to be a one to one relationship between *superior* and *subordinate* nodes (Figure \@ref(fig:fig-example-networks)b, bottom left). 
+We use the maximum matching algorithm to find an optimal pairing of superior and subordinate nodes in a way consistent with the controllability conditions. 
 The result is that a matching can actually be decomposed into a set of paths that reveal how a control signal can flow across the links in a network to reach every node that compose it. 
-And so, as recently shown [@liu_controllability_2011], the minimum driver node set, those to which an external control signal should be applied to make the system controllable, corresponds exactly to the *unmatched* nodes in the network (Figure \@ref(fig:fig-control-configuration)).
+And so, as recently shown [@liu_controllability_2011], the minimum driver node set, those to which an external control input should be applied to make the system controllable, corresponds exactly to the *unmatched* nodes in the network (Figure \@ref(fig:fig-control-configuration)).
 
 ```{r}
 drake::loadd(fig_control_config)
