@@ -88,7 +88,7 @@ net_prop %>%
 # Structural controllability {#structural-controllability}
 
 Structural controllability avoids the limitation of not knowing the exact values of the matrices *A* and *B*. 
-The graphical interpretation of structural controllability can be summed up in two conditions for controllability: A system is controllable if there are no inaccessible nodes or dilations. A node is inaccessible if there are no directed paths between it and the input nodes. "Dilations are subgraohs in which a small subset of nodes attempts to rule a larger subset of nodes. In other workds there are more 'subordinates' than 'superiors'" [@liu_control_2016].
+Using structural controllability controllability can be boiled down to two conditions: a system is controllable if there are no inaccessible nodes or dilations. A node is inaccessible if there are no directed paths between it and the input nodes. "Dilations are subgraphs in which a small subset of nodes attempts to rule a larger subset of nodes. In other workds there are more 'subordinates' than 'superiors'" [@liu_control_2016].
 
 The goal of structural controllability is to use the information contained in **A** to generate a supportable estimate of **B**.
 This focus allows us to gain insight of the inherent controllability of a network, and the roles of the species that compose it, without being overly dependent on the particular choices of how the system dynamics are modelled or characterised. 

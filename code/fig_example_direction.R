@@ -56,7 +56,7 @@ make_fig_control_configurations <- function(en_chain, en_star, en_direction, pdf
                legend_height)
   d <- 30
   x <- 3.4
-  widths <- c(0.05, x/3-x/2/d, x/d, x/2-x/3-x/d, x/d, x/2-x/3-x/d/2, x/3, 0.05)
+  widths <- c(0.005, x/3-x/2/d, x/d, x/2-x/3-x/d, x/d, x/2-x/3-x/d/2, x/3, 0.005)
   
   pdf(pdf_out, width = sum(widths), height = sum(heights), paper='special')
   if(is.null(pdf_out)) dev.control("enable")
@@ -65,8 +65,8 @@ make_fig_control_configurations <- function(en_chain, en_star, en_direction, pdf
     03,34,33,35,35,35,35,94,
     84,84,82,82,82,82,82,82,
     92,92,45,90,90,90,90,90,
-    04,40,45,41,41,41,42,97,
     96,40,45,43,43,43,43,97,
+    04,40,45,41,41,41,42,97,
     93,93,45,91,91,91,91,91,
     83,83,83,83,83,83,83,83,
     05,50,53,51,51,51,52,98,
@@ -75,7 +75,7 @@ make_fig_control_configurations <- function(en_chain, en_star, en_direction, pdf
     matrix(ncol = 8, byrow = T) %>%
     layout(heights = heights,
            widths = widths)
-  par(mar = rep(0,4), bg = "white", xpd = NA)
+  par(mar = rep(0,4), bg = "NA", xpd = NA)
   
   plot.new()
   
@@ -162,8 +162,8 @@ make_fig_control_configurations <- function(en_chain, en_star, en_direction, pdf
   for(i in 1:3){
     l <- matrix(c(1,2,2,2,0,3,3,
                   2,3,2,1, 2,(3:1)[-i]), 7,2)  %>%
-      rescale_layout(xlim = c(-1, 1) * 1.8, ylim = c(-1,1) * 0.75)
-    plot_example_ntw(en_star_matchings[[i]], layout = l)
+      rescale_layout(xlim = c(-1, 1) * 1.8, ylim = c(-1,1) * 0.93)
+    plot_example_ntw(en_star_matchings[[i]], layout = l, margin = rep(0.5,4))
   }
   # 45
   # standalone_vline(lty = 2)
