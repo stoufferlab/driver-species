@@ -33,8 +33,9 @@ make_fig_structural_control <- function(en_direction, en_structural, pdf_out = N
   legend_height <- 0.25
   heights <- c(heading_height, plot_1_height, 
                div_height, 
+               heading_thin_height,
                plot_2_height,
-               div_height, plot_2_height, heading_thin_height,
+               div_height, plot_2_height, 
                legend_height)
   d <- 30
   x <- 3.2
@@ -47,10 +48,10 @@ make_fig_structural_control <- function(en_direction, en_structural, pdf_out = N
   c(  01,10,10,10,12,11,11,91,
       90,13,13,13,12,14,14,91, 
       80,80,80,80,80,80,80,80, 
+      22,20,20,20,28,21,21,93,
       22,24,24,24,28,25,25,94,
-      81,81,81,81,81,81,81,81,
+      94,81,81,81,81,81,81,81,
       23,26,26,26,28,27,27,93,
-      23,20,20,20,28,21,21,93,
       30,30,30,30,30,30,30,30) %>%
     dplyr::dense_rank() %>%
     matrix(ncol = 8, byrow = T) %>%
@@ -73,18 +74,18 @@ make_fig_structural_control <- function(en_direction, en_structural, pdf_out = N
        grconvertY(plot_2_height * 2 + div_height + heading_thin_height + legend_height, "inches", "user"),
        col = box_col, 
        border = NA)
-  # 
-  # rect(grconvertX(0, "inches", "user"),
-  #      grconvertY(plot_2_height + div_height, "inches", "user"),
-  #      grconvertX(3.5/2, "inches", "user"),
-  #      grconvertY(plot_2_height*2 + div_height , "inches", "user"),
-  #      col = box_col_2, 
+
+  # rect(grconvertX(margin_h, "inches", "user"),
+  #      grconvertY(plot_2_height  + legend_height +  heading_thin_height, "inches", "user"),
+  #      grconvertX(3.5, "inches", "user"),
+  #      grconvertY(plot_2_height * 2 + div_height + heading_thin_height + legend_height, "inches", "user"),
+  #      col = box_col_2,
   #      border = NA)
-  # 
+  
   rect(grconvertX(margin_h, "inches", "user"),
-       grconvertY(plot_2_height + div_height/2 + legend_height +  heading_thin_height, "inches", "user"),
+       grconvertY(legend_height, "inches", "user"),
        grconvertX(3.5, "inches", "user"),
-       grconvertY(plot_2_height * 2 + div_height + heading_thin_height + legend_height, "inches", "user"),
+       grconvertY(plot_2_height + div_height/2+ legend_height, "inches", "user"),
        col = box_col_2,
        border = NA)
 
@@ -110,16 +111,17 @@ make_fig_structural_control <- function(en_direction, en_structural, pdf_out = N
   }
   ## FIGURE B
   # 20
-  standalone_text("dilation", y = 0.5, adj = c(0.5,0), font = 1)
+  standalone_text("dilation", y = 0.5, adj = c(0.5,1), font = 1)
+  text(0, 1, "(b)", adj = c(0.15,1.5), font = 1)
   # 21
-  standalone_text("inaccessible node", y = 0.5, adj = c(0.5,0), font = 1)
+  standalone_text("inaccessible node", y = 0.5, adj = c(0.5,1), font = 1)
   # 22
-  standalone_text("controllable", srt = 90, font = 2)
-  # 23
   standalone_text("not\ncontrollable", srt = 90, font = 2)
+  # 23
+  standalone_text("controllable", srt = 90, font = 2)
   # 24-27
-  for (i in c(5,3,4,2)){
-    if(i == 3)   text(-2.26, 1, "(b)", adj = c(0,1.3), font = 1)
+  for (i in c(4,2,5,3)){
+    # if(i == 3)   text(-2.26, 1, "(b)", adj = c(0,1.3), font = 1)
 
     types <- igraph::V(formatted_en_structural[[i]])$control_type == dplyr::first(igraph::V(formatted_en_structural[[i]])$control_type)
     l <- igraph::layout_as_bipartite(formatted_en_structural[[i]], types) %>%
@@ -143,7 +145,8 @@ make_fig_structural_control <- function(en_direction, en_structural, pdf_out = N
          lty = 1, 
          col = get_color("control"),
          lwd = 1.5, cex = 0.9, xjust=0.5, yjust=0.5, bty = "n")
-  
+  plot.new()
+  # standalone_hline(lty = 1)
   p <- recordPlot()
   
   dev.off()
