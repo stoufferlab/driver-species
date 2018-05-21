@@ -150,7 +150,7 @@ And so, as recently shown [@liu_controllability_2011], the minimum driver node s
 drake::loadd(fig_control_config)
 ```
 
-```{r fig-control-configuration, fig.height=fig_control_config$height, fig.width=fig_control_config$width,fig.cap = "ASD"}
+```{r fig-control-configuration, fig.height=fig_control_config$height, fig.width=fig_control_config$width,fig.cap = "Maximum matchings and control configurations. In directed networks a maximum matching is the largest possible set of links that do not share start or end nodes (dark purple). Maximum matchings are not necessarly unique, instead each of them is related to a possible minimum driver node set in the network (the nodes to which an external control input, in orange, should be applied in order to ensure controllability). The size of the minimum driver node set *D* corresponds exactly to the number of unmatched nodes (the number of nodes in the network *N* minus the matching size). To account for network size, we use size of the minimum driver node set relative to the total number of nodes *n~D~ = D/N* as a measure of the extent to which the network structure can be harnessed to control the system."}
 replayPlot(fig_control_config$plot)
 ```
 
