@@ -107,6 +107,13 @@ This information can then be mapped back to the original representation to ident
 Figure \@ref(fig:fig-direction-of-control)d--f illustrate this approach for a network with bidirectional links.
 
 ## Finding a single maximum matching {#one-maximum-matching}
+```{r}
+drake::loadd(fig_supp_matching)
+```
+
+```{r fig-maximum-matching-procedure, fig.height=fig_supp_matching$height, fig.width=fig_supp_matching$width,fig.cap = "Finding a maximum matching in a complex network. (left) Directed network that indicate the direction of control between species. (center) Alternative bipartite representations of the directed networks. (right) The matchings in the bipartite representation mapped back to the original network."}
+replayPlot(fig_supp_matching$plot)
+```
 
 ## Finding all possible maximum matchings
 
