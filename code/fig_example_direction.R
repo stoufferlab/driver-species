@@ -3,24 +3,26 @@ make_fig_control_configurations <- function(en_chain, en_star, en_direction, pdf
     en_chain %<>%
     ntw_format_theme() %>%
     ntw_dir_base_theme() %>%
-    add_property("vertex", "size", "type", "TRUE ~ 25")
+    add_property("vertex", "size", "type", "TRUE ~ 35")
   
   en_chain_matchings <- en_chain %>%
     matchings_example_networks() %>%
     purrr::map(ntw_format_theme) %>%
     purrr::map(ntw_control_network_theme) %>%
-    purrr::map(ntw_matched_theme)
+    purrr::map(ntw_matched_theme) %>%
+    purrr::map(~ add_property(., "vertex", "size", "type", "TRUE ~ 35"))
   
   en_star %<>%
     ntw_format_theme() %>%
     ntw_dir_base_theme() %>%
-    add_property("vertex", "size", "type", "TRUE ~ 12")
+    add_property("vertex", "size", "type", "TRUE ~ 17")
   
   en_star_matchings <- en_star %>%
     matchings_example_networks() %>%
     purrr::map(ntw_format_theme) %>%
     purrr::map(ntw_control_network_theme) %>%
-    purrr::map(ntw_matched_theme)
+    purrr::map(ntw_matched_theme) %>%
+    purrr::map(~ add_property(., "vertex", "size", "type", "TRUE ~ 17"))
   
   en_dir_m <- en_direction[[2]] %>%
     ntw_format_theme() %>%
@@ -40,134 +42,123 @@ make_fig_control_configurations <- function(en_chain, en_star, en_direction, pdf
   heading_height <- 0.25
   div_height <- 0.05
   inner_margin_height <- 0.05
-  plot_1_height <- 0.5
-  plot_2_height <- 1
+  desc_height <- 0.15
+  plot_1_height <- 0.75/2
+  plot_2_height <- 0.75
   plot_3_height <- 0.75
   legend_height <- 0.4
   
   heights <- c(heading_height, 
                plot_1_height,
-               div_height, 
-               inner_margin_height,
-               plot_2_height/2, plot_2_height/2, 
-               inner_margin_height,
+               desc_height,
+               div_height,
+               plot_2_height, 
+               desc_height,
                div_height,
                plot_3_height, 
+               desc_height,
                legend_height)
   d <- 30
-  x <- 3.4
-  widths <- c(0.005, x/3-x/2/d, x/d, x/2-x/3-x/d, x/d, x/2-x/3-x/d/2, x/3, 0.005)
+  x <- 3.5
+  widths <- c(x/3, 2*x/3/6, 2*x/3/6, 2*x/3/6, 2*x/3/6, 2*x/3/6, 2*x/3/6)
   
   pdf(pdf_out, width = sum(widths), height = sum(heights), paper='special')
   if(is.null(pdf_out)) dev.control("enable")
   
-  c(00,31,99,32,32,32,32,94, 
-    03,34,33,35,35,35,35,94,
-    84,84,82,82,82,82,82,82,
-    92,92,45,90,90,90,90,90,
-    96,40,45,43,43,43,43,97,
-    04,40,45,41,41,41,42,97,
-    93,93,45,91,91,91,91,91,
-    83,83,83,83,83,83,83,83,
-    05,50,53,51,51,51,52,98,
-    61,61,61,61,61,61,61,61) %>%
+  c(01,02,02,02,02,02,02,
+    30,31,31,31,31,31,31,
+    41,42,42,42,42,42,42,
+    90,90,90,90,90,90,90,
+    32,33,33,34,34,35,35,
+    43,44,44,44,44,44,44,
+    91,91,91,91,91,91,91,
+    36,37,37,37,38,38,38,
+    45,46,46,46,46,46,46,
+    80,80,80,80,80,80,80) %>%
     dplyr::dense_rank() %>%
-    matrix(ncol = 8, byrow = T) %>%
+    matrix(ncol = 7, byrow = T) %>%
     layout(heights = heights,
            widths = widths)
-  par(mar = rep(0,4), bg = "NA", xpd = NA)
+  par(mar = rep(0,4), bg = "white", xpd = NA)
   
-  plot.new()
-  
+  # 31
+  standalone_text("directed network", y = 0.5, adj = c(0.5,0), font = 2)  
   rect(grconvertX(0, "inches", "user"),
-       grconvertY(sum(heights) - heading_height - plot_1_height, "inches", "user"),
+       grconvertY(sum(heights) - heading_height - plot_1_height - desc_height, "inches", "user"),
        grconvertX(3.5, "inches", "user"),
        grconvertY(sum(heights) - heading_height, "inches", "user"),
        col = box_col, 
        border = NA)
   
   rect(grconvertX(0, "inches", "user"),
-       grconvertY(plot_3_height + div_height + legend_height, "inches", "user"),
+       grconvertY(plot_3_height + div_height + legend_height + desc_height, "inches", "user"),
        grconvertX(3.5, "inches", "user"),
-       grconvertY(plot_3_height + div_height + plot_2_height  + legend_height + inner_margin_height * 2, "inches", "user"),
+       grconvertY(plot_3_height + div_height + plot_2_height  + legend_height + desc_height * 2, "inches", "user"),
        col = box_col, 
        border = NA)
   
   rect(grconvertX(0, "inches", "user"),
        grconvertY(legend_height, "inches", "user"),
        grconvertX(3.5, "inches", "user"),
-       grconvertY(plot_3_height + legend_height, "inches", "user"),
+       grconvertY(plot_3_height + legend_height + desc_height, "inches", "user"),
        col = box_col, 
        border = NA)
   
   # darker rects
   
   darker_rects_width <- sum(0.05, x/3-x/2/d, x/d/2)
-  
+
   rect(grconvertX(0, "inches", "user"),
-       grconvertY(sum(heights) - heading_height - plot_1_height, "inches", "user"),
+       grconvertY(sum(heights) - heading_height - plot_1_height - desc_height, "inches", "user"),
        grconvertX(darker_rects_width, "inches", "user"),
        grconvertY(sum(heights) - heading_height, "inches", "user"),
-       col = box_col_2, 
+       col = box_col_2,
        border = NA)
-  
+
   rect(grconvertX(0, "inches", "user"),
-       grconvertY(plot_3_height + div_height + legend_height, "inches", "user"),
+       grconvertY(plot_3_height + div_height + legend_height + desc_height, "inches", "user"),
        grconvertX(darker_rects_width, "inches", "user"),
-       grconvertY(plot_3_height + div_height + plot_2_height  + legend_height + inner_margin_height * 2, "inches", "user"),
-       col = box_col_2, 
+       grconvertY(plot_3_height + div_height + plot_2_height  + legend_height + desc_height * 2, "inches", "user"),
+       col = box_col_2,
        border = NA)
-  
+
   rect(grconvertX(0, "inches", "user"),
        grconvertY(legend_height, "inches", "user"),
        grconvertX(darker_rects_width, "inches", "user"),
-       grconvertY(plot_3_height + legend_height, "inches", "user"),
-       col = box_col_2, 
+       grconvertY(plot_3_height + legend_height + desc_height, "inches", "user"),
+       col = box_col_2,
        border = NA)
-  
-  ## LABELS
-  # 03
-  # standalone_text("(a)", y = 0.75)
-  plot.new()
-  # 04
-  # standalone_text("(b)", y = 0.75)
-  plot.new()
-  # 05
-  # standalone_text("(c)", y = 0.75)
-  plot.new()
-  ## FIGURE C
-  # 31
-  standalone_text("directed network", y = 0.5, adj = c(0.5,0), font = 2)
+
   # 32
   standalone_text("control configurations", y = 0.5, adj = c(0.5,0), font = 2)
   # 33
   # standalone_vline(lty = 2)
-  plot.new()
+  # plot.new()
   # 34-35
   l <- matrix(c(1,2,3,4,
                 0,0,0,0), 4,2) %>% 
-    rescale_layout(xlim = c(-1, 1)* 1.5, ylim = c(1, 1))
+    rescale_layout(xlim = c(-1, 1)* 2, ylim = c(1, 1))
   plot_example_ntw(en_chain, layout = l)
   l <- matrix(c(1,2,3,4,0,
                 0,0,0,0,0), 5,2) %>%
-    rescale_layout(xlim = c(-1, 1)* 2, ylim = c(-0.6, 0.6))
+    rescale_layout(xlim = c(-1, 1)* 2.5, ylim = c(-0.6, 0.6))
   plot_example_ntw(en_chain_matchings[[1]], layout = l)
   ## FIGURE D
   # 40
-  l <- matrix(c(1,2,2,2,
-                2,3,2,1), 4,2) %>%
-    rescale_layout(xlim = c(-1, 1)* 0.3, ylim = c(-1, 1)* 0.75/2)
+  l <- matrix(c(3,2,2,2,
+                2,3,2,1), 4,2)[, c(2,1)] %>%
+    rescale_layout(xlim = c(-1, 1)* 0.55, ylim = c(-1, 1)* 0.75/2)
   plot_example_ntw(en_star, layout = l)
   # 41-44
   for(i in 1:3){
-    l <- matrix(c(1,2,2,2,0,3,3,
-                  2,3,2,1, 2,(3:1)[-i]), 7,2)  %>%
-      rescale_layout(xlim = c(-1, 1) * 1.8, ylim = c(-1,1) * 0.93)
+    l <- matrix(c(3,2,2,2,4,1,1,
+                  2,3,2,1, 2,(3:1)[-i]), 7,2)[, c(2,1)]   %>%
+      rescale_layout(xlim = c(-1, 1) * 0.55, ylim = c(-1,1) * 1)
     plot_example_ntw(en_star_matchings[[i]], layout = l, margin = rep(0.5,4))
   }
   # 45
   # standalone_vline(lty = 2)
-  plot.new()
+  # plot.new()
   ## FIGURE E
   # 50
   l <- direction_layout() %>%
@@ -181,7 +172,21 @@ make_fig_control_configurations <- function(en_chain, en_star, en_direction, pdf
   }
   # 53
   # standalone_vline(lty = 2)
-  plot.new()
+  ## TEXT DESCRIPTIONS
+  y_desc <- 0.7
+  standalone_text("N = 4", y = y_desc)
+  
+  standalone_text(latex2exp::TeX("$matching\\,size = 3 \\;\\;\\; D = 1 \\;\\;\\; n_d = 0.25$"), y = y_desc)
+  
+  standalone_text("N = 4", y = y_desc)
+  
+  standalone_text(latex2exp::TeX("$matching\\,size = 1 \\;\\;\\; D = 3 \\;\\;\\; n_d = 0.75$"), y = y_desc)
+  
+  standalone_text("N = 5", y = y_desc)
+  
+  standalone_text(latex2exp::TeX("$matching\\,size = 3 \\;\\;\\; D = 2 \\;\\;\\; n_d = 0.40$"), y = y_desc)
+  
+  # plot.new()
   plot.new()
   ## LEGEND
   
@@ -229,8 +234,6 @@ make_fig_control_configurations <- function(en_chain, en_star, en_direction, pdf
   # 83
   # standalone_hline(lty = 2)
   
-  
-  
   p <- recordPlot()
   
   dev.off()
@@ -241,5 +244,8 @@ make_fig_control_configurations <- function(en_chain, en_star, en_direction, pdf
     height = sum(heights)
   ))
 }
-# replayPlot(make_fig_control_configurations(en_chain, en_star, en_direction, "test.pdf")$plot)
+# 
+# library(magrittr)
+# drake::loadd(en_chain, en_star, en_direction)
+# replayPlot(make_fig_control_configurations(en_chain, en_star, en_direction, NULL)$plot)
 
