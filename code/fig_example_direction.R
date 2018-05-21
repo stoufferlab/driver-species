@@ -59,7 +59,7 @@ make_fig_control_configurations <- function(en_chain, en_star, en_direction, pdf
                desc_height,
                legend_height)
   d <- 30
-  x <- 3.5
+  x <- fig_sizes()$one_column_width
   widths <- c(x/3, 2*x/3/6, 2*x/3/6, 2*x/3/6, 2*x/3/6, 2*x/3/6, 2*x/3/6)
   
   pdf(pdf_out, width = sum(widths), height = sum(heights), paper='special')
@@ -130,7 +130,7 @@ make_fig_control_configurations <- function(en_chain, en_star, en_direction, pdf
        border = NA)
 
   # 32
-  standalone_text("control configurations", y = 0.5, adj = c(0.5,0), font = 2)
+  standalone_text("maximum matchings / control configurations", y = 0.5, adj = c(0.5,0), font = 2)
   # 33
   # standalone_vline(lty = 2)
   # plot.new()
@@ -176,15 +176,15 @@ make_fig_control_configurations <- function(en_chain, en_star, en_direction, pdf
   y_desc <- 0.7
   standalone_text("N = 4", y = y_desc)
   
-  standalone_text(latex2exp::TeX("$matching\\,size = 3 \\;\\;\\; D = 1 \\;\\;\\; n_d = 0.25$"), y = y_desc)
+  standalone_text(latex2exp::TeX("$matching\\,size = 3 \\;\\;\\; D = 1 \\;\\;\\; n_D = 0.25$"), y = y_desc)
   
   standalone_text("N = 4", y = y_desc)
   
-  standalone_text(latex2exp::TeX("$matching\\,size = 1 \\;\\;\\; D = 3 \\;\\;\\; n_d = 0.75$"), y = y_desc)
+  standalone_text(latex2exp::TeX("$matching\\,size = 1 \\;\\;\\; D = 3 \\;\\;\\; n_D = 0.75$"), y = y_desc)
   
   standalone_text("N = 5", y = y_desc)
   
-  standalone_text(latex2exp::TeX("$matching\\,size = 3 \\;\\;\\; D = 2 \\;\\;\\; n_d = 0.40$"), y = y_desc)
+  standalone_text(latex2exp::TeX("$matching\\,size = 3 \\;\\;\\; D = 2 \\;\\;\\; n_D = 0.40$"), y = y_desc)
   
   # plot.new()
   plot.new()
@@ -247,5 +247,5 @@ make_fig_control_configurations <- function(en_chain, en_star, en_direction, pdf
 # 
 # library(magrittr)
 # drake::loadd(en_chain, en_star, en_direction)
-# replayPlot(make_fig_control_configurations(en_chain, en_star, en_direction, NULL)$plot)
+# replayPlot(make_fig_control_configurations(en_chain, en_star, en_direction, "test.pdf")$plot)
 

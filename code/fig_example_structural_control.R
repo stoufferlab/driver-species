@@ -38,8 +38,8 @@ make_fig_structural_control <- function(en_direction, en_structural, pdf_out = N
                div_height, plot_2_height, 
                legend_height)
   d <- 30
-  x <- 3.2
-  margin_h <- (3.5-x)
+  x <- 3.1
+  margin_h <- (fig_sizes()$one_column_width-x)
   widths <- c(margin_h, x/3-x/2/d, x/d, x/2-x/3-x/d, x/d, x/2-x/3-x/d/2, x/3,0.001)
   
   pdf(pdf_out, width = sum(widths), height = sum(heights), paper='special') 
@@ -158,4 +158,5 @@ make_fig_structural_control <- function(en_direction, en_structural, pdf_out = N
   ))
 }
 
+# drake::loadd(en_structural, en_direction)
 # replayPlot(make_fig_structural_control(en_direction, en_structural, "test.pdf")$plot)
