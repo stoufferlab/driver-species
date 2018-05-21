@@ -169,11 +169,16 @@ ntw_control_network_theme <- . %>%
   add_property(element = "vertex", attr_name = "color", attr_base = "control_type", "type == 'b' ~ get_color('bg')", "TRUE ~ get_color('base')") %>%
   add_property(element = "vertex", attr_name = "size",attr_base = "control_type",  "type == 'a' ~ 55", "TRUE ~ 45")
 
-ntw_matched_theme <- . %>%  
-  add_property(element = "vertex", attr_name = "name_fancy", attr_base = "type", 'TRUE ~ NA') %>%
+ntw_matched_theme <- function(x, named = F){
+  x %<>%  
   add_property(element = "vertex", attr_name = "color", attr_base = "matched", 'type ~ get_color("matched")', '!type ~ get_color("unmatched")', 'TRUE ~ get_color("bg")') %>%
   add_property(element = "edge", attr_name = "color", attr_base = "matched", 'type ~ get_color("matched")', '!type ~ get_color("unmatched")', 'TRUE ~ get_color("control")') %>%
-  add_property(element = "vertex", attr_name = "size",attr_base = "type", "TRUE ~ 25")
+    add_property(element = "vertex", attr_name = "size",attr_base = "type", "TRUE ~ 25") %>%
+    add_property(element = "vertex", attr_name = "label.color", attr_base = "matched", 'type ~ "white"', '!type ~ "black"', 'TRUE ~ "black"')
+  
+  if(!named) x %<>% add_property(element = "vertex", attr_name = "name_fancy", attr_base = "type", 'TRUE ~ NA') 
+  return(x)
+} 
 
 ntw_dir_base_theme <- . %>%
   add_property(element = "vertex", attr_name = "name_fancy", attr_base = "type", 'TRUE ~ NA')
