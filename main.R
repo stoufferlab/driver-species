@@ -48,7 +48,8 @@ example_plots_plan <- drake::drake_plan(
   en_chain = example_ntw_matchings_chain(),
   en_star = example_ntw_matchings_star(), 
   fig_control_config = make_fig_control_configurations(en_chain, en_star, en_direction), 
-  fig_struct_control = make_fig_structural_control(en_direction, en_structural)
+  fig_struct_control = make_fig_structural_control(en_direction, en_structural),
+  fig_supp_matching = make_fig_maximum_matching(en_direction)
 )
 
 reporting_plan <- drake::drake_plan(
