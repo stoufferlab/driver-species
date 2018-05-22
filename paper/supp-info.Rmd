@@ -125,6 +125,14 @@ drake::loadd(fig_all_matching)
 replayPlot(fig_all_matching$plot)
 ```
 
+```{r}
+drake::loadd(fig_small_network)
+```
+
+```{r fig-small-network, fig.height=fig_small_network$height, fig.width=fig_small_network$width,fig.cap = "**Illustration of the procedure with an empirical network**. (a) The initial visitation network. (b) The directed network in which the direction of control is determined based on the mutual dependences and asymmetries. (c) One of the possible maximum matchings calculated using the procedures illustrated in the Figures \\@ref(fig:fig-direction-of-control) and \\@ref(fig:fig-finding-all-matchings)"}
+replayPlot(fig_small_network$plot)
+```
+
 ## Finding all possible minimum driver node sets
 
 # Empirical vs. random expectation of controllability {#randomisations}
