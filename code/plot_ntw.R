@@ -59,6 +59,8 @@ plot_examples <- function(x, ...){
                       vertex.label.color = igraph::V(x)$label.color,
                       vertex.size = igraph::V(x)$size,
                       vertex.color = igraph::V(x)$color,
+                      vertex.frame.color = igraph::V(x)$frame.color,
+                      vertex.shape = igraph::V(x)$shape,
                       # vertex.label.family = fam,
                       # vertex.label.color = l_c,
                       edge.width = igraph::E(x)$width,
@@ -149,19 +151,21 @@ plot_example_ntw <- function(x, ...){
 }
 
 # common formatting
-ntw_format_theme <- .  %>%
-  fancify_vertex_name() %>%
-  add_property(element = "edge", attr_name = "color", attr_base = "type", 'TRUE ~ "black"') %>%
-  add_property(element = "edge", attr_name = "label.color", attr_base = "type",'TRUE ~ "black"') %>%
-  add_property(element = "edge", attr_name = "label.font", attr_base = "type",'TRUE ~ 2') %>%
-  add_property(element = "vertex", attr_name = "color",attr_base = "type", "TRUE ~ get_color('base')") %>%
-  add_property(element = "vertex", attr_name = "frame.color", attr_base = "type","TRUE ~ 'black'") %>%
-  add_property(element = "vertex", attr_name = "size",attr_base = "type", "TRUE ~ 55") %>%
-  add_property(element = "vertex", attr_name = "label.cex", attr_base = "type","TRUE ~ 1") %>%
-  add_property(element = "vertex", attr_name = "label.color", attr_base = "type","TRUE ~ 'black'") %>%
-  add_property(element = "edge",attr_name = "arrow.size", attr_base = "control_type", "TRUE ~ 0.4") %>%
-  add_property(element = "edge",attr_name = "arrow.width", attr_base = "control_type", "TRUE ~ 0.7") 
-
+ntw_format_theme <- function(x){
+  x %>%
+    fancify_vertex_name() %>%
+    add_property(element = "edge", attr_name = "color", attr_base = "type", 'TRUE ~ "black"') %>%
+    add_property(element = "edge", attr_name = "label.color", attr_base = "type",'TRUE ~ "black"') %>%
+    add_property(element = "edge", attr_name = "label.font", attr_base = "type",'TRUE ~ 2') %>%
+    add_property(element = "vertex", attr_name = "color",attr_base = "type", "TRUE ~ get_color('base')") %>%
+    add_property(element = "vertex", attr_name = "frame.color", attr_base = "type","TRUE ~ 'black'") %>%
+    add_property(element = "vertex", attr_name = "size",attr_base = "type", "TRUE ~ 55") %>%
+    add_property(element = "vertex", attr_name = "label.cex", attr_base = "type","TRUE ~ 1") %>%
+    add_property(element = "vertex", attr_name = "label.color", attr_base = "type","TRUE ~ 'black'") %>%
+    add_property(element = "edge",attr_name = "arrow.size", attr_base = "control_type", "TRUE ~ 0.4") %>%
+    add_property(element = "edge",attr_name = "arrow.width", attr_base = "control_type", "TRUE ~ 0.7") 
+  
+}
 ntw_control_network_theme <- . %>%
   add_property(element = "edge", attr_name = "color", attr_base ="control_type", 'type== "a" ~ "black"', 'TRUE ~ get_color("control")') %>%
   add_property(element = "edge",attr_name = "lty", attr_base = "control_type", "type == 'a' ~ 1", "TRUE ~ 1") %>%

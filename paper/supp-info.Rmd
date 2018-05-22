@@ -117,6 +117,14 @@ replayPlot(fig_supp_matching$plot)
 
 ## Finding all possible maximum matchings
 
+```{r}
+drake::loadd(fig_all_matching)
+```
+
+```{r fig-all-maximum-matching, fig.height=fig_all_matching$height, fig.width=fig_all_matching$width,fig.cap = "Finding a maximum matching in a complex network. (left) Directed network that indicate the direction of control between species. (center) Alternative bipartite representations of the directed networks. (right) The matchings in the bipartite representation mapped back to the original network."}
+replayPlot(fig_all_matching$plot)
+```
+
 ## Finding all possible minimum driver node sets
 
 # Empirical vs. random expectation of controllability {#randomisations}
