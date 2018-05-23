@@ -13,7 +13,7 @@ make_fig_all_matchings <- function(en_direction, pdf_out = NULL){
     igraph::set_vertex_attr(n1, "name", value = .) %>%
     igraph::set_vertex_attr("type", value = "a") %>%
     ntw_format_theme() %>%
-    add_property(element = "vertex", attr_name = "size",attr_base = "type", "TRUE ~ 35")
+    add_property(element = "vertex", attr_name = "size",attr_base = "type", "TRUE ~ 33")
   
   line_names <- paste(igraph::ends(n1, 1:5)[,1], igraph::ends(n1, 1:5)[,2], sep = "-")
   
@@ -78,7 +78,6 @@ make_fig_all_matchings <- function(en_direction, pdf_out = NULL){
   standalone_text("L(P): line graph of P", font = 2)
   standalone_text("H: complement of L(P)", font = 2)
   standalone_text("max. cliques in H", font = 2)
-  
   
   p <- recordPlot()
   dev.off()
