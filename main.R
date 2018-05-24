@@ -51,7 +51,8 @@ example_plots_plan <- drake::drake_plan(
   fig_struct_control = make_fig_structural_control(en_direction, en_structural),
   fig_supp_matching = make_fig_maximum_matching(en_direction), 
   fig_all_matching = make_fig_all_matchings(en_direction), 
-  fig_small_network = make_small_network(networks)
+  fig_small_network = make_small_network(networks),
+  fig_input_graph = make_fig_input_graph(en_direction, en_star, en_chain)
 )
 
 reporting_plan <- drake::drake_plan(

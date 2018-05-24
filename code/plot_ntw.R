@@ -135,6 +135,7 @@ get_color <- function(x = T){
     x == "unmatched" ~ my_pallete()$light_purple,
     x == "control" ~ my_pallete()$dark_orange,
     x == "base" ~ my_pallete()$light, 
+    x == "dark" ~ "grey10",
     x == "bg" ~ "grey95",
     x == "bg_dark" ~ "grey90",
     TRUE ~ "white"

@@ -157,8 +157,14 @@ replayPlot(fig_all_matching$plot)
 
 
 
+```{r}
+drake::loadd(fig_input_graph)
+```
 
 ## Finding all possible minimum driver node sets
+```{r fig-input-graph, fig.height=fig_input_graph$height, fig.width=fig_input_graph$width,fig.cap = "lorem asd"}
+replayPlot(fig_input_graph$plot)
+```
 
 # Empirical vs. random expectation of controllability {#randomisations}
 
