@@ -1,0 +1,61 @@
+---
+title: "Ecological network control"
+subtitle: "Response to Reviewers"
+author: "Fernando Cagua, Kate L. Wootton, Daniel B. Stouffer"
+classoption: a4paper
+csl: journal-of-ecology.csl
+documentclass: artikel1
+output: 
+  bookdown::pdf_document2: 
+    keep_tex: yes
+    toc: false
+header-includes:
+  - \usepackage{booktabs}
+  - \usepackage{setspace}
+  - \usepackage{xr}
+  - \externaldocument[M-]{manuscript}
+bibliography: references.bib
+---
+
+\doublespacing
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, 
+                      warning = FALSE)
+```
+
+# Editor comments
+
+> "I agree with the AE and reviewers that this is an interesting and potentially important manuscript. I support the AE's decision to reject but invite resubmission for all the reasons mentioned. I encourage resubmission if you feel that you can better bring out the conceptual importance of their work for plant ecologists. If you wish to strengthen the applied focus with specific conservation recommendations then you may wish to submit to Journal of Applied Ecology. Reviewer 1 offers suggestions for both approaches. I hope that you choose the former."
+
+#  Assocciate Editor comments
+
+> Both reviewers see potential value in the application of control theory to species interaction networks and found the work to be of interest. I agree that the method and its application to plant-pollinator networks are interesting, particularly the findings that contrast invaded vs uninvaded networks and use novel metrics to describe the influence of invasive species in networks. Both reviewers also note, however, that the current ms falls short of clearly and convincingly demonstrating the utility of control theory in making management decisions. They call for more in-depth exploration and illustration of what novel and important contributions this method would make to conservation. For these reasons, this work may be better-suited to a more applied journal (e.g., Journal of Applied Ecology), assuming the ms is revised in the recommended direction.
+
+# Reviewer one comments
+
+> I read with great interest the manuscript by Cagua et al. on “Quantifying the manageability of pollination networks in an invasion context”. The authors use control theory to develop an approach to assess how ecological networks – here pollination networks – can be managed, and test the approach on ten pairs of invaded and uninvaded plant-pollinator communities. Overall, the methodological approach appears to be sound (I’m not familiar with control theory, so I’ll have to leave in-depth assessment to an expert), the descriptions and rationale behind the assumptions used to develop the methods are logical and reasonable, and the illustration of the concept using published networks seems appropriate. Also, although the manuscript may require a few minor edits it is well and clearly written. I do, however, have some concerns about the applicability of the approach and the findings, which I’ll describe in more detail below. 
+
+> When I first read the title and the abstract of the manuscript I was excited about the prospect of reading about a way forward using ecological networks to improve ecosystem conservation. Now, having read the manuscript twice, I’m not persuaded that the proposed approach really advances our ability to conserve or restore ecological communities as the authors claim, or whether the approach provides primarily another, rather complex, way of analysing networks and describing the role of species in networks. As it is, the authors fail to convince me that the developed approach really advances our ability to prioritise species for ecosystem conservation, nor does the manuscript offer novel insights into the role and importance of certain species in a network and for ecosystem functioning. I’ve little doubt that there are ecological and theoretical justifications for combining control and network theory, but the authors don’t yet show that their proposed methods are overly useful in applied conservation. 
+
+> I can see two ways forward: the authors re-arrange and re-word the manuscript to focus on the ecological advances that such an approach would bring to explaining and predicting network structure; or the authors describe in more detail a few scenarios in which conservation practitioners and managers could apply the proposed method to ‘improve’ management strategies or measure the efficacy of interventions. The latter would require a stronger justification of the advantages of control-theory approach compared to the classic species-level network metrics.
+
+> In short, I feel that the manuscript is currently a hybrid between ecological theory and applied conservation without being fully beneficial for either of the two disciplines. With a few changes to the manuscript, the interpretation and presentation of the results, and a re-write of the discussion with more tangible points and concrete examples from practical experience, the manuscript has the potential to be a solid contribution to the field of applied ecology. 
+
+> One last minor remark, the authors have overlooked some key references in the field of restoration/conservation and ecological interactions/networks, which would strengthen the manuscript further, e.g. 
+Harvey, E., Gounand, I., Ward, C.L. & Altermatt, F. (2017) Bridging ecology and conservation: from ecological networks to ecosystem function. Journal of Applied Ecology, 54, 371-379; 
+Devoto, M., Bailey, S., Craze, P. & Memmott, J. (2012) Understanding and planning ecological restoration of plant–pollinator networks. Ecology Letters, 15, 319-32; 
+Kaiser-Bunbury, C.N., Mougal, J., Whittington, A.E., Valentin, T., Gabriel, R., Olesen, J.M. & Blüthgen, N. (2017) Ecosystem restoration strengthens pollination network resilience and function. Nature, 542, 223-227;
+Pires, M.M., Marquitti, F.M.D. & Guimarães Jr, P.R. (2017) The friendship paradox in species-rich ecological networks: Implications for conservation and monitoring. Biological Conservation, 209, 245-252.
+
+# Reviewer two comments
+
+> The management of complex ecological networks is of vast importance for the conservation of the natural world. While the field of ecological networks is vast few have tackle this question in a practical way. This paper would make a significant contribution to a field that needs to change direction if it is to help inform conservation as often purported in studies from the this field. 
+
+> The control theory approach is very interesting. I think however there needs to be more clarity in the paper. It is hard to read. A reworking of it including using descriptions of the variable through out instead of variable names would improve this. 
+
+> Better context needs to be given for previous work to look at the management of networks in ecology. There are a few papers and knowing how this one differs from these (not just the ones that look at node importance for example) is important. Some of these papers are mentioned in the discussion but in the intro it is important to know what they do and why this paper is novel.  
+
+> Finally I think it is important to provide context about what kind of decisions are being made and could be informed by this approach. Who is managing plant-pollinator networks and what choices would they actually be making. Some examples should be expanded on. And also how would the outputs of this work actual inform choices and guide prioritization
+
+> And finally I think mentioning the extreme uncertainty mostly seen in networks in the real world is key, how can approaches deal with this needs to be discussed. What do we need to think about interms of key information to use this approach.

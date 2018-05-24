@@ -59,7 +59,9 @@ reporting_plan <- drake::drake_plan(
   render_pdf(drake::knitr_in('paper/supp-info.Rmd'), 
              drake::file_out('paper/supp-info.pdf'), clean_md = FALSE),
   render_pdf(drake::knitr_in('paper/manuscript.Rmd'), 
-             drake::file_out('paper/manuscript.pdf'), clean_md = FALSE)
+             drake::file_out('paper/manuscript.pdf'), clean_md = FALSE),
+  render_pdf(drake::knitr_in('paper/reviewers-response.Rmd'), 
+             drake::file_out('paper/reviewers-response.pdf'), clean_md = FALSE)
 )
 
 project_plan <- rbind(read_data_plan, basic_analysis_plan, example_plots_plan, reporting_plan)
