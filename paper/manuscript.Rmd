@@ -142,7 +142,7 @@ For example, in a network composed by jobs and job applicants, a matching is any
 Consequently, a maximum matching is an optimal pairing, one that maximises the number of applicants with jobs and the number of positions filled. 
 At first glance, however, is  hard to identify how exactlty matchings are related to structural controllability. 
 The key is to note that the conditions of structural controllability imply that, just like the one to one relationship between jobs and applicants, there needs to be a one to one relationship between *superior* and *subordinate* nodes (Figure \@ref(fig:fig-example-networks)b, bottom left). 
-We use the maximum matching algorithm to find an optimal pairing of superior and subordinate nodes in a way consistent with the controllability conditions. 
+We use the maximum matching algorithm to find an optimal pairing of superior and subordinate nodes in a way consistent with the controllability conditions (supplementary information section \@ref(S-one-maximum-matching)). 
 The result is that a matching can actually be decomposed into a set of paths that reveal how a control signal can flow across the links in a network to reach every node that compose it. 
 And so, as recently shown [@liu_controllability_2011], the minimum driver node set, those to which an external control input should be applied to make the system controllable, corresponds exactly to the *unmatched* nodes in the network (Figure \@ref(fig:fig-control-configuration)).
 
@@ -153,8 +153,6 @@ drake::loadd(fig_control_config)
 ```{r fig-control-configuration, fig.height=fig_control_config$height, fig.width=fig_control_config$width,fig.cap = "Maximum matchings and control configurations. In directed networks a maximum matching is the largest possible set of links that do not share start or end nodes (dark purple). Maximum matchings are not necessarly unique, instead each of them is related to a possible minimum driver node set in the network (the nodes to which an external control input, in orange, should be applied in order to ensure controllability). The size of the minimum driver node set *D* corresponds exactly to the number of unmatched nodes (the number of nodes in the network *N* minus the matching size). To account for network size, we use size of the minimum driver node set relative to the total number of nodes *n~D~ = D/N* as a measure of the extent to which the network structure can be harnessed to control the system."}
 replayPlot(fig_control_config$plot)
 ```
-
-The technical details of the algorithm we use to find a maximum matching in a network can be found in the supplementary information section \@ref(S-one-maximum-matching).
 
 ## Differences between invaded and uninvaded networks
 
@@ -170,7 +168,8 @@ Conversely, the structure of a linear trophic chain can be harnessed to achieve 
 
 After finding the minimum driver node set in each of our networks we want to test whether invasion status or other predictors are correlated to this metric of controllability. 
 We therefore use a set of generalised linear models (with binomial error structure) to investigate the effect of invasion status while also including covariates related to species richness, since one might naively expect to see a negative relationship between richness and controllability [@menge_indirect_1995]. 
-These covariates included the total number of species, plant richness, pollinators richness, the ratio of plant to pollinator richness, the link density (connectance), and the study site (as a two-level factor). In addition, we also explored whether real networks differ in their architecture from random ones in a concerted way; further details about this procedure can be found in the supplementary information section \@ref(S-randomisations).
+These covariates included the total number of species, plant richness, pollinators richness, the ratio of plant to pollinator richness, the link density (connectance), and the study site (as a two-level factor). 
+In addition, we also explored whether real networks differ in their architecture from random ones in a concerted way (supplementary information section \@ref(S-randomisations)).
 
 ## Species roles
 
