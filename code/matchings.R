@@ -65,7 +65,8 @@ get_input_graph <- function(x){
     purrr::map(make_graph_from_vertex) %>%
     do.call(union_input_graphs, .)
   
- 
+  # sets attribute 'input_node' that determines wether a node is redudndant
+  # (FALSE) or a possible input node (TRUE)
   ig <- input_graph(driver) %>%
     igraph::set_vertex_attr("input_node", value = TRUE) %>%
     union_input_graphs(input_graph(non_driver) %>% 
@@ -140,6 +141,7 @@ control_capacity <- function(x){
     x %<>% get_input_graph()
   }
   
+  # find components with a driver node
   comp <- igraph::induced_subgraph(x$input_graph, 
                                    igraph::V(x$input_graph)[igraph::V(x$input_graph)$input_node]) %>%
     igraph::components() 
