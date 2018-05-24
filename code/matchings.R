@@ -109,22 +109,23 @@ union_input_graphs <- function(..., delete_graph_attr = TRUE){
   
   joint_network <- nets %>%
     do.call(igraph::union, .)
-  
-  for (i in 1:length(at)){
-    values <- 1:n_nets %>%
-      purrr::map(~ coalece_attribute(joint_network, at[i], .)) %>%
-      do.call(dplyr::coalesce, .)
-    for(j in 1:n_nets){
-      if(delete_graph_attr){
+  if(length(at) > 0){
+    for (i in 1:length(at)){
+      values <- 1:n_nets %>%
+        purrr::map(~ coalece_attribute(joint_network, at[i], .)) %>%
+        do.call(dplyr::coalesce, .)
+      for(j in 1:n_nets){
+        if(delete_graph_attr){
+          joint_network %<>%
+            igraph::delete_graph_attr(paste("name", j, sep = "_")) %>%
+            igraph::delete_graph_attr(paste("loops", j, sep = "_"))
+        }
         joint_network %<>%
-          igraph::delete_graph_attr(paste("name", j, sep = "_")) %>%
-          igraph::delete_graph_attr(paste("loops", j, sep = "_"))
+          igraph::delete_vertex_attr(paste(at[i], j, sep = "_"))
       }
       joint_network %<>%
-        igraph::delete_vertex_attr(paste(at[i], j, sep = "_"))
-    }
-    joint_network %<>%
-      igraph::set_vertex_attr(at[i], value = values)
+        igraph::set_vertex_attr(at[i], value = values)
+    } 
   }
   joint_network
 }
