@@ -70,17 +70,17 @@ get_input_graph <- function(x){
   ig <- input_graph(driver) %>%
     igraph::set_vertex_attr("input_node", value = TRUE) %>%
     union_input_graphs(input_graph(non_driver) %>% 
-                         set_vertex_attr("input_node", value = F), 
+                         igraph::set_vertex_attr("input_node", value = F), 
                        delete_graph_attr = F) 
   
-  set_graph_attr(x, "input_graph", ig)
+  igraph::set_graph_attr(x, "input_graph", ig)
 }
 
 get_control_adjacent <- function(x, d){
   
   d_bip <- paste0(d$name, "..t")
   
-  adjacent_bip <- igraph::V(x$bipartite_representation)[distances(x$bipartite_representation, d_bip) == 2] %>%
+  adjacent_bip <- igraph::V(x$bipartite_representation)[igraph::distances(x$bipartite_representation, d_bip) == 2] %>%
     purrr::map_lgl(~is_adjacent(x$bipartite_representation, d_bip, .)) %>%
     `names<-`(stringi::stri_sub(names(.), 1, -4))
 
