@@ -117,6 +117,19 @@ drake::loadd(fig_supp_matching)
 replayPlot(fig_supp_matching$plot)
 ```
 
+To further ilustrate our methodology here, we also show the approach for the smallest of our empirical networks, the uninvaded network at site 10 (Table \@ref(tab:table-network-properties); Figure \@ref(fig:fig-small-network)). 
+This network is composed of 19 species of which three are non-invasive plants and the other 16 are pollinators. 
+The one-to-one relationship between matched and superior nodes implies that in order to achieve full network controllability, most pollinators would be unmatched, and hence are classified as driver nodes that require external intervention. 
+At the same time, both plants in the community, *Heracleum sphondylum* and *Rubus fructicosus*, and one of the pollinators, *Orthotylus/Lygocorus*, tend to be classified as superior nodes.
+
+```{r}
+drake::loadd(fig_small_network)
+```
+
+```{r fig-small-network, fig.height=fig_small_network$height, fig.width=fig_small_network$width,fig.cap = "Illustration of the procedure with an empirical community. The visitation network (top), the number of visits between species pairs is shown on each link. The directed network in which the direction of control is determined based on the mutual dependences (middle). One of the possible maximum matchings of this network (bottom)."}
+replayPlot(fig_small_network$plot)
+```
+
 ## Finding all possible maximum matchings {#all-maximum-matching}
 
 The algorithm implemented in `max_bipartite_matching`, however, is only able to find **one** of possibly many maximum matchings in a network. 
@@ -142,18 +155,8 @@ drake::loadd(fig_all_matching)
 replayPlot(fig_all_matching$plot)
 ```
 
-To further ilustrate our methodology here, we also show the approach for the smallest of our empirical networks, the uninvaded network at site 10 (Table \@ref(tab:table-network-properties); Figure \@ref(fig:fig-small-network)). 
-This network is composed of 19 species of which three are non-invasive plants and the other 16 are pollinators. 
-The one-to-one relationship between matched and superior nodes implies that in order to achieve full network controllability, most pollinators would be unmatched, and hence are classified as driver nodes that require external intervention. 
-At the same time, both plants in the community, *Heracleum sphondylum* and *Rubus fructicosus*, and one of the pollinators, *Orthotylus/Lygocorus*, tend to be classified as superior nodes.
 
-```{r}
-drake::loadd(fig_small_network)
-```
 
-```{r fig-small-network, fig.height=fig_small_network$height, fig.width=fig_small_network$width,fig.cap = "Illustration of the procedure with an empirical community. The visitation network (top), the number of visits between species pairs is shown on each link. The directed network in which the direction of control is determined based on the mutual dependences (middle). One of the possible maximum matchings of this network (bottom)."}
-replayPlot(fig_small_network$plot)
-```
 
 ## Finding all possible minimum driver node sets
 
