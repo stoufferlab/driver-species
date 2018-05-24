@@ -174,35 +174,30 @@ These covariates included the total number of species, plant richness, pollinato
 
 ## Species roles
 
+While calculating the size of the minimum drive node set can measure the controllability of an ecological community, it does not provide information about the role that particular species play. 
 Our second key question is related to how species differ in their ability to drive the population dynamics of the community. 
 Ecologically, these differences are relevant because resources and data are limited, and therefore full control is unfeasible. 
-We are mostly interested in two specific aspects.
-First how species differ in their relative , second, how species 
+To answer this question, we make two kind of distinctions between species from a control perspective. 
 
+First, we harness the fact that maximum matchings in a network are often not unique, and each maximum matching indicates unique paths that can potentially be used to control the network. 
+Specifically we use the frequency with which a species is part of the multiple minimum driver node sets, its control capacity $\phi$, as an estimation of its relative importance in driving the state of the community as a whole [@jia_control_2013]. 
+For example, a species with a control capacity $\phi_i= 1$ is a one that requires external input in every single control configuration. 
+This is, if we were to drive the community to an arbitrary alternate state, we would need to apply a management intervention to this species under any optimal control strategy. 
 
-is management interventions should be focused on the set of species that might provide the largest impact. 
-While calculating the size of the minimum drive node set can measure the controllability of an ecological community, it does not provide information about the role that particular species play. 
+Intuitively, to calculate a species control capacity $\phi$ we need to enumerate all possible maximum matchings (we detail the algorithm to find all maximum matchings in the Supplementary Information section \@ref(S-all-maximum-matching)). 
+However, enumerating all maximum matchings extremely expensive from a computational perspective—a network with a couple dozen nodes could be controlled with several hundred million unique matchinghs. 
+To solve this problem we instead employ a recently developed algorithm that reveals the control correlations between the nodes in the graph [@zhang_input_2016, Supplementary Information section \@ref(S-input-graph)]. 
+Using this algorithm we are able to obtain every minimum driver node set with information obtained from a single maximum matching. 
+The end result is that we are now able to calculate the control capacity $\phi_i$ of every node in linear time—rather than polynomial as the algoritm for matching enumeration requires. 
 
-Moreover, maximum matchings in a network are often not unique, and each maximum matching indicates unique paths that can potentially be used to control the network. 
-We harness this property and use a network's complete set of maximum matchings to characterise each species' relative importance in driving the state of the community. 
-One possibility is to characterise a species by the frequency *f~D~* with which it is classified as a driver node within this set of matchings.
-However, the profile of our networks indicates that a large proportion of species were classified as driver nodes because of external interventions required to achieve **full** controllability and not because they influence the abundance of other species (Supporting Information S2).
-Furthermore, the precise role of driver nodes is more ambiguous when full control is unfeasible or undesired—often the case in ecological settings.
-We therefore also calculate the frequency *f~S~* with which a species is classified as a superior node since this is the frequency with which they form part of possible control paths.
+A species control capacity $\phi$ allow us to identify species that are critical to change or maintain the state of the community. 
+However, in ecological settings, changing the state of the community as a whole is often not required or undesired. 
+Consequently, we make a second distinction between nodes based on wether they form part of possible control paths in the network and therefore are likely to influence the abbundance of another species. 
+We identify those species by checking wether they are classified as a superior node, this is they are at the beginning of a matched link. 
+While unmatched nodes correspond to those that should be influenced with an external control input, superior nodes correspond to those that influence other species internally. 
+Conveniently, with the execption of some patological cases, superior nodes are such across every control configuration and therefore knowing one maximum matching provides enough information on whether a species is likely to play an important role at influencing the abundance of other species or not.
 
-Most commonly, structural controllability assumes unweighted networks—links exist or not, and hence *f~D~* and *f~S~* can be calculated by computing all possible maximum-cardinality matchings. 
-However, we take the link weights into account when calculating the matchings here because the weights can reveal significant ecological patterns and processes that might be undetectable in unweighted networks [@Scotti2007; @Tylianakis2007; @Vazquez2007; @Kaiser-Bunbury2010a]. 
-Additionally, species *A* may interact with both species *B* and *C* but depends strongly on *B* and only weakly on *C*. 
-Intuitively, a management intervention designed to indirectly modify the abundance of species *A* is more likely to succeed if the abundance of *B*, rather than *C*, is directly controlled.
-A complication of including the interaction weight when calculating the maximum matching, however, is that empirical interaction strengths are to some extent stochastic and depend on proximate factors such as sampling method and intensity [@Gibson2011].
-We overcome this issue by calculating all maximal cardinality matchings and then ranking them by their matching weight. 
-By following this approach, we effectively give priority to the species that participate in the pathways that potentially have the largest impact on the community while acknowledging the limitations associated with sampling and its potential restrictions [@Jordano2016]. 
-
-Our second key question was related to how species differ in their ability to drive the population dynamics of the community. 
-To quantify this importance, we computed all maximal cardinality matchings in each network. 
-We then calculated the frequency with which each species *i* was a driver (*f~D~*) or a superior node (*f~S~*) in the set of matchings that had a matching weight greater or equal to 0.8 times the weight of the maximum matching. 
-We selected this threshold as it provided a high agreement between networks quantified by visitation and pollination efficiency as well as between our weighting/directionality assumptions; however, the choice of this threshold had a negligible impact on any results (Supporting Information S8).
-Details about the computational procedure to find all maximal cardinality matchings of a network can be found in Supporting Information S1 and Figure S2.
-
+We then examined whether any species-level structural properties could predict a species control capacity $\phi$ and the likelihood of being a superior node.
+Still need to decide how to do this and how to compare traditional centrality metrics to the new control based ones.
 
 # References
