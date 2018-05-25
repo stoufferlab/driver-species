@@ -197,6 +197,6 @@ While unmatched nodes correspond to those that should be influenced with an exte
 Conveniently, with the execption of some patological cases, superior nodes are such across every control configuration and therefore knowing one maximum matching provides enough information on whether a species is likely to play an important role at influencing the abundance of other species or not.
 
 We then examined whether any species-level structural properties could predict a species control capacity $\phi$ and the likelihood of being a superior node.
-Still need to decide how to do this and how to compare traditional centrality metrics to the new control based ones.
+*TODO: Still need to decide how to do this and how to compare traditional centrality metrics to the new control based ones. Will probably base the comparision on stability/feasibility metrics or/and on coextinction of species groups.*
 
 # References
