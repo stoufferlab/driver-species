@@ -3,7 +3,7 @@
 run_main:
 	Rscript main.R
 
-LOGFILE=sumbission_`date +'%F'`
+LOGFILE=draft_`date +'%F'`
 
-submision:  
+draft:  
 	zip -j $(LOGFILE) paper/*.pdf
