@@ -33,7 +33,7 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE,
                       warning = FALSE)
 ```
 
-# Characteristics of the epirical networks {#empirical-networks}
+# Characteristics of the empirical networks {#empirical-networks}
 
 ```{r}
 drake::loadd(metadata)
@@ -51,7 +51,6 @@ As shown by the network asymmetry *AS* [@bluthgen_specialization_2007], the netw
 Furthermore, the networks had relatively low levels of nestedness [when measured using the quantitative version of the NODF index; @almeida-neto_straightforward_2011]. Details for each network can be found in the Table \@ref(tab:table-network-properties).
 
 ```{r table-network-properties, results = "asis", sanitize = FALSE}
-
 net_prop %>%
 	dplyr::select(-net_name, -count, -net) %>%
 	dplyr::filter(study != "ballantyne") %>%
@@ -90,7 +89,7 @@ net_prop %>%
 # Structural controllability {#structural-controllability}
 
 Structural controllability avoids the limitation of not knowing the exact values of the matrices *A* and *B*. 
-Using structural controllability controllability can be boiled down to two conditions: a system is controllable if there are no inaccessible nodes or dilations. A node is inaccessible if there are no directed paths between it and the input nodes. "Dilations are subgraphs in which a small subset of nodes attempts to rule a larger subset of nodes. In other workds there are more 'subordinates' than 'superiors'" [@liu_control_2016].
+Using structural controllability can be boiled down to two conditions: a system is controllable if there are no inaccessible nodes or dilations. A node is inaccessible if there are no directed paths between it and the input nodes. "Dilations are subgraphs in which a small subset of nodes attempts to rule a larger subset of nodes. In other words, there are more 'subordinates' than 'superiors'" [@liu_control_2016].
 
 The goal of structural controllability is to use the information contained in **A** to generate a supportable estimate of **B**.
 This focus allows us to gain insight of the inherent controllability of a network, and the roles of the species that compose it, without being overly dependent on the particular choices of how the system dynamics are modelled or characterised. 
@@ -101,12 +100,12 @@ Nevertheless, the lessons gained when assuming linearity---at both the network a
 
 ## Finding a single maximum matching {#one-maximum-matching}
 
-Our approach to find the minumum number of driver nodes relies on finding maximum matchings. 
+Our approach to finding the minimum number of driver nodes relies on finding maximum matchings. 
 We start with a directed network in which the direction of the link represents the direction of control (Figure \@ref(fig:fig-maximum-matching-procedure) left panel). 
-We then construct an alternative representation of the directed network in which each node of the directed network is represented by two nodes that indicate their outgoing and incoming links respectively (Figure \@ref(fig:fig-maximum-matching-procedure) center panel). 
+We then construct an alternative representation of the directed network in which each node of the directed network is represented by two nodes that indicate their outgoing and incoming links respectively (Figure \@ref(fig:fig-maximum-matching-procedure) centre panel). 
 Finding a maximum matching in this alternative representation is equivalent to finding the largest possible set of edges in which one node on the left-hand side is connected to at most one node on the right-hand side. 
 To find the maximum matching we use the push-relabel algorithm implemented in `max_bipartite_matching` in the R package igraph 1.0.1 [@Csardi2006a]. 
-Once we have the matching (shown in the Figure \@ref(fig:fig-maximum-matching-procedure) center panel) it is then easy to identify the roles of each node in this representation: nodes on the top-level that are connected to a matched (dark purple) link are superior while those connected to a matched link on the bottom-level are matched. 
+Once we have the matching (shown in the Figure \@ref(fig:fig-maximum-matching-procedure) center panel) it is then easy to identify the roles of each node in this representation: nodes on the top-level that are connected to a matched link (dark purple) are superior while those connected to a matched link on the bottom-level are matched. 
 This information can then be mapped back to the original representation to identify the control paths and the driver nodes in the network (Figure \@ref(fig:fig-maximum-matching-procedure) right panel). 
 
 ```{r}
@@ -117,7 +116,7 @@ drake::loadd(fig_supp_matching)
 replayPlot(fig_supp_matching$plot)
 ```
 
-To further ilustrate our methodology here, we also show the approach for the smallest of our empirical networks, the uninvaded network at site 10 (Table \@ref(tab:table-network-properties); Figure \@ref(fig:fig-small-network)). 
+To further illustrate our methodology here, we also show the approach for the smallest of our empirical networks, the uninvaded network at site 10 (Table \@ref(tab:table-network-properties); Figure \@ref(fig:fig-small-network)). 
 This network is composed of 19 species of which three are non-invasive plants and the other 16 are pollinators. 
 The one-to-one relationship between matched and superior nodes implies that in order to achieve full network controllability, most pollinators would be unmatched, and hence are classified as driver nodes that require external intervention. 
 At the same time, both plants in the community, *Heracleum sphondylum* and *Rubus fructicosus*, and one of the pollinators, *Orthotylus/Lygocorus*, tend to be classified as superior nodes.
@@ -133,7 +132,7 @@ replayPlot(fig_small_network$plot)
 ## Finding all possible maximum matchings {#all-maximum-matching}
 
 The algorithm implemented in `max_bipartite_matching`, however, is only able to find **one** of possibly many maximum matchings in a network. 
-Though one maximum matching is enough to calculate *n~D~* and hence to provide indication of the manageability of a community, it is not sufficient to estimate the role of individual species. 
+Though one maximum matching is enough to calculate *n~D~* and hence to provide an indication of the manageability of a community, it is not sufficient to estimate the role of individual species. 
 To do that, we need to calculate all possible maximum matchings (or, equivalently, all maximal cardinality matchings in weighted networks like ours). 
 To do this, we again start from the alternative bipartite representation in Figure \@ref(fig:fig-maximum-matching-procedure)b and assign an identity to each of the links in the network.
 We will call this bipartite representation *P*. 
@@ -151,7 +150,7 @@ The final step is then to map these cliques onto the original network to obtain 
 drake::loadd(fig_all_matching)
 ```
 
-```{r fig-all-maximum-matching, fig.height=fig_all_matching$height, fig.width=fig_all_matching$width,fig.cap = "Finding all possible maximum matchings. From left to right: alternative bipartite representation of the directed network in Figure \\@ref(fig:fig-maximum-matching-procedure)a.  Line graph of the network. Complement of the network. The two maximal cliques are shown in dark purple."}
+```{r fig-all-maximum-matching, fig.height=fig_all_matching$height, fig.width=fig_all_matching$width,fig.cap = "Finding all possible maximum matchings. From left to right: alternative bipartite representation of the directed network in Figure \\@ref(fig:fig-maximum-matching-procedure)a.  Line graph of the network. The complement of the network. The two maximal cliques are shown in dark purple."}
 replayPlot(fig_all_matching$plot)
 ```
 
@@ -160,7 +159,7 @@ replayPlot(fig_all_matching$plot)
 The algorithm proposed by @zhang_input_2016 enable us to find all minimum driver node sets without calculating all possible maximum matchings. 
 The algorithm is based on the construction of the input graph of the directed network. 
 Components in the input graph reveal the correlations between nodes from a structural control perspective (Figure \@ref(fig:fig-input-graph)). 
-The input graph is constructed based in the *control adjacency* of nodes in a maximum matching. 
+The input graph is constructed based on the *control adjacency* of nodes in a maximum matching. 
 Two nodes $x_i$ and $x_j$ are said to be control adjacent if there is a node $x_k$ connecting $x_i$ and $x_j$ with an unmatched link $x_k-x_i$ and a matched link $x_k-x_j$. 
 For example $a_1$ is control adjacent to $a_2$ in the top panel of Figure \@ref(fig:fig-input-graph). 
 If a node $x_i$ is part of a minimum driver node set then every node in the same component of $x_i$ in the input graph is a possible driver node. 

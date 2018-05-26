@@ -43,26 +43,26 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE,
 
 A major goal in ecological research is to understand the role that species play in the biotic environment.
 Within community ecology, a complex-systems has led to the development of a variety analytical and simulation tools with which to understand the role of the role of species embedded in a network of interactions [@bascompte_assembly_2009; @stouffer_evolutionary_2012]. 
-A particularly relevant dimension of any species' role is its ability to alter the abundance of other species in the community, since this impacts ecosystem function and biodiversity and might have knock down effects on other processes and services.
-This ability is often referred as "keystoneness". 
+A particularly relevant dimension of any species' role is its ability to alter the abundance of other species in the community—since this impacts ecosystem function and biodiversity and might have knock-down effects on other processes and services.
+This ability is often referred to as "keystonness". 
 A significant proportion of the network tools used to estimate species roles in this context relies on the assumption that there is a link between a species centrality—a relative ranking of its importance that stems from social network research—and its ability to alter other species' abundance. 
 At first glance, this assumption makes sense. 
-At the core of representing ecological communities as networks sits the idea that the abundance of a species also depends on the abundance of its neighbours (the species it interacts with) and, by extension, the abundance of its neighbours neighbours', and so on. 
+At the core of representing ecological communities as networks sits the idea that the abundance of a species also depends on the abundance of its neighbours (the species it interacts with) and, by extension, the abundance of its neighbours' neighbours, and so on. 
 More central species, by definition, are better connected and hence should be more likely to affect the abundance of other species in the network.
 
 Though conceptually intuitive, the relationship between centrality and keystoness is largely phenomenological. 
 On one hand, there is more than a dozen indices of centrality used in ecology. 
-Chosing a particular metric can be a difficult task, especially because to date there are not clear methods to determine the suitability of an index to a particular application. 
-Furthermore, recent studies have shown that definitions of keystoness based on centrality might not adequately predict the cascading extintions keystone species are ususally associated to. 
-As a result, community ecology could benefit from an alternative, more mechanistically-grounded, approach to understand how species affect each other abbundance. 
-Species abundances are also influenced by the dynamic relationships between nodes, and the mechanisms of self-regulation, however, community and population dynamics can be modeled in innumerable ways, and empirical support for one versus another is often still ambiguous. 
+Choosing a particular metric can be a difficult task, especially because to date there are no clear methods to determine the suitability of an index to a particular application. 
+Furthermore, recent studies have shown that definitions of keystoness based on centrality might not adequately predict the cascading extinctions keystone species are usually associated to. 
+As a result, community ecology could benefit from an alternative, more mechanistically-grounded, approach to understand how species affect each other abundance. 
+Species abundances are also influenced by the dynamic relationships between nodes, and the mechanisms of self-regulation, however, community and population dynamics can be modelled in innumerable ways, and empirical support for one versus another is often still ambiguous. 
 The alternative approach should acknowledge ecosystem dynamics, but without being overly dependent on the particular choices of how they are characterised.
 
 Among the various possibilities, *control theory* appears to be a strong candidate [@isbell_human_2013]. 
 Control theory is a widely studied branch of engineering used to determine and supervise the behaviour of dynamical systems [@motter_networkcontrology_2015]. 
 It is inherently designed to deal with system feedbacks and its application has recently been expanded to complex networks [@liu_control_2016]. 
 In correspondence with ecological questions, advances in this field have established a clear link between the structure of the network and the way nodes affect each other. 
-Unlike centrality indices, however, this link is not based on a priori assumptions between network metrics and keystoness, instead on well-established advances in both dynamical and complex-systems theory <!--STOUFFER: Are we shooting ourselves in the foot since this isn't entirely true? That is, see comments from ELE about linearity and otherwise. CAGUA: How about this modified phrasing?-->.
+Unlike centrality indices, however, this link is not based on a priori assumptions between network metrics and keystoness, instead, it is based on well-established advances in both dynamical and complex-systems theory <!--STOUFFER: Are we shooting ourselves in the foot since this isn't entirely true? That is, see comments from ELE about linearity and otherwise. CAGUA: How about this modified phrasing?-->.
 
 Despite the apparent overlap, the concepts and approaches of control theory are not yet commonly applied in an ecological context. 
 Possibly, this is in part because research on the control of complex networks is generally more concerned with the state of the system as a whole. 
@@ -80,7 +80,7 @@ This choice thus offers us an opportunity to explicitly contrast theoretical obs
 First, grounded in the difficulties usually involved with invasive-species eradication and ecosystem restoration [@woodford_confronting_2016], we ask whether there are differences between the controllability of invaded and uninvaded networks. <!--STOUFFER: I'd remove the grounded in.... stuff, but that's just me.  CAGUA: I don't like it either. I tried removing but then it feels like this question is coming out of the blue.-->
 Then we expand existing methods control theory to effectively link the *controllability* of a network with the role of particular nodes. 
 We ask—from a control-theoretic perspective—whether there are key differences between species in the role they play at driving the population of other members of the community and identify the ecological factors related to these differences. 
-Finally, we compare the proposed approach to current methods based on species centrality and show how these methods are indeed valuable but only paint a limited picture in regards to the "keystoneness" of a species.
+Finally, we compare the proposed approach to current methods based on species centrality and show how these methods are indeed valuable but only paint a limited picture in regards to the "keystonness" of a species.
 
 # Methods
 
@@ -100,14 +100,15 @@ The other six pairs were obtained from lower diversity Mediterranean shrublands 
 These communities are comprised of `r bar[1]`--`r bar[6]` species (mean `r round(bar[4])`); in contrast to the above, uninvaded communities were obtained from plots that had not yet been colonised by either of the invasive species *Carpobrotus affine acinaciformis* or *Opuntia stricta*. The structure of all these communities was defined by the pollinator visitation frequency, which has been shown to be an appropriate surrogate for interspecific effects in pollination networks [@vazquez_interaction_2005; @bascompte_asymmetric_2006]. 
 Full details about the empirical networks, the implications of using visitation frequency to quantify the strength of the associations, and the sensitivity of the control theoretic approach to undersampling of the interactions can be found in the supplementary information section \@ref(S-empirical-networks), XX, and XX. 
 
-The first step before applying methods of control theory is to construct a directed network that is able to provide an indication of the extent to which species affect each others abundance. 
+The first step in applying methods of control theory is to construct a directed network that is able to provide an indication of the extent to which species affect each other's abundance. 
 In some ecological networks, establishing the directionality can be relatively straightforward, for example when links represent biomass transfer or energy flow [@isbell_human_2013]. 
-In pollination networks, however, this directionallity is less obvious as both species can in theory benefit from the interaction. 
+In pollination networks, however, this directionality is less obvious as both species can, in theory, benefit from the interaction. 
 We overcome that obstacle by noting that the extent to which species *i* affects species *j* relative to the extent to which *j* affects *i* can be summarised by the interaction asymmetry [@bascompte_asymmetric_2006]. 
 This asymmetry is given by $$a(i,j) = a(j,i) = \frac{\left | d_{ij}-d_{ji} \right |}{max\left ( d_{ij}, d_{ji} \right )},$$ where the dependence of plant *i* on pollinator *j*, *d~ij~*, is the proportion of the visits from pollinator *j* compared to all pollinator visits to plant *i*. 
 Previous research has shown that mutualistic interactions are often highly asymmetric in natural communities; in other words, if a plant species is largely dependent on a pollinator species, then that pollinator tends to depend rather weakly on the plant (or vice versa). 
-We therefore create a directed link between species *i* and *j* when $d_{ij}-d_{ji} \geq 0$ to establish the most likely direction of control between a species pair (Figure \@ref(fig:fig-example-networks)a). 
-By basing the direction of the links on the asymmetry of their dependence, we are able to generate a network that is consistent with the dynamics of the community while satisfyingh the requirements of structural controllability. 
+We, therefore, create a directed link between species *i* and *j* when $d_{ij}-d_{ji} \geq 0$ to establish the most likely direction of control between a species pair (Figure \@ref(fig:fig-example-networks)a). 
+By basing the direction of the links on the asymmetry of their dependence, we are able to generate a network that is consistent with the dynamics of the community while satisfying the requirements of structural controllability. 
+
 ```{r}
 drake::loadd(fig_struct_control)
 ```
@@ -116,58 +117,58 @@ drake::loadd(fig_struct_control)
 replayPlot(fig_struct_control$plot)
 ```
 
-After constructing the directed network, we can now calculate the controllability of the different networks and investigate wether there are differences between invaded and uninvaded communities. 
+After constructing the directed network, we can now calculate the controllability of the different networks and investigate whether there are differences between invaded and uninvaded communities. 
 
 ## Controllability
 
 A system is said to be controllable if it is possible to steer it from an initial to an arbitrary final state within finite time [@kalman_mathematical_1963]. 
 A simple dynamic system can be described by $\frac{dx}{dt} = Ax + Bu(t)$, where the change of its state over time ($\frac{dx}{dt}$) depends on its current state *x* (for example, the species' abundances), an external time-varying input *u(t)* (the control signal), and two matrices *A* and *B*, which encode information about the network structure and how species respond to external inputs, respectively. 
 In classic control theory, determining wether this system is controllable can easily be achieved by checking that its controllability matrix $R= [ \begin{matrix}B & AB & A^{2}B & ...& A^{n-1}B\end{matrix} ]$ has full rank. 
-In complex systems, however, employing this rank condition, or numerical approximations of it, is unfeasible because it is hard to fully parameterize *A* and *B* (either because the weight of the links change over time or because they are difficult to measure). 
-Here we use an approach based on the structural controllability theorem [@lin_structural_1974], which assumes that we are confident that the elements of *A* and *B* have either non-zero or zero values (there is an interaction or not), but that we less sure about the precise magitude of the non-zero values. 
+In complex systems, however, employing this rank condition, or numerical approximations of it, is unfeasible because it is hard to fully parameterize *A* and *B* (either because the weight of the links changes over time or because they are difficult to measure). 
+Here we use an approach based on the structural controllability theorem [@lin_structural_1974], which assumes that we are confident that the elements of *A* and *B* have either non-zero or zero values (there is an interaction or not), but that we less sure about the precise magnitude of the non-zero values. 
 Using this structural approach we can find out the controllability of a system under almost all non-zero parameter realisations.
-Structural controllability also has a graphical interpretation that allow us to translate the control problem into a topological one: a network is controllable if there are no inaccessible nodes—nodes without incoming links—or dilations—*expansions* of the network (Figure \@ref(fig:fig-example-networks)b; Supplementary Information section \@ref(S-structural-controllability)).
+Structural controllability also has a graphical interpretation that allows us to translate the control problem into a topological one: a network is controllable if there are no inaccessible nodes—nodes without incoming links—or dilations—*expansions* of the network (Figure \@ref(fig:fig-example-networks)b; Supplementary Information section \@ref(S-structural-controllability)).
 
 We are often able to estimate *A* in ecological networks, as it represents the interactions between species. 
 Part of the control problem resides on estimating a supportable estimation of *B*, which represents the links between external inputs and species. 
 Naively, any ecological community (and any system for that matter) could be controlled if we control the state of every species independently. 
 Such approach is typically unpractical. 
-We are instead interested in finding a minimum driver node set (effectively finding *B*) with which to make the system controllable. 
+We are instead interested in finding a minimum driver node-set (effectively finding *B*) with which to make the system controllable. 
 However, a brute force search of this minimum driver node set is computationally prohibitive for most networks as it involves the evaluation of $2^N$ different controllability matrices. 
-We employ a recently developed approach that shows that the control problem of finding the minimum driver node set can be mapped into a graph theoretic problem: maximum matching [@liu_controllability_2011; @liu_control_2016].
+We employ a recently developed approach that shows that the control problem of finding the minimum driver node set can be mapped into a graph-theoretic problem: maximum matching [@liu_controllability_2011; @liu_control_2016].
 
-Maximum matching is a widely studied topic in graph theory and is commonly used in multiple applications, ranging from dating apps and wireless communications to organ transplant allocation and peer to peer file sharing. 
+Maximum-matching is a widely studied topic in graph theory and is commonly used in multiple applications, ranging from dating apps and wireless communications to organ transplant allocation and peer to peer file sharing. 
 A matching in an unweighted directed graph is defined as a set of links that do not share a common start or end nodes; the largest possible matching is called maximum matching. 
-For example, in a network composed by jobs and job applicants, a matching is any pairing between applicants and positions that satisfies one basic constrain: an applicant can be assigned to at most one position and visceversa.
+For example, in a network composed by jobs and job applicants, a matching is any pairing between applicants and positions that satisfies one basic constraint: an applicant can be assigned to at most one position and vice-versa.
 Consequently, a maximum matching is an optimal pairing, one that maximises the number of applicants with jobs and the number of positions filled. 
-At first glance, however, is  hard to identify how exactlty matchings are related to structural controllability. 
+At first glance, however, is hard to identify how exactly matchings are related to structural controllability. 
 The key is to note that the conditions of structural controllability imply that, just like the one to one relationship between jobs and applicants, there needs to be a one to one relationship between *superior* and *subordinate* nodes (Figure \@ref(fig:fig-example-networks)b, bottom left). 
 We use the maximum matching algorithm to find an optimal pairing of superior and subordinate nodes in a way consistent with the controllability conditions (supplementary information section \@ref(S-one-maximum-matching)). 
-The result is that a matching can actually be decomposed into a set of paths that reveal how a control signal can flow across the links in a network to reach every node that compose it. 
+The result is that a matching can actually be decomposed into a set of paths that reveal how a control signal can flow across the links in a network to reach every node that composes it. 
 And so, as recently shown [@liu_controllability_2011], the minimum driver node set, those to which an external control input should be applied to make the system controllable, corresponds exactly to the *unmatched* nodes in the network (Figure \@ref(fig:fig-control-configuration)).
 
 ```{r}
 drake::loadd(fig_control_config)
 ```
 
-```{r fig-control-configuration, fig.height=fig_control_config$height, fig.width=fig_control_config$width,fig.cap = "Maximum matchings and control configurations. In directed networks a maximum matching is the largest possible set of links that do not share start or end nodes (dark purple). Maximum matchings are not necessarly unique, instead each of them is related to a possible minimum driver node set in the network (the nodes to which an external control input, in orange, should be applied in order to ensure controllability). The size of the minimum driver node set *D* corresponds exactly to the number of unmatched nodes (the number of nodes in the network *N* minus the matching size). To account for network size, we use size of the minimum driver node set relative to the total number of nodes *n~D~ = D/N* as a measure of the extent to which the network structure can be harnessed to control the system."}
+```{r fig-control-configuration, fig.height=fig_control_config$height, fig.width=fig_control_config$width,fig.cap = "Maximum matchings and control configurations. In directed networks, a maximum matching is the largest possible set of links that do not share start or end nodes (dark purple). Maximum matchings are not necessarily unique, instead, each of them is related to a possible minimum driver node set in the network (the nodes to which an external control input, in orange, should be applied in order to ensure controllability). The size of the minimum driver node set *D* corresponds exactly to the number of unmatched nodes (the number of nodes in the network *N* minus the matching size). To account for network size, we use the size of the minimum driver node set relative to the total number of nodes *n~D~ = D/N* as a measure of the extent to which the network structure can be harnessed to control the system."}
 replayPlot(fig_control_config$plot)
 ```
 
 ## Differences between invaded and uninvaded networks
 
-Our first main objective is to investigate whether the controllability of a community is associated to invasion status or not. 
-Finding out exactly, how difficult is to control a network depends strongly on the particularities of the desired control trayectory as well as the dynamical relationpip between nodes. 
+Our first main objective is to investigate whether the controllability of a community is associated with invasion status or not. 
+Finding out exactly, how difficult is to control a network depends strongly on the particularities of the desired control trajectory as well as the dynamical relationship between nodes. 
 However, we are interested in understanding the controllability of a network in a more general sense, such that it can be applied even when the precise control scenario is known only incompletely. 
 We instead employ an indicator that follows from our approach: the size of the minimum driver node set. 
-This simple metric provides general indication of how difficult controlling a network might be, as systems that require a large number of external inputs to be fully controlled are intuitively more difficult or costly to manage. 
+This simple metric provides a general indication of how difficult controlling a network might be, as systems that require a large number of external inputs to be fully controlled are intuitively more difficult or costly to manage. 
 Specifically, following the structural controllability literature, we use the size of the minimum driver node set relative to the total number of nodes $n_D = \frac{D}{N}$ as a measure of the extent to which the network structure can be harnessed to control the community.
-In an ecological context, external inputs can be thought of as management interventions that modify the abbundance of a particular species. 
+In an ecological context, external inputs can be thought of as management interventions that modify the abundance of a particular species. 
 For instance, achieving full control in a "network" in which species do not interact at all is relatively difficult as we would require an intervention for every single species. 
-Conversely, the structure of a linear trophic chain can be harnessed to achieve full control using just one intervention targeted the top species; the control signal would then cascade trough the trophic levels and reach other species in the community. 
+Conversely, the structure of a linear trophic chain can be harnessed to achieve full control using just one intervention targeted the top species; the control signal would then cascade through the trophic levels and reach other species in the community. 
 
 After finding the minimum driver node set in each of our networks we want to test whether invasion status or other predictors are correlated to this metric of controllability. 
-We therefore use a set of generalised linear models (with binomial error structure) to investigate the effect of invasion status while also including covariates related to species richness, since one might naively expect to see a negative relationship between richness and controllability [@menge_indirect_1995]. 
+We, therefore, use a set of generalised linear models (with binomial error structure) to investigate the effect of invasion status while also including covariates related to species richness, since one might naively expect to see a negative relationship between richness and controllability [@menge_indirect_1995]. 
 These covariates included the total number of species, plant richness, pollinators richness, the ratio of plant to pollinator richness, the link density (connectance), and the study site (as a two-level factor). 
 In addition, we also explored whether real networks differ in their architecture from random ones in a concerted way (supplementary information section \@ref(S-randomisations)).
 
@@ -176,27 +177,27 @@ In addition, we also explored whether real networks differ in their architecture
 While calculating the size of the minimum drive node set can measure the controllability of an ecological community, it does not provide information about the role that particular species play. 
 Our second key question is related to how species differ in their ability to drive the population dynamics of the community. 
 Ecologically, these differences are relevant because resources and data are limited, and therefore full control is unfeasible. 
-To answer this question, we make two kind of distinctions between species from a control perspective. 
+To answer this question, we make two kinds of distinctions between species from a control perspective. 
 
 First, we harness the fact that maximum matchings in a network are often not unique, and each maximum matching indicates unique paths that can potentially be used to control the network. 
-Specifically we use the frequency with which a species is part of the multiple minimum driver node sets, its control capacity $\phi$, as an estimation of its relative importance in driving the state of the community as a whole [@jia_control_2013]. 
+Specifically, we use the frequency with which a species is part of the multiple minimum driver node sets, its control capacity $\phi$, as an estimation of its relative importance in driving the state of the community as a whole [@jia_control_2013]. 
 For example, a species with a control capacity $\phi_i= 1$ is a one that requires external input in every single control configuration. 
 This is, if we were to drive the community to an arbitrary alternate state, we would need to apply a management intervention to this species under any optimal control strategy. 
 
 Intuitively, to calculate a species control capacity $\phi$ we need to enumerate all possible maximum matchings (we detail the algorithm to find all maximum matchings in the Supplementary Information section \@ref(S-all-maximum-matching)). 
-However, enumerating all maximum matchings extremely expensive from a computational perspective—a network with a couple dozen nodes could be controlled with several hundred million unique matchinghs. 
+However, enumerating all maximum matchings extremely expensive from a computational perspective—a network with a couple dozen nodes could be controlled with several hundred million unique matchings. 
 To solve this problem we instead employ a recently developed algorithm that reveals the control correlations between the nodes in the graph [@zhang_input_2016, Supplementary Information section \@ref(S-input-graph)]. 
 Using this algorithm we are able to obtain every minimum driver node set with information obtained from a single maximum matching. 
-The end result is that we are now able to calculate the control capacity $\phi_i$ of every node in linear time—rather than polynomial as the algoritm for matching enumeration requires. 
+The end result is that we are now able to calculate the control capacity $\phi_i$ of every node in linear time—rather than polynomial as the algorithm for matching enumeration requires. 
 
 A species control capacity $\phi$ allow us to identify species that are critical to change or maintain the state of the community. 
 However, in ecological settings, changing the state of the community as a whole is often not required or undesired. 
-Consequently, we make a second distinction between nodes based on wether they form part of possible control paths in the network and therefore are likely to influence the abbundance of another species. 
-We identify those species by checking wether they are classified as a superior node, this is they are at the beginning of a matched link. 
+Consequently, we make a second distinction between nodes based on whether they form part of possible control paths in the network and therefore are likely to influence the abundance of another species. 
+We identify those species by checking whether they are classified as a superior node, this is they are at the beginning of a matched link. 
 While unmatched nodes correspond to those that should be influenced with an external control input, superior nodes correspond to those that influence other species internally. 
-Conveniently, with the execption of some patological cases, superior nodes are such across every control configuration and therefore knowing one maximum matching provides enough information on whether a species is likely to play an important role at influencing the abundance of other species or not.
+Conveniently, with the exception of some pathological cases, superior nodes are such across every control configuration and therefore knowing one maximum matching provides enough information on whether a species is likely to play an important role at influencing the abundance of other species or not.
 
 We then examined whether any species-level structural properties could predict a species control capacity $\phi$ and the likelihood of being a superior node.
-*TODO: Still need to decide how to do this and how to compare traditional centrality metrics to the new control based ones. Will probably base the comparision on stability/feasibility metrics or/and on coextinction of species groups.*
+*TODO: Still need to decide how to do this and how to compare traditional centrality metrics to the new control based ones. Will probably base the comparison on stability/feasibility metrics or/and on coextinction of species groups.*Maximum matchings and control configurations. In directed networks, a maximum matching is the largest possible set of links that do not share start or end nodes (dark purple). Maximum matchings are not necessarily unique, instead, each of them is related to a possible minimum driver node set in the network (the nodes to which an external control input, in orange, should be applied in order to ensure controllability). The size of the minimum driver node set *D* corresponds exactly to the number of unmatched nodes (the number of nodes in the network *N* minus the matching size). To account for network size, we use the size of the minimum driver node set relative to the total number of nodes *n~D~ = D/N* as a measure of the extent to which the network structure can be harnessed to control the system.
 
 # References

@@ -36,46 +36,46 @@ Here we summarise the main changes to the manuscript.
 > "I agree with the AE and reviewers that this is an interesting and potentially important manuscript. I support the AE's decision to reject but invite resubmission for all the reasons mentioned. I encourage resubmission if you feel that you can better bring out the conceptual importance of their work for plant ecologists. If you wish to strengthen the applied focus with specific conservation recommendations then you may wish to submit to Journal of Applied Ecology. Reviewer 1 offers suggestions for both approaches. I hope that you choose the former."
 
 Thanks to the Senior Editor, James Ross, for his comments his decision to allow resubmission. 
-From the two reccomended alternatives, in line with the editor's preference, we have chosen to focus on the conceptual importance of our work. 
+From the two recommended alternatives, in line with the editor's preference, we have chosen to focus on the conceptual importance of our work. 
 To do this effectively, we had to rewrite both the manuscript and the supplementary materials almost completely. 
-We think the extra effort was wort as we feel the paper is does a better job at explaining clearly the untility of the proposed approach.
+We think the extra effort was wort as we feel the paper does a better job at explaining clearly the utility of the proposed approach.
 
 #  Assocciate Editor comments
 
 > "Both reviewers see potential value in the application of control theory to species interaction networks and found the work to be of interest. I agree that the method and its application to plant-pollinator networks are interesting, particularly the findings that contrast invaded vs uninvaded networks and use novel metrics to describe the influence of invasive species in networks. Both reviewers also note, however, that the current ms falls short of clearly and convincingly demonstrating the utility of control theory in making management decisions. They call for more in-depth exploration and illustration of what novel and important contributions this method would make to conservation. For these reasons, this work may be better-suited to a more applied journal (e.g., Journal of Applied Ecology), assuming the ms is revised in the recommended direction."
 
 We thank the Associate Editor Nicole Rafferty for the constructive feedback and highlighting the strengths of the paper. 
-As we described in the cover letter and in the response to the senior editor, we opted for strengthening the conceptual component rather than empahsising its application in specific management and conservation scenarios. 
+As we described in the cover letter and in the response to the senior editor, we opted for strengthening the conceptual component rather than emphasising its application in specific management and conservation scenarios. 
 We took this decision because of mainly two reasons. 
-First, the empirical data we use does not explicitly inlcudes any management or conservation scenarios. 
-As a consequence, despite the potential of the approach, at the moment we lack direct evidence of the utility of the approach for management decisons. 
-Second, we think that a conceptual approach offered a greater opportunity to highlight the stongest/most interesting aspects of the paper. 
-Namely the contrasts between invaded and uninvaded communities and the role of invasive species, as the reviewer points out.
+First, the empirical data we use does not explicitly includes any management or conservation scenarios. 
+As a consequence, despite the potential of the approach, at the moment we lack direct evidence of the utility of the approach for management decisions. 
+Second, we think that a conceptual approach offered a greater opportunity to highlight the strongest/most interesting aspects of the paper. 
+Namely, the contrasts between invaded and uninvaded communities and the role of invasive species, as the reviewer points out.
 
 # Reviewer comments #1
 
-> "The management of complex ecological networks is of vast importance for the conservation of the natural world. While the field of ecological networks is vast few have tackle this question in a practical way. This paper would make a significant contribution to a field that needs to change direction if it is to help inform conservation as often purported in studies from the this field."
+> "The management of complex ecological networks is of vast importance for the conservation of the natural world. While the field of ecological networks is vast few have tackled this question in a practical way. This paper would make a significant contribution to a field that needs to change direction if it is to help inform conservation as often purported in studies from this field."
 
 We are grateful to the reviewer for the positive feedback and encouraging words. 
 
-> "The control theory approach is very interesting. I think however there needs to be more clarity in the paper. It is hard to read. A reworking of it including using descriptions of the variable through out instead of variable names would improve this."
+> "The control theory approach is very interesting. I think however there needs to be more clarity in the paper. It is hard to read. A reworking of it including using descriptions of the variable throughout instead of variable names would improve this."
 
 Previously we used two sections to explain our approach: a section called "Theoretical framework" where we described the control methods, and another called "Methods" where we described their application on empirical data. 
-At the moment we though this was the best approach, but in hindsight we realise separating these two aspects made it hard to understand the control concepts and their relationship with ecology. 
+At that moment we thought this was the best approach, but in hindsight, we realise separating these two aspects made it hard to understand the control concepts and their relationship with ecology. 
 As mentioned by the reviewer, this problem was compounded by abundant jargon and mathematical notation. 
 Therefore, to improve clarity, we have now combined the two sections into a single "Methods" section in which we explain the theory alongside with the empirical application. 
 We also spend more time providing intuitive explanations of the concepts of control theory and have moved most of the technical details to the supplementary information. 
 Moving the technical details to the supplementary information allowed us to use less jargon and simplify the notation. 
 
-> "Better context needs to be given for previous work to look at the management of networks in ecology. There are a few papers and knowing how this one differs from these (not just the ones that look at node importance for example) is important. Some of these papers are mentioned in the discussion but in the intro it is important to know what they do and why this paper is novel."  
+> "Better context needs to be given for previous work to look at the management of networks in ecology. There are a few papers and knowing how this one differs from these (not just the ones that look at node importance for example) is important. Some of these papers are mentioned in the discussion but in the intro, it is important to know what they do and why this paper is novel."  
 
 Thanks for this observation. 
 We have chosen to emphasise on the conceptual aspects of the work and therefore treat management applications only in the discussion. 
-Nevertheless we have rewritten the introduction and take care to be clear at explaining how this study relates to previous work and how it differs from these.
+Nevertheless, we have rewritten the introduction and take care to be clear at explaining how this study relates to previous work and how it differs from these.
 
 > Finally I think it is important to provide context about what kind of decisions are being made and could be informed by this approach. Who is managing plant-pollinator networks and what choices would they actually be making. Some examples should be expanded on. And also how would the outputs of this work actual inform choices and guide prioritization
 
-> And finally I think mentioning the extreme uncertainty mostly seen in networks in the real world is key, how can approaches deal with this needs to be discussed. What do we need to think about interms of key information to use this approach.
+> And finally I think mentioning the extreme uncertainty mostly seen in networks in the real world is key, how can approaches deal with this needs to be discussed. What do we need to think about in terms of key information to use this approach?
 
 # Reviewer comments #2
 
