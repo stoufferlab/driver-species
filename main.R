@@ -60,8 +60,8 @@ reporting_plan <- drake::drake_plan(
              drake::file_out('paper/supp-info.pdf'), clean_md = FALSE),
   render_pdf(drake::knitr_in('paper/manuscript.Rmd'), 
              drake::file_out('paper/manuscript.pdf'), clean_md = FALSE),
-  render_pdf(drake::knitr_in('paper/reviewers-response.Rmd'), 
-             drake::file_out('paper/reviewers-response.pdf'), clean_md = TRUE, clean_tex = TRUE), 
+  render_pdf(drake::file_in('paper/reviewers-response.Rmd'), 
+             drake::file_out('paper/reviewers-response.pdf'), clean_md = FALSE, clean_tex = FALSE), 
   compile_pdf(drake::file_in('paper/cover-letter.tex'), 
               drake::file_out('paper/cover-letter.pdf'))
 )
