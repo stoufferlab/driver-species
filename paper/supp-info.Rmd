@@ -155,14 +155,22 @@ drake::loadd(fig_all_matching)
 replayPlot(fig_all_matching$plot)
 ```
 
+## Control adjacency and the input graph {#input-graph}
 
+The algorithm proposed by @zhang_input_2016 enable us to find all minimum driver node sets without calculating all possible maximum matchings. 
+The algorithm is based on the construction of the input graph of the directed network. 
+Components in the input graph reveal the correlations between nodes from a structural control perspective (Figure \@ref(fig:fig-input-graph)). 
+The input graph is constructed based in the *control adjacency* of nodes in a maximum matching. 
+Two nodes $x_i$ and $x_j$ are said to be control adjacent if there is a node $x_k$ connecting $x_i$ and $x_j$ with an unmatched link $x_k-x_i$ and a matched link $x_k-x_j$. 
+For example $a_1$ is control adjacent to $a_2$ in the top panel of Figure \@ref(fig:fig-input-graph). 
+If a node $x_i$ is part of a minimum driver node set then every node in the same component of $x_i$ in the input graph is a possible driver node. 
+Every node within the same component in the input graph has the same control capacity $\phi$ and the control capacity $\phi_i$ of node $x_i$ is inversely proportional to the number of nodes in the same component of $x_i$.
 
 ```{r}
 drake::loadd(fig_input_graph)
 ```
 
-## Finding all possible minimum driver node sets
-```{r fig-input-graph, fig.height=fig_input_graph$height, fig.width=fig_input_graph$width,fig.cap = "lorem asd"}
+```{r fig-input-graph, fig.height=fig_input_graph$height, fig.width=fig_input_graph$width,fig.cap = "Input graph. Two nodes $x_i$ and $x_j$ are said to be control adjacent if there is a node $x_k$ connecting $x_i$ and $x_j$ with an unmatched link $x_k-x_i$ and a matched link $x_k-x_j$. For example, in the top panel, $a_1$ is control adjacent to $a_2$ (via $p_2$), $p_1$ is control adjacent to $p_3$ (via $a_1$) and $p_2$ has no control adjacent nodes. As $a_1$ and $p_2$ belong to the minimum driver node set under the control configuration found with the maximum matching shown, then every node in the same component as these two nodes is also a possible driver node. By combining the nodes from the components with minimum driver node sets is possible to enumerate the different control configurations. For example the network in the top panel has two possible minimum driver node sets $[p_2, a_1]$ and $[p_2, a_2]$ (Figure \\@ref(M-fig:fig-control-configuration)). The network in the middle panel has three minimum driver node sets $[x_1, x_2]$, $[x_1, x_3]$, and $[x_1, x_4]$. Finally the network in the bottom pannel has only one $[x_1]$."}
 replayPlot(fig_input_graph$plot)
 ```
 
