@@ -193,8 +193,10 @@ generate_matched_graph <- function(x, matched_edges_bip) {
   igraph::E(x)[igraph::get.edge.ids(x, matched_edges, error = F)]$matched <- TRUE
   
   igraph::V(x)$matched <- FALSE
+  igraph::V(x)$superior <- FALSE
   # need the ends of the matched edges, so select only the even ones
   igraph::V(x)[matched_edges[c(F, T)]]$matched <- TRUE
+  igraph::V(x)[matched_edges[c(T, F)]]$superior <- TRUE
   
   x
 }
