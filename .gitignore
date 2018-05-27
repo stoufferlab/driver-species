@@ -4,6 +4,7 @@
 .Ruserdata
 packrat/lib*/
 *.DS_Store
+.drake/*
 
 *.aux
 *.log
