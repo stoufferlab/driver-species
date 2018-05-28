@@ -39,6 +39,7 @@ basic_analysis_plan <- drake::drake_plan(
     "web asymmetry", 
     "ISA", 
     "weighted NODF")), 
+  directed_networks = purrr::map(networks, as_directed_network, direction = "asymmetry", ties = "both", higher_level = "pol"),
   strings_in_dots = "literals"
 )
 
