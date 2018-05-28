@@ -75,3 +75,54 @@ matchings_example_networks <- function(x){
     all_matchings() %>%
     purrr::map(add_control_nodes)
 }
+
+example_ntw_bidirection_only <- function(){
+  list(
+    edges = dplyr::data_frame(from = c("x_1", "x_2"), 
+                              to   = c("x_2", "x_1")), 
+    vertex = dplyr::data_frame(name = c("x_1", "x_2"))
+  ) %$%
+    igraph::graph_from_data_frame(edges, directed = T, vertices = vertex) 
+}
+
+example_ntw_bidirection_embedded <- function(){
+  list(
+    edges = dplyr::data_frame(from = c("x_1", "x_2", "x_1", "x_3", "x_1"), 
+                              to   = c("x_2", "x_1", "x_3", "x_1", "x_4")), 
+    vertex = dplyr::data_frame(name = c("x_1", "x_2", "x_3", "x_4"))
+  ) %$%
+    igraph::graph_from_data_frame(edges, directed = T, vertices = vertex) 
+}
+
+example_ntw_bidirection_double <- function(){
+  list(
+    edges = dplyr::data_frame(from = c("x_1", "x_2", "x_1", "x_3", "x_1", "x_5", "x_6"), 
+                              to   = c("x_2", "x_1", "x_3", "x_1", "x_4", "x_6", "x_5")), 
+    vertex = dplyr::data_frame(name = c("x_1", "x_2", "x_3", "x_4", "x_5", "x_6"))
+  ) %$%
+    igraph::graph_from_data_frame(edges, directed = T, vertices = vertex) 
+}
+
+example_ntw_bidirection_triple <- function(){
+  list(
+    edges = dplyr::data_frame(from = c("x_1", "x_2", "x_1", "x_3", "x_1", "x_5", "x_6", "x_7"), 
+                              to   = c("x_2", "x_1", "x_3", "x_1", "x_4", "x_6", "x_5", "x_8")), 
+    vertex = dplyr::data_frame(name = c("x_1", "x_2", "x_3", "x_4", "x_5", "x_6", "x_7", "x_8"))
+  ) %$%
+    igraph::graph_from_data_frame(edges, directed = T, vertices = vertex) 
+}
+
+# x <- example_ntw_bidirection_only() %>% maximum_matching()
+# V(x)$matched
+# 
+# x <- example_ntw_bidirection_embedded()
+# x %>% maximum_matching() %>% graph_attr("matching_size")
+# x %>% all_matchings() %>%
+#   purrr::map(ntw_matched_theme) %>%
+#   purrr::map(plot)
+# 
+# x %>% get_input_graph() %>%
+#   graph_attr("input_graph") %>% plot()
+# 
+# x %>% control_capacity() %>% vertex_attr("control_capacity")
+# reciprocity()
