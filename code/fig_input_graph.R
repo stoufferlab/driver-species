@@ -9,10 +9,7 @@ get_input_graph_step_nets <- function(x){
     add_property(element = "vertex", attr_name = "size",attr_base = "type", "TRUE ~ 55")
   
   n3 <- n1$input_graph %>%
-    ntw_format_theme() %>%
-    add_property(element = "vertex", attr_name = "color",attr_base = "input_node", "type == TRUE ~ get_color('dark')", "TRUE ~ get_color('base')") %>%
-    add_property(element = "vertex", attr_name = "label.color",attr_base = "input_node", "type == TRUE ~ 'white'", "TRUE ~ 'black'") 
-  
+    ntw_input_graph_theme()
   list(n1, n2, n3)
 }
 

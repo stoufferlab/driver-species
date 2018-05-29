@@ -188,6 +188,11 @@ ntw_matched_theme <- function(x, named = F){
 ntw_dir_base_theme <- . %>%
   add_property(element = "vertex", attr_name = "name_fancy", attr_base = "type", 'TRUE ~ NA')
 
+ntw_input_graph_theme <- function(x){
+  x %>% ntw_format_theme() %>%
+    add_property(element = "vertex", attr_name = "color",attr_base = "input_node", "type == TRUE ~ get_color('dark')", "TRUE ~ get_color('base')") %>%
+    add_property(element = "vertex", attr_name = "label.color",attr_base = "input_node", "type == TRUE ~ 'white'", "TRUE ~ 'black'") 
+}
 
 get_bipartite_layout <- function(x, attri){
   types <- igraph::vertex_attr(x, attri) == dplyr::first(igraph::vertex_attr(x, attri))
