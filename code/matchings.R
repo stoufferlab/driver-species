@@ -49,7 +49,7 @@ maximum_matching <- function(x, weighted = FALSE){
      generate_matched_graph(matched_edges_bip)
 }
 
-get_input_graph <- function(x){
+input_graph <- function(x){
   
   if(!"matching_size" %in% igraph::graph_attr_names(x) | 
      !"matched" %in% igraph::vertex_attr_names(x) |
@@ -60,16 +60,16 @@ get_input_graph <- function(x){
   driver <- igraph::V(x)[!igraph::V(x)$matched]
   non_driver <- igraph::V(x)[igraph::V(x)$matched]
   
-  input_graph <- . %>%
+  get_input_graph <- . %>%
     purrr::map(~get_control_adjacent(x, .)) %>%
     purrr::map(make_graph_from_vertex) %>%
     do.call(union_input_graphs, .)
   
   # sets attribute 'input_node' that determines wether a node is redudndant
   # (FALSE) or a possible input node (TRUE)
-  ig <- input_graph(driver) %>%
+  ig <- get_input_graph(driver) %>%
     igraph::set_vertex_attr("input_node", value = TRUE) %>%
-    union_input_graphs(input_graph(non_driver) %>% 
+    union_input_graphs(get_input_graph(non_driver) %>% 
                          igraph::set_vertex_attr("input_node", value = F), 
                        delete_graph_attr = F) 
   
@@ -138,7 +138,7 @@ coalece_attribute <- function(x, y, n){
 control_capacity <- function(x){
   
   if(!"input_graph" %in% igraph::graph_attr_names(x)){
-    x %<>% get_input_graph()
+    x %<>% input_graph()
   }
   
   # find components with a driver node
