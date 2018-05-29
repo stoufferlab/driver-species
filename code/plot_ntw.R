@@ -5,7 +5,9 @@
 #' @return an igraph network
 #'
 fancify_vertex_name <- function(x){
-  igraph::V(x)$name_fancy <- paste0("$", igraph::V(x)$name, "$") %>%
+  n <- stringr::str_split(igraph::V(x)$name, "_") %>%
+    purrr::map_chr(~ paste0("$", .[1], "_{", .[2], "}", "$"))
+  igraph::V(x)$name_fancy <- n %>%
     latex2exp::TeX()
   x
 }
