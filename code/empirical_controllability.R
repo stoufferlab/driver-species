@@ -69,7 +69,7 @@ aggregate_attribute <- function(y = NULL, x, attr_opt){
   
   x %>%
     purrr::map(get_fun, attr_opt$name) %>%
-    purrr::pmap_dbl(lift_vd(attr_opt$agg_fun)) %>%
+    purrr::pmap_dbl(purrr::lift_vd(attr_opt$agg_fun)) %>%
     set_fun(y, name = attr_opt$name, value = .)
 }
 
@@ -77,6 +77,21 @@ aggregate_attribute <- function(y = NULL, x, attr_opt){
 aggregation_option_list <- list(
   list("vertex", "control_capacity", mean), 
   list("graph", "n_control_configurations", sum), 
-  list("vertex", "superior", mean)
+  list("vertex", "superior", mean), 
+  list("graph", "matching_size", mean)
 )
 
+
+#' Calculate control capacity of empirical directed networks
+#'
+#' @param x list of directed networks
+#' @param l aggregation option list
+#'
+#' @return a list of directed networks with control properties calculated
+#'
+control_capacity_empirical_nets <- function(x, l){
+  x %>%
+    split_bilinks() %>%
+    purrr::map(control_capacity) %>%
+    merge_bilinks(l)
+}

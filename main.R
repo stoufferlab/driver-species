@@ -40,6 +40,7 @@ basic_analysis_plan <- drake::drake_plan(
     "ISA", 
     "weighted NODF")), 
   directed_networks = purrr::map(networks, as_directed_network, direction = "asymmetry", ties = "both", higher_level = "pol"),
+  matched_networks = purrr::map(directed_networks, control_capacity_empirical_nets, l = aggregation_option_list),
   strings_in_dots = "literals"
 )
 
