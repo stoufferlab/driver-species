@@ -74,8 +74,8 @@ input_graph <- function(x){
   
   ig_nd <- get_input_graph(non_driver, x) %>% 
     igraph::set_vertex_attr("input_node", value = F)
-  potential_driver_nodes <- V(ig_d)
-  to_delete <- potential_driver_nodes$name[potential_driver_nodes$name %in% V(ig_nd)$name]
+  potential_driver_nodes <- igraph::V(ig_d)
+  to_delete <- potential_driver_nodes$name[potential_driver_nodes$name %in% igraph::V(ig_nd)$name]
   ig_nd %<>% igraph::delete_vertices(to_delete)
   ig <- union_input_graphs(ig_d, ig_nd, delete_graph_attr = F) 
   
