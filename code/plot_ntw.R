@@ -5,11 +5,26 @@
 #' @return an igraph network
 #'
 fancify_vertex_name <- function(x){
-  n <- stringr::str_split(igraph::V(x)$name, "_") %>%
-    purrr::map_chr(~ paste0("$", .[1], "_{", .[2], "}", "$"))
+  
+  n <- igraph::vertex_attr(x, "name") %>%
+    purrr::array_branch() %>%
+    purrr::map_chr(fancify_vertex_ind_name)
+  
   igraph::V(x)$name_fancy <- n %>%
     latex2exp::TeX()
   x
+}
+
+fancify_vertex_ind_name <- function(y){
+  if(length(stringr::str_match_all(y, "_")[[1]]) == 1){
+    yy <- stringr::str_split(y, "_") %>%
+      extract2(1) %>% {
+        paste0(.[1], "_{", .[2], "}")
+      }
+  } else {
+    yy <- y
+  } 
+  paste0("$", yy, "$")
 }
 
 #' Add a property for vertex or graphs
