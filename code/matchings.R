@@ -162,11 +162,11 @@ control_capacity <- function(x){
     igraph::components() 
   
   n_control_configurations <- prod(comp$csize)
-  cc <- 1 / comp$csize
-
+  cc <- dplyr::data_frame(component = 1:comp$no, cc =1 / comp$csize)
+  memb <- dplyr::data_frame(v = names(comp$membership), component = comp$membership)
+  cc <- dplyr::inner_join(memb, cc, by = "component")
   igraph::V(x$input_graph)$control_capacity <- 0
-  igraph::V(x$input_graph)[igraph::V(x$input_graph)$input_node]$control_capacity <- 
-    rep(cc, rle(comp$membership)$lengths)
+  igraph::V(x$input_graph)[igraph::V(x$input_graph)$input_node]$control_capacity <- cc$cc
   
   igraph::V(x)[igraph::V(x$input_graph)$name]$control_capacity <- 
     igraph::V(x$input_graph)$control_capacity
