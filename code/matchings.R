@@ -60,18 +60,24 @@ input_graph <- function(x){
   driver <- igraph::V(x)[!igraph::V(x)$matched]
   non_driver <- igraph::V(x)[igraph::V(x)$matched]
   
-  get_input_graph <- . %>%
-    purrr::map(~get_control_adjacent(x, .)) %>%
-    purrr::map(make_graph_from_vertex) %>%
-    do.call(union_input_graphs, .)
+  get_input_graph <- function(x, y){
+    x %>%
+      purrr::map(~ get_control_adjacent(y, .)) %>%
+      purrr::map(make_graph_from_vertex) %>%
+      do.call(union_input_graphs, .)
+  } 
   
   # sets attribute 'input_node' that determines wether a node is redudndant
   # (FALSE) or a possible input node (TRUE)
-  ig <- get_input_graph(driver) %>%
-    igraph::set_vertex_attr("input_node", value = TRUE) %>%
-    union_input_graphs(get_input_graph(non_driver) %>% 
-                         igraph::set_vertex_attr("input_node", value = F), 
-                       delete_graph_attr = F) 
+  ig_d <- get_input_graph(driver, x) %>%
+    igraph::set_vertex_attr("input_node", value = TRUE)
+  
+  ig_nd <- get_input_graph(non_driver, x) %>% 
+    igraph::set_vertex_attr("input_node", value = F)
+  potential_driver_nodes <- V(ig_d)
+  to_delete <- potential_driver_nodes$name[potential_driver_nodes$name %in% V(ig_nd)$name]
+  ig_nd %<>% igraph::delete_vertices(to_delete)
+  ig <- union_input_graphs(ig_d, ig_nd, delete_graph_attr = F) 
   
   igraph::set_graph_attr(x, "input_graph", ig)
 }
@@ -91,8 +97,17 @@ is_adjacent <- function(xb, d_bip, pab){
   xb %>%
     igraph::shortest_paths(d_bip, pab, output = "epath") %$%
     epath %>%
-    extract2(1)%>% 
-    {xor(.$matched[1], .$matched[2])}
+    extract2(1) %>% 
+    {my_xor(.$matched[1], .$matched[2])}
+}
+
+my_xor <- function(x, y, first_true = FALSE){
+  if(first_true) {
+    z <- (x == TRUE) & (y == FALSE)
+  } else{
+    z <- xor(x, y)
+  }
+  return(z)
 }
 
 make_graph_from_vertex <- function(v){

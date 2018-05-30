@@ -80,18 +80,3 @@ aggregation_option_list <- list(
   list("vertex", "superior", mean)
 )
 
-#   split_bidirectional() %>%
-#   purrr::map(control_capacity) %T>% {
-#     x <- .
-#     x %>%
-#     # purrr::map() %>%
-#       purrr::map(igraph::plot.igraph) 
-#     x
-#   } %>%
-#   purrr::map(vertex_attr, "control_capacity") %>%
-#   purrr::pmap(lift_vd(mean))
-# 
-# directed_networks %>%
-#   purrr::map(split_bidirectional) %>%
-#   purrr::map(~ purrr::map(., control_capacity))
-  
