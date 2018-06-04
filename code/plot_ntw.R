@@ -146,6 +146,14 @@ my_pallete <- function(){
     light = "#f7f7f7")
 }
 
+my_pallete_spectral <- function(){
+  list(red = "#d7191c", 
+       orange = "#fdae61", 
+       yellow = "#ffffbf", 
+       green = "#abdda4", 
+       blue = "#2b83ba")
+}
+
 get_color <- function(x = T){
   dplyr::case_when(
     x == "matched" ~ my_pallete()$dark_purple,
@@ -169,8 +177,8 @@ plot_example_ntw <- function(x, ...){
 }
 
 # common formatting
-ntw_format_theme <- function(x){
-  x %>%
+ntw_format_theme <- function(x, named = T){
+  x %<>%
     fancify_vertex_name() %>%
     add_property(element = "edge", attr_name = "color", attr_base = "type", 'TRUE ~ "black"') %>%
     add_property(element = "edge", attr_name = "label.color", attr_base = "type",'TRUE ~ "black"') %>%
@@ -182,6 +190,9 @@ ntw_format_theme <- function(x){
     add_property(element = "vertex", attr_name = "label.color", attr_base = "type","TRUE ~ 'black'") %>%
     add_property(element = "edge",attr_name = "arrow.size", attr_base = "control_type", "TRUE ~ 0.4") %>%
     add_property(element = "edge",attr_name = "arrow.width", attr_base = "control_type", "TRUE ~ 0.7") 
+  
+  if(!named) x %<>% add_property(element = "vertex", attr_name = "name_fancy", attr_base = "type", 'TRUE ~ NA') 
+  return(x)
   
 }
 ntw_control_network_theme <- . %>%

@@ -12,13 +12,20 @@ make_fig_bidirectional <- function(en_chain, pdf_out = NULL){
     ntw_format_theme(named = F) %>%
     add_property(element = "vertex", attr_name = "size",attr_base = "type", "TRUE ~ 55")
   
-  
   n2 <- n1 %>% 
     split_bilinks() %>%
     purrr::map(control_capacity) %>%
     purrr::map(ntw_format_theme, named = F) %>%
     # purrr::map(ntw_matched_theme, named = F) %>%
     purrr::map(~ add_property(., element = "vertex", attr_name = "size",attr_base = "type", "TRUE ~ 55"))
+  
+  # set alternating colors
+  co <- c(my_pallete_spectral()[[1]], my_pallete_spectral()[[5]], "black")
+  n2 <- list(c(co[3], co[1], co[1]), 
+             c(co[2], co[3], co[1]), 
+             c(co[3], co[2], co[1]), 
+             c(co[2], co[3], co[2])) %>%
+    purrr::map2(n2, ~ igraph::set_edge_attr(.y, "color", value = .x))
   
   agg_n1 <- n2 %>% 
     merge_bilinks(aggregation_option_list)
