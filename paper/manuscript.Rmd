@@ -107,6 +107,8 @@ We overcome that obstacle by noting that the extent to which species *i* affects
 This asymmetry is given by $$a(i,j) = a(j,i) = \frac{\left | d_{ij}-d_{ji} \right |}{max\left ( d_{ij}, d_{ji} \right )},$$ where the dependence of plant *i* on pollinator *j*, *d~ij~*, is the proportion of the visits from pollinator *j* compared to all pollinator visits to plant *i*. 
 Previous research has shown that mutualistic interactions are often highly asymmetric in natural communities; in other words, if a plant species is largely dependent on a pollinator species, then that pollinator tends to depend rather weakly on the plant (or vice versa). 
 We, therefore, create a directed link between species *i* and *j* when $d_{ij}-d_{ji} \geq 0$ to establish the most likely direction of control between a species pair (Figure \@ref(fig:fig-example-networks)a). 
+Sometimes, however, there is no assymetry in the dependences between species pairs ($d_{ij}=d_{ji}$), and we cannot infer the direction of control. 
+As such, we deem both species to be equally likely to affect each other and create two directed links between them, one from *i* to *j* and another from *j* to *i*. 
 By basing the direction of the links on the asymmetry of their dependence, we are able to generate a network that is consistent with the dynamics of the community while satisfying the requirements of structural controllability. 
 
 ```{r}
@@ -197,7 +199,9 @@ We identify those species by checking whether they are classified as a superior 
 While unmatched nodes correspond to those that should be influenced with an external control input, superior nodes correspond to those that influence other species internally. 
 Conveniently, with the exception of some pathological cases, superior nodes are such across every control configuration and therefore knowing one maximum matching provides enough information on whether a species is likely to play an important role at influencing the abundance of other species or not.
 
-We then examined whether any species-level structural properties could predict a species control capacity $\phi$ and the likelihood of being a superior node.
-*TODO: Still need to decide how to do this and how to compare traditional centrality metrics to the new control based ones. Will probably base the comparison on stability/feasibility metrics or/and on coextinction of species groups.*Maximum matchings and control configurations. In directed networks, a maximum matching is the largest possible set of links that do not share start or end nodes (dark purple). Maximum matchings are not necessarily unique, instead, each of them is related to a possible minimum driver node set in the network (the nodes to which an external control input, in orange, should be applied in order to ensure controllability). The size of the minimum driver node set *D* corresponds exactly to the number of unmatched nodes (the number of nodes in the network *N* minus the matching size). To account for network size, we use the size of the minimum driver node set relative to the total number of nodes *n~D~ = D/N* as a measure of the extent to which the network structure can be harnessed to control the system.
+To examine whether any species-level structural properties could predict a species control capacity $\phi$ and the likelihood of being a superior node $sigma$, we calculated these properties for each of our networks.
+In the networks that contained reciprocal links (because there was not assymetry in the dependences of a species pair), we averaged a species' $\phi$ and $sigma$ across every possible "non-reciprocal" realisation of the network (more details can be found in the Supplementary Information section \@ref(S-reciprocal-links)). 
+*TODO: Still need to decide how to do this and how to compare traditional centrality metrics to the new control based ones. Will probably base the comparison on stability/feasibility metrics or/and on coextinction of species groups.*
+
 
 # References
