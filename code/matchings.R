@@ -64,7 +64,7 @@ input_graph <- function(x){
     z %>%
       purrr::map(~ get_control_adjacent(y, .)) %>%
       purrr::map(make_graph_from_vertex) %>%
-      `$<-`(delete_graph_attr, TRUE) %>%
+      `$<-`(delete_graph_attr, FALSE) %>%
       do.call(union_input_graphs, .)
   } 
   
@@ -113,7 +113,15 @@ my_xor <- function(x, y, first_true = FALSE){
 }
 
 make_graph_from_vertex <- function(v){
-  igraph::make_star(length(v), mode = "undirected") %>%
+  n_nodes <- length(v)
+  if(n_nodes == 1) {
+    mini_network <- igraph::make_full_graph(n_nodes)
+  } else{
+    mini_network <- igraph::make_star(length(v), mode = "undirected")
+  }
+  mini_network %>%
+    igraph::as_adjacency_matrix(sparse = F) %>%
+    igraph::graph_from_adjacency_matrix(mode = "undirected") %>%
     igraph::set_vertex_attr("name", value = v$name) %>%
     igraph::set_vertex_attr("type", value = v$type) 
 }
