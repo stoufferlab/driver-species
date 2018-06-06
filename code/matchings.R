@@ -60,12 +60,14 @@ input_graph <- function(x){
   driver <- igraph::V(x)[!igraph::V(x)$matched]
   non_driver <- igraph::V(x)[igraph::V(x)$matched]
   
-  get_input_graph <- function(x, y){
-    x %>%
+  get_input_graph <- function(z, y){
+    z %>%
       purrr::map(~ get_control_adjacent(y, .)) %>%
       purrr::map(make_graph_from_vertex) %>%
+      `$<-`(delete_graph_attr, TRUE) %>%
       do.call(union_input_graphs, .)
   } 
+  
   
   # sets attribute 'input_node' that determines wether a node is redudndant
   # (FALSE) or a possible input node (TRUE)
@@ -111,7 +113,7 @@ my_xor <- function(x, y, first_true = FALSE){
 }
 
 make_graph_from_vertex <- function(v){
-  igraph::make_full_graph(length(v)) %>%
+  igraph::make_star(length(v), mode = "undirected") %>%
     igraph::set_vertex_attr("name", value = v$name) %>%
     igraph::set_vertex_attr("type", value = v$type) 
 }
@@ -134,7 +136,8 @@ union_input_graphs <- function(..., delete_graph_attr = TRUE){
         if(delete_graph_attr){
           joint_network %<>%
             igraph::delete_graph_attr(paste("name", j, sep = "_")) %>%
-            igraph::delete_graph_attr(paste("loops", j, sep = "_"))
+            igraph::delete_graph_attr(paste("center", j, sep = "_")) %>%
+            igraph::delete_graph_attr(paste("mode", j, sep = "_"))
         }
         joint_network %<>%
           igraph::delete_vertex_attr(paste(at[i], j, sep = "_"))
