@@ -167,22 +167,105 @@ control_capacity <- function(x){
     x %<>% input_graph()
   }
   
-  # find components with a driver node
+  # find components without a driver node
   comp <- igraph::induced_subgraph(x$input_graph, 
-                                   igraph::V(x$input_graph)[igraph::V(x$input_graph)$input_node]) %>%
+                                   igraph::V(x$input_graph)[!igraph::V(x$input_graph)$input_node]) %>%
     igraph::components() 
   
-  n_control_configurations <- prod(comp$csize)
-  cc <- dplyr::data_frame(component = 1:comp$no, cc =1 / comp$csize)
-  memb <- dplyr::data_frame(v = names(comp$membership), component = comp$membership)
-  cc <- dplyr::inner_join(memb, cc, by = "component")
-  igraph::V(x$input_graph)$control_capacity <- 0
-  igraph::V(x$input_graph)[igraph::V(x$input_graph)$input_node]$control_capacity <- cc$cc
+  # get a list of the never driver nodes 
+  singles <- names(comp$membership)[comp$membership == which(1 == comp$csize)] %>% as.list()
   
-  igraph::V(x)[igraph::V(x$input_graph)$name]$control_capacity <- 
-    igraph::V(x$input_graph)$control_capacity
-  x %>%
+  # get a list of the replacable nodes (excluding the single ones)
+  combi <- attr2df(x, "vertex", "matched") %>%
+    dplyr::inner_join(attr2df(x$input_graph, "vertex", "input_node"), by = "name") %>%
+    dplyr::filter(matched & input_node) %$%
+    name %>%
+    as.list() %>%
+    purrr::map(~igraph::adjacent_vertices(x$input_graph, ., mode = "all")) %>%
+    purrr::map(~ c(names(.), as.character(.[[1]]$name))) %>%
+    c(singles)
+  
+  n_control_configurations <- get_n_comb(combi)
+  
+  # a data frame of n_matched & control capacity
+  cc <- combi %>% 
+    purrr::imap(combinations_per_component, combi) %>% 
+    unlist %>% 
+    dplyr::data_frame(name = names(.), n_matched = .) %>%
+    dplyr::group_by(name) %>%
+    dplyr::summarise(n_matched = sum(n_matched)) %>% 
+    dplyr::right_join(attr2df(x, "vertex", "name"), by = "name") %>% 
+    dplyr::mutate(n_matched = dplyr::if_else(is.na(n_matched), 0, n_matched),
+                  cc = 1 - n_matched/n_control_configurations)
+  
+  ## generate all combinations instead
+  # m_o <- do.call(expand.grid, combi) %>%
+  #   as.matrix()
+  # not_duplicated <- m_o %>%
+  #   apply(1, anyDuplicated) %>%
+  #   magrittr::is_less_than(1)
+  # m <- m_o[not_duplicated, ]
+  # m %>% table
+  
+  x %<>%
+    # store control capacity in the input graph
+    igraph::graph_attr("input_graph") %>%
+    igraph::set_vertex_attr("control_capacity", cc$name, cc$cc) %>%
+    igraph::set_graph_attr(x, "input_graph", .) %>%
+    # store control capacity in the main graph
+    igraph::set_vertex_attr("control_capacity", cc$name, cc$cc) %>%
     igraph::set_graph_attr("n_control_configurations", n_control_configurations)
+}
+
+combinations_per_component <- function(component, list_index, full_list){
+  component %>%
+    as.list() %>%
+    `names<-`(., .) %>%
+    purrr::map(n_other_comb, list_index, full_list)
+}
+
+n_other_comb <- function(node_name, list_index, full_list){
+  # remove other instances of node_name in the list
+  full_list[-list_index] %>%
+    purrr::map(~ .[. != node_name]) %>%
+    get_n_comb()
+}
+
+
+# get total number of combinations in a list of elements excluding repeated 
+get_n_comb <- function(this_list){
+  
+  lengths <- this_list %>%
+    purrr::map(length)
+  
+  repeated_elements <- this_list %>%
+    unlist() %>%
+    table() %>% {
+      .[is_greater_than(., 1)]
+    } %>% 
+    names() %>%
+    as.list()
+  
+  repeated_combi <- repeated_elements %>%
+    purrr::map(function(w){
+      this_list %>%
+        purrr::map(~ w %in% .) %>%
+        unlist() %>%
+        not() %>%
+        extract(lengths, .) %>%
+        do.call(prod, .)
+    }) %>% unlist() %>% sum()
+  
+  do.call(prod, lengths) %>%
+    subtract(repeated_combi)
+}
+
+attr2df <- function(x, type = c("vertex"), attr_name){
+  if(type == "vertex"){
+    get_fun <- igraph::vertex_attr
+  }
+  dplyr::data_frame(name = get_fun(x, "name")) %>%
+    dplyr::mutate(!! attr_name := get_fun(x, attr_name))
 }
 
 all_matchings <- function(x){
