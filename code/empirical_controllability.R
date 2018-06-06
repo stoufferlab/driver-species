@@ -95,3 +95,27 @@ control_capacity_empirical_nets <- function(x, l){
     purrr::map(control_capacity) %>%
     merge_bilinks(l)
 }
+
+#' Produce data frame with controllability info for matched directed networks
+#'
+#' @param x list of matched networks
+#'
+#' @return a data frame with the proportion of driver nodes
+#'
+controllability_emp <- function(x){
+  
+  # number of species
+  n <- x %>%
+    purrr::map(~ length(igraph::V(.)))
+  
+  # get matching size
+  matching_size <- x %>%
+    purrr::map(igraph::graph_attr, "matching_size")
+  
+  # data frame with proportion of minimum driver node set
+  dplyr::data_frame(net_name = names(n),
+                    n = unlist(n), 
+                    matching_size = unlist(matching_size)) %>%
+    dplyr::mutate(D = n - matching_size, 
+                  n_D = D / n)
+}
