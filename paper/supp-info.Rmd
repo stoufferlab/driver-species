@@ -173,6 +173,34 @@ drake::loadd(fig_input_graph)
 replayPlot(fig_input_graph$plot)
 ```
 
+In order to calculate a node's control capacity $\phi$, we harness the fact that nodes can be classified in three groups according to their role in the input graph. 
+First,  if $x_i$ belongs to the minimum driver node set and has no adjacent nodes, then it cannot be replaced and will be part of every possible control configuration. 
+Second, if $x_i$ does not belong to the minimum driver node set and is not adjacent to any possible input node, then it does not part of the minimum driver node set under any control configuration. 
+Finally, if a node $x_i$ belongs to the minimum driver node set and is adjacent to another node $x_j$ in the input graph, then $x_j$ must belong to another minimum driver node to which $x_i$ doesn not belong, in other words $x_i$ and $x_j$ are substitutable. 
+
+The frist and the second group have a control capacity of $\phi = 1$ and $\phi = 0$ respectively. 
+Meanwhile, the third group has intermediate values of control capacity which can be calculated by computing the number of possible susbstitutions of a node by its control adjacent nodes. 
+As a rule of thumb the largest the number of possible substitutions an input node has, the smaller its control capacity. 
+
+```{r control-capacity-correlations}
+drake::loadd(control_capacity_correlations, this_method)
+
+cc_corr <- control_capacity_correlations %>%
+  dplyr::inner_join(metadata, by = "net_name") %>%
+  dplyr::filter(study %in% c("bartomeus", "lopezaraiza")) %>%
+  dplyr::filter(!is.na(corr), method == this_method) %$%
+  corr
+```
+
+
+For larger networks, calculating the control capacities using the input graph is several orders of magnitude faster than computing all possible maximum matchings. 
+While the the computation time of the input graph grows linearly with network size, the compuation of all maximum matchings grows polynomially. 
+However, the control capacities obtained using the input graph are not identical to those obtained by computing all possible maximum matchings. 
+The reason of this discrepancy is that two maximum matchings might result in the same minimum driver node set. 
+Nevertheless, the results obtained using both approaches are extremely similar. 
+We compared the control capacity obtained by calculating all maximum matchings and that obtained using the input graph in `r length(cc_corr)` of our networks (those for which we were able to calculate all maximum matchings within reasonable time). 
+The spearman correlation was very high in all cases, ranging between `r round(min(cc_corr),2)` and `r round(max(cc_corr), 2)` (median `r round(mean(cc_corr), 2)`). 
+
 ## Networks with reciprocal links {#reciprocal-links}
 
 ```{r}

@@ -40,7 +40,6 @@ basic_analysis_plan <- drake::drake_plan(
     "ISA", 
     "weighted NODF")), 
   directed_networks = purrr::map(networks, as_directed_network, direction = "asymmetry", ties = "both", higher_level = "pol"),
-  matched_networks = purrr::map(directed_networks, control_capacity_empirical_nets, l = aggregation_option_list),
   strings_in_dots = "literals"
 )
 
@@ -58,6 +57,21 @@ example_plots_plan <- drake::drake_plan(
   fig_bidirectional = make_fig_bidirectional(en_chain)
 )
 
+control_capacity_testing_plan <- drake::drake_plan(
+  control_input_pub_method = test_control_metrics(directed_networks, "input_graph", method = "published"),
+  control_input_min_method = test_control_metrics(directed_networks, "input_graph", method = "mine"),
+  control_lineg_method = test_control_metrics(directed_networks, "complementer", timeout = 60*60, exclude = "CD_ctl"),
+  control_capacity_correlations = cc_correlations(control_input_pub_method, control_input_min_method, control_lineg_method),
+  this_method = compare_cc_options(control_capacity_correlations, metadata),
+  strings_in_dots = "literals"
+)
+
+controllability_plan <- drake::drake_plan(
+  matched_networks = purrr::map(directed_networks, control_capacity_empirical_nets, l = aggregation_option_list, .method = this_method),
+  controllability = controllability_emp(matched_networks),
+  strings_in_dots = "literals"
+)
+
 reporting_plan <- drake::drake_plan(
   render_pdf(drake::knitr_in('paper/supp-info.Rmd'), 
              drake::file_out('paper/supp-info.pdf'), clean_md = FALSE),
@@ -69,7 +83,9 @@ reporting_plan <- drake::drake_plan(
               drake::file_out('paper/cover-letter.pdf'))
 )
 
-project_plan <- rbind(read_data_plan, basic_analysis_plan, example_plots_plan, reporting_plan)
+project_plan <- drake::bind_plans(
+  read_data_plan, basic_analysis_plan, example_plots_plan, 
+  control_capacity_testing_plan, controllability_plan, reporting_plan)
 project_config <- drake::drake_config(project_plan)
 drake::make(project_plan, config = project_config)
 

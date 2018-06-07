@@ -204,9 +204,9 @@ This is, if we were to drive the community to an arbitrary alternate state, we w
 
 To calculate a species control capacity $\phi$, we need to enumerate all possible maximum matchings (we detail the algorithm to find all maximum matchings in the Supplementary Information section \@ref(S-all-maximum-matching)). 
 However, enumerating all maximum matchings is extremely expensive from a computational perspective—a network with a couple dozen nodes could be controlled with several hundred million unique matchings. 
-To solve this problem, we employ a recently-developed algorithm that reveals the control correlations between the nodes in the graph [@zhang_input_2016, Supplementary Information section \@ref(S-input-graph)]. 
-Using this algorithm, we are able to obtain every minimum driver node set with information obtained from a single maximum matching. <!-- I don't think I follow the end of this sentence. -->
-The end result is that we are now able to calculate the control capacity $\phi_i$ of every node in linear time—rather than polynomial as the algorithm for matching enumeration requires. 
+To solve this problem, we employ a recently-developed algorithm that reveals the control correlations between the nodes in the graph using considerably less computational resources [@zhang_input_2016, Supplementary Information section \@ref(S-input-graph)]. 
+Using this algorithm, we are able to identify species that are possible control inputs—those that belong to the minimum driver node set in at least one of the possible control configurations. 
+One of the original contributions of our work is to extend this algorithm such that it is possible to calculate a highly accurate approximation of the control capacity $\phi_i$ of every species in the network. 
 
 <!-- The paragraph above reminded me of something in the back of my mind. Sometimes it's probably better to talk about species instead of nodes, even when we refer to aspects of graph theory. Could you go through and look carefully at every appearance of node to see if it would be easier for people that aren't us to understand if we said species instead? -->
 
