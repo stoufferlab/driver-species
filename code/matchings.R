@@ -95,12 +95,25 @@ get_control_adjacent <- function(x, d){
   igraph::V(x)[c(d$name, names(adjacent_bip[adjacent_bip]))]
 }
 
+# Chech of d_bip and pab are control adjacent
 is_adjacent <- function(xb, d_bip, pab){
   xb %>%
-    igraph::shortest_paths(d_bip, pab, output = "epath") %$%
-    epath %>%
-    extract2(1) %>% 
-    {my_xor(.$matched[1], .$matched[2])}
+    igraph::all_shortest_paths(d_bip, pab) %$%
+    res %>%
+    purrr::map(~ get_edges_between_nodes(xb, .)) %>%
+    purrr::map(~ my_xor(.$matched[1], .$matched[2])) %>%
+    purrr::pmap(any) %>%
+    unlist()
+}
+
+# for a vertex list a, b, c finds the edges a-b and b-c in graph xb
+get_edges_between_nodes <- function(xb, node_list){
+  node_list %>% {
+    c(.[1], .[2], .[2], .[3])
+  } %>%
+    igraph::get.edge.ids(xb, .) %>% {
+      igraph::E(xb)[.]
+    }
 }
 
 my_xor <- function(x, y, first_true = FALSE){
