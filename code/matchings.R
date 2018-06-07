@@ -161,19 +161,16 @@ coalece_attribute <- function(x, y, n){
   igraph::vertex_attr(x, name = paste(y, n, sep = "_"))
 }
 
-control_capacity <- function(x){
+control_capacity <- function(x, method = "published"){
   
   if(!"input_graph" %in% igraph::graph_attr_names(x)){
-    x %<>% input_graph()
+    x %<>% input_graph(method = method)
   }
   
   # find components without a driver node
   comp <- igraph::induced_subgraph(x$input_graph, 
                                    igraph::V(x$input_graph)[!igraph::V(x$input_graph)$input_node]) %>%
     igraph::components() 
-  
-  # get a list of the never driver nodes 
-  singles <- names(comp$membership)[comp$membership == which(1 == comp$csize)] %>% as.list()
   
   # get a list of the replacable nodes (excluding the single ones)
   combi <- attr2df(x, "vertex", "matched") %>%
@@ -182,15 +179,25 @@ control_capacity <- function(x){
     name %>%
     as.list() %>%
     purrr::map(~igraph::adjacent_vertices(x$input_graph, ., mode = "all")) %>%
-    purrr::map(~ c(names(.), as.character(.[[1]]$name))) %>%
-    c(singles)
+    purrr::map(~ c(names(.), as.character(.[[1]]$name))) 
   
   n_control_configurations <- get_n_comb(combi)
+  
+  # always matched nodes
+  always_matched <- attr2df(x, "vertex", "matched") %>%
+    dplyr::inner_join(attr2df(x$input_graph, "vertex", "input_node"), by = "name") %>%
+    dplyr::filter(matched & ! input_node) %$% 
+    name %>% {
+      n <- .
+      rep(n_control_configurations, length(.)) %>%
+        `names<-`(., n)
+    }
   
   # a data frame of n_matched & control capacity
   cc <- combi %>% 
     purrr::imap(combinations_per_component, combi) %>% 
     unlist %>% 
+    c(always_matched) %>%
     dplyr::data_frame(name = names(.), n_matched = .) %>%
     dplyr::group_by(name) %>%
     dplyr::summarise(n_matched = sum(n_matched)) %>% 
