@@ -49,7 +49,7 @@ maximum_matching <- function(x, weighted = FALSE){
      generate_matched_graph(matched_edges_bip)
 }
 
-input_graph <- function(x){
+input_graph <- function(x, method = "published"){
   
   if(!"matching_size" %in% igraph::graph_attr_names(x) | 
      !"matched" %in% igraph::vertex_attr_names(x) |
@@ -68,11 +68,36 @@ input_graph <- function(x){
       do.call(union_input_graphs, .)
   } 
   
+  if(method == "published"){
+    D <- driver
+    Vpd <- list()
+    checked <- list()
+    while (length(D) > 0){
+      checked[[length(checked) + 1]] <- D[1]
+      # message(D$name)
+      control_adjacent <- D[1] %>% get_control_adjacent(x, .)
+      Vpd[[length(Vpd) + 1]] <- make_graph_from_vertex(control_adjacent)
+      if(length(control_adjacent) > 1){
+        to_add <- control_adjacent
+        to_add <- to_add[!(to_add %in% D) & !(to_add %in% checked)]
+        D <- c(D, to_add)
+      }
+      D <- D[-1]
+    }
+    
+    ig_d <- Vpd %>%
+      `$<-`(delete_graph_attr, FALSE) %>%
+      do.call(union_input_graphs, .)
+    
+  } else {
+    ig_d <- get_input_graph(driver, x)
+  }
+  
+  ig_d %<>%
+      igraph::set_vertex_attr("input_node", value = TRUE)
   
   # sets attribute 'input_node' that determines wether a node is redudndant
   # (FALSE) or a possible input node (TRUE)
-  ig_d <- get_input_graph(driver, x) %>%
-    igraph::set_vertex_attr("input_node", value = TRUE)
   
   ig_nd <- get_input_graph(non_driver, x) %>% 
     igraph::set_vertex_attr("input_node", value = F)
