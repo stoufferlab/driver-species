@@ -3,6 +3,9 @@
 if(!packrat:::isPackratModeOn()) packrat::on()
 
 require(magrittr)
+require(foreach)
+require(doMC)
+registerDoMC(cores = 4)
 
 # load functions
 f <- lapply(list.files("code", full.names = T), source)

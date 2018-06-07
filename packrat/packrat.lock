@@ -100,6 +100,18 @@ Source: CRAN
 Version: 0.6.15
 Hash: 1f202ebd812ac7192be3739245746a13
 
+Package: doMC
+Source: CRAN
+Version: 1.3.5
+Hash: fe6e8767cb2a24f6db19768091be5c03
+Requires: foreach, iterators
+
+Package: doParallel
+Source: CRAN
+Version: 1.0.11
+Hash: cb602c6ef64eced7c8f32b206d4d74b4
+Requires: foreach, iterators
+
 Package: dotCall64
 Source: CRAN
 Version: 0.9-5.2
@@ -132,6 +144,12 @@ Source: CRAN
 Version: 9.6
 Hash: 35141d1c71dca17a40268b789c1bab53
 Requires: maps, spam
+
+Package: foreach
+Source: CRAN
+Version: 1.4.4
+Hash: 4df5ab2c8c35382dacab75d414da6748
+Requires: iterators
 
 Package: formatR
 Source: CRAN
@@ -188,6 +206,11 @@ Source: CRAN
 Version: 1.2.1
 Hash: a979d42385efda8e8aca7882a296ab50
 Requires: magrittr, pkgconfig
+
+Package: iterators
+Source: CRAN
+Version: 1.0.9
+Hash: c2dc1341675d2508c180221949e40e98
 
 Package: jsonlite
 Source: CRAN
