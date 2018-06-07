@@ -89,10 +89,10 @@ aggregation_option_list <- list(
 #'
 #' @return a list of directed networks with control properties calculated
 #'
-control_capacity_empirical_nets <- function(x, l){
+control_capacity_empirical_nets <- function(x, l, .method = method){
   x %>%
     split_bilinks() %>%
-    purrr::map(control_capacity) %>%
+    purrr::map(control_capacity, method = .method) %>%
     merge_bilinks(l)
 }
 
