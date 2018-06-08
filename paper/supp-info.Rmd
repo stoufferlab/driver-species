@@ -204,14 +204,13 @@ The spearman correlation was very high in all cases, ranging between `r round(mi
 ## Networks with reciprocal links {#reciprocal-links}
 
 ```{r}
-drake::loadd(directed_networks)
+drake::loadd(directed_networks, metadata)
 recipr <- directed_networks %>%
   purrr::map(igraph::reciprocity, mode = "ratio") %>%
   unlist() %>% {
     dplyr::data_frame(net_name = names(.), prop_bid = .)
   } %>%
-  dplyr::inner_join(metadata, by = "net_name") %>%
-  dplyr::filter(study %in% c("bartomeus", "lopezaraiza"))
+  filter_networks_df(metadata)
 ```
 
 

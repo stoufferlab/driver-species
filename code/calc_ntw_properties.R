@@ -52,3 +52,12 @@ keep_largest_component <- function(net){
 	largest_co <- which(co$csize == max(co$csize))
 	igraph::delete_vertices(net, co$membership != largest_co)
 }
+
+# filter out some networks from a data frame with a net_name data
+filter_networks_df <- function(x, metadata, desired_ntw = c("bartomeus", "lopezaraiza")){
+  m <- dplyr::select(metadata, net_name, study)
+  x %>% 
+    dplyr::inner_join(m, by = "net_name") %>%
+    dplyr::filter(study %in% desired_ntw) %>%
+    dplyr::select(-study)
+}
