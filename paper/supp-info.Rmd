@@ -163,7 +163,6 @@ The input graph is constructed based on the *control adjacency* of nodes in a ma
 Two nodes $x_i$ and $x_j$ are said to be control adjacent if there is a node $x_k$ connecting $x_i$ and $x_j$ with an unmatched link $x_k-x_i$ and a matched link $x_k-x_j$. 
 For example $a_1$ is control adjacent to $a_2$ in the top panel of Figure \@ref(fig:fig-input-graph). 
 If a node $x_i$ is part of a minimum driver node set then every node in the same component of $x_i$ in the input graph is a possible driver node. 
-Every node within the same component in the input graph has the same control capacity $\phi$ and the control capacity $\phi_i$ of node $x_i$ is inversely proportional to the number of nodes in the same component of $x_i$.
 
 ```{r}
 drake::loadd(fig_input_graph)
@@ -199,7 +198,7 @@ However, the control capacities obtained using the input graph are not identical
 The reason of this discrepancy is that two maximum matchings might result in the same minimum driver node set. 
 Nevertheless, the results obtained using both approaches are extremely similar. 
 We compared the control capacity obtained by calculating all maximum matchings and that obtained using the input graph in `r length(cc_corr)` of our networks (those for which we were able to calculate all maximum matchings within reasonable time). 
-The spearman correlation was very high in all cases, ranging between `r round(min(cc_corr),2)` and `r round(max(cc_corr), 2)` (median `r round(mean(cc_corr), 2)`). 
+The spearman correlation was very high in all cases, ranging between `r round(min(cc_corr),2)` and `r round(max(cc_corr), 2)` (median `r round(median(cc_corr), 2)`). 
 
 ## Networks with reciprocal links {#reciprocal-links}
 
@@ -214,13 +213,13 @@ recipr <- directed_networks %>%
 ```
 
 
-Our procedures to find minimum driver node sets is only adequate when there are no reciprocal (bidirectional) links in the network. 
+Our procedures to find minimum driver node sets are only adequate when there are no reciprocal (bidirectional) links in the network. 
 The proportion of reciprocal links in relatively low. 
 In fact the proportion of species pairs that are reciprocally connected in our empirical networks is just `r round(mean(recipr$prop_bid)*100, 2)`%. 
 However, reciprocal links are not a rare occurrence as `r sum(recipr$prop_bid != 0)` out of `r nrow(recipr)` empirical networks had at least one. 
-To calculate our controllability metrics at both the network (the relative size of the minimum driver node set, $n_D$) and species level (control capacity, $\phi$, and the likelihood of being a superior node, $\sigma$) we first need to generate all possible versions of the of the network that include only non-reciprocal links. 
+To calculate our controllability metrics at both the network (the relative size of the minimum driver node set, $n_D$) and species level (control capacity, $\phi$, and the likelihood of being a superior node, $\sigma$) we first need to generate all possible versions of the of the network that include only non-reciprocal links (Figure \@ref(fig:fig-bidirectional)). 
 
-Based on the available information, all of these network is as likely to be one that best represent the superior/matched relationships in the network. 
+All of these non-reciprocal networks are as likely to be one that best represent the superior/matched relationships in the network. 
 As such, we average the three metrics ($n_D$, $\phi$, and $\sigma$) across all the networks without reciprocal links without weighting by the number of possible control configurations. 
 
 ```{r}
