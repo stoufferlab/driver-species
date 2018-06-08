@@ -232,4 +232,36 @@ replayPlot(fig_bidirectional$plot)
 
 # Empirical vs. random expectation of controllability {#randomisations}
 
+# Controllability models {#controllability-models}
+
+The models were
+
+```{r}
+drake::loadd(controllability_models)
+
+replace_terms <- function(x){
+  x %>% 
+    stringr::str_replace("inv", "inv") %>%
+    stringr::str_replace("connectance", "C") %>%
+    stringr::str_replace("weighted_NODF", "NODF") %>%
+    stringr::str_replace("n_sp", "n_s") %>%
+    stringr::str_replace("web_asymmetry", "AS_n") %>%
+    stringr::str_replace("interaction_strength_asymmetry", "AS_s") %>%
+    stringr::str_replace(stringr::fixed("~"), "\\sim ")
+}
+
+AICcmodavg::aictab(controllability_models) %>% 
+  dplyr::mutate(Modnames = replace_terms(Modnames)) %>% 
+  dplyr::select(Modnames, AICc, Delta_AICc, Cum.Wt) %>%
+  dplyr::filter(Delta_AICc <= 8) %>%
+  dplyr::rename(model = Modnames, `$\\Delta AICc$` = Delta_AICc, `$AICc$` = AICc, `Cum. Weight` = Cum.Wt) %>%
+  dplyr::mutate(model = paste0("$", model, "$")) %>% 
+  knitr::kable(escape = FALSE, 
+               booktabs = TRUE, 
+               digits = 2, 
+               linesep = c(""),
+               caption = "Model selection table based on the Akaike Information Criterion for small samples for candidate models of size of the minimum driver node set ($n_D$) in the empirical networks. There was no evidence for any of the evaluated predictors: the invasion status (inv), the network connectance (C), the network nestedness (NODF) the number of species ($n_S$) the network asymmetry ($AS_s$) or the interaction strength asymmetry ($AS_s$). Only candidate models with $\\Delta AIC < 8$ are shown.")
+```
+
+
 # References

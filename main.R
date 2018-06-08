@@ -73,6 +73,9 @@ control_capacity_testing_plan <- drake::drake_plan(
 controllability_plan <- drake::drake_plan(
   matched_networks = purrr::map(directed_networks, control_capacity_empirical_nets, l = aggregation_option_list, .method = this_method),
   controllability = controllability_emp(matched_networks),
+  controllability_model_data = assemble_controllabillity_df(controllability, network_properties, metadata),
+  controllability_models = fit_controllability_models(controllability_model_data),
+  controllability_variable_importance = get_var_importance(controllability_models),
   strings_in_dots = "literals"
 )
 
