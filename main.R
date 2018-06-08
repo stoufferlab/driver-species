@@ -57,7 +57,8 @@ example_plots_plan <- drake::drake_plan(
   fig_all_matching = make_fig_all_matchings(en_direction), 
   fig_small_network = make_small_network(networks),
   fig_input_graph = make_fig_input_graph(en_direction, en_star, en_chain), 
-  fig_bidirectional = make_fig_bidirectional(en_chain)
+  fig_bidirectional = make_fig_bidirectional(en_chain), 
+  fig_emp_controllability = make_fig_emp_contollability(controllability, metadata)
 )
 
 control_capacity_testing_plan <- drake::drake_plan(
