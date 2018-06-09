@@ -189,6 +189,7 @@ After finding the minimum driver node set in each of our networks, we want to te
 We, therefore, use a set of generalised linear models (with binomial error structure) to investigate the effect of invasion status while also including covariates related to species richness, since one might naively expect to see a negative relationship between richness and controllability [@menge_indirect_1995]. 
 These covariates included the total number of species, plant richness, pollinators richness, the ratio of plant to pollinator richness, the link density (connectance), and the study site (as a two-level factor). 
 In addition, we also explored whether real networks differ in their architecture from random ones in a concerted way that could impact these results (supplementary information section \@ref(S-randomisations)).
+<!-- Expand -->
 
 ## Species roles
 
@@ -232,9 +233,9 @@ c_m <- controllability %>%
   filter_networks_df(metadata)
 ```
 
-The size of the minimum driver node set relative to the number of species in each network $n_D$ ranged between $n_D = `r round(min(c_m$n_D), 2)`$ and $n_D = `r round(max(c_m$n_D), 2)`$ (mean `r round(mean(c_m$n_D), 2)`, Figure \@ref(fig:fig-emp-controllability)). 
+The size of the minimum driver node set relative to the number of species in each network $n_D$ ranged between $n_D = `r round(min(c_m$n_D), 2)`$ and $n_D = `r round(max(c_m$n_D), 2)`$ (median `r round(median(c_m$n_D), 2)`, Figure \@ref(fig:fig-emp-controllability)). 
 We found that the relative size of the minimum driver node set was not related to any of our independent variables. 
-Indeed, as determined by the AICc, the null model was the most parsimonious candidate and all variables were relatively unimportant (Supplementary Information \@ref(S-controllability-models)). 
+Indeed the null model ($n_D \sim 1$) was the most parsimonious candidate model and all variables were relatively unimportant (based on the AICc; Supplementary Information \@ref(S-controllability-models)). 
 
 ```{r fig-emp-controllability, fig.width=fig_sizes()[[1]], fig.height=fig_sizes()[[1]], fig.cap="Density plot of (a) the relative size of the minimum driver node set $n_D$ in the empirical networks. (b) The density distribution of the difference between the relative size of the minimum driver node set of random networks and that of empirical networks. We randomised either the species visitation patterns (light line), or randomised the direction of control between a species pair (dark line). The vertical dashed lines indicate the median values of each distribution."}
 drake::loadd(fig_emp_controllability)
