@@ -236,9 +236,15 @@ The size of the minimum driver node set relative to the number of species in eac
 We found that the relative size of the minimum driver node set was not related to any of our independent variables. 
 Indeed, as determined by the AICc, the null model was the most parsimonious candidate and all variables were relatively unimportant (Supplementary Information \@ref(S-controllability-models)). 
 
-```{r fig-emp-controllability, fig.width=fig_sizes()[[1]], fig.height=fig_sizes()[[1]]/2, fig.cap="Density plot ofsize of the minimum driver node set. The vertical dashed line indicates the meann value."}
+```{r fig-emp-controllability, fig.width=fig_sizes()[[1]], fig.height=fig_sizes()[[1]], fig.cap="Density plot of (a) the relative size of the minimum driver node set $n_D$ in the empirical networks. (b) The density distribution of the difference between the relative size of the minimum driver node set of random networks and that of empirical networks. We randomised either the species visitation patterns (light line), or randomised the direction of control between a species pair (dark line). The vertical dashed lines indicate the median values of each distribution."}
 drake::loadd(fig_emp_controllability)
-fig_emp_controllability
+
+g <- fig_emp_controllability %>%
+  purrr::map(ggplot2::ggplotGrob)
+gb <- rbind(g[[1]], g[[2]], size = "first")
+gb$widths <- grid::unit.pmax(g[[1]]$widths, g[[2]]$widths)
+grid::grid.newpage()
+grid::grid.draw(gb)
 ```
 
 
