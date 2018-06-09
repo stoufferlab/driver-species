@@ -72,7 +72,6 @@ random_matching_sizes_emp <- function(x, n = 99){
 
 # put randomisation results into a data frame
 organise_randomisations <- function(controllability, random_interactions, random_directions){
-  controllability
   
   ri <- random_interactions %>%
     purrr::imap_dfr(~dplyr::data_frame(net_name = .y, matching_size = .x, randomisation = "interactions"))
@@ -80,6 +79,10 @@ organise_randomisations <- function(controllability, random_interactions, random
     purrr::imap_dfr(~dplyr::data_frame(net_name = .y, matching_size = .x, randomisation = "directions"))
   
   dplyr::bind_rows(ri, rd) %>%
+    dplyr::group_by(net_name) %>%
+    dplyr::mutate(both_ok = !any(is.na(matching_size))) %>% 
+    dplyr::group_by() %>%
+    dplyr::filter(both_ok) %>%
     dplyr::inner_join(dplyr::select(controllability, net_name, n), by = "net_name") %>%
     dplyr::mutate(D = n - matching_size, 
                   n_D = D / n) %>%
