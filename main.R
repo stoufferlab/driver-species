@@ -76,6 +76,9 @@ controllability_plan <- drake::drake_plan(
   controllability_model_data = assemble_controllabillity_df(controllability, network_properties, metadata),
   controllability_models = fit_controllability_models(controllability_model_data),
   controllability_variable_importance = get_var_importance(controllability_models),
+  random_directions = random_matching_sizes_emp(directed_networks, n = 99),
+  random_interactions = random_matching_sizes_emp(networks, n = 99),
+  randomisations_df = organise_randomisations(controllability, random_interactions, random_directions),
   strings_in_dots = "literals"
 )
 
