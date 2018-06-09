@@ -82,6 +82,10 @@ controllability_plan <- drake::drake_plan(
   strings_in_dots = "literals"
 )
 
+species_level_plan <- drake::drake_plan(
+  species_coovariates_df = purrr::map_df(directed_networks, get_species_coov, .id = "net_name")
+)
+
 reporting_plan <- drake::drake_plan(
   render_pdf(drake::knitr_in('paper/supp-info.Rmd'), 
              drake::file_out('paper/supp-info.pdf'), clean_md = FALSE),
@@ -95,7 +99,8 @@ reporting_plan <- drake::drake_plan(
 
 project_plan <- drake::bind_plans(
   read_data_plan, basic_analysis_plan, example_plots_plan, 
-  control_capacity_testing_plan, controllability_plan, reporting_plan)
+  control_capacity_testing_plan, controllability_plan, species_level_plan, 
+  reporting_plan)
 project_config <- drake::drake_config(project_plan)
 drake::make(project_plan, config = project_config)
 
