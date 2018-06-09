@@ -232,9 +232,9 @@ c_m <- controllability %>%
   filter_networks_df(metadata)
 ```
 
-The size of the minimum driver node set relative to the number of species in each network $n_D$ ranged between `r round(min(c_m$n_D), 2)` and `r round(max(c_m$n_D), 2)` (mean `r round(mean(c_m$n_D), 2)`, Figure \@ref(fig:fig-emp-controllability)). 
-We found this not to be related to any of the evaluated metrics. 
-The most parsimonious model, as determined by the AICc was the null model, which included not predictors (Supplementary Information \@ref(S-controllability-models)). 
+The size of the minimum driver node set relative to the number of species in each network $n_D$ ranged between $n_D = `r round(min(c_m$n_D), 2)`$ and $n_D = `r round(max(c_m$n_D), 2)`$ (mean `r round(mean(c_m$n_D), 2)`, Figure \@ref(fig:fig-emp-controllability)). 
+We found that the relative size of the minimum driver node set was not related to any of our independent variables. 
+Indeed, as determined by the AICc, the null model was the most parsimonious candidate and all variables were relatively unimportant (Supplementary Information \@ref(S-controllability-models)). 
 
 ```{r fig-emp-controllability, fig.width=fig_sizes()[[1]], fig.height=fig_sizes()[[1]]/2, fig.cap="Density plot ofsize of the minimum driver node set. The vertical dashed line indicates the meann value."}
 drake::loadd(fig_emp_controllability)

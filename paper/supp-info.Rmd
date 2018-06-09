@@ -230,13 +230,23 @@ drake::loadd(fig_bidirectional)
 replayPlot(fig_bidirectional$plot)
 ```
 
-# Empirical vs. random expectation of controllability {#randomisations}
-
 # Controllability models {#controllability-models}
 
-The models were
+We constructed a set of generalised linear models with binomial error structure. 
+The response variable was the size of the minimum driver node set of the twenty empirical networks (ten invaded and ten uninvaded). 
+The independent variables evaluated were the invasion status, the network connectance, the network nestedness (NODF) the number of species, the network asymmetry (an indication of the balance between plants and pollinators) or the interaction strength asymmetry [the asymmetry on the dependences between trophic levels; @bluthgen_specialization_2007].
 
-```{r}
+```{r controllability-variable-importance}
+drake::loadd(controllability_variable_importance)
+```
+
+
+We fitted the full set of possible candidate models and used the Akaike Information Criterion for small sample sizes (AICc) to compare the models. 
+We found little support for any of the evaluated variables (Table \@ref(tab:table-controllabillity-model-results)). 
+We measured the relative importance of an independent variable by adding the Akaike weights (the model probabilities) of the models in which the variable was present. 
+All variables were roughly equally un-important with the Akaike weights for each of them ranging between `r round(min(controllability_variable_importance$w.plus), 3)` and `r round(max(controllability_variable_importance$w.plus), 3)` (in a scale from 0 to 1).
+
+```{r table-controllabillity-model-results, results = "asis", sanitize = FALSE}
 drake::loadd(controllability_models)
 
 replace_terms <- function(x){
@@ -260,8 +270,10 @@ AICcmodavg::aictab(controllability_models) %>%
                booktabs = TRUE, 
                digits = 2, 
                linesep = c(""),
-               caption = "Model selection table based on the Akaike Information Criterion for small samples for candidate models of size of the minimum driver node set ($n_D$) in the empirical networks. There was no evidence for any of the evaluated predictors: the invasion status (inv), the network connectance (C), the network nestedness (NODF) the number of species ($n_S$) the network asymmetry ($AS_s$) or the interaction strength asymmetry ($AS_s$). Only candidate models with $\\Delta AIC < 8$ are shown.")
+               caption = "Model selection table based on the Akaike Information Criterion for small samples for candidate models of size of the minimum driver node set ($n_D$) in the empirical networks. There was no evidence for any of the evaluated predictors: the invasion status (inv), the network connectance (c), the network nestedness (NODF) the number of species ($n_S$) the network asymmetry ($AS_s$) or the interaction strength asymmetry ($AS_s$). Only candidate models with $\\Delta AIC < 8$ are shown.")
 ```
+
+# Empirical vs. random expectation of controllability {#randomisations}
 
 
 # References
