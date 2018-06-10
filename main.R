@@ -83,7 +83,11 @@ controllability_plan <- drake::drake_plan(
 )
 
 species_level_plan <- drake::drake_plan(
-  species_coovariates_df = purrr::map_df(directed_networks, get_species_coov, .id = "net_name")
+  species_coovariates_df = purrr::map_df(directed_networks, get_species_coov, .id = "net_name"), 
+  sigma_phi_df = purrr::map_dfr(matched_networks, get_controllability_superiorness, .id = "net_name"),
+  sl_characteristics = join_sl_characteristics(sigma_phi_df, species_coovariates_df),
+  sl_char_corr = species_level_characteristics_correlation(sl_characteristics, method = "pearson"),
+  strings_in_dots = "literals"
 )
 
 reporting_plan <- drake::drake_plan(
