@@ -1,9 +1,9 @@
 # calulate a bunch of species properties for a network, returns a data frame 
-get_species_coov <- function(n){
+get_species_coov <- function(n, indices){
   bipart <- n %>% 
     igraph::as_incidence_matrix(attr = "weight", 
                                 types = igraph::V(.)$type == "pol") %>%
-    bipartite::specieslevel(index = c("degree", "normalised degree", "species strength", "betweenness", "closeness")) %>%
+    bipartite::specieslevel(index = indices) %>%
     purrr::map_dfr(tibble::rownames_to_column, var = "sp_name") 
   
   
