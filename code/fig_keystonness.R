@@ -1,4 +1,5 @@
 make_fig_species_level <- function(sl_char_corr){
+  require(ggplot2)
   order <- sl_char_corr[[1]] %>% 
     as.dist() %>%
     hclust() %>% {
@@ -17,7 +18,7 @@ make_fig_species_level <- function(sl_char_corr){
                   Var2 = factor(Var2, levels = order), 
                   interesting = (Var2 %in% c("superior", "control_capacity")) | (Var1 %in% c("superior", "control_capacity")), 
                   interesting = dplyr::if_else(interesting, "bold", "plain"))
-  plot_df %>%
+  p1 <- plot_df %>%
     ggplot(aes(x = Var1, y = Var2, fill = value)) +
     geom_tile(width = 0.9, height = 0.9, size = 0.25) +
     geom_text(aes(label = round(value, 2), fontface = interesting), size = 3) +
@@ -30,8 +31,12 @@ make_fig_species_level <- function(sl_char_corr){
     base_ggplot_theme() +
     scale_x_discrete(labels = c("A" = expression(bold(alpha)))) +
     labs(title= 'Correlation between control and commonly used "keystoness" metrics', x = "", y = "")
+  
+  list(p1)
+ 
 }
-drake::loadd(sl_char_corr)
+
+# drake::loadd(sl_char_corr, secondary_ext_std)
 
 colorado <- function(src, boulder) {
   if (!is.factor(src)) src <- factor(src)                   # make sure it's a factor
@@ -47,3 +52,28 @@ colorado <- function(src, boulder) {
   }
 }
 
+## PLOT SECONDARY EXTINCTIONS
+# secondary_ext_std %>%
+#   dplyr::mutate(interesting = metric %in% c("superior", "control_capacity")) %>%
+#   dplyr::mutate(add_seco = seco_prop - prim_prop) %>%
+#   dplyr::filter(!metric %in% c("eigen.directed", "page_rank.directed")) %>%
+#   dplyr::filter(guild == "both") %>%
+#   ggplot(aes(x = prim_prop, y = n_comp, colour = metric, size = interesting)) +
+#   geom_line(family = "binomial", se = F) +
+#   # scale_x_log10() +
+#   # scale_y_log10() +
+#   facet_wrap(~net_name, scales = "free") +
+#   scale_size_manual(values = c(0.25, 1))
+# 
+# secondary_ext_std %>%
+#   dplyr::mutate(interesting = metric %in% c("superior", "control_capacity")) %>%
+#   dplyr::mutate(add_seco = seco_prop - prim_prop) %>%
+#   dplyr::filter(!metric %in% c("eigen.directed", "page_rank.directed")) %>%
+#   # dplyr::filter(guild == "pol") %>%
+#   ggplot(aes(x = prim_prop, y = add_seco, colour = metric, size = interesting)) +
+#   geom_point(family = "binomial", se = F, alpha = 0.5) +
+#   geom_smooth(family = "binomial", se = F) +
+#   # scale_x_log10() + 
+#   # scale_y_log10() + 
+#   facet_wrap(~guild) +
+#   scale_size_manual(values = c(0.25, 1))
