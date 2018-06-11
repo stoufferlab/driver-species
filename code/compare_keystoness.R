@@ -14,8 +14,9 @@ join_sl_characteristics <- function(sigma_phi_df, species_coovariates_df){
 }
 # drake::loadd(sigma_phi_df, species_coovariates_df)
 
-species_level_characteristics_correlation <- function(sl_characteristics, method = "pearson"){
-  y <- sl_characteristics 
+species_level_characteristics_correlation <- function(sl_characteristics, metadata, method = "pearson"){
+  y <- sl_characteristics %>%
+    filter_networks_df(metadata)
   
   z <- y %>%
     split(.$net_name) %>%
