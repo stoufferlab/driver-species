@@ -86,7 +86,9 @@ species_level_plan <- drake::drake_plan(
   species_coovariates_df = purrr::map_df(directed_networks, get_species_coov, indices = c("degree", "species strength", "betweenness", "closeness"), .id = "net_name"), 
   sigma_phi_df = purrr::map_dfr(matched_networks, get_controllability_superiorness, .id = "net_name"),
   sl_characteristics = join_sl_characteristics(sigma_phi_df, species_coovariates_df),
-  sl_char_corr = species_level_characteristics_correlation(sl_characteristics, method = "pearson"),
+  sl_char_corr = species_level_characteristics_correlation(sl_characteristics, metadata, method = "pearson"),
+  secondary_ext = all_secondary_extinctions(networks, sl_characteristics),
+  secondary_ext_std = standardize_secondary_extinctions(secondary_ext, controllability, metadata),
   strings_in_dots = "literals"
 )
 
@@ -107,4 +109,3 @@ project_plan <- drake::bind_plans(
   reporting_plan)
 project_config <- drake::drake_config(project_plan)
 drake::make(project_plan, config = project_config)
-
