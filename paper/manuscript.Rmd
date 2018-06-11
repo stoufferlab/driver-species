@@ -237,7 +237,7 @@ The size of the minimum driver node set relative to the number of species in eac
 We found that the relative size of the minimum driver node set was not related to any of our independent variables. 
 Indeed the null model ($n_D \sim 1$) was the most parsimonious candidate model and all variables were relatively unimportant (based on the AICc; Supplementary Information \@ref(S-controllability-models)). 
 
-```{r fig-emp-controllability, fig.width=fig_sizes()[[1]], fig.height=fig_sizes()[[1]], fig.cap="Density plot of (a) the relative size of the minimum driver node set $n_D$ in the empirical networks. (b) The density distribution of the difference between the relative size of the minimum driver node set of random networks and that of empirical networks. We randomised either the species visitation patterns (light line), or randomised the direction of control between a species pair (dark line). The vertical dashed lines indicate the median values of each distribution."}
+```{r fig-emp-controllability, fig.width=fig_sizes()[[1]], fig.height=fig_sizes()[[1]], fig.cap="Density plot of (a) the relative size of the minimum driver node set $n_D$ in the invaded (light) and uninvaded (dark) empirical networks. (b) The density distribution of the difference between the relative size of the minimum driver node set of random networks and that of empirical networks. We randomised either the species visitation patterns (light line), or randomised the direction of control between a species pair (dark line). The vertical dashed lines indicate the median values of each distribution."}
 drake::loadd(fig_emp_controllability)
 
 g <- fig_emp_controllability %>%
@@ -249,6 +249,16 @@ grid::grid.draw(gb)
 ```
 
 
+```{r, fig.width=fig_sizes()[[1]], fig.height=fig_sizes()[[1]], fig.cap="unfinished figure"}
+drake::loadd(fig_species_level)
 
+fig_species_level[[1]]
+```
+
+I'm thinlking just adding a graph with the control capacity and superiorness of the invasive/non invasive species as well as the glm to predict these variables and leave it there. 
+
+That means that it would be necessary to modify the introduction to remove the parts that claim that centrality is not good enough to predict coextinction. 
+The justification is just that centrality might just be telling a different thing to control. 
+We then just use the "empirically known" role of invasive species to show it works? 
 
 # References

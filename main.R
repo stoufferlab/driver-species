@@ -58,7 +58,8 @@ example_plots_plan <- drake::drake_plan(
   fig_small_network = make_small_network(networks),
   fig_input_graph = make_fig_input_graph(en_direction, en_star, en_chain), 
   fig_bidirectional = make_fig_bidirectional(en_chain), 
-  fig_emp_controllability = make_fig_emp_contollability(controllability, randomisations_df, metadata)
+  fig_emp_controllability = make_fig_emp_contollability(controllability, randomisations_df, metadata), 
+  fig_species_level = make_fig_species_level(sl_char_corr)
 )
 
 control_capacity_testing_plan <- drake::drake_plan(
