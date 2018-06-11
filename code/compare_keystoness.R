@@ -8,15 +8,18 @@ get_controllability_superiorness <- function(x){
 # drake::loadd(matched_networks)
 # x <- matched_networks[[1]]
 
-join_sl_characteristics <- function(sigma_phi_df, species_coovariates_df){
-  dplyr::inner_join(sigma_phi_df, species_coovariates_df, by = c("net_name", "sp_name")) %>% 
-    dplyr::select(-weighted.closeness, -weighted.betweenness, - species.strength) 
+join_sl_characteristics <- function(sigma_phi_df, species_coovariates_df, species_empirical_coov){
+  dplyr::inner_join(sigma_phi_df, species_coovariates_df, by = c("net_name", "sp_name")) %>%
+    dplyr::inner_join(species_empirical_coov, by = c("net_name", "sp_name"))
 }
 # drake::loadd(sigma_phi_df, species_coovariates_df)
 
-species_level_characteristics_correlation <- function(sl_characteristics, metadata, method = "pearson"){
+species_level_characteristics_correlation <- function(sl_characteristics, metadata, vars, method = "pearson"){
+  vars <- c("net_name", "sp_name", vars)
+  
   y <- sl_characteristics %>%
-    filter_networks_df(metadata)
+    filter_networks_df(metadata) %>% 
+    dplyr::select(!! vars) 
   
   z <- y %>%
     split(.$net_name) %>%
@@ -30,6 +33,6 @@ species_level_characteristics_correlation <- function(sl_characteristics, metada
 corr_df <- function(x, method){
   x %>%
     dplyr::select_if(is.numeric) %>%
-    dplyr::select_at(dplyr::vars(-dplyr::contains(".directed"))) %>% 
+    # dplyr::select_at(dplyr::vars(-dplyr::contains(".directed"))) %>% 
     as.matrix() %>%
     cor(method = method) }

@@ -36,10 +36,9 @@ make_fig_correlation <- function(sl_char_corr){
   
 }
 
-make_fig_control_capacity <- function(sigma_phi_df, species_empirical_coov, metadata){
+make_fig_control_capacity <- function(sl_characteristics, metadata){
   require(ggplot2)
-  p2df <- sigma_phi_df %>%
-    dplyr::inner_join(species_empirical_coov) %>%
+  p2df <- sl_characteristics %>%
     filter_networks_df(metadata) %>%
     tidyr::gather(key = "metric", value = "value", control_capacity, superior) 
   

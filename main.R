@@ -60,7 +60,7 @@ example_plots_plan <- drake::drake_plan(
   fig_bidirectional = make_fig_bidirectional(en_chain), 
   fig_emp_controllability = make_fig_emp_contollability(controllability, randomisations_df, metadata), 
   fig_correlation = make_fig_correlation(sl_char_corr), 
-  fig_control_capacity = make_fig_control_capacity(sigma_phi_df, species_empirical_coov, metadata)
+  fig_control_capacity = make_fig_control_capacity(sl_characteristics, metadata)
 )
 
 control_capacity_testing_plan <- drake::drake_plan(
@@ -88,8 +88,8 @@ species_level_plan <- drake::drake_plan(
   species_empirical_coov = purrr::map_df(networks, plants_or_pols, .id = "net_name"),
   species_coovariates_df = purrr::map_df(directed_networks, get_species_coov, indices = c("degree", "species strength", "betweenness", "closeness"), .id = "net_name"), 
   sigma_phi_df = purrr::map_dfr(matched_networks, get_controllability_superiorness, .id = "net_name"),
-  sl_characteristics = join_sl_characteristics(sigma_phi_df, species_coovariates_df),
-  sl_char_corr = species_level_characteristics_correlation(sl_characteristics, metadata, method = "pearson"),
+  sl_characteristics = join_sl_characteristics(sigma_phi_df, species_coovariates_df, species_empirical_coov),
+  sl_char_corr = species_level_characteristics_correlation(sl_characteristics, metadata, vars = c("control_capacity", "superior", "page_rank.nondirected", "eigen.nondirected", "degree", "betweenness", "closeness"), method = "pearson"),
   secondary_ext = all_secondary_extinctions(networks, sl_characteristics),
   secondary_ext_std = standardize_secondary_extinctions(secondary_ext, controllability, metadata),
   strings_in_dots = "literals"
