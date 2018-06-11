@@ -1,4 +1,4 @@
-make_fig_species_level <- function(sl_char_corr){
+make_fig_correlation <- function(sl_char_corr){
   require(ggplot2)
   order <- sl_char_corr[[1]] %>% 
     as.dist() %>%
@@ -21,7 +21,7 @@ make_fig_species_level <- function(sl_char_corr){
   p1 <- plot_df %>%
     ggplot(aes(x = Var1, y = Var2, fill = value)) +
     geom_tile(width = 0.9, height = 0.9, size = 0.25) +
-    geom_text(aes(label = round(value, 2), fontface = interesting), size = 3) +
+    geom_text(aes(label = round(value, 2), fontface = interesting), size = 2) +
     coord_equal() +
     scale_fill_gradient2(low = my_pallete()$light_orange, 
                          high = my_pallete()$light_purple, 
@@ -33,10 +33,35 @@ make_fig_species_level <- function(sl_char_corr){
     labs(title= 'Correlation between control and commonly used "keystoness" metrics', x = "", y = "")
   
   list(p1)
- 
+  
 }
 
-# drake::loadd(sl_char_corr, secondary_ext_std)
+make_fig_control_capacity <- function(sigma_phi_df, species_empirical_coov, metadata){
+  require(ggplot2)
+  p2df <- sigma_phi_df %>%
+    dplyr::inner_join(species_empirical_coov) %>%
+    filter_networks_df(metadata) %>%
+    tidyr::gather(key = "metric", value = "value", control_capacity, superior) 
+  
+  invasive <- p2df %>%
+    dplyr::filter(invasive)
+  
+  p2 <- p2df %>%
+    ggplot(aes(x = value, fill = interaction(invasive, guild))) +
+    geom_histogram(aes(y = ..count..), geom = "line", position = position_stack(), binwidth =  1/25) +
+    facet_wrap(~metric, scales = "free") +
+    # scale_y_sqrt() +
+    scale_fill_manual(values = c(my_pallete()$light_orange, my_pallete()$dark_orange, my_pallete()$light_purple),
+                      name = "", labels = c("native plants", "invasive plants", "pollinators")) +
+    base_ggplot_theme() +
+    theme(legend.position = c(1, 1),
+          legend.justification = c(1,1),
+          legend.background = element_rect(fill = "NA"), legend.key.size = unit(0.15, "in"))
+  p2
+  list(p2)
+}
+
+# drake::loadd(sl_char_corr, sigma_phi_df, species_empirical_coov)
 
 colorado <- function(src, boulder) {
   if (!is.factor(src)) src <- factor(src)                   # make sure it's a factor

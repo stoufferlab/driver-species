@@ -34,3 +34,10 @@ centrality_as_df <- function(x, label){
 # delta <- 0
 # rho <- 0.01
 # interaction_matrix <- interaction_matrix_mutualism
+
+plants_or_pols <- function(x){
+  dplyr::data_frame(sp_name = igraph::V(x)$name, 
+                    guild = igraph::V(x)$type) %>%
+    dplyr::mutate(invasive = dplyr::if_else(sp_name %in% c("p_4", "p_25", "Impatiens glandulifera"), TRUE, FALSE))
+}
+

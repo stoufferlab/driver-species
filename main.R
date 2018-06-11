@@ -59,7 +59,8 @@ example_plots_plan <- drake::drake_plan(
   fig_input_graph = make_fig_input_graph(en_direction, en_star, en_chain), 
   fig_bidirectional = make_fig_bidirectional(en_chain), 
   fig_emp_controllability = make_fig_emp_contollability(controllability, randomisations_df, metadata), 
-  fig_species_level = make_fig_species_level(sl_char_corr)
+  fig_correlation = make_fig_correlation(sl_char_corr), 
+  fig_control_capacity = make_fig_control_capacity(sigma_phi_df, species_empirical_coov, metadata)
 )
 
 control_capacity_testing_plan <- drake::drake_plan(
@@ -84,6 +85,7 @@ controllability_plan <- drake::drake_plan(
 )
 
 species_level_plan <- drake::drake_plan(
+  species_empirical_coov = purrr::map_df(networks, plants_or_pols, .id = "net_name"),
   species_coovariates_df = purrr::map_df(directed_networks, get_species_coov, indices = c("degree", "species strength", "betweenness", "closeness"), .id = "net_name"), 
   sigma_phi_df = purrr::map_dfr(matched_networks, get_controllability_superiorness, .id = "net_name"),
   sl_characteristics = join_sl_characteristics(sigma_phi_df, species_coovariates_df),

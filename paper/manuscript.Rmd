@@ -250,9 +250,14 @@ grid::grid.draw(gb)
 
 
 ```{r, fig.width=fig_sizes()[[1]], fig.height=fig_sizes()[[1]], fig.cap="unfinished figure"}
-drake::loadd(fig_species_level)
+drake::loadd(fig_correlation)
+fig_correlation[[1]]
+```
 
-fig_species_level[[1]]
+
+```{r, fig.width=fig_sizes()[[1]], fig.height=fig_sizes()[[1]]*0.5, fig.cap="unfinished figure"}
+drake::loadd(fig_control_capacity)
+fig_control_capacity[[1]] 
 ```
 
 I'm thinlking just adding a graph with the control capacity and superiorness of the invasive/non invasive species as well as the glm to predict these variables and leave it there. 
