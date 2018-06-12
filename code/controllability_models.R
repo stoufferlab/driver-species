@@ -15,7 +15,7 @@ fit_controllability_models <- function(controllability_model_data){
   vars = c("n_sp", "connectance", "web_asymmetry", "interaction_strength_asymmetry", "weighted_NODF", "inv", "study")
   # extra = " + (1 | study)"
   suppressWarnings({
-    models <- get_model_formulas("n_D", vars) %>% 
+    models <- get_model_formulas("n_D ~ ", vars) %>% 
       `names<-`(., .) %>%
       purrr::map(~glm(as.formula(.), data = controllability_model_data, family = "binomial"))
   })
@@ -34,7 +34,7 @@ get_model_formulas <- function(prefix, vars, suffix = "", add_1 = T){
       f
     }) %>%
     purrr::flatten() %>%
-    purrr::map(~ paste(prefix, "~", ., suffix)) 
+    purrr::map(~ paste(prefix, ., suffix)) 
 }
 
 get_var_importance <- function(model_list){
