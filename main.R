@@ -92,6 +92,8 @@ species_level_plan <- drake::drake_plan(
   sl_char_corr = species_level_characteristics_correlation(sl_characteristics, metadata, vars = c("control_capacity", "superior", "page_rank.nondirected", "eigen.nondirected", "degree", "betweenness", "closeness"), method = "pearson"),
   secondary_ext = all_secondary_extinctions(networks, sl_characteristics),
   secondary_ext_std = standardize_secondary_extinctions(secondary_ext, controllability, metadata),
+  species_model_superior = fit_species_models(sl_characteristics, metadata, response = "superior"), 
+  species_model_cc = fit_species_models(sl_characteristics, metadata, response = "control_capacity"),
   strings_in_dots = "literals"
 )
 
