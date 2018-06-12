@@ -1,22 +1,37 @@
 # calulate a bunch of species properties for a network, returns a data frame 
-get_species_coov <- function(n, indices){
+get_species_coov <- function(n, metrics){
+  bipartite_metrics <- metrics[! metrics %in% c("nested_contribution", "page_rank", "eigen")]
+  
   bipart <- n %>% 
     igraph::as_incidence_matrix(attr = "weight", 
                                 types = igraph::V(.)$type == "pol") %>%
-    bipartite::specieslevel(index = indices) %>%
+    bipartite::specieslevel(index = bipartite_metrics) %>%
     purrr::map_dfr(tibble::rownames_to_column, var = "sp_name") 
   
+  if ("nested_contribution" %in% metrics){
+    bipart %<>% 
+      dplyr::inner_join(nestedness_contribution(n), by = "sp_name")
+  }
   
   dir_list <- list(directed = TRUE, nondirected = FALSE) 
-  pr <- dir_list %>%
-    purrr::map(~ igraph::page_rank(n, directed = .)) %>%
-    centrality_as_df("page_rank")
-  ei <- dir_list %>%
-    purrr::map(~ igraph::eigen_centrality(n, directed = .)) %>%
-    centrality_as_df("eigen")
   
-  dplyr::inner_join(pr, ei, by = "sp_name")  %>%
-    dplyr::inner_join(bipart, by = "sp_name")
+  if("page_rank" %in% metrics){
+    pr <- dir_list %>%
+      purrr::map(~ igraph::page_rank(n, directed = .)) %>%
+      centrality_as_df("page_rank")
+    bipart %<>% 
+      dplyr::inner_join(pr, by = "sp_name")
+  }
+  
+  if ("eigen" %in% metrics){
+    ei <- dir_list %>%
+      purrr::map(~ igraph::eigen_centrality(n, directed = .)) %>%
+      centrality_as_df("eigen")
+    bipart %<>%
+      dplyr::inner_join(ei, by = "sp_name")
+  }
+  
+  bipart
 }
 
 
