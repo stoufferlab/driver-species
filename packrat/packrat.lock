@@ -67,11 +67,13 @@ Hash: 8cc9dc88c11acdcf8a6dec4a0f1500bc
 Package: RcppArmadillo
 Source: CRAN
 Version: 0.8.400.0.0
+Hash: f280a22174c410654514ef1860a246be
 Requires: Rcpp
 
 Package: RcppEigen
 Source: CRAN
 Version: 0.3.3.4.0
+Hash: 134344925b2aff5e2522ae707a55b0f8
 Requires: Rcpp
 
 Package: VGAM
@@ -357,7 +359,7 @@ Hash: f5e0d09f4e42d749ae0f893cff1817b6
 Package: lme4
 Source: CRAN
 Version: 1.1-17
-Hash: 85e08d49c86bc9c68bf74d3c48ea0669
+Hash: a41aab354a4af353838c78afcbe4cb82
 Requires: Rcpp, RcppEigen, minqa, nloptr
 
 Package: lubridate
@@ -486,6 +488,12 @@ Source: CRAN
 Version: 0.2.0
 Hash: 647e2e50a72557d1a770dcd6701e562b
 
+Package: rlist
+Source: CRAN
+Version: 0.4.6.1
+Hash: 549b1d78af0592d937069501b9b0ba0b
+Requires: XML, data.table, jsonlite, yaml
+
 Package: rmarkdown
 Source: CRAN
 Version: 1.9
@@ -583,7 +591,7 @@ Hash: ab9db0efa5f7f5a39f18fc7577192c4b
 Package: unmarked
 Source: CRAN
 Version: 0.12-2
-Hash: a05fd2f478739d6a9bd23c49f3c5c499
+Hash: 8006e05f3877b104fdca960c2a8e3492
 Requires: Rcpp, RcppArmadillo, plyr, raster, reshape
 
 Package: utf8
