@@ -56,3 +56,15 @@ plants_or_pols <- function(x){
     dplyr::mutate(invasive = dplyr::if_else(sp_name %in% c("p_4", "p_25", "Impatiens glandulifera"), TRUE, FALSE))
 }
 
+
+# calculate nested contribution per species and returns a data frame
+nestedness_contribution <- function(x){
+  suppressMessages({
+    x %>%
+      igraph::as_incidence_matrix(types = igraph::V(.)$type == "pol") %>%
+      bipartite::nestedcontribution() %>%
+      purrr::map(tibble::rownames_to_column, var = "sp_name") %>%
+      do.call(rbind, .)
+  })
+}
+
