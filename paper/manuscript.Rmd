@@ -17,6 +17,16 @@ header-includes:
 - \usepackage{lineno}
 - \usepackage{xr}
 - \externaldocument[S-]{supp-info}
+- \usepackage{multirow}
+- \usepackage[table]{xcolor}
+- \usepackage{wrapfig}
+- \usepackage{colortbl}
+- \usepackage{pdflscape}
+- \usepackage{tabu}
+- \usepackage{threeparttable}
+- \usepackage{threeparttablex}
+- \usepackage[normalem]{ulem}
+- \usepackage{makecell}
 documentclass: artikel1
 bibliography: references.bib
 ---
@@ -35,6 +45,7 @@ bibliography: references.bib
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, 
                       warning = FALSE)
+options(knitr.kable.NA = '')
 ```
 
 \newpage
@@ -259,6 +270,29 @@ fig_correlation[[1]]
 drake::loadd(fig_control_capacity)
 fig_control_capacity %>%
     cowplot::plot_grid(plotlist = .)
+```
+
+```{r tab-model-selection-table}
+drake::loadd(species_model_cc, species_model_superior)
+
+cc_table <- MuMIn::model.sel(species_model_cc$fixed) %>%
+  dplyr::filter(weight > 0.01)
+su_table <- MuMIn::model.sel(species_model_superior$fixed)%>%
+  dplyr::filter(weight > 0.01)
+
+dplyr::bind_rows(cc_table, su_table) %>%
+  dplyr::select(-logLik, - AICc) %>%
+  knitr::kable("latex", 
+               col.names = c("int.", "degree", "push/pull", "nested c.", "sp. strength", "d.f.",  "$\\Delta$AICc","weight"),
+               booktabs = T, 
+               caption = "asd", 
+               row.names = F, 
+               digits = 2, 
+               escape = F) %>%
+  kableExtra::add_header_above(c("model terms" = 5, " " = 3), escape = F) %>%
+  kableExtra::kable_styling(font_size = 8) %>%
+  kableExtra::group_rows("control capacity models", 1, nrow(cc_table), escape = F) %>%
+  kableExtra::group_rows("superior/subordinate models", nrow(cc_table) + 1, nrow(cc_table) + nrow(su_table))
 ```
 
 I'm thinlking just adding a graph with the control capacity and superiorness of the invasive/non invasive species as well as the glm to predict these variables and leave it there. 
