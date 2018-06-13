@@ -8,7 +8,7 @@ fit_species_models <- function(sl_characteristics, metadata, response){
   
   # testing random effects
   random_vars <- c("(nestedcontribution | guild)", "(species.strength | guild)", "(1 | site)")
-  fixed_vars <- c("species.strength", "nestedcontribution", "interaction.push.pull")
+  fixed_vars <- c("species.strength", "nestedcontribution", "interaction.push.pull", "degree")
   prefix_random <- paste0(response, " ~ ", paste(fixed_vars, collapse = " + "), " + ")
   formulas_random <- get_model_formulas(prefix_random, random_vars) %>% 
     set_names(., .) 
@@ -43,7 +43,8 @@ fit_species_models <- function(sl_characteristics, metadata, response){
   
   list(fixed = models_fixed, 
        random = models_random, 
-       no_random_model = no_random_model)
+       no_random_model = no_random_model, 
+       df = df)
 }
 
 get_best_random <- function(model_list, random_vars){
