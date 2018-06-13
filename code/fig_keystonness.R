@@ -1,4 +1,4 @@
-make_fig_correlation <- function(sl_char_corr){
+make_fig_correlation <- function(sl_char_corr, sl_characteristics, metadata){
   require(ggplot2)
   order <- sl_char_corr[[1]] %>% 
     as.dist() %>%
@@ -9,58 +9,264 @@ make_fig_correlation <- function(sl_char_corr){
   
   plot_df <- sl_char_corr[[1]][order, order] %>% {
     l <- .
-    l[upper.tri(l, diag = T)] <- NA
+    # l[upper.tri(l, diag = T)] <- NA
     l
   } %>%
     reshape2::melt() %>%
     dplyr::filter(!is.na(value)) %>%
     dplyr::mutate(Var1 = factor(Var1, levels = rev(order)), 
                   Var2 = factor(Var2, levels = order), 
-                  interesting = (Var2 %in% c("superior", "control_capacity")) | (Var1 %in% c("superior", "control_capacity")), 
+                  interesting = (Var1 %in% c("superior", "control_capacity")), 
                   interesting = dplyr::if_else(interesting, "bold", "plain"))
-  p1 <- plot_df %>%
-    ggplot(aes(x = Var1, y = Var2, fill = value)) +
+  
+  labels_long <- c("closeness" = "closeness  (l)",
+                   "page_rank.nondirected" = "page rank (g)",
+                   "eigen.nondirected" = "eigen centrality (e)",
+                   "superior" = expression(bold(paste("superior node (", sigma, ")"))),
+                   "betweenness" = "betweenness (w)",
+                   "control_capacity" = expression(bold(paste("control capacity (", phi, ")"))),
+                   "degree"= "degree (k)")
+  labels_short <- c("closeness" = "l",
+                    "page_rank.nondirected" = "g",
+                    "eigen.nondirected" = "e",
+                    "superior" = expression(sigma),
+                    "betweenness" = "w",
+                    "control_capacity" = expression(phi),
+                    "degree" = "k")
+  
+p1 <- plot_df %>%
+    ggplot(aes(x = as.numeric(Var1), y = as.numeric(Var2), fill = value)) +
     geom_tile(width = 0.9, height = 0.9, size = 0.25) +
-    geom_text(aes(label = round(value, 2), fontface = interesting), size = 2) +
+    geom_text(aes(label = round(value, 2), fontface = "plain", size = interesting)) +
     coord_equal() +
     scale_fill_gradient2(low = my_pallete()$light_orange, 
                          high = my_pallete()$light_purple, 
                          mid = "white", 
-                         midpoint = 0, na.value = NA) +
+                         midpoint = 0, na.value = NA, 
+                         name = "") +
     scale_color_manual(values = c(NA, "black")) + 
+    scale_y_continuous(breaks = length(order):1,
+                       labels = labels_long,
+                       sec.axis = sec_axis(trans = ~.,
+                                           breaks = length(order):1,
+                                           labels = labels_short),
+                       expand = c(0,0)) +
+    scale_x_continuous(breaks = 1:length(order),
+                       labels = labels_short,
+                       sec.axis = sec_axis(trans = ~.,
+                                           breaks = 1:length(order),
+                                           labels = labels_short),
+                       expand = c(0,0)) +
+    scale_size_manual(values = c(2, 2)) + 
+    labs(title = 'Correlation between centrality metrics', x = "", y = "") + 
     base_ggplot_theme() +
-    scale_x_discrete(labels = c("A" = expression(bold(alpha)))) +
-    labs(title= 'Correlation between control and commonly used "keystoness" metrics', x = "", y = "")
+    theme(#legend.position = c(1,1.15), 
+      legend.position = "none", 
+          legend.justification = c(0.5,0.5),
+          legend.background = element_rect(fill = "NA"), legend.key.size = unit(0.25, "in"), 
+      panel.border = element_rect(fill = NA, colour = NA), 
+      axis.ticks = element_line(colour = NA))
+  
+  
+  # p1
+  # c("control_capacity" = expression(phi), 
+  #   "closeness" = "l",
+  #   "betweenness" = "w", 
+  #   "eigen.nondirected" = "e", 
+  #   "superior" = expression(sigma), 
+  #   "page_rank.nondirected" = "g",
+  #   "degree" = "k")
+  # 
+  # sl_characteristics %>%
+  #   filter_networks_df(metadata) %>%
+  #   ggplot(aes(x = degree, y = control_capacity)) +
+  #   geom_point(shape = 21) +
+  #   geom_smooth(method = "glm", method.args = list(family = "binomial")) +
+  #   # scale_x_sqrt() +
+  #   base_ggplot_theme()
   
   list(p1)
   
 }
+# drake::loadd(sl_char_corr, sl_characteristics, metadata)
 
-make_fig_control_capacity <- function(sl_characteristics, metadata){
+make_fig_control_capacity <- function(species_model_cc, species_model_superior){
   require(ggplot2)
-  p2df <- sl_characteristics %>%
-    filter_networks_df(metadata) %>%
-    tidyr::gather(key = "metric", value = "value", control_capacity, superior) 
+  # p2df <- sl_characteristics %>%
+  #   filter_networks_df(metadata) %>%
+  #   tidyr::gather(key = "metric", value = "value", control_capacity, superior) %>%
+  #   dplyr::mutate(metric = factor(metric, 
+  #                                 levels = c("superior", "control_capacity"), 
+  #                                 labels = c("superior", "control capacity"))) 
+  # 
+  # invasive <- p2df %>%
+  #   dplyr::filter(invasive)
+  # 
+  # p2 <- p2df %>%
+  #   ggplot(aes(x = value, fill = interaction(invasive, guild))) +
+  #   geom_histogram(aes(y = ..count..), geom = "line", position = position_stack(), binwidth =  1/25) +
+  #   facet_wrap(~metric, scales = "free") +
+  #   # scale_y_sqrt() +
+  #   scale_fill_manual(values = c(my_pallete()$light_orange, my_pallete()$dark_orange, my_pallete()$light_purple),
+  #                     name = "", labels = c("native plants", "invasive plants", "pollinators")) +
+  #   base_ggplot_theme() +
+  #   theme(legend.position = c(1, 1),
+  #         legend.justification = c(1,1),
+  #         legend.background = element_rect(fill = "NA"), legend.key.size = unit(0.15, "in"))
+  # 
+  # invasive_only <- p2df %>%
+  #   dplyr::filter(invasive)
+  # 
+  # p2 <- p2df %>%
+  #   ggplot(aes(x = value, y = degree, colour = interaction(invasive, guild))) +
+  #   geom_point(aes(alpha = interaction(invasive, guild)), shape = 1, size =1) +
+  #   geom_point(data = invasive_only, aes(alpha = interaction(invasive, guild)), shape = 1, size = 1) +
+  #   geom_rug(sides = "b", position = "jitter", alpha = 0.25, size = 0.25) +
+  #   facet_wrap(~metric) +
+  #   scale_colour_manual(values = c(my_pallete()$light_orange, my_pallete()$dark_orange, my_pallete()$light_purple),
+  #                     name = "", labels = c("native plants", "invasive plants", "pollinators")) +
+  #   scale_alpha_manual(values = c(0.5, 1, 0.5), 
+  #                      name = "", labels = c("native plants", "invasive plants", "pollinators")) +
+  #   base_ggplot_theme() + 
+  #   scale_y_continuous("degree (k)") + 
+  #   theme(legend.position = c(0, 1.15),
+  #         legend.justification = c(0,1),
+  #         legend.background = element_rect(fill = "NA"), legend.key.size = unit(0.15, "in"))
+  # 
+  # control capacity
+
+  cc_model <- species_model_cc$fixed[[which.min(species_model_cc$fixed %>% purrr::map(AICcmodavg::AICc))]]
   
-  invasive <- p2df %>%
-    dplyr::filter(invasive)
+  df_cc <- species_model_cc %>%
+    extract2("df") %>%
+    modelr::add_predictions(cc_model) %>%
+    dplyr::mutate(degree_o = unscale(degree), 
+                  nestedcontribution_o = unscale(nestedcontribution))
   
-  p2 <- p2df %>%
-    ggplot(aes(x = value, fill = interaction(invasive, guild))) +
-    geom_histogram(aes(y = ..count..), geom = "line", position = position_stack(), binwidth =  1/25) +
-    facet_wrap(~metric, scales = "free") +
-    # scale_y_sqrt() +
-    scale_fill_manual(values = c(my_pallete()$light_orange, my_pallete()$dark_orange, my_pallete()$light_purple),
-                      name = "", labels = c("native plants", "invasive plants", "pollinators")) +
+  invasive_cc <- df_cc %>%
+    dplyr::filter(invasive) 
+  
+  p1 <- df_cc %>%
+    ggplot(aes(x = nestedcontribution_o, y = plogis(pred))) +
+    geom_point(aes(colour = guild), shape = 21, size = 1) +
+    # scale_x_log10() + 
+    geom_smooth(aes(color = guild, fill = guild), 
+                method = "glm", 
+                method.args = list(family = "binomial"), 
+                se = T, 
+                size = 0.5, 
+                alpha = 0.2) +
+    geom_point(data = invasive_cc, aes(y = plogis(pred)), 
+               fill = my_pallete()$dark_orange,
+               colour = my_pallete()$light_orange, 
+               shape = 21) +
+    scale_color_manual(values = c(my_pallete()$light_orange, 
+                                  my_pallete()$light_purple), 
+                       name = "", 
+                       labels = c("plants", "pollinators")) +
+    scale_fill_manual(values = c(my_pallete()$light_orange, 
+                                  my_pallete()$light_purple), 
+                      name = "", 
+                      labels = c("plants", "pollinators")) +
     base_ggplot_theme() +
-    theme(legend.position = c(1, 1),
-          legend.justification = c(1,1),
+    labs(title = "(a)", 
+         x = "contribution to nestedness", 
+         y = latex2exp::TeX("control capacity ($\\alpha$)")) +
+    theme(legend.position = c(1, 0),
+          legend.justification = c(1,0),
           legend.background = element_rect(fill = "NA"), legend.key.size = unit(0.15, "in"))
-  p2
-  list(p2)
+  
+  p2 <- df_cc %>%
+    ggplot(aes(x = degree_o, y = plogis(pred))) +
+    geom_point(aes(colour = guild), shape = 21, size = 1) +
+    # scale_x_log10() + 
+    geom_smooth(aes(color = guild, fill = guild), 
+                method = "glm", 
+                method.args = list(family = "binomial"), 
+                se = T, 
+                size = 0.5, 
+                alpha = 0.2) +
+    geom_point(data = invasive_cc, aes(y = plogis(pred)), 
+               fill = my_pallete()$dark_orange,
+               colour = my_pallete()$light_orange, 
+               shape = 21) +
+    scale_color_manual(values = c(my_pallete()$light_orange, 
+                                  my_pallete()$light_purple), 
+                       name = "", 
+                       labels = c("plants", "pollinators")) +
+    scale_fill_manual(values = c(my_pallete()$light_orange, 
+                                 my_pallete()$light_purple), 
+                      name = "", 
+                      labels = c("plants", "pollinators")) +
+    scale_x_log10() + 
+    base_ggplot_theme() +
+    labs(title = "(b)", 
+         x = "degree", 
+         y = latex2exp::TeX("control capacity ($\\alpha$)")) +
+    theme(legend.position = c(1, 0),
+          legend.justification = c(1,0),
+          legend.background = element_rect(fill = "NA"), legend.key.size = unit(0.15, "in"))
+  
+  ## superior
+  
+  su_model <- species_model_superior$fixed[[which.min(species_model_superior$fixed %>% purrr::map(AICcmodavg::AICc))]]
+  
+  df_su <- species_model_superior %>%
+    extract2("df") %>%
+    modelr::add_predictions(su_model) %>%
+    dplyr::mutate(degree_o = unscale(degree), 
+                  species.strength_o = unscale(species.strength))
+  
+  invasive_su <- df_su %>%
+    dplyr::filter(invasive) 
+  
+  p3 <- df_su %>%
+    ggplot(aes(x = species.strength_o, y = plogis(pred))) +
+    geom_point(shape = 21, size = 1) +
+    scale_x_log10() + 
+    geom_smooth(method = "glm", 
+                method.args = list(family = "binomial"), 
+                se = T, 
+                colour = "black", 
+                size = 0.5) +
+    geom_point(data = invasive_su, aes(y = plogis(pred)), 
+               fill = my_pallete()$dark_orange,
+               colour = "black", 
+               shape = 21) +
+    base_ggplot_theme() +
+    labs(title = "(c)", 
+         x = "species strength", 
+         y = latex2exp::TeX("superior prob. ($\\sigma$)"))
+  
+  p4 <- df_su %>%
+    ggplot(aes(x = degree_o, y = plogis(pred))) +
+    geom_point(shape = 21, size = 1) +
+    scale_x_log10() + 
+    geom_smooth(method = "glm", 
+                method.args = list(family = "binomial"), 
+                se = T, 
+                colour = "black",
+                size = 0.5) +
+    geom_point(data = invasive_su, aes(y = plogis(pred)), 
+               fill = my_pallete()$dark_orange,
+               colour = "black", 
+               shape = 21)  +
+    base_ggplot_theme() +
+    labs(title = "(d)", 
+         x = "species degree (k)", 
+         y = latex2exp::TeX("superior prob. ($\\sigma$)"))
+  
+  # p2
+  list(p1, p2, p3, p4) 
 }
+drake::loadd(sl_characteristics, metadata)
 
 # drake::loadd(sl_char_corr, sigma_phi_df, species_empirical_coov)
+
+unscale <- function(x){
+  x * attr(x, "scaled:scale") +  attr(x, "scaled:center")
+}
+
 
 colorado <- function(src, boulder) {
   if (!is.factor(src)) src <- factor(src)                   # make sure it's a factor

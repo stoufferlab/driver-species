@@ -60,7 +60,7 @@ example_plots_plan <- drake::drake_plan(
   fig_bidirectional = make_fig_bidirectional(en_chain), 
   fig_emp_controllability = make_fig_emp_contollability(controllability, randomisations_df, metadata), 
   fig_correlation = make_fig_correlation(sl_char_corr), 
-  fig_control_capacity = make_fig_control_capacity(sl_characteristics, metadata)
+  fig_control_capacity = make_fig_control_capacity(species_model_cc, species_model_superior)
 )
 
 control_capacity_testing_plan <- drake::drake_plan(

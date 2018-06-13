@@ -255,9 +255,10 @@ fig_correlation[[1]]
 ```
 
 
-```{r, fig.width=fig_sizes()[[1]], fig.height=fig_sizes()[[1]]*0.5, fig.cap="unfinished figure"}
+```{r fig-species-level, fig.width=fig_sizes()[[2]], fig.height=fig_sizes()[[1]], fig.cap="Control capacity and "}
 drake::loadd(fig_control_capacity)
-fig_control_capacity[[1]] 
+fig_control_capacity %>%
+    cowplot::plot_grid(plotlist = .)
 ```
 
 I'm thinlking just adding a graph with the control capacity and superiorness of the invasive/non invasive species as well as the glm to predict these variables and leave it there. 
