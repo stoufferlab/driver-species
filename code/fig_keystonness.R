@@ -144,11 +144,18 @@ make_fig_control_capacity <- function(species_model_cc, species_model_superior){
                   nestedcontribution_o = unscale(nestedcontribution))
   
   invasive_cc <- df_cc %>%
-    dplyr::filter(invasive) 
+    dplyr::filter(invasive)
+  
+  # df_cc1 <- expand.grid(degree = 0, 
+  #                       guild = c("pla", "pol"), 
+  #                       species.strength = 0, 
+  #                       nestedcontribution = seq(-2.5, 5, length.out = 20), 
+  #                       interaction.push.pull = 0) %>%
+  #   modelr::add_predictions(cc_model)
   
   p1 <- df_cc %>%
     ggplot(aes(x = nestedcontribution_o, y = plogis(pred))) +
-    geom_point(aes(colour = guild), shape = 21, size = 1) +
+    geom_point(aes(colour = guild), shape = 21, size = 1, alpha = 0.25) +
     # scale_x_log10() + 
     geom_smooth(aes(color = guild, fill = guild), 
                 method = "glm", 
@@ -158,8 +165,9 @@ make_fig_control_capacity <- function(species_model_cc, species_model_superior){
                 alpha = 0.2) +
     geom_point(data = invasive_cc, aes(y = plogis(pred)), 
                fill = my_pallete()$dark_orange,
-               colour = my_pallete()$light_orange, 
-               shape = 21) +
+               colour = "black", 
+               shape = 21,
+               size = 1) +
     scale_color_manual(values = c(my_pallete()$light_orange, 
                                   my_pallete()$light_purple), 
                        name = "", 
@@ -171,14 +179,16 @@ make_fig_control_capacity <- function(species_model_cc, species_model_superior){
     base_ggplot_theme() +
     labs(title = "(a)", 
          x = "contribution to nestedness", 
-         y = latex2exp::TeX("control capacity ($\\alpha$)")) +
+         y = latex2exp::TeX("control capacity ($\\phi$)")) +
     theme(legend.position = c(1, 0),
           legend.justification = c(1,0),
-          legend.background = element_rect(fill = "NA"), legend.key.size = unit(0.15, "in"))
+          legend.background = element_rect(fill = "NA"), 
+          legend.key.size = unit(0.15, "in"), 
+          plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "mm")) 
   
   p2 <- df_cc %>%
     ggplot(aes(x = degree_o, y = plogis(pred))) +
-    geom_point(aes(colour = guild), shape = 21, size = 1) +
+    geom_point(aes(colour = guild), shape = 21, size = 1, alpha = 0.25) +
     # scale_x_log10() + 
     geom_smooth(aes(color = guild, fill = guild), 
                 method = "glm", 
@@ -188,8 +198,9 @@ make_fig_control_capacity <- function(species_model_cc, species_model_superior){
                 alpha = 0.2) +
     geom_point(data = invasive_cc, aes(y = plogis(pred)), 
                fill = my_pallete()$dark_orange,
-               colour = my_pallete()$light_orange, 
-               shape = 21) +
+               colour = "black", 
+               shape = 21,
+               size = 1) +
     scale_color_manual(values = c(my_pallete()$light_orange, 
                                   my_pallete()$light_purple), 
                        name = "", 
@@ -198,14 +209,16 @@ make_fig_control_capacity <- function(species_model_cc, species_model_superior){
                                  my_pallete()$light_purple), 
                       name = "", 
                       labels = c("plants", "pollinators")) +
-    scale_x_log10() + 
+    scale_x_log10(breaks = c(1, 4, 10, 40)) + 
     base_ggplot_theme() +
     labs(title = "(b)", 
          x = "degree", 
-         y = latex2exp::TeX("control capacity ($\\alpha$)")) +
+         y = latex2exp::TeX("control capacity ($\\phi$)")) +
     theme(legend.position = c(1, 0),
           legend.justification = c(1,0),
-          legend.background = element_rect(fill = "NA"), legend.key.size = unit(0.15, "in"))
+          legend.background = element_rect(fill = "NA"), 
+          legend.key.size = unit(0.15, "in"),
+          plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "mm"))
   
   ## superior
   
@@ -222,7 +235,7 @@ make_fig_control_capacity <- function(species_model_cc, species_model_superior){
   
   p3 <- df_su %>%
     ggplot(aes(x = species.strength_o, y = plogis(pred))) +
-    geom_point(shape = 21, size = 1) +
+    geom_point(shape = 21, size = 1, colour = "grey", alpha = 0.25) +
     scale_x_log10() + 
     geom_smooth(method = "glm", 
                 method.args = list(family = "binomial"), 
@@ -232,16 +245,18 @@ make_fig_control_capacity <- function(species_model_cc, species_model_superior){
     geom_point(data = invasive_su, aes(y = plogis(pred)), 
                fill = my_pallete()$dark_orange,
                colour = "black", 
-               shape = 21) +
+               shape = 21,
+               size = 1) +
     base_ggplot_theme() +
     labs(title = "(c)", 
          x = "species strength", 
-         y = latex2exp::TeX("superior prob. ($\\sigma$)"))
+         y = latex2exp::TeX("superior prob. ($\\sigma$)")) +
+    theme(plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "mm"))
   
   p4 <- df_su %>%
     ggplot(aes(x = degree_o, y = plogis(pred))) +
-    geom_point(shape = 21, size = 1) +
-    scale_x_log10() + 
+    geom_point(shape = 21, size = 1, colour = "grey", alpha = 0.25) +
+    scale_x_log10(breaks = c(1, 4, 10, 40)) + 
     geom_smooth(method = "glm", 
                 method.args = list(family = "binomial"), 
                 se = T, 
@@ -250,11 +265,13 @@ make_fig_control_capacity <- function(species_model_cc, species_model_superior){
     geom_point(data = invasive_su, aes(y = plogis(pred)), 
                fill = my_pallete()$dark_orange,
                colour = "black", 
-               shape = 21)  +
+               shape = 21,
+               size = 1)  +
     base_ggplot_theme() +
     labs(title = "(d)", 
-         x = "species degree (k)", 
-         y = latex2exp::TeX("superior prob. ($\\sigma$)"))
+         x = "degree", 
+         y = latex2exp::TeX("superior prob. ($\\sigma$)")) +
+    theme(plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "mm"))
   
   # p2
   list(p1, p2, p3, p4) 

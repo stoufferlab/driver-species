@@ -276,10 +276,21 @@ Both plants and pollinators were distributed across a gradient of control capaci
 This distribution, in particular for control capacity, was independent of the degree of species. 
 Remarkably, every single invasive plant species in our dataset had both the maximum control capacity and was classified as a superior node. 
 
-```{r fig-species-level, fig.width=fig_sizes()[[2]], fig.height=fig_sizes()[[1]], fig.cap="Control capacity and "}
+```{r fig-species-level, fig.width=fig_sizes()[[2]]*2/3, fig.height=fig_sizes()[[1]], fig.cap="Control capacity and "}
 drake::loadd(fig_control_capacity)
+library(ggplot2)
+fig_control_capacity[[2]] <- fig_control_capacity[[2]] +
+  theme(axis.title.y = element_blank(),
+        axis.text.y = element_blank())
+fig_control_capacity[[4]] <- fig_control_capacity[[4]] +
+  theme(axis.title.y = element_blank(),
+        axis.text.y = element_blank())
+
+# pdf("test.pdf", width =fig_sizes()[[2]]*2/3, height = fig_sizes()[[1]])
 fig_control_capacity %>%
-    cowplot::plot_grid(plotlist = .)
+    cowplot::plot_grid(plotlist = ., rel_widths = c(1.21,1), align = "h")
+# dev.off()
+
 ```
 
 The model that best explained Although a species control capacity was not correlated to any of the centrality metrics, we found that it was a strong correlation w  Control capacity was strongly related to the nested
