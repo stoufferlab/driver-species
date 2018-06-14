@@ -1,26 +1,22 @@
-species_level_structural_stability <- function(x, delta = 0.1, rho =0.1){
-  x %>%
-    igraph::V(.) %>%
-    purrr::map(~ species_structural_stability(x, ., delta = delta, rho = rho))
-}
 
-species_structural_stability <- function(x, sp, delta = 0.1, rho = 0.1){
-  x %>%
-    igraph::delete_vertices(sp) %>%
-    get_stability_feasibility(delta = delta, rho = rho)
-}
 
-get_all_struct <- function(directed_networks){
-a <-   foreach(i = 1:length(directed_networks)) %do% {
-    message(names(directed_networks)[i])
-    get_stability_feasibility(directed_networks[[i]])
+
+get_all_struct <- function(directed_networks, rho){
+  foreach(i = 1:length(directed_networks), .combine = rbind) %dopar% {
+    cat(names(directed_networks)[i])
+    gamma_critical <- network_stability(directed_networks[[i]], 
+                                        delta = 0, 
+                                        rho = rho)
+    species_level_structural_stability(directed_networks[[i]], 
+                                       delta = 0, 
+                                       rho = rho, 
+                                       gamma_avg = gamma_critical) %>% {
+      dplyr::data_frame(net_name = names(directed_networks)[i], 
+                        sp_name = names(.), 
+                        feasibility = unlist(.), 
+                        gamma_crit = gamma_critical)
+    }
   }
-}
-
-get_stability_feasibility <- function(x, delta = 0.1, rho = 0.01){
-  x %>%
-  igraph::as_incidence_matrix(types = igraph::V(.)$type == "pla") %>%
-    stable_feasible(delta = delta, rho = rho)
 }
 
 make_binary <- function(x){
@@ -29,11 +25,31 @@ make_binary <- function(x){
     `class<-`("numeric")
 } 
 
-stable_feasible <- function(x, delta, rho, spp_gr = NULL, bp = NULL, gamma_avg = NULL){
-  gamma_critical <- gamma_hat(x, delta = delta, rho = rho, spp_gr = spp_gr, bp = bp)
-  if(is.null(gamma_avg)) gamma_avg <- gamma_critical/2
-  ome_both <- omega(x, delta = delta, gamma_avg = gamma_avg, rho = rho, spp_gr = spp_gr, bp = bp)
-  data.frame(stability = gamma_critical, feasibility = ome_both)
+
+network_stability <- function(x, delta = 0, rho = 0.1){
+  x %>%
+    igraph::as_incidence_matrix(types = igraph::V(.)$type == "pla") %>%
+    gamma_hat(delta = delta, rho = rho, spp_gr = NULL, bp = NULL)
+
+}
+
+species_level_structural_stability <- function(x, delta = 0, rho =0.1, gamma_avg){
+  x %>%
+    igraph::V(.) %>%
+    purrr::map(~ species_structural_stability(x, ., delta = delta, rho = rho, gamma_avg = gamma_avg))
+}
+
+# r <- 0.01
+# species_structural_stability(directed_networks[[5]], 
+#                              igraph::V(directed_networks[[5]])[4],
+#                              delta = 0, rho = r,
+#                              gamma_avg = network_stability(directed_networks[[5]], rho = r))
+
+species_structural_stability <- function(x, sp, delta = 0, rho = 0.1, gamma_avg){
+  x %>%
+    igraph::delete_vertices(sp) %>%
+    igraph::as_incidence_matrix(types = igraph::V(.)$type == "pla") %>%
+    omega(delta = delta, gamma_avg = gamma_avg, rho = rho, spp_gr = NULL, bp = NULL)
 }
 
 gamma_hat <- function(web, delta, spp_gr = NULL, bp = NULL, fun = interaction_matrix, rho = NULL){

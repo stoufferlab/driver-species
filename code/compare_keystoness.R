@@ -8,9 +8,10 @@ get_controllability_superiorness <- function(x){
 # drake::loadd(matched_networks)
 # x <- matched_networks[[1]]
 
-join_sl_characteristics <- function(sigma_phi_df, species_coovariates_df, species_empirical_coov){
+join_sl_characteristics <- function(sigma_phi_df, species_coovariates_df, species_empirical_coov, structural_stability){
   dplyr::inner_join(sigma_phi_df, species_coovariates_df, by = c("net_name", "sp_name")) %>%
-    dplyr::inner_join(species_empirical_coov, by = c("net_name", "sp_name"))
+    dplyr::inner_join(species_empirical_coov, by = c("net_name", "sp_name")) %>%
+    dplyr::inner_join(structural_stability, by = c("net_name", "sp_name"))
 }
 # drake::loadd(sigma_phi_df, species_coovariates_df)
 
