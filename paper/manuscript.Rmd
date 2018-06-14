@@ -289,6 +289,14 @@ fig_control_capacity %>%
 
 The model that best explained Although a species control capacity was not correlated to any of the centrality metrics, we found that it was a strong correlation w  Control capacity was strongly related to the nested
 
+```{r fig-structural-stability, fig.width=fig_sizes()[[1]], fig.height=fig_sizes()[[1]]/2, fig.cap="Control capacity and "}
+drake::loadd(fig_structural_stability)
+
+fig_structural_stability[[1]]
+```
+
+
+
 ```{r tab-model-selection-table}
 drake::loadd(species_model_cc, species_model_superior)
 
