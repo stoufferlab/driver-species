@@ -275,5 +275,10 @@ AICcmodavg::aictab(controllability_models) %>%
 
 # Empirical vs. random expectation of controllability {#randomisations}
 
+```{r fig-correlogram, fig.width=fig_sizes()[[1]], fig.height=fig_sizes()[[1]], fig.cap="Mean Spearman correlation coefficients between control metrics (control capcity $\\phi$ and the likelyhood of being a superior node $\\sigma$) and centrality metrics commonly used to estimate a species' 'keystoness' (closeness centrality $l$ , betwenness $w$, eigen centrality $e$, page rank $g$ and degre $k$) in each of the networks. Purple and orange tiles indicate a positive correlation or negative correlation respectively."}
+drake::loadd(fig_correlation)
+fig_correlation[[1]]
+```
+
 
 # References

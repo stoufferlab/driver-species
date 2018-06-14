@@ -272,11 +272,6 @@ correlations <- sl_char_corr %>%
 The control capacity $\phi$ and the likelihood of being a superior node $\sigma$ are weakly correlated with commonly used centrality metrics. 
 Specifically, the correlation coefficient between the control capacity $\phi$ and other metrics ranged between `r round(min(correlations$control_capacity), 2)` and `r round(max(correlations$control_capacity), 2)` while the correlation coefficient between the likelyhood of being a superior node $\sigma$ and the centrality metrics ranged between `r round(min(correlations$superior), 2)` and `r round(max(correlations$superior), 2)` (Figure \@ref(fig:fig-correlogram)).
 
-```{r fig-correlogram, fig.width=fig_sizes()[[1]], fig.height=fig_sizes()[[1]], fig.cap="Mean Spearman correlation coefficients between control metrics (control capcity $\\phi$ and the likelyhood of being a superior node $\\sigma$) and centrality metrics commonly used to estimate a species' 'keystoness' (closeness centrality $l$ , betwenness $w$, eigen centrality $e$, page rank $g$ and degre $k$) in each of the networks. Purple and orange tiles indicate a positive correlation or negative correlation respectively."}
-drake::loadd(fig_correlation)
-fig_correlation[[1]]
-```
-
 Both plants and pollinators were distributed across a gradient of control capacity and wether they were superior nodes or not (Figure \@ref(fig:fig-species-level)). 
 This distribution, in particular for control capacity, was independent of the degree of species. 
 Remarkably, every single invasive plant species in our dataset had both the maximum control capacity and was classified as a superior node. 
