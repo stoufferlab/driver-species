@@ -18,14 +18,7 @@ header-includes:
 - \usepackage{xr}
 - \externaldocument[S-]{supp-info}
 - \usepackage{multirow}
-- \usepackage[table]{xcolor}
-- \usepackage{wrapfig}
-- \usepackage{colortbl}
-- \usepackage{pdflscape}
 - \usepackage{tabu}
-- \usepackage{threeparttable}
-- \usepackage{threeparttablex}
-- \usepackage[normalem]{ulem}
 - \usepackage{makecell}
 documentclass: artikel1
 bibliography: references.bib
