@@ -230,6 +230,23 @@ drake::loadd(fig_bidirectional)
 replayPlot(fig_bidirectional$plot)
 ```
 
+
+# Structural stability {#structural-stability}
+
+We follow @rohr_structural_2014 and @saavedra_nested_2016 to calculate the structural stability of the empirical networks. 
+We first calculate the stability condition $\hat{\gamma}$ using all species in the network. 
+To simplify the calculations we assummed that there is no mutualistic trade off, and a mean field interspecific competition of $\rho = 0.01$ [@saavedra_nested_2016]. 
+To calculate the contribution to stable coexistence of a given species, we removed the focal species from the network and then calculated the corresponding structural feasibility $\Omega$ for a level of mutualism equal to the stability condition found previously. 
+The choice of the parameters, specifically the interspecific competition $\rho$ had only a small impact on the relative contribution of species to stable coexistence (Figure \@ref(fig:fig-rho-sensitivity)a). 
+
+In addition, the interspecific competition had a minor impact on our result that indicates that critical species (those with $\phi = 1$) have a larger than average contribution to stable coexistence (Figure \@ref(fig:fig-rho-sensitivity)b). 
+
+```{r fig-rho-sensitivity, fig.width=fig_sizes()[[2]], fig.height=fig_sizes()[[1]]/2, fig.cap="Spearman correlation coefficient of the contribution to stable coexistence of species. Grey lines indicate the correlation coeficient for each of the twenty empirical networks. The solid black line indicates the median value."}
+drake::loadd(fig_rho_sensitivity)
+fig_rho_sensitivity %<>% add_internal_margins()
+cowplot::plot_grid(plotlist = fig_rho_sensitivity, ncol = 2, align = "h")
+```
+
 # Controllability models {#controllability-models}
 
 We constructed a set of generalised linear models with binomial error structure. 
