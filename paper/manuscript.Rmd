@@ -267,14 +267,16 @@ This effectively removed the rare interactions from the networks (more details i
 # Results
 
 ```{r controllability}
-drake::loadd(controllability, metadata)
+drake::loadd(controllability, metadata, randomisations_test)
 c_m <- controllability %>% 
   filter_networks_df(metadata)
 ```
 
-The size of the minimum driver node set relative to the number of species in each network $n_D$ ranged between $n_D = `r round(min(c_m$n_D), 2)`$ and $n_D = `r round(max(c_m$n_D), 2)`$ (median `r round(median(c_m$n_D), 2)`, Figure \@ref(fig:fig-emp-controllability)). 
-We found that the relative size of the minimum driver node set was not related to any of our independent variables. 
-Indeed the null model ($n_D \sim 1$) was the most parsimonious candidate model and all variables were relatively unimportant (based on the AICc; Supplementary Information \@ref(S-controllability-models)). 
+The size of the minimum driver node set relative to the number of species in each network $n_D$ ranged between $n_D = `r round(min(c_m$n_D), 2)`$ and $n_D = `r round(max(c_m$n_D), 2)`$ (median `r round(median(c_m$n_D), 2)`, Figure \@ref(fig:fig-emp-controllability)a). 
+We found that the relative size of the minimum driver node set was not related to any of the independent variables we evaluated. 
+Indeed the null model ($n_D \sim 1$) was the most parsimonious candidate model and all variables were relatively unimportant (based on the AICc; Supporting Information Section \@ref(S-controllability-models)). 
+The $n_D$ of empirical networks did not differ to that of a null model that roughly preserved the degree distribution and fully preserved the network connectance ($p = `r sprintf('\\num{%s}', format(randomisations_test$interactions$p.value, digits = 2))`$; Figure \@ref(fig:fig-emp-controllability)b). 
+However empirical networks had a larger $n_D$ than null models that preserved the interactions but shuffled the direction of control of the empirical network ($p = `r sprintf('\\num{%s}', format(randomisations_test$directions$p.value, digits = 2))`$). 
 
 ```{r fig-emp-controllability, fig.width=fig_sizes()[[1]], fig.height=fig_sizes()[[1]], fig.cap="Density plot of (a) the relative size of the minimum driver node set $n_D$ in the invaded (light) and uninvaded (dark) empirical networks. (b) The density distribution of the difference between the relative size of the minimum driver node set of random networks and that of empirical networks. We randomised either the species visitation patterns (light line), or randomised the direction of control between a species pair (dark line). The vertical dashed lines indicate the median values of each distribution."}
 drake::loadd(fig_emp_controllability)
