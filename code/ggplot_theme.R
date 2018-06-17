@@ -11,3 +11,11 @@ base_ggplot_theme <- function(){
           plot.margin = grid::unit(c(0.5, 0.5, 0.5, 0.5), "mm"),
           panel.grid = element_blank())
 }
+
+add_internal_margins <- function(x, i = 1){
+  x[[i]] <- x[[i]]  +
+    theme(plot.margin = margin(0.5, 2, 0.5, 0.5))
+  x[[i + 1]] <- x[[i + 1]]  +
+    theme(plot.margin = margin(0.5, 0.5, 0.5, 2))
+  x
+}
