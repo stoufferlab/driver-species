@@ -17,9 +17,10 @@ header-includes:
 - \usepackage{lineno}
 - \usepackage{xr}
 - \externaldocument[S-]{supp-info}
+- \usepackage{siunitx}
 - \usepackage{multirow}
-- \usepackage{tabu}
 - \usepackage{makecell}
+- \usepackage{threeparttablex}
 documentclass: artikel1
 bibliography: references.bib
 ---
@@ -38,7 +39,7 @@ bibliography: references.bib
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, 
                       warning = FALSE)
-options(knitr.kable.NA = '')
+options(knitr.kable.NA = '---')
 ```
 
 \newpage
@@ -289,24 +290,43 @@ grid::grid.newpage()
 grid::grid.draw(gb)
 ```
 
-```{r correlation-calculations}
-drake::loadd(sl_char_corr)
-correlations <- sl_char_corr %>% 
-  extract2("mean") %>%
-  as.data.frame() %>%
-  tibble::rownames_to_column() %>%
-  dplyr::filter(!rowname %in% c("control_capacity", "superior"))
+The models that best explained a species control capacity $\phi$, had a random intercept and slope for the species asymmetry grouped by guild (plants or pollinators; Table \@ref(S-tab:tab-model-output-control-capacity)). 
+Contribution to nestedness was the most important variable followed by visitation strength (Table \@ref(tab:tab-model-selection-table), \@ref(S-tab:tab-var-importance)). 
+Species with large contribution to nestedness and large visitation strength were more likely to have a large control capacity (Figure \@ref(fig:fig-species-level)a and b). 
+For the probability of being a superior node $\sigma$, the most parsimonuous models did not include any random effect (Table \@ref(S-tab:tab-model-output-superior)). 
+The most important variables were the species asymmetry and the visitation strength (Table \@ref(tab:tab-model-selection-table), \@ref(S-tab:tab-var-importance)). 
+Specifically, species with a positive asymmetry (this is they affect their partners more than what their parners affect them), and with a large visitatin strength were more likely to be superior nodes (Figure \@ref(fig:fig-species-level)c and d). 
+Furthermore, degree was positively, but only weakly asociated to both control capacity and the probability of being a superior node. 
+Remarkably, many species with a low degree, especially pollinators attained a large control capacity in their communities \@ref(S-fig:fig-species-models-degree).
+
+```{r tab-model-selection-table}
+drake::loadd(species_model_cc, species_model_superior)
+
+cc_table <- MuMIn::model.sel(species_model_cc$fixed) %>%
+  dplyr::filter(weight > 0.01)
+su_table <- MuMIn::model.sel(species_model_superior$fixed)%>%
+  dplyr::filter(weight > 0.01)
+
+dplyr::bind_rows(cc_table, su_table) %>%
+  dplyr::select(-logLik, - AICc) %>%
+  knitr::kable("latex", 
+               col.names = c("int.", "deg.", "asy.", "nes.", "str.", "d.f.",  "$\\Delta$AICc","weight"),
+               booktabs = T, 
+               caption = "Selection table of the generalised mixed effect models of control capacity $\\phi$ and the probability of being a superior node $\\sigma$. Only models with a weight larger than 0.01 are shown. All variables were scaled and so the effect sizes are comparable.", 
+               row.names = F, 
+               digits = 2, 
+               escape = F) %>%
+  kableExtra::add_header_above(c("effect sizes" = 5, " " = 3), escape = F) %>%
+  kableExtra::kable_styling(font_size = 8) %>%
+  kableExtra::group_rows("control capacity models", 1, nrow(cc_table)) %>%
+  kableExtra::group_rows("superior probability models", nrow(cc_table) + 1, nrow(cc_table) + nrow(su_table)) %>%
+  kableExtra::footnote(general = "intercept (int), degree (deg), asymmetry (asy), visitation strength (str).", 
+                       general_title = "Terms: ", 
+                       footnote_as_chunk = TRUE, 
+                       threeparttable = TRUE)
 ```
 
-
-The control capacity $\phi$ and the likelihood of being a superior node $\sigma$ are weakly correlated with commonly used centrality metrics. 
-Specifically, the correlation coefficient between the control capacity $\phi$ and other metrics ranged between `r round(min(correlations$control_capacity), 2)` and `r round(max(correlations$control_capacity), 2)` while the correlation coefficient between the likelyhood of being a superior node $\sigma$ and the centrality metrics ranged between `r round(min(correlations$superior), 2)` and `r round(max(correlations$superior), 2)` (Figure \@ref(fig:fig-correlogram)).
-
-Both plants and pollinators were distributed across a gradient of control capacity and wether they were superior nodes or not (Figure \@ref(fig:fig-species-level)). 
-This distribution, in particular for control capacity, was independent of the degree of species. 
-Remarkably, every single invasive plant species in our dataset had both the maximum control capacity and was classified as a superior node. 
-
-```{r fig-species-level, fig.width=fig_sizes()[[2]]*2/3, fig.height=fig_sizes()[[1]], fig.cap="Control capacity and "}
+```{r fig-species-level, fig.width=fig_sizes()[[2]]*2/3, fig.height=fig_sizes()[[1]], fig.cap="Relationship between the most important variables in the models of control capacity (a, b) and the probability of being a superior node (c, d). The plots show the values predicted by most parsimonious model for each response variable. The model for control capacity include a random effect for the trophic guild , while the model of superior probability does not include any random effect that distinguish between plants and pollinators. The invasive species are depicted with solid orange circles."}
 drake::loadd(fig_control_capacity)
 library(ggplot2)
 fig_control_capacity[[2]] <- fig_control_capacity[[2]] +
