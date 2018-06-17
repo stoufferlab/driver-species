@@ -13,3 +13,13 @@ pretty_term_names <- function(x){
     stringr::str_replace(stringr::fixed("interaction.push.pull"), 
                          "asymmetry")
 }
+
+pretty_net_names <- function(x){
+  x %>% 
+    stringr::str_replace(stringr::fixed("bal_eff"), 
+                         "efficiency") %>%
+    stringr::str_replace(stringr::fixed("bal_imp"), 
+                         "importance") %>%
+    stringr::str_replace(stringr::fixed("bal_vis"), 
+                         "visitation")
+}

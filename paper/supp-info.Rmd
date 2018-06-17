@@ -247,6 +247,57 @@ fig_rho_sensitivity %<>% add_internal_margins()
 cowplot::plot_grid(plotlist = fig_rho_sensitivity, ncol = 2, align = "h")
 ```
 
+# Impact of visitation {#visitation-as-proxy}
+
+Visitation frequency has been shown to be an appropriate surrogate for inter-specific effects in pollination networks [@vazquez_interaction_2005; @bascompte_asymmetric_2006]. 
+Nevertheless visitation is not equivalent to pollen deposition and might be insufficient to reflect the dependences of plants on animals and vice versa [@alarcon_congruence_2010; @king_why_2013]. 
+We therefore investigated the effect of calculating the dependences using visitation or pollination effectiveness and importance---two metrics more proximate to plant reproductive success.
+We did this by comparing *(i)* the size of the minimum driver node set $n_D$ of the community, *(ii)* the species' control capacity and, *(iii)* the species' probability of being a superior node. 
+To do this, we used data collected by @ballantyne_constructing_2015 from a low diversity pollination community at a dry lowland heathland in Dorset, UK  (50° 43.7'N 2° 07.2'W). 
+First, deposition networks were quantified using the mean single visit deposition---the number of conspecific pollen grains effectively deposited on a virgin stigma during a single visit by a particular animal [@neeman_framework_2009; @king_why_2013; @ballantyne_constructing_2015]. 
+Second, visitation networks were constructed by counting the visits to flowers during Single Visit Depositions. 
+Finally, pollinator importance networks were constructed as the product of pollinator efficiency and visit frequency. 
+
+```{r}
+drake::loadd(controllability, metadata)
+bal_nd <- controllability %>%
+  filter_networks_df(metadata, desired_ntw = "ballantyne") %>% {
+    list(vis = dplyr::filter(., net_name == "bal_vis")$n_D,
+         imp = dplyr::filter(., net_name == "bal_imp")$n_D,
+         eff = dplyr::filter(., net_name == "bal_eff")$n_D)
+  }
+```
+
+
+At a network scale the driver-node density $n_D$ was consistent among the three weighting schemes (`r round(bal_nd$eff, 2)` for deposition, `r round(bal_nd$vis, 2)` for the visitation, and `r round(bal_nd$imp, 2)` for the pollinator-importance network, respectively).
+The choice of weighting can also have an impact on at the species level.
+Therefore we calculated $\phi$ and $\sigma$ and calculated it's correlation among all three weighting schemes.
+Although visitation and efficiency (pollen deposition) produce moderately different results, we found a very strong agreement between the order produced by visitation and importance which is arguably a more accurate metric of interspecific effects (Table \@ref(tab:tab-asumption-visitation)). 
+
+```{r tab-asumption-visitation}
+drake::loadd(visitation_importance_agreement)
+
+visitation_importance_agreement %>%
+  purrr::map(as.data.frame) %>%
+  purrr::map(tibble::rownames_to_column, var = "net") %>%
+  do.call(dplyr::bind_rows, .) %>%
+  dplyr::mutate(net = pretty_net_names(net)) %>%
+  knitr::kable("latex", 
+               digits = 2, 
+               row.names = F, 
+               col.name = c("", pretty_net_names(names(visitation_importance_agreement[[1]]))), 
+               booktabs = T,
+               linesep = "", 
+               caption = "Spearman correlation coefficient matrix between the control capacity and the probability obtained by weighting links by the visitation, pollinator efficiency and pollinator importance.") %>%
+  kableExtra::kable_styling(font_size = 8) %>%
+  kableExtra::group_rows("control capacity", 1, nrow(visitation_importance_agreement[[1]])) %>%
+  kableExtra::group_rows("superior probability", nrow(visitation_importance_agreement[[1]]) + 1, nrow(visitation_importance_agreement[[1]]) + nrow(visitation_importance_agreement[[2]]))
+
+```
+
+Altogether, the evidence supports the idea that visitation is a suitable metric to estimate the mutual dependence of species pairs. First, it is directly related to pollinator foraging. Second, it produces results within our controllability framework that are consistent with plant reproductive success (as estimated by the importance metric). 
+
+\clearpage
 # Controllability models {#controllability-models}
 
 We constructed a set of generalised linear models with binomial error structure. 

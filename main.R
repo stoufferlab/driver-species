@@ -104,6 +104,7 @@ species_level_plan <- drake::drake_plan(
   secondary_ext_std = standardize_secondary_extinctions(secondary_ext, controllability, metadata),
   species_model_superior = fit_species_models(sl_characteristics, metadata, response = "superior"), 
   species_model_cc = fit_species_models(sl_characteristics, metadata, response = "control_capacity"),
+  visitation_importance_agreement = get_visitation_importance_agreement(sl_characteristics),
   strings_in_dots = "literals"
 )
 
