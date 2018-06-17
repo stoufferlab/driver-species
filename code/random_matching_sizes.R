@@ -15,7 +15,7 @@ random_matching_sizes <- function(x, n = 99){
     x %>% 
       igraph::as_incidence_matrix(types = igraph::V(.)$type == "pol", attr = "weight") %>% {
         m <- .
-        bipartite::nullmodel(m, method = "swap.web", N = 99) %>%
+        bipartite::nullmodel(m, method = "vaznull", N = n) %>%
           purrr::map(`colnames<-`, paste0("pol_", 1:ncol(m))) %>%
           purrr::map(`rownames<-`, paste0("pla_", 1:nrow(m)))
       } %>%
@@ -47,7 +47,7 @@ randomise_directions <- function(x){
 }
 
 # x is a list of networks
-random_matching_sizes_emp <- function(x, n = 99){
+random_matching_sizes_emp <- function(x, n = 99, timeout = 60){
   require(foreach)
   
   # binary <- x %>% 
@@ -55,11 +55,11 @@ random_matching_sizes_emp <- function(x, n = 99){
   #   purrr::map(~ . == 1) %>% 
   #   purrr::map(all)
   
-  foreach(i = 1:length(x)) %do% {
+  foreach(i = 1:length(x)) %dopar% {
     # if(!binary[[i]]){
       m <- R.utils::withTimeout({
         m <- random_matching_sizes(x[[i]], n)
-      }, timeout = 60, onTimeout = "silent")
+      }, timeout = timeout, onTimeout = "silent")
       if(is.null(m)) m <- NA
     # } else {
     #   m <- NA
@@ -90,3 +90,12 @@ organise_randomisations <- function(controllability, random_interactions, random
     dplyr::inner_join(dplyr::select(controllability, net_name, D, n_D), by = "net_name")
   }
 # drake::loadd(controllability, random_interactions, random_directions)
+
+# test wether differences are significant or not
+test_randomisations <- function(randomisations_df){
+  randomisations_df %>%
+    dplyr::group_by(net_name, randomisation) %>%
+    dplyr::summarise_if(is.numeric, mean) %>%
+    split(list(.$randomisation)) %>%
+    purrr::map(~ wilcox.test(.$n_D.x, .$n_D.y, paired = T, conf.int = T))
+}
