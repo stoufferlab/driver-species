@@ -83,7 +83,8 @@ net_prop %>%
                booktabs = TRUE, 
                digits = 2, 
                linesep = c("", "\\addlinespace"),
-               caption = "Properties of the analysed plant-pollinator communities. Here show the number of species ($n_s$), the number of plants ($n_p$), the number of pollinators ($n_a$), the network connectance ($c$), the network asymmetry ($AS$), and the network nestedness (NODF index). All properties correspond to the network's largest component. British networks were assembled by Lopezaraiza-Mikel et al. (2007), Spanish were networks assembled by Bartomeus et al. (2008).")
+               caption = "Properties of the analysed plant-pollinator communities. Here show the number of species ($n_s$), the number of plants ($n_p$), the number of pollinators ($n_a$), the network connectance ($c$), the network asymmetry ($AS$), and the network nestedness (NODF index). All properties correspond to the network's largest component. British networks were assembled by Lopezaraiza-Mikel et al. (2007), Spanish were networks assembled by Bartomeus et al. (2008).") %>%
+  kableExtra::kable_styling(font_size = 8)
 ```
 
 # Structural controllability {#structural-controllability}
@@ -235,13 +236,13 @@ replayPlot(fig_bidirectional$plot)
 
 We follow @rohr_structural_2014 and @saavedra_nested_2016 to calculate the structural stability of the empirical networks. 
 We first calculate the stability condition $\hat{\gamma}$ using all species in the network. 
-To simplify the calculations we assummed that there is no mutualistic trade off, and a mean field interspecific competition of $\rho = 0.01$ [@saavedra_nested_2016]. 
+To simplify the calculations we assummed that there is no mutualistic trade off, and a mean field interspecific competition of $\rho = 0.005$ [@saavedra_nested_2016]. 
 To calculate the contribution to stable coexistence of a given species, we removed the focal species from the network and then calculated the corresponding structural feasibility $\Omega$ for a level of mutualism equal to the stability condition found previously. 
 The choice of the parameters, specifically the interspecific competition $\rho$ had only a small impact on the relative contribution of species to stable coexistence (Figure \@ref(fig:fig-rho-sensitivity)a). 
 
 In addition, the interspecific competition had a minor impact on our result that indicates that critical species (those with $\phi = 1$) have a larger than average contribution to stable coexistence (Figure \@ref(fig:fig-rho-sensitivity)b). 
 
-```{r fig-rho-sensitivity, fig.width=fig_sizes()[[2]], fig.height=fig_sizes()[[1]]/2, fig.cap="Spearman correlation coefficient of the contribution to stable coexistence of species. Grey lines indicate the correlation coeficient for each of the twenty empirical networks. The solid black line indicates the median value."}
+```{r fig-rho-sensitivity, fig.width=fig_sizes()[[2]], fig.height=fig_sizes()[[1]]/2, fig.cap="Sensitivity analysis on the impact of interspecific competition parameter $\\rho$ on structural stability. (a) Spearman correlation coefficient of the contribution to stable coexistence of species. Lighter lines indicate the correlation coeficient for each of the twenty empirical networks. The dark line indicates the median value. (b) Difference between the conribution to stable coexistence of critical and redundant species for different values of the iterspecific competition parameters $\\rho$."}
 drake::loadd(fig_rho_sensitivity)
 fig_rho_sensitivity %<>% add_internal_margins()
 cowplot::plot_grid(plotlist = fig_rho_sensitivity, ncol = 2, align = "h")
