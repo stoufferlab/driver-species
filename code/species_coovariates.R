@@ -1,6 +1,6 @@
 # calulate a bunch of species properties for a network, returns a data frame 
-get_species_coov <- function(n, metrics){
-  bipartite_metrics <- metrics[! metrics %in% c("nested_contribution", "page_rank", "eigen")]
+get_species_coov <- function(n, v, metrics){
+  bipartite_metrics <- metrics[! metrics %in% c("nested_contribution", "page_rank", "eigen", "species strength")]
   
   bipart <- n %>% 
     igraph::as_incidence_matrix(attr = "weight", 
@@ -29,6 +29,16 @@ get_species_coov <- function(n, metrics){
       centrality_as_df("eigen")
     bipart %<>%
       dplyr::inner_join(ei, by = "sp_name")
+  }
+  
+  if("species strength" %in% metrics){
+    st <- v %>%
+      igraph::strength() %>% {
+        v <- .
+        dplyr::data_frame(sp_name = names(v), species.strength = v)
+      }
+    bipart %<>%
+      dplyr::inner_join(st, by = "sp_name")
   }
   
   bipart
