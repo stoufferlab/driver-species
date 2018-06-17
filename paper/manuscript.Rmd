@@ -22,7 +22,7 @@ header-includes:
 - \usepackage{makecell}
 - \usepackage{threeparttablex}
 documentclass: artikel1
-bibliography: references.bib
+bibliography: phd-bibliography/network-control.bib
 ---
 
 \doublespacing

@@ -14,7 +14,8 @@ header-includes:
   - \usepackage{setspace}
   - \usepackage{xr}
   - \externaldocument[M-]{manuscript}
-bibliography: references.bib
+  - \usepackage{multirow}
+bibliography: phd-bibliography/network-control.bib
 ---
 
 \renewcommand\thefigure{S\arabic{figure}}    
