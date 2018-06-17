@@ -1,4 +1,5 @@
 base_ggplot_theme <- function(){
+  require(ggplot2)
   theme_bw() +
     theme(text = element_text(family = "Helvetica"),
           title = element_text(size = 7, hjust = 0),
@@ -13,6 +14,7 @@ base_ggplot_theme <- function(){
 }
 
 add_internal_margins <- function(x, i = 1){
+  require(ggplot2)
   x[[i]] <- x[[i]]  +
     theme(plot.margin = margin(0.5, 2, 0.5, 0.5))
   x[[i + 1]] <- x[[i + 1]]  +
