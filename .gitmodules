@@ -1,0 +1,3 @@
+[submodule "paper/phd-bibliography"]
+	path = paper/phd-bibliography
+	url = https://github.com/efcaguab/phd-bibliography.git
