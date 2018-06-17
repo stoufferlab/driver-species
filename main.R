@@ -84,6 +84,7 @@ controllability_plan <- drake::drake_plan(
   random_directions = random_matching_sizes_emp(directed_networks, n = 99),
   random_interactions = random_matching_sizes_emp(networks, n = 99),
   randomisations_df = organise_randomisations(controllability, random_interactions, random_directions),
+  randomisations_test = test_randomisations(randomisations_df),
   strings_in_dots = "literals"
 )
 
