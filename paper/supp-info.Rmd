@@ -117,7 +117,7 @@ This information can then be mapped back to the original representation to ident
 drake::loadd(fig_supp_matching)
 ```
 
-```{r fig-maximum-matching-procedure, fig.height=fig_supp_matching$height, fig.width=fig_supp_matching$width,fig.cap = "Finding a maximum matching in a complex network. (left) Directed network that indicate the direction of control between species. (center) Alternative bipartite representations of the directed networks. (right) The matchings in the bipartite representation mapped back to the original network."}
+```{r fig-maximum-matching-procedure, fig.height=fig_supp_matching$height, fig.width=fig_supp_matching$width,fig.cap = "Finding a maximum matching in a complex network. (left) Directed network that indicate the direction of control between species. (center) Alternative bipartite representations of the directed networks. (right) The matchings in the bipartite representation mapped back to the original network.", fig.pos = "p", fig.align = "center"}
 replayPlot(fig_supp_matching$plot)
 ```
 
@@ -130,7 +130,7 @@ At the same time, both plants in the community, *Heracleum sphondylum* and *Rubu
 drake::loadd(fig_small_network)
 ```
 
-```{r fig-small-network, fig.height=fig_small_network$height, fig.width=fig_small_network$width,fig.cap = "Illustration of the procedure with an empirical community. The visitation network (top), the number of visits between species pairs is shown on each link. The directed network in which the direction of control is determined based on the mutual dependences (middle). One of the possible maximum matchings of this network (bottom)."}
+```{r fig-small-network, fig.height=fig_small_network$height, fig.width=fig_small_network$width, fig.cap = "Illustration of the procedure with an empirical community. The visitation network (top), the number of visits between species pairs is shown on each link. The directed network in which the direction of control is determined based on the mutual dependences (middle). One of the possible maximum matchings of this network (bottom)."}
 replayPlot(fig_small_network$plot)
 ```
 
@@ -155,9 +155,11 @@ The final step is then to map these cliques onto the original network to obtain 
 drake::loadd(fig_all_matching)
 ```
 
-```{r fig-all-maximum-matching, fig.height=fig_all_matching$height, fig.width=fig_all_matching$width,fig.cap = "Finding all possible maximum matchings. From left to right: alternative bipartite representation of the directed network in Figure \\@ref(fig:fig-maximum-matching-procedure)a.  Line graph of the network. The complement of the network. The two maximal cliques are shown in dark purple."}
+```{r fig-all-maximum-matching, fig.height=fig_all_matching$height, fig.width=fig_all_matching$width,fig.cap = "Finding all possible maximum matchings. From left to right: alternative bipartite representation of the directed network.  Line graph of the network. The complement of the network. The two maximal cliques are shown in dark purple."}
 replayPlot(fig_all_matching$plot)
 ```
+
+\clearpage
 
 ## Control adjacency and the input graph {#input-graph}
 
