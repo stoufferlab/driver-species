@@ -260,7 +260,8 @@ Namely degree, betweenness, eigen centrality, page rank, and closeness centralit
 Just like the centrality metrics, the information obtained by applying structural controllability depends on the ability of the network to accurately represent the ecological community. 
 We tested the sensitivity of our approach to two fundamental assumptions. 
 First we tested that visitation is an appropiate proxy to infer interspecific effects. 
-To do that we compared the results obtained using visitation, pollinator efficiency, and pollinator importance as alternative measures in a dataset that lacked invasive species [@neeman_framework_2009; @ballantyne_constructing_2015; more details in the Supporting Information Section \@ref(S-visitation-as-proxy)]. 
+To do that we compared the results obtained using visitation to two alternative metric in a dataset that lacked invasive species [@ballantyne_constructing_2015]. 
+Specifically we also applied the structural controllability approach to networks constructed using pollinator efficiency (which measures the pollen deposition of an interaction) and pollinator importance (which accounts for both pollen deposition and visitation and hence is regarded as a more accurate estimation of the pollination service received by plants) [@neeman_framework_2009]. More details in the Supporting Information Section \@ref(S-visitation-as-proxy). 
 Second, because interspecific dependencies depend on the network topology and consequently on the accurate sampling of interactions, we tested the robustness of structural controllability to the undersampling of interactions. 
 To do that we compared the results obtained when using the full network and when randomly removing interactions preferentialy from the weakest links in the network. 
 This effectively removed the rare interactions from the networks (more details in the Supporting Information Section \@ref(S-undersampling)). 
