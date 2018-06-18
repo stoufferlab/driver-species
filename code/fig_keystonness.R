@@ -91,8 +91,54 @@ p1 <- plot_df %>%
           legend.background = element_rect(fill = "NA"), legend.key.size = unit(0.25, "in"), 
       panel.border = element_rect(fill = NA, colour = NA), 
       axis.ticks = element_line(colour = NA))
-  
-  list(p1)
+
+
+plot_df_sd <- sl_char_corr[[2]][order, order] %>% {
+  l <- .
+  # l[upper.tri(l, diag = T)] <- NA
+  l
+} %>%
+  reshape2::melt() %>%
+  dplyr::filter(!is.na(value)) %>%
+  dplyr::mutate(Var1 = factor(Var1, levels = rev(order)), 
+                Var2 = factor(Var2, levels = order), 
+                interesting = (Var1 %in% c("superior", "control_capacity")), 
+                interesting = dplyr::if_else(interesting, "bold", "plain"))
+
+p2 <- plot_df_sd %>%
+  ggplot(aes(x = as.numeric(Var1), y = as.numeric(Var2), fill = value)) +
+  geom_tile(width = 0.9, height = 0.9, size = 0.25) +
+  geom_text(aes(label = round(value, 2), fontface = "plain", size = interesting)) +
+  coord_equal() +
+  scale_fill_gradient2(low = my_pallete()$light_orange, 
+                       high = my_pallete()$light_purple, 
+                       mid = "white", 
+                       midpoint = 0, na.value = NA, 
+                       name = "") +
+  scale_color_manual(values = c(NA, "black")) + 
+  scale_y_continuous(breaks = length(order):1,
+                     labels = labeller_short,
+                     sec.axis = sec_axis(trans = ~.,
+                                         breaks = length(order):1,
+                                         labels = labeller_long),
+                     expand = c(0,0)) +
+  scale_x_continuous(breaks = length(order):1, 
+                     labels = labeller_short_rev,
+                     sec.axis = sec_axis(trans = ~.,
+                                         breaks = length(order):1,
+                                         labels = labeller_short_rev),
+                     expand = c(0,0)) +
+  scale_size_manual(values = c(2, 2)) + 
+  labs(title = '(b) sd correlation between centrality metrics', x = "", y = "") + 
+  base_ggplot_theme() +
+  theme(#legend.position = c(1,1.15), 
+    legend.position = "none", 
+    legend.justification = c(0.5,0.5),
+    legend.background = element_rect(fill = "NA"), legend.key.size = unit(0.25, "in"), 
+    panel.border = element_rect(fill = NA, colour = NA), 
+    axis.ticks = element_line(colour = NA))
+
+  list(p1, p2)
   
 }
 # drake::loadd(sl_char_corr, sl_characteristics, metadata)
