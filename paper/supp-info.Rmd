@@ -459,7 +459,12 @@ dplyr::bind_rows(cc_imp, su_imp) %>%
   kableExtra::group_rows("superior probability models", nrow(cc_imp) + 1, nrow(cc_imp) + nrow(su_imp))
 ```
 
-# Empirical vs. random expectation of controllability {#randomisations}
+```{r fig-species-models-degree, fig.width=fig_sizes()[[2]], fig.height=fig_sizes()[[1]]/2, fig.cap = "Relationship between degree and (a) the control capacity and (b) the probability of being a superior node. The plots show the values predicted by most parsimonious model for each response variable. The invasive species are depicted with solid orange circles."}
+drake::loadd(fig_models_degree)
+library(ggplot2)
+fig_models_degree %<>% add_internal_margins()
+cowplot::plot_grid(plotlist = fig_models_degree, ncol = 2)
+```
 
 ```{r fig-correlogram, fig.width=fig_sizes()[[1]], fig.height=fig_sizes()[[1]], fig.cap="Mean Spearman correlation coefficients between control metrics (control capcity $\\phi$ and the likelyhood of being a superior node $\\sigma$) and centrality metrics commonly used to estimate a species' 'keystoness' (closeness centrality $l$ , betwenness $w$, eigen centrality $e$, page rank $g$ and degre $k$) in each of the networks. Purple and orange tiles indicate a positive correlation or negative correlation respectively."}
 drake::loadd(fig_correlation)
