@@ -43,9 +43,9 @@ drake::loadd(metadata)
 drake::loadd(network_properties)
 
 net_prop <- metadata %>%
-	dplyr::mutate(n_s_t = n_pla + n_pol) %>%
-	dplyr::select(-n_pla, -n_pol) %>%
-	dplyr::inner_join(network_properties, by = "net_name")
+    dplyr::mutate(n_s_t = n_pla + n_pol) %>%
+    dplyr::select(-n_pla, -n_pol) %>%
+    dplyr::inner_join(network_properties, by = "net_name")
 
 ```
 
@@ -55,33 +55,33 @@ Furthermore, the networks had relatively low levels of nestedness [when measured
 
 ```{r table-network-properties, results = "asis", sanitize = FALSE}
 net_prop %>%
-	dplyr::select(-net_name, -count, -net) %>%
-	dplyr::filter(study != "ballantyne") %>%
-	dplyr::arrange(study, site, inv) %>% 
-	dplyr::mutate(invader = dplyr::case_when(
-				 	invader == "car" ~ "\\textit{Carpobrotus affine}",
-				 	invader == "op" ~ "\\textit{Opuntia stricta}",
-				 	invader == "imp" ~ "\\textit{Impatients grandulifera}",
-				 	TRUE ~ "—"
-				 ),
-				 invader = dplyr::if_else(inv, invader, "—")) %>%
-	dplyr::mutate(site = rep(1:n_distinct(site), each = 2),
-				 inv = dplyr::if_else(inv, "yes", "no"),
-				 study = dplyr::case_when(
-				 	study == "bartomeus" ~ "Cap de Creus, Spain",
-				 	TRUE ~ "Bristol, United Kingdom"
-				 )) %>% 
+    dplyr::select(-net_name, -count, -net) %>%
+    dplyr::filter(study != "ballantyne") %>%
+    dplyr::arrange(study, site, inv) %>% 
+    dplyr::mutate(invader = dplyr::case_when(
+                     invader == "car" ~ "\\textit{Carpobrotus affine}",
+                     invader == "op" ~ "\\textit{Opuntia stricta}",
+                     invader == "imp" ~ "\\textit{Impatients grandulifera}",
+                     TRUE ~ "—"
+                 ),
+                 invader = dplyr::if_else(inv, invader, "—")) %>%
+    dplyr::mutate(site = rep(1:n_distinct(site), each = 2),
+                 inv = dplyr::if_else(inv, "yes", "no"),
+                 study = dplyr::case_when(
+                     study == "bartomeus" ~ "Cap de Creus, Spain",
+                     TRUE ~ "Bristol, United Kingdom"
+                 )) %>% 
   dplyr::select(site, invader, n_sp, n_pla, n_pol, connectance, web.asymmetry, weighted.NODF, study) %>%
   dplyr::rename_(
     # "$R$" = "n_s_t",
-					"$n_p$" = "n_pla",
-					"$n_a$" = "n_pol",
-					"location" = "study",
-					"$n_s$" = "n_sp",
-					"$c$"= "connectance", 
-					"NODF" = "weighted.NODF",
-					# "$\\bar{a}$" = "interaction.strength.asymmetry",
-					"$AS$" = "web.asymmetry") %>% 
+                    "$n_p$" = "n_pla",
+                    "$n_a$" = "n_pol",
+                    "location" = "study",
+                    "$n_s$" = "n_sp",
+                    "$c$"= "connectance", 
+                    "NODF" = "weighted.NODF",
+                    # "$\\bar{a}$" = "interaction.strength.asymmetry",
+                    "$AS$" = "web.asymmetry") %>% 
   knitr::kable("latex", 
                escape = FALSE, 
                booktabs = TRUE, 
@@ -134,7 +134,7 @@ At the same time, both plants in the community, *Heracleum sphondylum* and *Rubu
 drake::loadd(fig_small_network)
 ```
 
-```{r fig-small-network, fig.height=fig_small_network$height, fig.width=fig_small_network$width, fig.cap = "Illustration of the procedure with an empirical community. The visitation network (top), the number of visits between species pairs is shown on each link. The directed network in which the direction of control is determined based on the mutual dependences (middle). One of the possible maximum matchings of this network (bottom)."}
+```{r fig-small-network, fig.height=fig_small_network$height, fig.width=fig_small_network$width, fig.cap = "Illustration of the procedure with an empirical community. The visitation network (top), the number of visits between species pairs are shown on each link. The directed network in which the direction of control is determined based on the mutual dependences (middle). One of the possible maximum matchings of this network (bottom)."}
 replayPlot(fig_small_network$plot)
 ```
 
@@ -183,14 +183,14 @@ drake::loadd(fig_input_graph)
 replayPlot(fig_input_graph$plot)
 ```
 
-In order to calculate a node's control capacity $\phi$, we harness the fact that nodes can be classified in three groups according to their role in the input graph. 
+In order to calculate a node's control capacity $\phi$, we harness the fact that nodes can be classified into three groups according to their role in the input graph. 
 First,  if $x_i$ belongs to the minimum driver node set and has no adjacent nodes, then it cannot be replaced and will be part of every possible control configuration. 
 Second, if $x_i$ does not belong to the minimum driver node set and is not adjacent to any possible input node, then it does not part of the minimum driver node set under any control configuration. 
-Finally, if a node $x_i$ belongs to the minimum driver node set and is adjacent to another node $x_j$ in the input graph, then $x_j$ must belong to another minimum driver node to which $x_i$ doesn not belong, in other words $x_i$ and $x_j$ are substitutable. 
+Finally, if a node $x_i$ belongs to the minimum driver node set and is adjacent to another node $x_j$ in the input graph, then $x_j$ must belong to another minimum driver node to which $x_i$ does not belong, in other words, $x_i$ and $x_j$ are substitutable. 
 
 The frist and the second group have a control capacity of $\phi = 1$ and $\phi = 0$ respectively. 
-Meanwhile, the third group has intermediate values of control capacity which can be calculated by computing the number of possible susbstitutions of a node by its control adjacent nodes. 
-As a rule of thumb the largest the number of possible substitutions an input node has, the smaller its control capacity. 
+Meanwhile, the third group has intermediate values of control capacity which can be calculated by computing the number of possible substitutions of a node by its control adjacent nodes. 
+As a rule of thumb, the largest the number of possible substitutions an input node has, the smaller its control capacity. 
 
 ```{r control-capacity-correlations}
 drake::loadd(control_capacity_correlations, this_method)
@@ -204,11 +204,11 @@ cc_corr <- control_capacity_correlations %>%
 
 
 For larger networks, calculating the control capacities using the input graph is several orders of magnitude faster than computing all possible maximum matchings. 
-While the the computation time of the input graph grows linearly with network size, the compuation of all maximum matchings grows polynomially. 
+While the computation time of the input graph grows linearly with network size, the computation of all maximum matchings grows polynomially. 
 However, the control capacities obtained using the input graph are not identical to those obtained by computing all possible maximum matchings. 
-The reason of this discrepancy is that two maximum matchings might result in the same minimum driver node set. 
+The reason for this discrepancy is that two maximum matchings might result in the same minimum driver node set. 
 Nevertheless, the results obtained using both approaches are extremely similar. 
-We compared the control capacity obtained by calculating all maximum matchings and that obtained using the input graph in `r length(cc_corr)` of our networks (those for which we were able to calculate all maximum matchings within reasonable time). 
+We compared the control capacity obtained by calculating all maximum matchings and that obtained using the input graph in `r length(cc_corr)` of our networks (those for which we were able to calculate all maximum matchings within a reasonable time). 
 The spearman correlation was very high in all cases, ranging between `r round(min(cc_corr),2)` and `r round(max(cc_corr), 2)` (median `r round(median(cc_corr), 2)`). 
 
 \clearpage
@@ -228,18 +228,18 @@ recipr <- directed_networks %>%
 
 Our procedures to find minimum driver node sets are only adequate when there are no reciprocal (bidirectional) links in the network. 
 The proportion of reciprocal links in relatively low. 
-In fact the proportion of species pairs that are reciprocally connected in our empirical networks is just `r round(mean(recipr$prop_bid)*100, 2)`%. 
+In fact, the proportion of species pairs that are reciprocally connected in our empirical networks is just `r round(mean(recipr$prop_bid)*100, 2)`%. 
 However, reciprocal links are not a rare occurrence as `r sum(recipr$prop_bid != 0)` out of `r nrow(recipr)` empirical networks had at least one. 
 To calculate our controllability metrics at both the network (the relative size of the minimum driver node set, $n_D$) and species level (control capacity, $\phi$, and the likelihood of being a superior node, $\sigma$) we first need to generate all possible versions of the of the network that include only non-reciprocal links (Figure \@ref(fig:fig-bidirectional)). 
 
-All of these non-reciprocal networks are as likely to be one that best represent the superior/matched relationships in the network. 
+All of these non-reciprocal networks are as likely to be one that best represents the superior/matched relationships in the network. 
 As such, we average the three metrics ($n_D$, $\phi$, and $\sigma$) across all the networks without reciprocal links without weighting by the number of possible control configurations. 
 
 ```{r}
 drake::loadd(fig_bidirectional)
 ```
 
-```{r fig-bidirectional, fig.height=fig_bidirectional$height, fig.width=fig_bidirectional$width,fig.cap = "In order to calculate the controllability metrics for a network with reciprocal links (left), we first decompose the network into several versions that contain no reciprocal links (right). As each of these networks represent a different equiprobable scenario, the controllability metrics for the network with reciprocal links are the unweighted mean of these metrics across the non-reciprocal networks."}
+```{r fig-bidirectional, fig.height=fig_bidirectional$height, fig.width=fig_bidirectional$width,fig.cap = "In order to calculate the controllability metrics for a network with reciprocal links (left), we first decompose the network into several versions that contain no reciprocal links (right). As each of these networks represents a different equiprobable scenario, the controllability metrics for the network with reciprocal links are the unweighted mean of these metrics across the non-reciprocal networks."}
 replayPlot(fig_bidirectional$plot)
 ```
 
@@ -249,7 +249,7 @@ replayPlot(fig_bidirectional$plot)
 
 We follow @rohr_structural_2014 and @saavedra_nested_2016 to calculate the structural stability of the empirical networks. 
 We first calculate the stability condition $\hat{\gamma}$ using all species in the network. 
-To simplify the calculations we assummed that there is no mutualistic trade off, and a mean field interspecific competition of $\rho = 0.005$ [@saavedra_nested_2016]. 
+To simplify the calculations we assumed that there is no mutualistic trade-off, and a mean field interspecific competition of $\rho = 0.005$ [@saavedra_nested_2016]. 
 To calculate the contribution to stable coexistence of a given species, we removed the focal species from the network and then calculated the corresponding structural feasibility $\Omega$ for a level of mutualism equal to the stability condition found previously. 
 The choice of the parameters, specifically the interspecific competition $\rho$ had only a small impact on the relative contribution of species to stable coexistence (Figure \@ref(fig:fig-rho-sensitivity)a). 
 
@@ -266,8 +266,8 @@ cowplot::plot_grid(plotlist = fig_rho_sensitivity, ncol = 2, align = "h")
 # Visitation as a proxy for species dependence {#visitation-as-proxy}
 
 Visitation frequency has been shown to be an appropriate surrogate for inter-specific effects in pollination networks [@vazquez_interaction_2005; @bascompte_asymmetric_2006]. 
-Nevertheless visitation is not equivalent to pollen deposition and might be insufficient to reflect the dependences of plants on animals and vice versa [@alarcon_congruence_2010; @king_why_2013]. 
-We therefore investigated the effect of calculating the dependences using visitation or pollination effectiveness and importance---two metrics more proximate to plant reproductive success.
+Nevertheless, visitation is not equivalent to pollen deposition and might be insufficient to reflect the dependences of plants on animals and vice versa [@alarcon_congruence_2010; @king_why_2013]. 
+We, therefore, investigated the effect of calculating the dependences using visitation or pollination effectiveness and importance---two metrics more proximate to plant reproductive success.
 We did this by comparing *(i)* the size of the minimum driver node set $n_D$ of the community, *(ii)* the species' control capacity and, *(iii)* the species' probability of being a superior node. 
 To do this, we used data collected by @ballantyne_constructing_2015 from a low diversity pollination community at a dry lowland heathland in Dorset, UK  (50° 43.7'N 2° 07.2'W). 
 First, deposition networks were quantified using the mean single visit deposition---the number of conspecific pollen grains effectively deposited on a virgin stigma during a single visit by a particular animal [@neeman_framework_2009; @king_why_2013; @ballantyne_constructing_2015]. 
@@ -287,7 +287,7 @@ bal_nd <- controllability %>%
 At a network scale the driver-node density $n_D$ was consistent among the three weighting schemes (`r round(bal_nd$eff, 2)` for deposition, `r round(bal_nd$vis, 2)` for the visitation, and `r round(bal_nd$imp, 2)` for the pollinator-importance network, respectively).
 The choice of weighting can also have an impact on at the species level.
 Therefore we calculated $\phi$ and $\sigma$ and calculated it's correlation among all three weighting schemes.
-Although visitation and efficiency (pollen deposition) produce moderately different results, we found a very strong agreement between the order produced by visitation and importance which is arguably a more accurate metric of interspecific effects (Table \@ref(tab:tab-asumption-visitation)). 
+Although visitation and efficiency (pollen deposition) produce moderately different results, we found a very strong agreement between the order produced by visitation and importance which is arguably a more accurate metric of interspecific effects (Table \@ref(tab:tab-assumption-visitation)). 
 
 ```{r tab-asumption-visitation}
 drake::loadd(visitation_importance_agreement)
@@ -316,9 +316,9 @@ Altogether, the evidence supports the idea that visitation is a suitable metric 
 
 # Sensitivity to sampling {#undersampling}
 
-Our approach is fundamentaly based on the network structure. 
-Often, the majority of the interactions that make up this structure are weak; in our networks this means that most interactions are formed by a small number of observed pollination visits, and therefore those weak intercations are less conspicuous in the field than strong ones. 
-To strengthen the case of our approach, we therefore evaluated the robustness of our results to simulated sampling limitations. 
+Our approach is fundamentally based on the network structure. 
+Often, the majority of the interactions that make up this structure are weak; in our networks, this means that most interactions are formed by a small number of observed pollination visits, and therefore those weak interactions are less conspicuous in the field than strong ones. 
+To strengthen the case of our approach, we, therefore, evaluated the robustness of our results to simulated sampling limitations. 
 
 To do so we removed a portion of the visits, for each network, and calculated how three control metrics of the subsampled network compare to those of the full network. 
 Specifically, we calculated the difference between the relative size of the minimum driver node set $n_D$ of the subsampled and the full network, the Spearman correlation between the control capacities $\phi$ and the probability of being a superior node $\sigma$ that were obtained for the empirical network and subsamples of it. 
@@ -326,8 +326,8 @@ Finally, we also compared the control capacity of critical species ($\phi=1$) ac
 We removed up to 20% of the interactions in 1% increments. 
 We repeated the procedure for each network to obtain a total sample size of $n=400$.
 
-Overall, the results of the sensitivity analysis indicate that our approach is likely to  still be useful in the absence of complete sampling. 
-Specifically, as the proportion of sampled interaction decreased, the variability of $n_D$ increased, but was overall similar to that obtained when using all available interactions (Figure \@ref(fig:fig-assumption-sampling-nd)). 
+Overall, the results of the sensitivity analysis indicate that our approach is likely to still be useful in the absence of complete sampling. 
+Specifically, as the proportion of sampled interaction decreased, the variability of $n_D$ increased but was overall similar to that obtained when using all available interactions (Figure \@ref(fig:fig-assumption-sampling-nd)). 
 Similarly, the correlation between $\phi$ and $\sigma$ of empirical and subsampled networks was high even for extreme levels of undersampling (Figure \@ref(fig:fig-assumption-sampling-cor)). 
 Importantly, critical species in the empirical networks were also critical species in the subsampled networks in a large majority of cases (Figure \@ref(fig:fig-assumption-sampling-crit)).
 
