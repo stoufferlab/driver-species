@@ -366,11 +366,14 @@ AICcmodavg::aictab(controllability_models) %>%
   dplyr::filter(Delta_AICc <= 8) %>%
   dplyr::rename(model = Modnames, `$\\Delta AICc$` = Delta_AICc, `$AICc$` = AICc, `Cum. Weight` = Cum.Wt) %>%
   dplyr::mutate(model = paste0("$", model, "$")) %>% 
-  knitr::kable(escape = FALSE, 
+  knitr::kable("latex", 
+               escape = FALSE, 
                booktabs = TRUE, 
                digits = 2, 
                linesep = c(""),
-               caption = "Model selection table based on the Akaike Information Criterion for small samples for candidate models of size of the minimum driver node set ($n_D$) in the empirical networks. There was no evidence for any of the evaluated predictors: the invasion status (inv), the network connectance (c), the network nestedness (NODF) the number of species ($n_S$) the network asymmetry ($AS_s$) or the interaction strength asymmetry ($AS_s$). Only candidate models with $\\Delta AIC < 8$ are shown.")
+               caption = "Model selection table based on the Akaike Information Criterion for small samples for candidate models of size of the minimum driver node set ($n_D$) in the empirical networks. There was no evidence for any of the evaluated predictors: the invasion status (inv), the network connectance (c), the network nestedness (NODF) the number of species ($n_S$) the network asymmetry ($AS_s$) or the interaction strength asymmetry ($AS_s$). Only candidate models with $\\Delta AIC < 8$ are shown.") %>%
+  kableExtra::kable_styling(font_size = 8)
+```
 ```
 
 # Empirical vs. random expectation of controllability {#randomisations}
