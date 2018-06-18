@@ -1,11 +1,14 @@
 make_fig_correlation <- function(sl_char_corr, sl_characteristics, metadata){
   require(ggplot2)
+  
+  special <- c("control_capacity", "superior")
   order <- sl_char_corr[[1]] %>% 
     as.dist() %>%
     hclust() %>% {
       l <- . 
     l$labels[l$order]
-  }
+    }
+  order <- c(order[!order %in% special], special)
   
   plot_df <- sl_char_corr[[1]][order, order] %>% {
     l <- .
@@ -19,20 +22,42 @@ make_fig_correlation <- function(sl_char_corr, sl_characteristics, metadata){
                   interesting = (Var1 %in% c("superior", "control_capacity")), 
                   interesting = dplyr::if_else(interesting, "bold", "plain"))
   
-  labels_long <- c("closeness" = "closeness  (l)",
-                   "page_rank.nondirected" = "page rank (g)",
-                   "eigen.nondirected" = "eigen centrality (e)",
-                   "superior" = expression(bold(paste("superior node (", sigma, ")"))),
-                   "betweenness" = "betweenness (w)",
-                   "control_capacity" = expression(bold(paste("control capacity (", phi, ")"))),
-                   "degree"= "degree (k)")
-  labels_short <- c("closeness" = "l",
-                    "page_rank.nondirected" = "g",
-                    "eigen.nondirected" = "e",
-                    "superior" = expression(sigma),
-                    "betweenness" = "w",
-                    "control_capacity" = expression(phi),
-                    "degree" = "k")
+  labeller_long <- function(y){
+    x <- order[y]
+    dplyr::case_when(
+      x == "closeness" ~ expression("closeness  (l)"),
+      x == "page_rank.nondirected" ~ expression("page rank (g)"),
+      x == "eigen.nondirected" ~ expression("eigen centrality (e)"),
+      x == "superior" ~ expression(bold(paste("superior node (", sigma, ")"))),
+      x == "betweenness" ~ expression("betweenness (w)"),
+      x == "control_capacity" ~ expression(bold(paste("control capacity (", phi, ")"))),
+      x == "degree"~ expression("degree (k)")
+    )
+  }
+  labeller_short <- function(y){
+    x <- order[y]
+    dplyr::case_when(
+      x == "closeness" ~ expression("l"),
+      x == "page_rank.nondirected" ~ expression("g"),
+      x == "eigen.nondirected" ~ expression("e"),
+      x == "superior" ~ expression(sigma),
+      x == "betweenness" ~ expression("w"),
+      x == "control_capacity" ~ expression(phi),
+      x == "degree" ~ expression("k")
+    )
+  }
+  labeller_short_rev <- function(y){
+    x <- rev(order)[y]
+    dplyr::case_when(
+      x == "closeness" ~ expression("l"),
+      x == "page_rank.nondirected" ~ expression("g"),
+      x == "eigen.nondirected" ~ expression("e"),
+      x == "superior" ~ expression(sigma),
+      x == "betweenness" ~ expression("w"),
+      x == "control_capacity" ~ expression(phi),
+      x == "degree" ~ expression("k")
+    )
+  }
   
 p1 <- plot_df %>%
     ggplot(aes(x = as.numeric(Var1), y = as.numeric(Var2), fill = value)) +
@@ -46,19 +71,19 @@ p1 <- plot_df %>%
                          name = "") +
     scale_color_manual(values = c(NA, "black")) + 
     scale_y_continuous(breaks = length(order):1,
-                       labels = labels_long,
+                       labels = labeller_long,
                        sec.axis = sec_axis(trans = ~.,
                                            breaks = length(order):1,
-                                           labels = labels_short),
+                                           labels = labeller_short),
                        expand = c(0,0)) +
-    scale_x_continuous(breaks = 1:length(order),
-                       labels = labels_short,
+    scale_x_continuous(breaks = length(order):1, 
+                       labels = labeller_short_rev,
                        sec.axis = sec_axis(trans = ~.,
-                                           breaks = 1:length(order),
-                                           labels = labels_short),
+                                           breaks = length(order):1,
+                                           labels = labeller_short_rev),
                        expand = c(0,0)) +
     scale_size_manual(values = c(2, 2)) + 
-    labs(title = 'Correlation between centrality metrics', x = "", y = "") + 
+    labs(title = '(a) mean correlation between centrality metrics', x = "", y = "") + 
     base_ggplot_theme() +
     theme(#legend.position = c(1,1.15), 
       legend.position = "none", 
