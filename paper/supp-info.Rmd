@@ -347,12 +347,7 @@ fig_assumption_sampling[[3]]
 
 \clearpage
 
-We fitted the full set of possible candidate models and used the Akaike Information Criterion for small sample sizes (AICc) to compare the models. 
-We found little support for any of the evaluated variables (Table \@ref(tab:table-controllabillity-model-results)). 
-We measured the relative importance of an independent variable by adding the Akaike weights (the model probabilities) of the models in which the variable was present. 
-All variables were roughly equally un-important with the Akaike weights for each of them ranging between `r round(min(controllability_variable_importance$w.plus), 3)` and `r round(max(controllability_variable_importance$w.plus), 3)` (in a scale from 0 to 1).
-
-```{r table-controllabillity-model-results, results = "asis", sanitize = FALSE}
+```{r tab-controllabillity-model-results, results = "asis", sanitize = FALSE}
 drake::loadd(controllability_models)
 
 replace_terms <- function(x){
