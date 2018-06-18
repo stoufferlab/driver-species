@@ -300,14 +300,35 @@ visitation_importance_agreement %>%
 Altogether, the evidence supports the idea that visitation is a suitable metric to estimate the mutual dependence of species pairs. First, it is directly related to pollinator foraging. Second, it produces results within our controllability framework that are consistent with plant reproductive success (as estimated by the importance metric). 
 
 \clearpage
-# Controllability models {#controllability-models}
 
-We constructed a set of generalised linear models with binomial error structure. 
-The response variable was the size of the minimum driver node set of the twenty empirical networks (ten invaded and ten uninvaded). 
-The independent variables evaluated were the invasion status, the network connectance, the network nestedness (NODF) the number of species, the network asymmetry (an indication of the balance between plants and pollinators) or the interaction strength asymmetry [the asymmetry on the dependences between trophic levels; @bluthgen_specialization_2007].
+# Sensitivity to sampling {#undersampling}
 
-```{r controllability-variable-importance}
-drake::loadd(controllability_variable_importance)
+Our approach is fundamentaly based on the network structure. 
+Often, the majority of the interactions that make up this structure are weak; in our networks this means that most interactions are formed by a small number of observed pollination visits, and therefore those weak intercations are less conspicuous in the field than strong ones. 
+To strengthen the case of our approach, we therefore evaluated the robustness of our results to simulated sampling limitations. 
+
+To do so we removed a portion of the visits, for each network, and calculated how three control metrics of the subsampled network compare to those of the full network. 
+Specifically, we calculated the difference between the relative size of the minimum driver node set $n_D$ of the subsampled and the full network, the Spearman correlation between the control capacities $\phi$ and the probability of being a superior node $\sigma$ that were obtained for the empirical network and subsamples of it. 
+Finally, we also compared the control capacity of critical species ($\phi=1$) across the different subsamples. 
+We removed up to 20% of the interactions in 1% increments. 
+We repeated the procedure for each network to obtain a total sample size of $n=400$.
+
+Overall, the results of the sensitivity analysis indicate that our approach is likely to  still be useful in the absence of complete sampling. 
+Specifically, as the proportion of sampled interaction decreased, the variability of $n_D$ increased, but was overall similar to that obtained when using all available interactions (Figure \@ref(fig:fig-assumption-sampling-nd)). 
+Similarly, the correlation between $\phi$ and $\sigma$ of empirical and subsampled networks was high even for extreme levels of undersampling (Figure \@ref(fig:fig-assumption-sampling-cor)). 
+Importantly, critical species in the empirical networks were also critical species in the subsampled networks in a large majority of cases (Figure \@ref(fig:fig-assumption-sampling-crit)).
+
+```{r fig-assumption-sampling-nd, fig.height=fig_sizes()[[1]]/2, fig.width=fig_sizes()[[1]], fig.cap="Difference between the size of the minimum driver node set of the empirical network and the subsampled network. Lighter lines indicate the changes for each networks and the darker line indicates the overall trend."}
+drake::loadd(fig_assumption_sampling)
+fig_assumption_sampling[[1]]
+```
+
+```{r fig-assumption-sampling-cor, fig.height=fig_sizes()[[1]]/2, fig.width=fig_sizes()[[2]], fig.cap="Spearman correlation between the control capacity and the probability of being a superior nodes of the empirical networks and subsampled networks. Lighter lines indicate the changes for each networks and the darker line indicates the overall trend."}
+fig_assumption_sampling[[2]]
+```
+
+```{r fig-assumption-sampling-crit, fig.height=fig_sizes()[[1]]/2, fig.width=fig_sizes()[[1]], fig.cap="Control capacity of critical species (those with $\\phi = 1$ in the empirical network) in subsampled networks. Lighter lines indicate the changes for each networks and the darker line indicates the overall trend."}
+fig_assumption_sampling[[3]]
 ```
 
 
