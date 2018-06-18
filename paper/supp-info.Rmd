@@ -30,8 +30,10 @@ bibliography: phd-bibliography/network-control.bib
 \doublespacing
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, message = FALSE, 
+knitr::opts_chunk$set(echo = FALSE, 
+                      message = FALSE, 
                       warning = FALSE)
+options(knitr.kable.NA = '---')
 ```
 
 # Characteristics of the empirical networks {#empirical-networks}
