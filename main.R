@@ -61,7 +61,7 @@ example_plots_plan <- drake::drake_plan(
   fig_emp_controllability = make_fig_emp_contollability(controllability, randomisations_df, metadata), 
   fig_correlation = make_fig_correlation(sl_char_corr), 
   fig_control_capacity = make_fig_control_capacity(species_model_cc, species_model_superior),
-  fig_structural_stability = make_fig_structural_stability(sl_characteristics, metadata), 
+  fig_structural_stability = make_fig_structural_stability(critical_sp_df), 
   fig_models_degree = make_fig_models_degree(species_model_cc, species_model_superior),
   fig_rho_sensitivity = make_fig_rho_sensitivity(structural_rho_correlation, rho_feasibility),
   fig_assumption_sampling = make_fig_assumption_subsampling(metrics_subsampled, metadata)
@@ -102,6 +102,7 @@ species_level_plan <- drake::drake_plan(
   secondary_ext_std = standardize_secondary_extinctions(secondary_ext, controllability, metadata),
   species_model_superior = fit_species_models(sl_characteristics, metadata, response = "superior"), 
   species_model_cc = fit_species_models(sl_characteristics, metadata, response = "control_capacity"),
+  critical_sp_df = extract_critical_sp_df(sl_characteristics, metadata),
   strings_in_dots = "literals"
 )
 
