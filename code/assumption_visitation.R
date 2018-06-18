@@ -1,4 +1,4 @@
-get_visitation_importance_agreement <- function(sl_characteristics){
+get_visitation_importance_agreement <- function(sl_characteristics, metadata){
   
   c("control_capacity", "superior") %>%
     set_names(., .) %>%
