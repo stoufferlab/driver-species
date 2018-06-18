@@ -93,9 +93,6 @@ species_level_plan <- drake::drake_plan(
   species_coovariates_df = purrr::map2_df(directed_networks, networks, get_species_coov, metrics = c("degree", "species strength", "betweenness", "closeness", "eigen", "page_rank", "nested_contribution", "interaction push pull"), .id = "net_name"), 
   chosen_rho = 0.005,
   structural_stability = get_all_struct(directed_networks, rho = chosen_rho), 
-  sensitivity_rho = seq(0.001, 0.01, by = 0.001),
-  structural_rho_sensitivity = purrr::map(sensitivity_rho, ~get_all_struct(directed_networks, rho = .)),
-  structural_rho_correlation = get_structural_sensitivity_correlation(sensitivity_rho, structural_rho_sensitivity, chosen_rho, metadata),
   sigma_phi_df = purrr::map_dfr(matched_networks, get_controllability_superiorness, .id = "net_name"),
   sl_characteristics = join_sl_characteristics(sigma_phi_df, species_coovariates_df, species_empirical_coov, structural_stability),
   rho_feasibility = get_rho_feasibility(sigma_phi_df, species_coovariates_df, species_empirical_coov,structural_rho_sensitivity, sensitivity_rho),
@@ -104,7 +101,15 @@ species_level_plan <- drake::drake_plan(
   secondary_ext_std = standardize_secondary_extinctions(secondary_ext, controllability, metadata),
   species_model_superior = fit_species_models(sl_characteristics, metadata, response = "superior"), 
   species_model_cc = fit_species_models(sl_characteristics, metadata, response = "control_capacity"),
-  visitation_importance_agreement = get_visitation_importance_agreement(sl_characteristics),
+  strings_in_dots = "literals"
+)
+
+test_assumption_plan <- drake::drake_plan(
+  sensitivity_rho = seq(0.001, 0.01, by = 0.001),
+  structural_rho_sensitivity = get_structural_rho_sensitivity(sensitivity_rho, directed_networks),
+  structural_rho_correlation = get_structural_sensitivity_correlation(sensitivity_rho, structural_rho_sensitivity, chosen_rho, metadata),
+  visitation_importance_agreement = get_visitation_importance_agreement(sl_characteristics, metadata),
+  metrics_subsampled = subsample_nets(networks, from = 0, to = 0.2, by = 0.05, this_method, bias = "none"), 
   strings_in_dots = "literals"
 )
 
@@ -122,6 +127,7 @@ reporting_plan <- drake::drake_plan(
 project_plan <- drake::bind_plans(
   read_data_plan, basic_analysis_plan, example_plots_plan, 
   control_capacity_testing_plan, controllability_plan, species_level_plan, 
+  test_assumption_plan,
   reporting_plan)
 project_config <- drake::drake_config(project_plan)
 drake::make(project_plan, config = project_config)

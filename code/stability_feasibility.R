@@ -1,4 +1,6 @@
-
+get_structural_rho_sensitivity <- function(sensitivity_rho, dn){
+  purrr::map(sensitivity_rho, ~ get_all_struct(dn, rho = .))
+}
 
 
 get_all_struct <- function(directed_networks, rho){
