@@ -374,6 +374,40 @@ AICcmodavg::aictab(controllability_models) %>%
                caption = "Model selection table based on the Akaike Information Criterion for small samples for candidate models of size of the minimum driver node set ($n_D$) in the empirical networks. There was no evidence for any of the evaluated predictors: the invasion status (inv), the network connectance (c), the network nestedness (NODF) the number of species ($n_S$) the network asymmetry ($AS_s$) or the interaction strength asymmetry ($AS_s$). Only candidate models with $\\Delta AIC < 8$ are shown.") %>%
   kableExtra::kable_styling(font_size = 8)
 ```
+
+```{r tab-species-model-random, warning=FALSE}
+drake::loadd(species_model_cc, species_model_superior)
+
+get_term_table <- function(x) {
+  x %>%
+    attr("random.terms") %>%
+    purrr::map(paste, collapse = " + ") %>%
+    unlist() %>%
+    dplyr::data_frame(random = .) %>%
+    dplyr::bind_cols(x) %>%
+    dplyr::select(random, AICc, delta, weight) %>%
+    dplyr::filter(weight > 0.01)
+}
+
+tab_cc <- MuMIn::model.sel(species_model_cc$random) %>%
+  get_term_table()
+tab_su <- MuMIn::model.sel(species_model_superior$random) %>%
+  get_term_table()
+
+tab_cc %>%
+  dplyr::bind_rows(tab_su) %>%
+  dplyr::mutate(random = pretty_term_names(random)) %>%
+  dplyr::rename(`random effects` = random) %>%
+  knitr::kable("latex", 
+               booktabs = T, 
+               caption = "Selection table of the random effects in the generalised mixed effect models of control capacity $\\phi$ and the probability of being a superior node $\\sigma$. Only models with a weight larger than 0.01 are shown. We modelled the probability of being a superior node without random effects as the random intercept over site had zero variance.", 
+               row.names = F, 
+               digits = 2, 
+               escape = F) %>%
+  kableExtra::kable_styling(font_size = 8) %>%
+  kableExtra::group_rows("control capacity models", 1, nrow(tab_cc)) %>%
+  kableExtra::group_rows("superior probability models", nrow(tab_cc) + 1, nrow(tab_cc) + nrow(tab_su)) 
+```
 ```
 
 # Empirical vs. random expectation of controllability {#randomisations}
