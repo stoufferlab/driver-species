@@ -305,7 +305,7 @@ visitation_importance_agreement %>%
                booktabs = T,
                linesep = "", 
                caption = "Spearman correlation coefficient matrix between the control capacity and the probability obtained by weighting links by the visitation, pollinator efficiency and pollinator importance.") %>%
-  kableExtra::kable_styling(font_size = 8) %>%
+  kableExtra::kable_styling(font_size = 8, latex_options = c("hold_position")) %>%
   kableExtra::group_rows("control capacity", 1, nrow(visitation_importance_agreement[[1]])) %>%
   kableExtra::group_rows("superior probability", nrow(visitation_importance_agreement[[1]]) + 1, nrow(visitation_importance_agreement[[1]]) + nrow(visitation_importance_agreement[[2]]))
 
