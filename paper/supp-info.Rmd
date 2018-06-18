@@ -80,7 +80,8 @@ net_prop %>%
 					"NODF" = "weighted.NODF",
 					# "$\\bar{a}$" = "interaction.strength.asymmetry",
 					"$AS$" = "web.asymmetry") %>% 
-  knitr::kable(escape = FALSE, 
+  knitr::kable("latex", 
+               escape = FALSE, 
                booktabs = TRUE, 
                digits = 2, 
                linesep = c("", "\\addlinespace"),
