@@ -91,6 +91,8 @@ net_prop %>%
   kableExtra::kable_styling(font_size = 8)
 ```
 
+\clearpage
+
 # Structural controllability {#structural-controllability}
 
 Structural controllability avoids the limitation of not knowing the exact values of the matrices *A* and *B*. 
@@ -100,6 +102,8 @@ The goal of structural controllability is to use the information contained in **
 This focus allows us to gain insight of the inherent controllability of a network, and the roles of the species that compose it, without being overly dependent on the particular choices of how the system dynamics are modelled or characterised. 
 The trade-off of this approach is that, because of the assumption of linearity, structural controllability alone does not allow us to fully design the time-varying control signal *u(t)* that can drive the system from one particular equilibrium to another. 
 Nevertheless, the lessons gained when assuming linearity---at both the network and the species level---are a prerequisite for eventually understanding nonlinear control [@liu_controllability_2011; @liu_control_2016]. 
+
+\newpage
 
 # Maximum matching 
 
@@ -207,6 +211,8 @@ Nevertheless, the results obtained using both approaches are extremely similar.
 We compared the control capacity obtained by calculating all maximum matchings and that obtained using the input graph in `r length(cc_corr)` of our networks (those for which we were able to calculate all maximum matchings within reasonable time). 
 The spearman correlation was very high in all cases, ranging between `r round(min(cc_corr),2)` and `r round(max(cc_corr), 2)` (median `r round(median(cc_corr), 2)`). 
 
+\clearpage
+
 ## Networks with reciprocal links {#reciprocal-links}
 
 ```{r}
@@ -237,6 +243,7 @@ drake::loadd(fig_bidirectional)
 replayPlot(fig_bidirectional$plot)
 ```
 
+\clearpage
 
 # Structural stability {#structural-stability}
 
@@ -255,6 +262,9 @@ cowplot::plot_grid(plotlist = fig_rho_sensitivity, ncol = 2, align = "h")
 ```
 
 # Impact of visitation {#visitation-as-proxy}
+\clearpage 
+
+# Visitation as a proxy for species dependence {#visitation-as-proxy}
 
 Visitation frequency has been shown to be an appropriate surrogate for inter-specific effects in pollination networks [@vazquez_interaction_2005; @bascompte_asymmetric_2006]. 
 Nevertheless visitation is not equivalent to pollen deposition and might be insufficient to reflect the dependences of plants on animals and vice versa [@alarcon_congruence_2010; @king_why_2013]. 
@@ -336,6 +346,7 @@ fig_assumption_sampling[[2]]
 fig_assumption_sampling[[3]]
 ```
 
+\clearpage
 
 We fitted the full set of possible candidate models and used the Akaike Information Criterion for small sample sizes (AICc) to compare the models. 
 We found little support for any of the evaluated variables (Table \@ref(tab:table-controllabillity-model-results)). 
@@ -376,5 +387,6 @@ drake::loadd(fig_correlation)
 fig_correlation[[1]]
 ```
 
+\clearpage 
 
 # References
