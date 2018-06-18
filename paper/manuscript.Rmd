@@ -275,7 +275,7 @@ c_m <- controllability %>%
 
 The size of the minimum driver node set relative to the number of species in each network $n_D$ ranged between $n_D = `r round(min(c_m$n_D), 2)`$ and $n_D = `r round(max(c_m$n_D), 2)`$ (median `r round(median(c_m$n_D), 2)`, Figure \@ref(fig:fig-emp-controllability)a). 
 We found that the relative size of the minimum driver node set was not related to any of the independent variables we evaluated. 
-Indeed the null model ($n_D \sim 1$) was the most parsimonious candidate model and all variables were relatively unimportant (based on the AICc; Supporting Information Section \@ref(S-controllability-models)). 
+Indeed the null model ($n_D \sim 1$) was the most parsimonious candidate model and all variables were relatively unimportant (based on the AICc; Table  \@ref(S-tab:tab-controllabillity-model-results)). 
 The $n_D$ of empirical networks did not differ to that of a null model that roughly preserved the degree distribution and fully preserved the network connectance ($p = `r sprintf('\\num{%s}', format(randomisations_test$interactions$p.value, digits = 2))`$; Figure \@ref(fig:fig-emp-controllability)b). 
 However empirical networks had a larger $n_D$ than null models that preserved the interactions but shuffled the direction of control of the empirical network ($p = `r sprintf('\\num{%s}', format(randomisations_test$directions$p.value, digits = 2))`$). 
 
@@ -290,14 +290,14 @@ grid::grid.newpage()
 grid::grid.draw(gb)
 ```
 
-The models that best explained a species control capacity $\phi$, had a random intercept and slope for the species asymmetry grouped by guild (plants or pollinators; Table \@ref(S-tab:tab-model-output-control-capacity)). 
-Contribution to nestedness was the most important variable followed by visitation strength (Table \@ref(tab:tab-model-selection-table), \@ref(S-tab:tab-var-importance)). 
-Species with large contribution to nestedness and large visitation strength were more likely to have a large control capacity (Figure \@ref(fig:fig-species-level)a and b). 
-For the probability of being a superior node $\sigma$, the most parsimonuous models did not include any random effect (Table \@ref(S-tab:tab-model-output-superior)). 
-The most important variables were the species asymmetry and the visitation strength (Table \@ref(tab:tab-model-selection-table), \@ref(S-tab:tab-var-importance)). 
+The models that best explained a species control capacity $\phi$, had a random intercept and slope for the species asymmetry grouped by guild (plants or pollinators; Table \@ref(S-tab:tab-species-model-random), Table \@ref(S-tab:tab-model-output-species-level)). 
+Contribution to nestedness was the most important variable followed by visitation strength (Table \@ref(tab:tab-model-selection-table), Table \@ref(S-tab:tab-var-importance)) with species with large contribution to nestedness and large visitation strength being more likely to have a large control capacity (Figure \@ref(fig:fig-species-level)a and b). 
+For the probability of being a superior node $\sigma$, the most parsimonuous models did not include any random effect Table \@ref(S-tab:tab-species-model-random), Table \@ref(S-tab:tab-model-output-species-level)). 
+The most important variables were the species asymmetry and the visitation strength (Table \@ref(tab:tab-model-selection-table), Table \@ref(S-tab:tab-var-importance)). 
 Specifically, species with a positive asymmetry (this is they affect their partners more than what their parners affect them), and with a large visitatin strength were more likely to be superior nodes (Figure \@ref(fig:fig-species-level)c and d). 
 Furthermore, degree was positively, but only weakly asociated to both control capacity and the probability of being a superior node. 
-Remarkably, many species with a low degree, especially pollinators attained a large control capacity in their communities \@ref(S-fig:fig-species-models-degree).
+Remarkably, many species with a low degree, especially pollinators attained a large control capacity in their communities (Figure \@ref(S-fig:fig-species-models-degree)). 
+In addition all invasive plants were both critical ($\phi = 1$) and were superior ($\sigma = 1$) species in their communities.
 
 ```{r tab-model-selection-table}
 drake::loadd(species_model_cc, species_model_superior)
@@ -340,46 +340,43 @@ fig_control_capacity[[4]] <- fig_control_capacity[[4]] +
 fig_control_capacity %>%
     cowplot::plot_grid(plotlist = ., rel_widths = c(1.21,1), align = "h")
 # dev.off()
-
 ```
 
-The model that best explained Although a species control capacity was not correlated to any of the centrality metrics, we found that it was a strong correlation w  Control capacity was strongly related to the nested
+```{r}
+drake::loadd(critical_sp_df)
+crit_test <- critical_sp_df  %$%
+    t.test(feasibility ~ critical, 
+           alternative = "less", 
+           conf.int = T)
+```
 
-```{r fig-structural-stability, fig.width=fig_sizes()[[1]], fig.height=fig_sizes()[[1]]/2, fig.cap="Control capacity and "}
+We also found that critical species (those with a control capacity $\phi = 1$) have a larger impact on species coexistence as the structural stability of the network was considerably reduced when these species were removed from their communities ($p = `r sprintf('\\num{%s}', format(crit_test$p.value, digits = 2))`$; Figure \@ref(fig:fig-structural-stability); Figure \@ref(S-fig:fig-rho-sensitivity)). 
+Although some pollinators had large values of control capacity, the group of critical species in every community was composed exclusivelly by plants. 
+
+```{r fig-structural-stability, fig.width=fig_sizes()[[1]], fig.height=fig_sizes()[[1]]/2, fig.cap="Density plot of the structural stability of the communities after a focal species is removed. The structural stability after critical species have been removed (darker line) is considerable smaller than the average. To allow comparison across communities, the structural stability values were scaled within each network to have a mean of 0 and a standard deviation of one."}
 drake::loadd(fig_structural_stability)
-
 fig_structural_stability[[1]]
 ```
 
-
-
-```{r tab-model-selection-table}
-drake::loadd(species_model_cc, species_model_superior)
-
-cc_table <- MuMIn::model.sel(species_model_cc$fixed) %>%
-  dplyr::filter(weight > 0.01)
-su_table <- MuMIn::model.sel(species_model_superior$fixed)%>%
-  dplyr::filter(weight > 0.01)
-
-dplyr::bind_rows(cc_table, su_table) %>%
-  dplyr::select(-logLik, - AICc) %>%
-  knitr::kable("latex", 
-               col.names = c("int.", "degree", "push/pull", "nested c.", "sp. strength", "d.f.",  "$\\Delta$AICc","weight"),
-               booktabs = T, 
-               caption = "asd", 
-               row.names = F, 
-               digits = 2, 
-               escape = F) %>%
-  kableExtra::add_header_above(c("model terms" = 5, " " = 3), escape = F) %>%
-  kableExtra::kable_styling(font_size = 8) %>%
-  kableExtra::group_rows("control capacity models", 1, nrow(cc_table), escape = F) %>%
-  kableExtra::group_rows("superior/subordinate models", nrow(cc_table) + 1, nrow(cc_table) + nrow(su_table))
+```{r correlation-calculations}
+drake::loadd(sl_char_corr)
+correlations <- sl_char_corr %>% 
+  extract2("mean") %>%
+  as.data.frame() %>%
+  tibble::rownames_to_column() %>%
+  dplyr::filter(!rowname %in% c("control_capacity", "superior"))
 ```
 
-I'm thinlking just adding a graph with the control capacity and superiorness of the invasive/non invasive species as well as the glm to predict these variables and leave it there. 
+The control capacity of a species $\phi$ was only weakly correlated with commonly used centrality metrics. 
+The Spearman correlation ranged between `r round(min(correlations$control_capacity), 2)` (with betweeness-centrality) and `r round(max(correlations$control_capacity), 2)` (with eigen-centrality). 
+On the other hand, the probability of being a superior node $\sigma$ was slightly more similar to established centrality metrics. 
+The Spearman correlation coefficient ranged between `r round(min(correlations$superior), 2)` (with eigen-centrality) and `r round(max(correlations$superior), 2)` (with degree; Figure \@ref(S-fig:fig-correlogram)). 
 
-That means that it would be necessary to modify the introduction to remove the parts that claim that centrality is not good enough to predict coextinction. 
-The justification is just that centrality might just be telling a different thing to control. 
-We then just use the "empirically known" role of invasive species to show it works? 
+We found that using visitation as a proxy for the strenghth of species interactions leads to similar results than those obtained using pollinator importance [regarded as an accurate measure of the pollination service to plants; Supporting Information Section \@ref(S-visitation-as-proxy); @neeman_framework_2009]. 
+Importantly, we also found that structural stability is robust to incomplete sampling of interactions. 
+We found a very strong agreement between results obtained using the complete empirical networks and those obtained by randomly removing interactions (Supporting Information Section \@ref(S-undersampling)). 
+Despite removing rare interactions and species, the relative size of the minimum driver node set, the superior species, and the relative rankings of control capacity were generally maintained. Remarkably critical species in the full network, were also critical in the vast majority of rarefied networks. 
+
+# Discussion
 
 # References
