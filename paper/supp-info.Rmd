@@ -440,6 +440,23 @@ table_df %>%
   kableExtra::group_rows("superior probability models", purrr::reduce(num_effects, sum) + 1, nrow(table_df)) 
 
 ```
+
+```{r tab-var-importance}
+cc_imp <- get_var_importance(species_model_cc$fixed) 
+su_imp <- get_var_importance(species_model_superior$fixed)
+
+dplyr::bind_rows(cc_imp, su_imp) %>%
+  dplyr::mutate(term = pretty_term_names(term)) %>%
+  knitr::kable("latex", 
+               booktabs = T, 
+               row.names = F, 
+               digits = 2, 
+               escape = F, 
+               caption = "Variable importance for each set of models. The importance is the sum of the weights of all models in which the variable was included.",
+               linesep = '') %>%
+  kableExtra::kable_styling(font_size = 8)%>%
+  kableExtra::group_rows("control capacity models", 1, nrow(cc_imp)) %>%
+  kableExtra::group_rows("superior probability models", nrow(cc_imp) + 1, nrow(cc_imp) + nrow(su_imp))
 ```
 
 # Empirical vs. random expectation of controllability {#randomisations}
