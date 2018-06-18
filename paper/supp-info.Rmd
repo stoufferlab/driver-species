@@ -284,7 +284,6 @@ bal_nd <- controllability %>%
   }
 ```
 
-
 At a network scale the driver-node density $n_D$ was consistent among the three weighting schemes (`r round(bal_nd$eff, 2)` for deposition, `r round(bal_nd$vis, 2)` for the visitation, and `r round(bal_nd$imp, 2)` for the pollinator-importance network, respectively).
 The choice of weighting can also have an impact on at the species level.
 Therefore we calculated $\phi$ and $\sigma$ and calculated it's correlation among all three weighting schemes.
@@ -332,7 +331,7 @@ Specifically, as the proportion of sampled interaction decreased, the variabilit
 Similarly, the correlation between $\phi$ and $\sigma$ of empirical and subsampled networks was high even for extreme levels of undersampling (Figure \@ref(fig:fig-assumption-sampling-cor)). 
 Importantly, critical species in the empirical networks were also critical species in the subsampled networks in a large majority of cases (Figure \@ref(fig:fig-assumption-sampling-crit)).
 
-```{r fig-assumption-sampling-nd, fig.height=fig_sizes()[[1]]/2, fig.width=fig_sizes()[[1]], fig.cap="Difference between the size of the minimum driver node set of the empirical network and the subsampled network. Lighter lines indicate the changes for each networks and the darker line indicates the overall trend."}
+```{r fig-assumption-sampling-nd, fig.height=fig_sizes()[[1]]/2, fig.width=fig_sizes()[[1]], fig.cap="Difference between the size of the minimum driver node set of the empirical network and the subsampled network. Lighter lines indicate the changes for each networks and the darker line indicates the overall trend.", fig.pos="p", fig.align='center'}
 drake::loadd(fig_assumption_sampling)
 fig_assumption_sampling[[1]]
 ```
