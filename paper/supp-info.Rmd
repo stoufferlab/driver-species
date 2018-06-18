@@ -255,13 +255,12 @@ The choice of the parameters, specifically the interspecific competition $\rho$ 
 
 In addition, the interspecific competition had a minor impact on our result that indicates that critical species (those with $\phi = 1$) have a larger than average contribution to stable coexistence (Figure \@ref(fig:fig-rho-sensitivity)b). 
 
-```{r fig-rho-sensitivity, fig.width=fig_sizes()[[2]], fig.height=fig_sizes()[[1]]/2, fig.cap="Sensitivity analysis on the impact of interspecific competition parameter $\\rho$ on structural stability. (a) Spearman correlation coefficient of the contribution to stable coexistence of species. Lighter lines indicate the correlation coeficient for each of the twenty empirical networks. The dark line indicates the median value. (b) Difference between the conribution to stable coexistence of critical and redundant species for different values of the iterspecific competition parameters $\\rho$."}
+```{r fig-rho-sensitivity, fig.width=fig_sizes()[[2]], fig.height=fig_sizes()[[1]]/2, fig.cap="A sensitivity analysis of the impact of interspecific competition parameter $\\rho$ on structural stability reveals that the choice of parameters has a negligible impact on the results. (a) Spearman correlation coefficient of the contribution to stable coexistence of species. Lighter lines indicate the correlation coeficient for each of the twenty empirical networks. The dark line indicates the median value. (b) Difference between the conribution to stable coexistence of critical and redundant species for different values of the iterspecific competition parameters $\\rho$.", fig.pos="p", fig.align='center'}
 drake::loadd(fig_rho_sensitivity)
 fig_rho_sensitivity %<>% add_internal_margins()
 cowplot::plot_grid(plotlist = fig_rho_sensitivity, ncol = 2, align = "h")
 ```
 
-# Impact of visitation {#visitation-as-proxy}
 \clearpage 
 
 # Visitation as a proxy for species dependence {#visitation-as-proxy}
