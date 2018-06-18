@@ -32,6 +32,11 @@ Hash: cc5979743125dccc274f1920eb9c8197
 Requires: Formula, acepack, base64enc, data.table, ggplot2, gridExtra,
     gtable, htmlTable, htmltools, latticeExtra, viridis
 
+Package: MuMIn
+Source: CRAN
+Version: 1.40.4
+Hash: 2451eae9760ce5392a9809ad86cff173
+
 Package: R.methodsS3
 Source: CRAN
 Version: 1.7.1
@@ -134,6 +139,12 @@ Version: 0.7
 Hash: e5916615038d3cedf27b78814803877c
 Requires: htmltools, knitr, rmarkdown, tinytex, xfun, yaml
 
+Package: broom
+Source: CRAN
+Version: 0.4.4
+Hash: dc14fe971ee0fdd4e22b5b1d11611a37
+Requires: dplyr, plyr, psych, reshape2, stringr, tidyr
+
 Package: checkmate
 Source: CRAN
 Version: 1.8.5
@@ -156,10 +167,21 @@ Source: CRAN
 Version: 1.6.9
 Hash: f641167f85158bfc7cd4b97ac1c26701
 
+Package: cowplot
+Source: CRAN
+Version: 0.9.2
+Hash: 0906730256b0ac0a7ca35da4b0187e0a
+Requires: ggplot2, gtable, plyr, scales
+
 Package: crayon
 Source: CRAN
 Version: 1.3.4
 Hash: ff2840dd9b0d563fc80377a5a45510cd
+
+Package: curl
+Source: CRAN
+Version: 3.2
+Hash: e3318ec2d42d15a38485bab047d114ba
 
 Package: data.table
 Source: CRAN
@@ -256,6 +278,12 @@ Version: 2.2.1
 Hash: 46e5cb78836848aa44655e577433f54b
 Requires: digest, gtable, lazyeval, plyr, reshape2, scales, tibble
 
+Package: glmulti
+Source: CRAN
+Version: 1.0.7
+Hash: d32b0c70ca18f90b674739e62ef21bcf
+Requires: rJava
+
 Package: globals
 Source: CRAN
 Version: 0.11.0
@@ -307,6 +335,12 @@ Version: 1.2
 Hash: de18b75f31630089b22e30d4b188cfbe
 Requires: htmltools, jsonlite, yaml
 
+Package: httr
+Source: CRAN
+Version: 1.3.1
+Hash: 2d32e01e53d532c812052e27a1021441
+Requires: R6, curl, jsonlite, mime, openssl
+
 Package: igraph
 Source: CRAN
 Version: 1.2.1
@@ -322,6 +356,13 @@ Package: jsonlite
 Source: CRAN
 Version: 1.5
 Hash: 9c51936d8dd00b2f1d4fe9d10499694c
+
+Package: kableExtra
+Source: CRAN
+Version: 0.9.0
+Hash: 98ee84e2e5ecaa6e416c40a489b9356c
+Requires: htmltools, knitr, magrittr, readr, rmarkdown, rstudioapi,
+    rvest, scales, stringr, viridisLite, xml2
 
 Package: knitr
 Source: CRAN
@@ -395,6 +436,17 @@ Version: 1.2.4
 Hash: ccfdf7c20ddf8bff606fe8d4ffccebd6
 Requires: Rcpp
 
+Package: mnormt
+Source: CRAN
+Version: 1.5-5
+Hash: d0d5efbb1fb26d2dc5f9394c223084b5
+
+Package: modelr
+Source: CRAN
+Version: 0.1.2
+Hash: f691854a99ac7814f3853d499408d9a3
+Requires: broom, dplyr, magrittr, purrr, rlang, tibble, tidyr
+
 Package: munsell
 Source: CRAN
 Version: 0.4.3
@@ -415,6 +467,11 @@ Package: nloptr
 Source: CRAN
 Version: 1.0.4
 Hash: 8053df240a4635aeb54fc68c6de67709
+
+Package: openssl
+Source: CRAN
+Version: 1.0.1
+Hash: e04b8ed7b05c1f75aa81c65a086b1d0c
 
 Package: packrat
 Source: CRAN
@@ -453,11 +510,22 @@ Source: CRAN
 Version: 1.0.0
 Hash: 77da8f1df873a4b91e5c4a68fe2fb1b6
 
+Package: psych
+Source: CRAN
+Version: 1.8.4
+Hash: eb0040e47d327c4416ea68c9cb01316f
+Requires: mnormt
+
 Package: purrr
 Source: CRAN
 Version: 0.2.4
 Hash: a80b244ccd3fdb33a0ff2be3c50dd648
 Requires: magrittr, rlang, tibble
+
+Package: rJava
+Source: CRAN
+Version: 0.9-10
+Hash: ced564fa0273ec2be836ee586570d436
 
 Package: raster
 Source: CRAN
@@ -512,12 +580,24 @@ Source: CRAN
 Version: 0.7
 Hash: e2ebaff8160aff3e6b32e6e78a693c2d
 
+Package: rvest
+Source: CRAN
+Version: 0.3.2
+Hash: c69f7526520bad66fd2111ebe8b1364b
+Requires: httr, magrittr, selectr, xml2
+
 Package: scales
 Source: CRAN
 Version: 0.5.0
 Hash: de72bbfa723acfaa28bb99788a303987
 Requires: R6, RColorBrewer, Rcpp, dichromat, labeling, munsell, plyr,
     viridisLite
+
+Package: selectr
+Source: CRAN
+Version: 0.4-1
+Hash: b12802c11e35dec9d16a74d30ed0f3ed
+Requires: R6, stringr
 
 Package: sna
 Source: CRAN
@@ -631,6 +711,12 @@ Package: xfun
 Source: CRAN
 Version: 0.1
 Hash: 5a219975e4ff4b0daf0ded026fe0dd2f
+
+Package: xml2
+Source: CRAN
+Version: 1.2.0
+Hash: 24c1c4ee4b654065c8db42d36a6785a8
+Requires: Rcpp
 
 Package: xtable
 Source: CRAN
