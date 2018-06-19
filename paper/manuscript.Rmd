@@ -15,6 +15,8 @@ header-includes:
 - \usepackage{booktabs}
 - \usepackage{caption}
 - \usepackage{lineno}
+- \newcommand{\R}[1]{\label{#1}\linelabel{#1}}
+- \newcommand{\lr}[1]{page~\pageref{#1}, line~\lineref{#1}}
 - \usepackage{xr}
 - \externaldocument[S-]{supp-info}
 - \usepackage{siunitx}
@@ -260,8 +262,8 @@ To do that, for each network, we calculated the Spearman correlation matrix betw
 Namely degree, betweenness, eigen centrality, page rank, and closeness centrality.
 
 ## Testing assumptions
-
-Just like the centrality metrics, the information obtained by applying structural controllability depends on the ability of the network to accurately represent the ecological community. 
+ 
+\R{testing-assumptions-line}Just like the centrality metrics, the information obtained by applying structural controllability depends on the ability of the network to accurately represent the ecological community. 
 We tested the sensitivity of our approach to two fundamental assumptions. 
 First, we tested that visitation is an appropriate proxy to infer interspecific effects. 
 To do that we compared the results obtained using visitation to two alternative metrics in a dataset that lacked invasive species [@ballantyne_constructing_2015]. 
@@ -377,7 +379,7 @@ The Spearman correlation ranged between `r round(min(correlations$control_capaci
 On the other hand, the probability of being a superior species $\sigma$ was slightly more similar to established centrality metrics. 
 The Spearman correlation coefficient ranged between `r round(min(correlations$superior), 2)` (with eigen-centrality) and `r round(max(correlations$superior), 2)` (with degree; Figure \@ref(S-fig:fig-correlogram)). 
 
-We found that using visitation as a proxy for the strength of species interactions leads to similar results than those obtained using pollinator importance [regarded as an accurate measure of the pollination service to plants; Supporting Information Section \@ref(S-visitation-as-proxy); @neeman_framework_2009]. 
+\R{testing-asumptions-results-line} We found that using visitation as a proxy for the strength of species interactions leads to similar results than those obtained using pollinator importance [regarded as an accurate measure of the pollination service to plants; Supporting Information Section \@ref(S-visitation-as-proxy); @neeman_framework_2009]. 
 Importantly, we also found that structural stability is robust to incomplete sampling of interactions. 
 We found a very strong agreement between results obtained using the complete empirical networks and those obtained by randomly removing interactions (Supporting Information Section \@ref(S-undersampling)). 
 Despite removing rare interactions and species, the relative size of the minimum driver node-set, the superior species, and the relative rankings of control capacity were generally maintained. Remarkably critical species in the full network were also critical in the vast majority of rarefied networks. 

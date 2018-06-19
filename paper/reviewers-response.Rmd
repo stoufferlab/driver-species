@@ -13,6 +13,9 @@ output:
 header-includes:
   - \usepackage{setspace}
   - \usepackage{xr}
+  - \usepackage{lineno}
+  - \newcommand{\R}[1]{\label{#1}\linelabel{#1}}
+  - \newcommand{\lr}[1]{page~\pageref{#1}, line~\lineref{#1}}
   - \externaldocument[M-]{manuscript}
   - \externaldocument[S-]{supp-info}
   - \usepackage[most]{tcolorbox}
