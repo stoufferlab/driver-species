@@ -1,5 +1,5 @@
 ---
-title: "Working title: Ecological network control"
+title: "Structural controllability of ecological networks"
 classoption: a4paper
 csl: journal-of-ecology.csl
 output: 
@@ -41,6 +41,10 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE,
                       warning = FALSE)
 options(knitr.kable.NA = '---')
 ```
+
+*Alternative titles:* 
+
+* Keystoneness, centrality, and the structural controllability of ecological networks
 
 \newpage
 
