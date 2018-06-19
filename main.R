@@ -111,7 +111,7 @@ test_assumption_plan <- drake::drake_plan(
   structural_rho_sensitivity = get_structural_rho_sensitivity(sensitivity_rho, directed_networks),
   structural_rho_correlation = get_structural_sensitivity_correlation(sensitivity_rho, structural_rho_sensitivity, chosen_rho, metadata),
   visitation_importance_agreement = get_visitation_importance_agreement(sl_characteristics, metadata),
-  metrics_subsampled = subsample_nets(networks, from = 0, to = 0.2, by = 0.05, this_method, bias = "none"), 
+  metrics_subsampled = subsample_nets(networks, from = 0, to = 0.2, by = 0.01, this_method, bias = "none"), 
   strings_in_dots = "literals"
 )
 
