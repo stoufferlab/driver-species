@@ -79,9 +79,13 @@ Nevertheless, we have also rewritten the introduction and took care to be clear 
 
 XXX answer missing XXX
 
-> And finally I think mentioning the extreme uncertainty mostly seen in networks in the real world is key, how can approaches deal with this needs to be discussed. What do we need to think about in terms of key information to use this approach?
+> "And finally I think mentioning the extreme uncertainty mostly seen in networks in the real world is key, how can approaches deal with this needs to be discussed. What do we need to think about in terms of key information to use this approach?"
 
-XXX answer missing XXX
+In the previous manuscript, we discussed this uncertainty but it was buried in the Supporting Information. 
+We have now added a subsection in the Methods describing how we evaluate the impact of the uncertainty induced by using visitation as a proxy of species interdependence and that induced by incomplete sampling of rare interactions (\lr{M-testing-assumptions-line}). 
+We found that the structural controllability approach is robust to these two sources of uncertainty (\lr{M-testing-assumptions-results-line}). 
+Further details can be found in the Supporting Information Section \@ref(S-visitation-as-proxy) and \@ref(S-undersampling). 
+In addition, we also included a reference to the key information needed to apply the method in the Discussion (XXX).
 
 # Reviewer comments #2
 
