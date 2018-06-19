@@ -346,7 +346,7 @@ fig_assumption_sampling[[3]]
 
 \clearpage
 
-```{r tab-controllabillity-model-results, results = "asis", sanitize = FALSE}
+```{r tab-controllability-model-results, results = "asis", sanitize = FALSE}
 drake::loadd(controllability_models)
 
 replace_terms <- function(x){
