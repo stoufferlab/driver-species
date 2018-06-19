@@ -1,6 +1,6 @@
 ---
 title: "Structural controllability of ecological networks"
-subtitle: "Supplementary Information"
+subtitle: "Supporting Information"
 author: "Fernando Cagua, Kate L. Wootton, Daniel B. Stouffer"
 classoption: a4paper
 csl: journal-of-ecology.csl
