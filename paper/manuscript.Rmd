@@ -280,21 +280,19 @@ c_m <- controllability %>%
   filter_networks_df(metadata)
 ```
 
-The size of the minimum driver node-set relative to the number of species in each network $n_D$ ranged between $n_D = `r round(min(c_m$n_D), 2)`$ and $n_D = `r round(max(c_m$n_D), 2)`$ (median `r round(median(c_m$n_D), 2)`, Figure \@ref(fig:fig-emp-controllability)a). 
-We found that the relative size of the minimum driver node-set was not related to any of the independent variables we evaluated. 
-Indeed the null model ($n_D \sim 1$) was the most parsimonious candidate model and all variables were relatively unimportant (based on the AICc; Table  \@ref(S-tab:tab-controllability-model-results)). 
+The size of the minimum driver node-set relative to the number of species in each network $n_D$ ranged between $n_D = `r round(min(c_m$n_D), 2)`$ and $n_D = `r round(max(c_m$n_D), 2)`$ (median `r round(median(c_m$n_D), 2)`). 
+We found that the relative size of the minimum driver node-set of invaded communities was not significantly different to that of communities that have not been invaded (Figure \@ref(fig:fig-emp-controllability)a). 
+However there was an important negative relationship between $n_D$ and the network asymetry (Figure \@ref(fig:fig-emp-controllability)b). 
+Furthermore, there were also negative, albeit weaker, correlations between $n_D$ and connectance, nestedness and species richness (Table  \@ref(S-tab:tab-controllability-model-results)). 
 The $n_D$ of empirical networks did not differ to that of a null model that roughly preserved the degree distribution and fully preserved the network connectance ($p = `r sprintf('\\num{%s}', format(randomisations_test$interactions$p.value, digits = 2))`$; Figure \@ref(fig:fig-emp-controllability)b). 
 However empirical networks had a larger $n_D$ than null models that preserved the interactions but shuffled the direction of control of the empirical network ($p = `r sprintf('\\num{%s}', format(randomisations_test$directions$p.value, digits = 2))`$). 
 
-```{r fig-emp-controllability, fig.width=fig_sizes()[[1]], fig.height=fig_sizes()[[1]], fig.cap="Density plot of (a) the relative size of the minimum driver node-set $n_D$ in the invaded (light) and uninvaded (dark) empirical networks. (b) The density distribution of the difference between the relative size of the minimum driver node-set of random networks and that of empirical networks. We randomised either the species visitation patterns (light line) or randomised the direction of control between a species pair (dark line). The vertical dashed lines indicate the median values of each distribution."}
+```{r fig-emp-controllability, fig.width=fig_sizes()[[1]], fig.height=fig_sizes()[[1]]*1.5, fig.cap="Density plot of (a) the relative size of the minimum driver node-set $n_D$ in the invaded (light) and uninvaded (dark) empirical networks. (b) The density distribution of the difference between the relative size of the minimum driver node-set of random networks and that of empirical networks. We randomised either the species visitation patterns (light line) or randomised the direction of control between a species pair (dark line). The vertical dashed lines indicate the median values of each distribution."}
 drake::loadd(fig_emp_controllability)
 
-g <- fig_emp_controllability %>%
-  purrr::map(ggplot2::ggplotGrob)
-gb <- rbind(g[[1]], g[[2]], size = "first")
-gb$widths <- grid::unit.pmax(g[[1]]$widths, g[[2]]$widths)
-grid::grid.newpage()
-grid::grid.draw(gb)
+cowplot::plot_grid(plotlist = fig_emp_controllability, 
+                   ncol = 1, 
+                   align = "v")
 ```
 
 The models that best explained a species control capacity $\phi$, had a random intercept and slope for the species asymmetry grouped by the species' guild (plants or pollinators; Table \@ref(S-tab:tab-species-model-random), Table \@ref(S-tab:tab-model-output-species-level)). 

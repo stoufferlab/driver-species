@@ -26,7 +26,7 @@ calc_ntws_properties <- function(x, properties = c("connectance",
 #'
 calc_ntw_properties <- function(x, properties){
   types <- igraph::V(x)$type %>% unique()
-	keep_largest_component(x)
+	# keep_largest_component(x)
 	n_pla <- sum(igraph::V(x)$type == types[1])
 	n_pol <- sum(igraph::V(x)$type == types[2])
 	bipartite::networklevel(igraph::as_incidence_matrix(x, 

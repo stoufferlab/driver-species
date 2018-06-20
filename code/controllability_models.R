@@ -1,5 +1,8 @@
 assemble_controllabillity_df <- function(controllability, network_properties, metadata){
-  controllability %>%
+  network_properties %<>% 
+    dplyr::mutate_if(is.numeric, scale)
+  
+    controllability %>%
     filter_networks_df(metadata) %>%
     dplyr::inner_join(metadata, by = "net_name") %>%
     dplyr::inner_join(network_properties, by = "net_name") %>%
@@ -11,13 +14,18 @@ assemble_controllabillity_df <- function(controllability, network_properties, me
 }
 # drake::loadd(controllability, network_properties, metadata)
 
+# controllability_model_data %>%
+#   ggplot(aes(x = web_asymmetry, y = qlogis(n_D))) + 
+#   geom_point() +
+#   geom_smooth(method = "lm")
+
 fit_controllability_models <- function(controllability_model_data){
   vars = c("n_sp", "connectance", "web_asymmetry", "interaction_strength_asymmetry", "weighted_NODF", "inv", "study")
   # extra = " + (1 | study)"
   suppressWarnings({
-    models <- get_model_formulas("n_D ~ ", vars) %>% 
+    models <- get_model_formulas("I(qlogis(n_D)) ~ ", vars) %>% 
       `names<-`(., .) %>%
-      purrr::map(~glm(as.formula(.), data = controllability_model_data, family = "binomial"))
+      purrr::map(~lm(as.formula(.), data = controllability_model_data))
   })
   models
 }
