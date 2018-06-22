@@ -127,7 +127,7 @@ This asymmetry is given by $$a(i,j) = a(j,i) = \frac{\left | d_{ij}-d_{ji} \righ
 Previous research has shown that mutualistic interactions are often highly asymmetric in natural communities; in other words, if a plant species is largely dependent on a pollinator species, that pollinator tends to depend rather weakly on the plant (and vice versa). 
 We, therefore, create a directed link from species *i* to species *j* when $d_{ij}-d_{ji} \geq 0$ to establish the most likely direction of control between a species pair (Figure \@ref(fig:fig-example-networks)a).
 Sometimes there is no observed asymmetry between species pairs ($d_{ij}=d_{ji}$), and we cannot infer a dominant direction of control. 
-When this occurs, we deem both species to be equally likely to affect each other and form a reciprocal interaction between them, this is a link from *i* to *j* and another from *j* to *i*. 
+When this occurs, we deem both species to be equally likely to affect each other and form a reciprocal interaction between them (a link from *i* to *j* and another from *j* to *i*). 
 By basing the direction of the links on the asymmetry of their dependence, we are able to generate a network that is consistent with the dynamics of the community while satisfying the requirements of structural controllability. 
 That allows us to calculate the controllability of the networks and investigate whether there are differences between invaded and uninvaded communities. 
 
@@ -185,22 +185,23 @@ Finding out exactly how difficult it is to control a network depends strongly on
 However, we are interested in understanding the controllability of a network in a more general sense, such that it can be applied even when the precise control scenario is known only incompletely. 
 To this end, we chose an indicator that follows directly from our approach: the size of the minimum driver node-set. 
 This simple metric provides a general indication of how difficult controlling a network might be, as systems that require a large number of external inputs to be fully controlled are intuitively more difficult or costly to manage. 
-For instance, achieving full control in a "network" in which species do not interact at all is relatively difficult as we would require an intervention for every single species. 
+For instance, achieving full control in a "network" in which species do not interact at all is relatively more difficult as we would require an intervention for every single species. 
 Conversely, the structure of a linear trophic chain can be harnessed to achieve full control using just one intervention targeted the top species; the control signal would then cascade through the trophic levels and reach other species in the community. 
-Specifically, drawing from the structural-controllability literature, we use the size of the minimum driver node-set relative to the total number of species $n_D = \frac{D}{N}$ as a measure of the extent to which the network structure can be harnessed to control the community.
+Specifically, drawing from the structural-controllability literature, we use the size of the minimum driver node-set relative to the total number of species $n_D = \frac{D}{N}$ as a measure of the *controllability* of a network—the extent to which the network structure can be harnessed to control the community.
 In an ecological context, external inputs can be thought of as management interventions that modify the abundance of a particular species. 
 <!-- Would the two sentences below work better after the "Finding out exactly how difficult..." sentence? -->
 <!-- I moved it to a different place where I think flows better -->
 
-After finding the minimum driver node-set in each of our networks, we wanted to test whether invasion status or other predictors are correlated to this metric of controllability. 
+After finding the minimum driver node-set in each of our networks, we wanted to test whether invasion status or other predictors are correlated to controllability. 
 We, therefore, use a set of generalised linear models (with binomial error structure). 
-The response variable was the size of the minimum driver node-set $n_D$ of the twenty empirical networks (ten invaded and ten uninvaded). 
-The independent variables evaluated were the invasion status, the network connectance, the network nestedness (NODF) the number of species [since one might naively expect to see a negative relationship between richness and controllability; @menge_indirect_1995], the network asymmetry (an indication of the balance between plant and pollinator diversity), and the interaction strength asymmetry [the asymmetry on the dependences between trophic levels; @bluthgen_specialization_2007].
+The response variable was the size of the minimum driver node-set $n_D$ of the twenty empirical networks (ten invaded and ten uninvaded) and we included invasion status as a predictor. 
+We also include the network connectance, the network nestedness (NODF) the number of species [since one might naively expect to see a negative relationship between richness and controllability; @menge_indirect_1995], the network asymmetry (an indication of the balance between plant and pollinator diversity), and the interaction strength asymmetry [the asymmetry on the dependences between trophic levels; @bluthgen_specialization_2007].
 Models were compared using the Akaike Information Criterion for small sample sizes (AICc). 
 
 In addition, we also explored whether real networks differ in their architecture from random ones in a concerted way that could impact these results. 
 Specifically, we used two null models each with 99 randomisations per network. 
-In the first, we followed @vazquez_species_2007 and maintained the connectance of the network but randomised the visits across species such that the species-specific relative probabilities of interactions were maintained; we then calculated the direction of control and the corresponding size of the minimum driver node-set. 
+In the first, we followed @vazquez_species_2007 and maintained the connectance of the network but randomised the visits across species such that the relative probabilities of interactions were maintained. 
+We then calculated the direction of control and the corresponding size of the minimum driver node-set, $n_D$. 
 For the second null model, we used the empirical directed network and randomly shuffled the direction of control between a species pair.
 
 ## Species roles
@@ -398,6 +399,8 @@ Despite removing rare interactions and species, the relative size of the minimum
 
 Our main goal was to understand the role that species play at both modifying the abbundance of the species they interact with and the state of the community as a whole. 
 To achieve that goal we applied *structural controllability*, a field at the intersection between control and complex theory that allow us to obtain two key pieces of information: the *controllability* of a network and a species *control capacity*. 
+
+ND is a measure of the extent to which network structure can be harnessed to drive the state of the community.
 
 Empirical observations indicate that steering the state of some communities—for example during ecosystem restoration or invasive species removal—can be a very difficult task [@woodford_confronting_2016]. 
 Despite the large number of empirical examples, to date there is no thoretical basis that explains this difficutlies. 
