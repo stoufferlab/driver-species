@@ -79,6 +79,6 @@ standardize_secondary_extinctions <- function(secondary_ext, controllability, me
                   seco_prop = (n - n_species) / n)
 }
 
-drake::loadd(sl_characteristics, networks)
-x <- networks[[1]]
-sequence <- sl_characteristics %>% dplyr::filter(net_name == "BAT1CA") %>% dplyr::arrange(desc(control_capacity)) %$% sp_name
+# drake::loadd(sl_characteristics, networks)
+# x <- networks[[1]]
+# sequence <- sl_characteristics %>% dplyr::filter(net_name == "BAT1CA") %>% dplyr::arrange(desc(control_capacity)) %$% sp_name
