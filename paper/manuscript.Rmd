@@ -287,12 +287,25 @@ Furthermore, there were also negative, albeit weaker, correlations between $n_D$
 The $n_D$ of empirical networks did not differ to that of a null model that roughly preserved the degree distribution and fully preserved the network connectance ($p = `r sprintf('\\num{%s}', format(randomisations_test$interactions$p.value, digits = 2))`$; Figure \@ref(fig:fig-emp-controllability)b). 
 However empirical networks had a larger $n_D$ than null models that preserved the interactions but shuffled the direction of control of the empirical network ($p = `r sprintf('\\num{%s}', format(randomisations_test$directions$p.value, digits = 2))`$). 
 
-```{r fig-emp-controllability, fig.width=fig_sizes()[[1]], fig.height=fig_sizes()[[1]]*1.5, fig.cap="Density plot of (a) the relative size of the minimum driver node-set $n_D$ in the invaded (light) and uninvaded (dark) empirical networks. (b) The density distribution of the difference between the relative size of the minimum driver node-set of random networks and that of empirical networks. We randomised either the species visitation patterns (light line) or randomised the direction of control between a species pair (dark line). The vertical dashed lines indicate the median values of each distribution."}
+```{r fig-emp-controllability, fig.width=fig_sizes()[[1]], fig.height=fig_sizes()[[1]]*1.5, fig.cap="Density plot of (a) the relative size of the minimum driver node-set $n_D$ in the invaded (light) and uninvaded (dark) empirical networks. (b) Relationship between the asymmetry plant/pollinator richness and $n_D$. The plot shows the values predicted by the most parsimoniouls model. (c) The density distribution of the difference between the relative size of the minimum driver node-set of random networks and that of empirical networks. We randomised either the species visitation patterns (light line) or randomised the direction of control between a species pair (dark line). The vertical dashed lines indicate the median values of each distribution."}
 drake::loadd(fig_emp_controllability)
-
 cowplot::plot_grid(plotlist = fig_emp_controllability, 
                    ncol = 1, 
                    align = "v")
+```
+
+```{r}
+drake::loadd(sl_characteristics)
+crit <- sl_characteristics %>% 
+  filter_networks_df(metadata) %>%
+  dplyr::group_by(net_name) %>%
+  dplyr::summarise(n_crit = sum(control_capacity == 1), 
+                   n_sp = n()) %>%
+  dplyr::mutate(p_crit = n_crit/n_sp)
+
+pcrit_ran <- range(crit$p_crit)
+ncrit_ran <- range(crit$n_crit)
+pcrit_med <- median(crit$p_crit)
 ```
 
 The models that best explained a species control capacity $\phi$, had a random intercept and slope for the species asymmetry grouped by the species' guild (plants or pollinators; Table \@ref(S-tab:tab-species-model-random), Table \@ref(S-tab:tab-model-output-species-level)). 
@@ -331,7 +344,7 @@ dplyr::bind_rows(cc_table, su_table) %>%
                        threeparttable = TRUE)
 ```
 
-```{r fig-species-level, fig.width=fig_sizes()[[2]]*2/3, fig.height=fig_sizes()[[1]], fig.cap="Relationship between the most important variables in the models of control capacity (a, b) and the probability of being a superior species (c, d). The plots show the values predicted by most parsimonious model for each response variable. The model for control capacity include a random effect for the trophic guild , while the model of superior probability does not include any random effect that distinguish between plants and pollinators. The invasive species are depicted with solid orange circles."}
+```{r fig-species-level, fig.width=fig_sizes()[[2]]*2/3, fig.height=fig_sizes()[[1]], fig.cap="Density plot of the control capacity $\\phi$ of (a) plants and (b) pollinators. (c, d) Relationship between the most important variables in the models of control capacity. The plots show the values predicted by most parsimonious model for each response variable. The model included a random effect for the trophic guild and hence trends of plants and pollinators are shown separately. The invasive species are depicted with solid orange circles."}
 drake::loadd(fig_control_capacity)
 library(ggplot2)
 fig_control_capacity[[2]] <- fig_control_capacity[[2]] +

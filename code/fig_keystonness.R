@@ -143,7 +143,7 @@ p2 <- plot_df_sd %>%
 }
 # drake::loadd(sl_char_corr, sl_characteristics, metadata)
 # drake::loadd(species_model_cc, species_model_superior)
-make_fig_control_capacity <- function(species_model_cc, species_model_superior){
+make_fig_control_capacity <- function(species_model_cc, sl_characteristics){
   require(ggplot2)
  
   cc_model <- species_model_cc$fixed[[which.min(species_model_cc$fixed %>% purrr::map(AICcmodavg::AICc))]]
@@ -188,7 +188,7 @@ make_fig_control_capacity <- function(species_model_cc, species_model_superior){
                       name = "", 
                       labels = c("plants", "pollinators")) +
     base_ggplot_theme() +
-    labs(title = "(a)", 
+    labs(title = "(c)", 
          x = "contribution to nestedness", 
          y = latex2exp::TeX("control capacity ($\\phi$)")) +
     theme(legend.position = c(1, 0),
@@ -222,7 +222,7 @@ make_fig_control_capacity <- function(species_model_cc, species_model_superior){
                       labels = c("plants", "pollinators")) +
     scale_x_log10() + 
     base_ggplot_theme() +
-    labs(title = "(b)", 
+    labs(title = "(d)", 
          x = "visitation strength", 
          y = latex2exp::TeX("control capacity ($\\phi$)")) +
     theme(legend.position = c(1, 0),
@@ -231,7 +231,58 @@ make_fig_control_capacity <- function(species_model_cc, species_model_superior){
           legend.key.size = unit(0.15, "in"),
           plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "mm"))
   
+ 
+  
+  p5 <- sl_characteristics %>%
+    filter_networks_df(metadata) %>%
+    dplyr::filter(guild == "pla") %>%
+    ggplot(aes(x = control_capacity, colour = guild)) +
+    stat_density(geom = "line", 
+                 bw = "SJ", 
+                 show.legend = FALSE) +
+    geom_point(aes(x = 1, y = 0), 
+               fill = my_pallete()$dark_orange,
+               colour = "black", 
+               shape = 21,
+               size = 1) +
+    scale_color_manual(values = my_pallete()$dark_orange) +
+    base_ggplot_theme() +
+    labs(title = "(a) Control capacity of plants", 
+         x = latex2exp::TeX("control capacity ($\\phi$)"), 
+         y = "density") +
+    scale_y_continuous(limits = c(0,9)) +
+    theme(legend.position = c(1, 0),
+          legend.justification = c(1,0),
+          legend.background = element_rect(fill = "NA"), 
+          legend.key.size = unit(0.15, "in"),
+          plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "mm"))
+  
+    p6 <- sl_characteristics %>%
+    filter_networks_df(metadata) %>%
+    dplyr::filter(guild == "pol") %>%
+    ggplot(aes(x = control_capacity, colour = guild)) +
+    stat_density(geom = "line", 
+                 bw = "SJ", 
+                 show.legend = FALSE) +
+    scale_color_manual(values = my_pallete()$dark_purple) +
+    base_ggplot_theme() +
+    labs(title = "(b) Control capacity of pollinators", 
+         x = latex2exp::TeX("control capacity ($\\phi$)"), 
+         y = "density") +
+    scale_y_continuous(limits = c(0,9)) +
+    theme(legend.position = c(1, 0),
+          legend.justification = c(1,0),
+          legend.background = element_rect(fill = "NA"), 
+          legend.key.size = unit(0.15, "in"),
+          plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "mm"))
+  
+  list(p5, p6, p1, p2) 
+}
+# drake::loadd(sl_characteristics, metadata)
+
+make_fig_superior <- function(species_model_superior){
   ## superior
+  require(ggplot2)
   
   su_model <- species_model_superior$fixed[[which.min(species_model_superior$fixed %>% purrr::map(AICcmodavg::AICc))]]
   
@@ -259,7 +310,7 @@ make_fig_control_capacity <- function(species_model_cc, species_model_superior){
                shape = 21,
                size = 1) +
     base_ggplot_theme() +
-    labs(title = "(c)", 
+    labs(title = "(a)", 
          x = "direction of asymmetry", 
          y = latex2exp::TeX("superior prob. ($\\sigma$)")) +
     theme(plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "mm"))
@@ -279,15 +330,13 @@ make_fig_control_capacity <- function(species_model_cc, species_model_superior){
                shape = 21,
                size = 1)  +
     base_ggplot_theme() +
-    labs(title = "(d)", 
+    labs(title = "(b)", 
          x = "visitation strength", 
          y = latex2exp::TeX("superior prob. ($\\sigma$)")) +
     theme(plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "mm"))
   
-  # p2
-  list(p1, p2, p3, p4) 
+  list(p3, p4)
 }
-# drake::loadd(sl_characteristics, metadata)
 
 # drake::loadd(sl_char_corr, sigma_phi_df, species_empirical_coov)
 

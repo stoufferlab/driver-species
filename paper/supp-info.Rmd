@@ -461,6 +461,12 @@ dplyr::bind_rows(cc_imp, su_imp) %>%
   kableExtra::group_rows("superior probability models", nrow(cc_imp) + 1, nrow(cc_imp) + nrow(su_imp))
 ```
 
+```{r fig-superior, fig.width=fig_sizes()[[2]], fig.height=fig_sizes()[[1]]/2, fig.cap = "Relationship between the most important variables in the models of superior probability. The plots show the values predicted by most parsimonious model. Invasive species are depicted with solid orange circles."}
+drake::loadd(fig_superior)
+cowplot::plot_grid(plotlist = fig_superior, ncol = 2)
+```
+
+
 ```{r fig-species-models-degree, fig.width=fig_sizes()[[2]], fig.height=fig_sizes()[[1]]/2, fig.cap = "Relationship between degree and (a) the control capacity and (b) the probability of being a superior node. The plots show the values predicted by most parsimonious model for each response variable. The invasive species are depicted with solid orange circles."}
 drake::loadd(fig_models_degree)
 library(ggplot2)
