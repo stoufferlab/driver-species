@@ -169,9 +169,9 @@ An intuitive way to understand structural controllability is by looking at its g
 We are often able to estimate *A* in ecological networks, as this matrix represents the interactions between species. 
 Part of the control problem thus resides in estimating a supportable estimation of *B*, which represents the links between external inputs and species. 
 Naively, any ecological community (and any system for that matter) could be controlled if we control the state of every species independently, but such an approach is typically impractical. 
-Here, we are interested in finding a minimum driver node-set (effectively finding *B*) with which to make the system controllable. 
-The brute-force search for this minimum driver node-set is computationally prohibitive for most networks as it involves the evaluation of $2^N$ different controllability matrices where $N$ is the number of species in the community. 
-We therefore instead employ a recently-developed approach that shows that the control problem of finding the minimum driver node-set can be mapped into a graph-theoretic problem: maximum matching [@liu_controllability_2011; @liu_control_2016].
+Here, we are interested in finding a minimum driver-node set (effectively finding *B*) with which to make the system controllable. 
+The brute-force search for this minimum driver-node set is computationally prohibitive for most networks as it involves the evaluation of $2^N$ different controllability matrices where $N$ is the number of species in the community. 
+We therefore instead employ a recently-developed approach that shows that the control problem of finding the minimum driver-node set can be mapped into a graph-theoretic problem: maximum matching [@liu_controllability_2011; @liu_control_2016].
 
 Maximum matching is a widely studied topic in graph theory and is commonly used in multiple applications, ranging from dating apps and wireless communications to organ transplant allocation and peer-to-peer file sharing. 
 A matching in an unweighted directed graph is defined as a set of links that do not share common start or end nodes; the largest possible matching is called a maximum matching. 
@@ -182,13 +182,13 @@ The key is to note that the fundamental conditions of structural controllability
 <!-- DBS: I think we should at least introduce what superior and subordinate means here even if they're also defined in the figure. -->
 We thus use the maximum-matching algorithm to find an optimal pairing of superior and subordinate nodes in a manner consistent with the controllability conditions (Supporting Information Section \@ref(S-one-maximum-matching)). 
 Given the result, we can further decompose the matching into a set of paths that reveal how a control signal can flow across the links in a network to reach every node within it. 
-As recently shown [@liu_controllability_2011], the minimum driver node-set---those to which an external control input should be applied to make the system controllable---corresponds exactly to the *unmatched* nodes in the network (Figure \@ref(fig:fig-control-configuration)).
+As recently shown [@liu_controllability_2011], the minimum driver-node set---those to which an external control input should be applied to make the system controllable---corresponds exactly to the *unmatched* nodes in the network (Figure \@ref(fig:fig-control-configuration)).
 
 ```{r load-fig-control-configuration}
 drake::loadd(fig_control_config)
 ```
 
-```{r fig-control-configuration, fig.height=fig_control_config$height, fig.width=fig_control_config$width,fig.cap = "Maximum matchings and control configurations. In directed networks, a maximum matching is the largest possible set of links that do not share start or end nodes (dark purple). Maximum matchings are not necessarily unique, instead, each of them is related to a possible minimum driver node-set in the network (the nodes to which an external control input, in orange, should be applied in order to ensure controllability). The size of the minimum driver node-set *D* corresponds exactly to the number of unmatched nodes (the number of nodes in the network *N* minus the matching size). To account for network size, we use the size of the minimum driver node-set relative to the total number of nodes *n~D~ = D/N* as a measure of the extent to which the network structure can be harnessed to control the system."}
+```{r fig-control-configuration, fig.height=fig_control_config$height, fig.width=fig_control_config$width,fig.cap = "Maximum matchings and control configurations. In directed networks, a maximum matching is the largest possible set of links that do not share start or end nodes (dark purple). Maximum matchings are not necessarily unique, instead, each of them is related to a possible minimum driver-node set in the network (the nodes to which an external control input, in orange, should be applied in order to ensure controllability). The size of the minimum driver-node set *D* corresponds exactly to the number of unmatched nodes (the number of nodes in the network *N* minus the matching size). To account for network size, we use the size of the minimum driver-node set relative to the total number of nodes *n~D~ = D/N* as a measure of the extent to which the network structure can be harnessed to control the system."}
 replayPlot(fig_control_config$plot)
 ```
 
@@ -206,9 +206,9 @@ In an ecological context, external inputs can be thought of as management interv
 <!-- Would the two sentences below work better after the "Finding out exactly how difficult..." sentence? -->
 <!-- I moved it to a different place where I think flows better -->
 
-After finding the minimum driver node-set in each of our networks, we wanted to test whether invasion status or other predictors are correlated to controllability. 
+After finding the minimum driver-node set in each of our networks, we wanted to test whether invasion status or other predictors are correlated to controllability. 
 We do this using a set of generalised linear models (with binomial error structure). 
-The response variable was the relative size of the minimum driver node-set $n_D$ of the twenty empirical networks (ten invaded and ten uninvaded), and we included invasion status as a predictor. 
+The response variable was the relative size of the minimum driver-node set $n_D$ of the twenty empirical networks (ten invaded and ten uninvaded), and we included invasion status as a predictor. 
 As predictors, we also include the network connectance, the network nestedness (NODF), the number of species [since one might naively expect to see a negative relationship between richness and controllability; @menge_indirect_1995], the network asymmetry (an indication of the balance between plant and pollinator diversity), and the interaction strength asymmetry [the asymmetry on the dependences between trophic levels; @bluthgen_specialization_2007].
 We compared models using the Akaike Information Criterion for small sample sizes (AICc). 
 
@@ -288,14 +288,14 @@ c_m <- controllability %>%
   filter_networks_df(metadata)
 ```
 
-The size of the minimum driver node-set relative to the number of species in each network $n_D$ ranged between $n_D = `r round(min(c_m$n_D), 2)`$ and $n_D = `r round(max(c_m$n_D), 2)`$ (median `r round(median(c_m$n_D), 2)`). 
-We found that the relative size of the minimum driver node-set of invaded communities was not significantly different from that of communities that have not been invaded (Figure \@ref(fig:fig-emp-controllability)a). 
+The size of the minimum driver-node set relative to the number of species in each network $n_D$ ranged between $n_D = `r round(min(c_m$n_D), 2)`$ and $n_D = `r round(max(c_m$n_D), 2)`$ (median `r round(median(c_m$n_D), 2)`). 
+We found that the relative size of the minimum driver-node set of invaded communities was not significantly different from that of communities that have not been invaded (Figure \@ref(fig:fig-emp-controllability)a). 
 Contrastingly, there was an important negative relationship between $n_D$ and the network asymmetry (Figure \@ref(fig:fig-emp-controllability)b). 
 Furthermore, there were also negative, albeit weaker, correlations between $n_D$ and connectance, nestedness and species richness (Table  \@ref(S-tab:tab-controllability-model-results)). 
 The relative size of the minimum driver-node set $n_D$ of empirical networks did not differ to that of a null model that roughly preserved the degree distribution and fully preserved the network connectance ($p = `r sprintf('\\num{%s}', format(randomisations_test$interactions$p.value, digits = 2))`$; Figure \@ref(fig:fig-emp-controllability)c). 
 However empirical networks had a larger $n_D$ than null models that preserved the interactions but shuffled the direction of control of the empirical network ($p = `r sprintf('\\num{%s}', format(randomisations_test$directions$p.value, digits = 2))`$). 
 
-```{r fig-emp-controllability, fig.width=fig_sizes()[[2]], fig.height=fig_sizes()[[1]]/2, fig.cap="(a) Density plot of the relative size of the minimum driver node-set $n_D$ in the invaded (light) and uninvaded (dark) empirical networks. (b) The relationship between the asymmetry plant/pollinator richness and $n_D$. The plot shows the values predicted by the most parsimonious model. (c) The density distribution of the difference between the relative size of the minimum driver node-set of random networks and that of empirical networks. We randomised either the species visitation patterns (light line) or randomised the direction of control between a species pair (dark line). The vertical dashed lines indicate the median values of each distribution."}
+```{r fig-emp-controllability, fig.width=fig_sizes()[[2]], fig.height=fig_sizes()[[1]]/2, fig.cap="(a) Density plot of the relative size of the minimum driver-node set $n_D$ in the invaded (light) and uninvaded (dark) empirical networks. (b) The relationship between the asymmetry plant/pollinator richness and $n_D$. The plot shows the values predicted by the most parsimonious model. (c) The density distribution of the difference between the relative size of the minimum driver-node set of random networks and that of empirical networks. We randomised either the species visitation patterns (light line) or randomised the direction of control between a species pair (dark line). The vertical dashed lines indicate the median values of each distribution."}
 drake::loadd(fig_emp_controllability)
 fig_emp_controllability %>%
   purrr::map(function(x) x + theme(plot.margin = grid::unit(c(0.5, 1.5, 0.5, 1.5), "mm"))) %>% {
@@ -410,7 +410,7 @@ Despite the higher correlation with species' degree, with the exception of speci
 \R{testing-assumptions-results-line} We found that using visitation as a proxy for the strength of species interactions leads to similar results than those obtained using pollinator importance [regarded as an accurate measure of the pollination service to plants; Supporting Information Section \@ref(S-visitation-as-proxy); @neeman_framework_2009]. 
 Importantly, we also found that structural stability is robust to incomplete sampling of interactions. 
 We found a very strong agreement between results obtained using the complete empirical networks and those obtained by randomly removing interactions (Supporting Information Section \@ref(S-undersampling)). 
-Despite removing rare interactions and species, the relative size of the minimum driver node-set, the superior species, and the relative rankings of control capacity were generally maintained. Remarkably critical species in the full network were also critical in the vast majority of rarefied networks. 
+Despite removing rare interactions and species, the relative size of the minimum driver-node set, the superior species, and the relative rankings of control capacity were generally maintained. Remarkably critical species in the full network were also critical in the vast majority of rarefied networks. 
 
 # Discussion
 
@@ -420,10 +420,10 @@ To achieve that goal we applied *structural controllability*, a field at the int
 ```{r tab-glossary}
 defs <- list(
   "network control" = "A network is said to be controllable if it is possible to steer it from an initial to an arbitrary final state within finite time.",
-  "controllability" = "The intrinsic difficulty of controlling an ecological community. It is measured by the relative size of the minimum driver node-set, $n_D$. It also indicates the extent to which network structure can be harnessed for network control.", 
-  "minimum driver node-set" = "One of the often many smallest sets of species whose abundances need to be directly managed in order to achieve full control of the community. The minimum driver node-sets can be obtained by finding all maximum matchings in a network.",
+  "controllability" = "The intrinsic difficulty of controlling an ecological community. It is measured by the relative size of the minimum driver-node set, $n_D$. It also indicates the extent to which network structure can be harnessed for network control.", 
+  "minimum driver-node set" = "One of the often many smallest sets of species whose abundances need to be directly managed in order to achieve full control of the community. The minimum driver-node sets can be obtained by finding all maximum matchings in a network.",
   "maximum matching" = "A matching is a set of links that do not share a common start or end nodes; the largest possible matching is called a maximum matching.",
-  "control configuration" = "One of the species combinations with which is possible to achieve network control. Optimal control configurations are given by the minimum driver node-sets.", 
+  "control configuration" = "One of the species combinations with which is possible to achieve network control. Optimal control configurations are given by the minimum driver-node sets.", 
   "control capacity" = "The relative frequency \\(\\phi\\) which with a species is part of the optimal control configurations of a network.", 
   "critical species" = "A species with the maximum control capacity \\(\\phi=1\\)",
   "superior node" = "A species is a superior node if it that can internally affect the abundance of other species in the network. Superior nodes make up the chains that propagate the control signals through the network.")
@@ -441,7 +441,7 @@ dplyr::data_frame(rows = c(rbind(names(defs), unlist(defs))), dummy2 = "") %>%
   kableExtra::column_spec(1, width = paste0(fig_sizes()[[1]], "in"))
 ```
   
-The median size of the relative minimum driver node-set of in our dataset was $n_D = `r round(median(c_m$n_D),2)`$. 
+The median size of the relative minimum driver-node set of in our dataset was $n_D = `r round(median(c_m$n_D),2)`$. 
 This value is high when compared to other complex systems in which controllability has been investigated.  
 For instance,  only gene regulation networks appear to achieve similar levels of controllability while most social, power transmission, internet, neuronal, and even metabolic networks seem to be easier to control ($0.1 < n_D < 0.35$) [@liu_controllability_2011]. 
 These results indicate that fully controlling ecological networks might currently be out of reach for all but the smallest communities [@motter_networkcontrology_2015]. 
