@@ -167,8 +167,8 @@ test_control_metrics <- function(n, algorithm = c("input_graph", "complementer")
     }
   
   out <- foreach (i =1:length(n)) %dopar% {
-    message("Processing ", names(n[i]), " with ", algorithm, " algorithm")
-    cat("Processing ", names(n[i]), " with ", algorithm, " algorithm\n")
+    # message("Processing ", names(n[i]), " with ", algorithm, " algorithm")
+    # cat("Processing ", names(n[i]), " with ", algorithm, " algorithm\n")
     # if network should be excluded
     if(names(n)[i] %in% exclude) {
       return(NA)

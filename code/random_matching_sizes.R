@@ -64,7 +64,7 @@ random_matching_sizes_emp <- function(x, n = 99, timeout = 60){
     # } else {
     #   m <- NA
     # }
-    cat("Finished network ", names(x)[i], "\n")
+    # cat("Finished network ", names(x)[i], "\n")
     m
   } %>%
     `names<-`(names(x))
