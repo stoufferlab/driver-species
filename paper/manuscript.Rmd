@@ -69,6 +69,8 @@ bar <- dplyr::filter(metadata, study == "bartomeus") %>%
 
 4. Synthesis
 
+*Keywords:* ASD
+
 # Introduction
 
 A major goal in ecology is to understand the roles played by different species in the biotic environment.
@@ -116,7 +118,7 @@ This allows us to identify species that might be critical for network control an
 Finally, we compare the proposed approach to current methods based on species centrality and show how these methods are indeed valuable but ultimately paint a limited picture in regards to the "keystoneness" of a species and its role at supporting the diversity of its community. 
 
 
-# Methods
+# Materials and methods
 
 We used ten paired pollination communities to apply the control-theoretic approach.
 Each community pair was composed of a community invaded by a plant and a community free of the invasive species. 
@@ -491,5 +493,25 @@ Centrality metrics which have often been used as a proxy for keystoneness, altho
 @paine_note_1969 showed nearly 50 years ago that one single species can dominate the state of its community. 
 Structural controllability suggests that this situation might be the exception rather than the rule. 
 We see our study as a starting point to study the controllability of ecological and socio-ecological systems where many exciting questions lie ahead. 
+
+# Awknoledgements
+
+A brief statement acknowledging collaborators and research assistants who do not meet the criteria for authorship described above, or acknowledging funding sources, providing relevant permit numbers (including institutional animal use permits), or giving recognition to nature reserves or other organizations that made the work possible.
+
+# Author contributions
+
+All submissions with more than one author must include an Authors’ contributions statement. All persons listed as authors on a paper are expected to meet ALL of the following criteria for authorship:
+
+* substantial contributions to conception and design, or acquisition of data, or analysis and interpretation of data, or drafting the article or revising it critically for important intellectual content;
+* final approval of the version to be published;
+* agreement to be accountable for the aspects of the work that they conducted and ensuring that questions related to the accuracy or integrity of any part of their work are appropriately investigated and resolved.
+
+Acquisition of funding, provision of facilities, or supervising the research group of authors without additional contribution are not usually sufficient justifications for authorship. The statement should include an explanation of the contribution of each author. We suggest the following format for the Authors’ contributions statement:
+
+AB and CD conceived the ideas and designed methodology; CD and EF collected the data; EF and GH analysed the data; AB and CD led the writing of the manuscript. All authors contributed critically to the drafts and gave final approval for publication.
+
+# Data accessibility
+
+To enable readers to locate archived data from papers, we require that authors list the database and the respective accession numbers or DOIs for all data from the manuscript that has been made publicly available. Please see our editorial policies page for further information
 
 # References
