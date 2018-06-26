@@ -282,17 +282,21 @@ c_m <- controllability %>%
 ```
 
 The size of the minimum driver node-set relative to the number of species in each network $n_D$ ranged between $n_D = `r round(min(c_m$n_D), 2)`$ and $n_D = `r round(max(c_m$n_D), 2)`$ (median `r round(median(c_m$n_D), 2)`). 
-We found that the relative size of the minimum driver node-set of invaded communities was not significantly different to that of communities that have not been invaded (Figure \@ref(fig:fig-emp-controllability)a). 
-However there was an important negative relationship between $n_D$ and the network asymetry (Figure \@ref(fig:fig-emp-controllability)b). 
+We found that the relative size of the minimum driver node-set of invaded communities was not significantly different from that of communities that have not been invaded (Figure \@ref(fig:fig-emp-controllability)a). 
+Contrastingly, there was an important negative relationship between $n_D$ and the network asymmetry (Figure \@ref(fig:fig-emp-controllability)b). 
 Furthermore, there were also negative, albeit weaker, correlations between $n_D$ and connectance, nestedness and species richness (Table  \@ref(S-tab:tab-controllability-model-results)). 
-The $n_D$ of empirical networks did not differ to that of a null model that roughly preserved the degree distribution and fully preserved the network connectance ($p = `r sprintf('\\num{%s}', format(randomisations_test$interactions$p.value, digits = 2))`$; Figure \@ref(fig:fig-emp-controllability)b). 
+The relative size of the minimum driver-node set $n_D$ of empirical networks did not differ to that of a null model that roughly preserved the degree distribution and fully preserved the network connectance ($p = `r sprintf('\\num{%s}', format(randomisations_test$interactions$p.value, digits = 2))`$; Figure \@ref(fig:fig-emp-controllability)c). 
 However empirical networks had a larger $n_D$ than null models that preserved the interactions but shuffled the direction of control of the empirical network ($p = `r sprintf('\\num{%s}', format(randomisations_test$directions$p.value, digits = 2))`$). 
 
-```{r fig-emp-controllability, fig.width=fig_sizes()[[1]], fig.height=fig_sizes()[[1]]*1.5, fig.cap="Density plot of (a) the relative size of the minimum driver node-set $n_D$ in the invaded (light) and uninvaded (dark) empirical networks. (b) Relationship between the asymmetry plant/pollinator richness and $n_D$. The plot shows the values predicted by the most parsimoniouls model. (c) The density distribution of the difference between the relative size of the minimum driver node-set of random networks and that of empirical networks. We randomised either the species visitation patterns (light line) or randomised the direction of control between a species pair (dark line). The vertical dashed lines indicate the median values of each distribution."}
+```{r fig-emp-controllability, fig.width=fig_sizes()[[2]], fig.height=fig_sizes()[[1]]/2, fig.cap="(a) Density plot of the relative size of the minimum driver node-set $n_D$ in the invaded (light) and uninvaded (dark) empirical networks. (b) The relationship between the asymmetry plant/pollinator richness and $n_D$. The plot shows the values predicted by the most parsimonious model. (c) The density distribution of the difference between the relative size of the minimum driver node-set of random networks and that of empirical networks. We randomised either the species visitation patterns (light line) or randomised the direction of control between a species pair (dark line). The vertical dashed lines indicate the median values of each distribution."}
 drake::loadd(fig_emp_controllability)
-cowplot::plot_grid(plotlist = fig_emp_controllability, 
-                   ncol = 1, 
-                   align = "v")
+fig_emp_controllability %>%
+  purrr::map(function(x) x + theme(plot.margin = grid::unit(c(0.5, 1.5, 0.5, 1.5), "mm"))) %>% {
+    cowplot::plot_grid(plotlist = ., 
+                     nrow = 1, 
+                     align = "h")
+  }
+  
 ```
 
 ```{r cirtical-species-descriptive}
@@ -309,49 +313,46 @@ ncrit_ran <- range(crit$n_crit)
 pcrit_med <- median(crit$p_crit)
 ```
 
-The models that best explained a species control capacity $\phi$, had a random intercept and slope for the species asymmetry grouped by the species' guild (plants or pollinators; Table \@ref(S-tab:tab-species-model-random), Table \@ref(S-tab:tab-model-output-species-level)). 
-Contribution to nestedness was the most important variable followed by visitation strength (Table \@ref(tab:tab-model-selection-table), Table \@ref(S-tab:tab-var-importance)) with species with large contribution to nestedness and large visitation strength being more likely to have a large control capacity (Figure \@ref(fig:fig-species-level)a and b). 
-For the probability of being a superior species $\sigma$, the most parsimonuous models did not include any random effect Table \@ref(S-tab:tab-species-model-random), Table \@ref(S-tab:tab-model-output-species-level)). 
-The most important variables were the species asymmetry and the visitation strength (Table \@ref(tab:tab-model-selection-table), Table \@ref(S-tab:tab-var-importance)). 
-Specifically, species with a positive asymmetry (this is they affect their partners more than what their partners affect them), and with a large visitation strength were more likely to be superior (Figure \@ref(fig:fig-species-level)c and d). 
-Furthermore, species degree was positively, but only weakly associated with both control capacity and the probability of being a superior species. 
-Remarkably, many species with a low degree, especially pollinators attained a large control capacity in their communities (Figure \@ref(S-fig:fig-species-models-degree)). 
-In addition all invasive plants were both critical ($\phi = 1$) and were superior ($\sigma = 1$) species in their communities.
+Species varied widely in their control capacity (Figure \@ref(fig:fig-species-level)). 
+Pollinators had, in average, larger control capacities than plants but almost no pollinator was critical for network control (a species is critical for control if it has control capacity of \(\phi = 1\)). 
+Plants had a bimodal distribution with maxima in both extremes of the distribution (Figure \@ref(fig:fig-species-level)a). 
+Remarkably, every invasive species was critical for network control in each of their communities.
+The species level models indicate a positive relationship between control capacity \(\phi\) and a species' contribution to nestedness, visitation strength, and the asymmetry of the dependence (Table \@ref(tab:tab-model-selection-table); Figure \@ref(fig:fig-species-level); Table \@ref(S-tab:tab-model-output-species-level)). 
+Comparatively, species' degree was only weakly associated with control capacity (Table \@ref(S-tab:tab-var-importance)). 
+In fact, many species with a low degree, especially pollinators, attained a large control capacity in their communities (Figure \@ref(S-fig:fig-species-models-degree)a). 
 
 ```{r tab-model-selection-table}
-drake::loadd(species_model_cc, species_model_superior)
+drake::loadd(species_model_cc)
 
 cc_table <- MuMIn::model.sel(species_model_cc$fixed) %>%
   dplyr::filter(weight > 0.01)
-su_table <- MuMIn::model.sel(species_model_superior$fixed)%>%
-  dplyr::filter(weight > 0.01)
+# su_table <- MuMIn::model.sel(species_model_superior$fixed)%>%
+#   dplyr::filter(weight > 0.01)
 
-dplyr::bind_rows(cc_table, su_table) %>%
+dplyr::bind_rows(cc_table) %>%
   dplyr::select(-logLik, - AICc) %>%
+  set_names(., pretty_term_names(colnames(.), "short")) %>%
   knitr::kable("latex", 
-               col.names = c("int.", "deg.", "asy.", "nes.", "str.", "d.f.",  "$\\Delta$AICc","weight"),
-               booktabs = T, 
-               caption = "Selection table of the generalised mixed effect models of control capacity $\\phi$ and the probability of being a superior species $\\sigma$. Only models with a weight larger than 0.01 are shown. All variables were scaled and so the effect sizes are comparable.", 
+               # col.names = pretty_term_names(colnames(.), "short"),
+               booktabs = T,
+               caption = "Selection table of the generalised linear models of control capacity, $\\phi$. Only models with a weight larger or equal to 0.01 are shown.", 
                row.names = F, 
                digits = 2, 
                escape = F) %>%
-  kableExtra::add_header_above(c("effect sizes" = 5, " " = 3), escape = F) %>%
+  kableExtra::add_header_above(c("model terms" = 10, " " = 3), escape = F) %>%
   kableExtra::kable_styling(font_size = 8) %>%
-  kableExtra::group_rows("control capacity models", 1, nrow(cc_table)) %>%
-  kableExtra::group_rows("superior probability models", nrow(cc_table) + 1, nrow(cc_table) + nrow(su_table)) %>%
-  kableExtra::footnote(general = "intercept (int), degree (deg), asymmetry (asy), visitation strength (str).", 
+  # kableExtra::group_rows("control capacity models", 1, nrow(cc_table)) %>%
+  # kableExtra::group_rows("superior probability models", nrow(cc_table) + 1, nrow(cc_table) + nrow(su_table)) %>%
+  kableExtra::footnote(general = "intercept (int), degree ($k$), trophic level ($l$), asymmetry ($a$), contribution to nestedness ($n$), visitation strength ($s$).", 
                        general_title = "Terms: ", 
                        footnote_as_chunk = TRUE, 
-                       threeparttable = TRUE)
+                       threeparttable = TRUE, 
+                       escape = F)
 ```
 
-```{r fig-species-level, fig.width=fig_sizes()[[2]]*2/3, fig.height=fig_sizes()[[1]], fig.cap="Density plot of the control capacity $\\phi$ of (a) plants and (b) pollinators. (c, d) Relationship between the most important variables in the models of control capacity. The plots show the values predicted by most parsimonious model for each response variable. The model included a random effect for the trophic guild and hence trends of plants and pollinators are shown separately. The invasive species are depicted with solid orange circles."}
+```{r fig-species-level, fig.width=fig_sizes()[[2]]*2/3, fig.height=fig_sizes()[[1]]/2, fig.cap="Density plot of the control capacity $\\phi$ of (a) plants and (b) pollinators. The control capacity of all invasive species is $\\phi = 1$ and is depicted with solid circles."}
 drake::loadd(fig_control_capacity)
-library(ggplot2)
 fig_control_capacity[[2]] <- fig_control_capacity[[2]] +
-  theme(axis.title.y = element_blank(),
-        axis.text.y = element_blank())
-fig_control_capacity[[4]] <- fig_control_capacity[[4]] +
   theme(axis.title.y = element_blank(),
         axis.text.y = element_blank())
 
@@ -361,7 +362,14 @@ fig_control_capacity %>%
 # dev.off()
 ```
 
-```{r}
+```{r fig-species-partial, fig.width=fig_sizes()[[2]], fig.height=fig_sizes()[[1]]/2, fig.cap= "Model averaged partial residual plots for the relationship between control capacity and (a) contribution to nestedness, (b) visitation strength, (c) asymmetry of dependences, and (d) degree."}
+drake::loadd(fig_species_partial)
+fig_species_partial %>%
+  purrr::map_at(2:4, function(x) x  + theme(axis.title.y = element_blank(), axis.text.y = element_blank())) %>%
+    cowplot::plot_grid(plotlist = ., align = "h", nrow = 1, rel_widths = c(1.25, 1, 1,1))
+```
+
+```{r critical-species-test}
 drake::loadd(critical_sp_df)
 crit_test <- critical_sp_df  %$%
     t.test(feasibility ~ critical, 
@@ -369,8 +377,8 @@ crit_test <- critical_sp_df  %$%
            conf.int = T)
 ```
 
-We also found that critical species (those with a control capacity $\phi = 1$) have a larger impact on species coexistence as the structural stability of the network was considerably reduced when these species were removed from their communities ($p = `r sprintf('\\num{%s}', format(crit_test$p.value, digits = 2))`$; Figure \@ref(fig:fig-structural-stability); Figure \@ref(S-fig:fig-rho-sensitivity)). 
-Although some pollinators had large values of control capacity, the group of critical species in every community was composed exclusively of plants. 
+We also found that critical species have a large impact on species coexistence. 
+Indeed, the structural stability of the network was considerably reduced when these species were removed from their communities ($p = `r sprintf('\\num{%s}', format(crit_test$p.value, digits = 2))`$; Figure \@ref(fig:fig-structural-stability); Supporting Information \@ref(S-structural-stability)). 
 
 ```{r fig-structural-stability, fig.width=fig_sizes()[[1]], fig.height=fig_sizes()[[1]]/2, fig.cap="Density plot of the structural stability of the communities after a focal species is removed. The structural stability after critical species have been removed (darker line) is considerable smaller than the average. To allow comparison across communities, the structural stability values were scaled within each network to have a mean of 0 and a standard deviation of one."}
 drake::loadd(fig_structural_stability)
@@ -390,6 +398,7 @@ The control capacity of a species $\phi$ was only weakly correlated with commonl
 The Spearman correlation ranged between `r round(min(correlations$control_capacity), 2)` (with betweeness-centrality) and `r round(max(correlations$control_capacity), 2)` (with eigen-centrality). 
 On the other hand, the probability of being a superior species $\sigma$ was slightly more similar to established centrality metrics. 
 The Spearman correlation coefficient ranged between `r round(min(correlations$superior), 2)` (with eigen-centrality) and `r round(max(correlations$superior), 2)` (with degree; Figure \@ref(S-fig:fig-correlogram)). 
+Despite the higher correlation with species' degree, with the exception of specialists that had only one interaction, we observed many species with a low degree and a  high probability of being superior nodes (Figure \@ref(S-fig:fig-species-models-degree)b).
 
 \R{testing-assumptions-results-line} We found that using visitation as a proxy for the strength of species interactions leads to similar results than those obtained using pollinator importance [regarded as an accurate measure of the pollination service to plants; Supporting Information Section \@ref(S-visitation-as-proxy); @neeman_framework_2009]. 
 Importantly, we also found that structural stability is robust to incomplete sampling of interactions. 
