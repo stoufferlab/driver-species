@@ -41,7 +41,7 @@ bibliography: phd-bibliography/network-control.bib
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, 
                       warning = FALSE)
-options(knitr.kable.NA = '---')
+options(knitr.kable.NA = '')
 ```
 
 *Alternative titles:* 
