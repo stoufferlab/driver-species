@@ -459,26 +459,26 @@ However, further inspection shows that our results do not contradict these findi
 On the contrary, most species with a large degree also have a large control capacity and all of them were classified as superior nodes which corroborates the utility of classic centrality metrics. 
 What our results do, is to take previous findings one step further and suggest that centrality might paint only a limited picture of the relevance of species.
 
-Other conceptual differences between structural controllability and centrality metrics might provide further insight into the conservation of ecological networks. 
+\R{management-implications}Other conceptual differences between structural controllability and centrality metrics might provide further insight into the conservation of ecological networks. 
 First, structural controllability emphasizes that the effect a species has on the abundance of other species is not independent of the effects of other other species in their community. 
 Second, it demonstrates that to ensure the persistence of a community it is often necessary to consider the abundances of more than a single species, even when full control is unfeasible or undesired (for example `r round(sum(crit$n_crit > 1)/nrow(crit)*100)`% of our communities contained more than one critical species). 
 Third, structural controllability explicitly acknowledges the existence of multiple management strategies and some will be better than others depending on the context.
-Approaches to prioritise species for conservation and reintroduction based on traits or centrality are still useful and are likely to overlap with a species' control capacity [@pires_friendship_2017; @devoto_understanding_2012]. 
-Altogether, our results also provide support to the idea that management decisions should not be based on a single technique, but indicates that focusing on ecosystem processes and interactions may be more effective than traditional ranking based approaches [@harvey_bridging_2017].
+Approaches to prioritise species for conservation and reintroduction based on traits or centrality are still useful and are likely to overlap with a species' control capacity\R{extra-references-1} [@pires_friendship_2017; @devoto_understanding_2012]. 
+Altogether, our results also provide support to the idea that management decisions should not be based on a single technique, but indicates that focusing on ecosystem processes and interactions may be more effective than traditional ranking based approaches\R{extra-references-2} [@harvey_bridging_2017]. 
 
 The choice of the invaded/uninvaded networks was based on our desire to contrast the extensive empirical evidence of the role of invasive plants with our theoretical results. 
 We found that without exception, invasive plants were critical for network control and as such our results were in line with our expectations. 
 Invasive plants have been previously found to exacerbate the asymmetries in their communities [@aizen_invasive_2008; bartomeus_contrasting_2008-1; @henriksson_strong_2016] and to be central in their communities [@vila_invasive_2009; @palacio_generalist_2016]. 
 We found that invasive plants are, however, unlikely to be inherently different from their native counterparts [@emer_species_2016; @stouffer_how_2014]. 
 Just like any other mutualist in our dataset, invasive plants tended to attain a high control capacity proportional to the degree to which they contribute to network persistence, are abundant, and depend little on other species. 
-Furthermore, our observation that changes in the abundance of invasive plants (and presumably all critical species) are crucial to modify the state of the community agrees with recent evidence showing that ecosystem restoration focused on the eradication of invasive plants can have transformative desirable effects in plant-pollinator communities [@kaiser-bunbury_ecosystem_2017]. 
+Furthermore, our observation that changes in the abundance of invasive plants (and presumably all critical species) are crucial to modify the state of the community agrees with recent evidence showing that ecosystem restoration focused on the eradication of invasive plants can have transformative desirable effects in plant-pollinator communities\R{extra-references-3} [@kaiser-bunbury_ecosystem_2017]. 
 However, our results also suggest that removals must be exercised with caution. 
 Not only it is hard to predict the direction in which the system will change, but we also show that critical species can underpin the coexistence of species and therefore some communities may be acutely vulnerable to their eradication [@traveset_invaders_2013; @albrecht_consequences_2014].
 
 Structural stability assumes that the networks can be approximated using linear functional responses. 
 The ramifications of this assumption imply that while structural controllability is useful to identify species that are relevant for network control, it cannot be used to design the precise interventions that should be applied to these species in order to achieve a desired state. 
 While in an ideal scenario we would completely incorporate the species dynamics into the controllability analysis [@cornelius_realistic_2013], the reality is that such information is rarely available in most ecological scenarios. 
-In contrast, structural controllability only requires a quantitative approximation of the network's interactions to gain valuable insight from the community.
+\R{data-requirements}In contrast, structural controllability only requires a quantitative approximation of the network's interactions to gain valuable insight from the community.
 Furthermore, unlike centrality metrics, the assumptions of structural controllability are explicit and the estimation of a species importance arises from a mechanistic understanding of the population dynamics between species. 
 By accounting for network dynamics (even if in a simple way) it incorporates more ecological realism even in the extreme scenario where the state of a community depends almost exclusively on nodal dynamics rather than on the topology of their interactions.
 
