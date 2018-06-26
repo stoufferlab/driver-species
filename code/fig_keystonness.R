@@ -194,6 +194,107 @@ make_fig_control_capacity <- function(sl_characteristics){
 }
 # drake::loadd(sl_characteristics, metadata)
 
+make_fig_species_predicted <- function(species_model_cc){
+
+  df_cc <- get_predictions_df_species_level(species_model_cc)
+  invasive_cc <- df_cc %>%
+    dplyr::filter(invasive)
+  
+  ylims <- c(0, 1)
+  
+  p1 <- partial_plot(df_cc, "pushpull_o", "plogis(pred)", "glm") + 
+    labs(title = "(a)", 
+         x = "dependence asymmetry", 
+         y = latex2exp::TeX("partial residuals")) +
+    coord_cartesian(ylim = ylims)
+  
+  p2 <- partial_plot(df_cc, "strength_o", "plogis(pred)", "glm") +
+    labs(title = "(b)", 
+         x = "visitation strength", 
+         y = latex2exp::TeX("partiall residuals")) +
+    scale_x_continuous(breaks = log(c(1,10,100)), labels = exp) +
+    coord_cartesian(ylim = ylims)
+  
+  
+  p3 <- partial_plot(df_cc, "nested_o", "plogis(pred)", "glm") +
+    labs(title = "(c)", 
+         x = "contribution to nestedness", 
+         y = latex2exp::TeX("partial residuals")) +
+    coord_cartesian(ylim = ylims)
+  
+  
+list(p1, p2, p3)  
+}
+
+get_predictions_df_species_level <- function(species_model_cc){
+  cc_mod_average <- MuMIn::model.avg(species_model_cc$fixed)
+  
+  cc_model <- species_model_cc$fixed[[which.min(species_model_cc$fixed %>% purrr::map(AICcmodavg::AICc))]]
+  
+  species_model_cc %>%
+    extract2("df") %>%
+    modelr::add_predictions(cc_mod_average) %>%
+    dplyr::mutate(control_capacity = dplyr::case_when(
+      control_capacity == 1 ~ 0.99, 
+      control_capacity == 0 ~ 0.01, 
+      TRUE ~ control_capacity
+    ), response = qlogis(control_capacity), 
+    res = response - pred) %>% 
+    dplyr::mutate(guildpol = dplyr::if_else(guild == "pol", 1, 0), 
+                  nested_comp = beta_component(cc_mod_average, 
+                                               list(nestedcontribution, guildpol), 
+                                               c("nestedcontribution", "guildpol")),
+                  strength_comp = beta_component(cc_mod_average, 
+                                                 list(species.strength, guildpol), 
+                                                 c("species.strength", "guildpol")),
+                  pushpull_comp = beta_component(cc_mod_average, 
+                                                 list(interaction.push.pull, guildpol), 
+                                                 c("interaction.push.pull", "guildpol")), 
+                  degree_comp = beta_component(cc_mod_average, 
+                                                 list(degree, guildpol), 
+                                                 c("degree", "guildpol"))) %>%
+    dplyr::mutate(strength_o = unscale(species.strength), 
+                  nested_o = unscale(nestedcontribution), 
+                  pushpull_o = unscale(interaction.push.pull),
+                  degree_o = unscale(degree))
+
+  
+}
+
+partial_plot <- function(df, x, y, smooth_method = "lm"){
+  p <-  df %>%
+    ggplot(aes_string(x = x, y = y)) +
+    geom_hline(yintercept = 0, size = 0.25, linetype = 2) + 
+    geom_point(aes(colour = guild), shape = 21, size = 1, alpha = 0.15) +
+    geom_smooth(aes(color = guild, fill = guild), 
+                method = smooth_method,
+                method.args = list(family = "binomial"),
+                se = T, 
+                size = 0.5, 
+                alpha = 0.2) +
+    scale_color_manual(values = c(my_pallete()$dark_orange, 
+                                  my_pallete()$dark_purple), 
+                       name = "", 
+                       labels = c("plants", "pollinators")) +
+    scale_fill_manual(values = c(my_pallete()$light_orange, 
+                                 my_pallete()$light_purple), 
+                      name = "", 
+                      labels = c("plants", "pollinators")) +
+    base_ggplot_theme() +
+    theme(legend.position = c(0, 1.15),
+          legend.justification = c(0,1),
+          legend.background = element_rect(fill = "NA"), 
+          legend.key.size = unit(0.15, "in"), 
+          plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "mm")) 
+ p
+}
+
+beta_component <- function(avg, vectors, names){
+  names <- sort(names)
+  coef <- avg$coefficients["full", c("(Intercept)", names, paste(names[1], names[2], sep = ":"))]
+  coef[2] * vectors[[1]] + coef[3] * vectors[[2]] + coef[4] * vectors[[1]] * vectors[[2]]
+}
+
 make_fig_superior <- function(species_model_superior){
   ## superior
   require(ggplot2)
