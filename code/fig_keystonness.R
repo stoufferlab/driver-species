@@ -226,6 +226,50 @@ make_fig_species_predicted <- function(species_model_cc){
 list(p1, p2, p3)  
 }
 
+
+make_fig_species_partial <- function(species_model_cc){
+  require(ggplot2)
+  df_cc <- get_predictions_df_species_level(species_model_cc)
+  invasive_cc <- df_cc %>%
+    dplyr::filter(invasive)
+  
+  add_res <- function(x, res){
+    x + res
+  }
+  
+  ylims <- c(-11, 20)
+  p1 <- partial_plot(df_cc, "pushpull_o", "I(pushpull_comp + res)", "lm") + 
+    labs(title = "(c)", 
+         x = "dependence asymmetry", 
+         y = latex2exp::TeX("partial residuals")) +
+    coord_cartesian(ylim = ylims)
+  
+  p2 <- partial_plot(df_cc, "strength_o", "I(strength_comp + res)", "lm") +
+    labs(title = "(b)", 
+         x = "visitation strength", 
+         y = latex2exp::TeX("partial residuals")) +
+    scale_x_continuous(breaks = log(c(1,10,100)), labels = exp) +
+    coord_cartesian(ylim = ylims)
+  
+  
+  p3 <- partial_plot(df_cc, "nested_o", "I(nested_comp + res)", "lm") +
+    labs(title = "(a)", 
+         x = "contribution to nestedness", 
+         y = latex2exp::TeX("partial residuals")) +
+    coord_cartesian(ylim = ylims)
+  
+  p4 <- partial_plot(df_cc, "degree_o", "I(degree_comp + res)", "lm") +
+    labs(title = "(d)", 
+         x = "degree", 
+         y = latex2exp::TeX("partiall residuals")) +
+    scale_x_continuous(breaks = log(c(1,10,100)), labels = exp) +
+    coord_cartesian(ylim = ylims)
+  
+  # cowplot::plot_grid(p1,p2,p3,p4)
+  list(p3, p2, p1, p4)
+}
+
+
 get_predictions_df_species_level <- function(species_model_cc){
   cc_mod_average <- MuMIn::model.avg(species_model_cc$fixed)
   
