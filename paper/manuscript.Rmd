@@ -48,13 +48,17 @@ options(knitr.kable.NA = '')
 
 * Keystoneness, centrality, and the structural controllability of ecological networks
 
-\newpage
+\clearpage
 
 # Abstract
 
+1. Background
 
+2. Methods
 
-\clearpage
+3. Results
+
+4. Synthesis
 
 # Introduction
 
