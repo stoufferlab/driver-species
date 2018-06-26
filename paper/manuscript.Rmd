@@ -42,6 +42,15 @@ bibliography: phd-bibliography/network-control.bib
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, 
                       warning = FALSE)
 options(knitr.kable.NA = '')
+library(ggplot2)
+```
+
+```{r load-metadata}
+drake::loadd(metadata)
+lop <- dplyr::filter(metadata, study == "lopezaraiza") %>% 
+  dplyr::mutate(size = n_pla + n_pol) %$% size %>% summary() 
+bar <- dplyr::filter(metadata, study == "bartomeus") %>% 
+  dplyr::mutate(size = n_pla + n_pol) %$% size %>% summary() 
 ```
 
 *Alternative titles:* 
@@ -107,13 +116,6 @@ Finally, we compare the proposed approach to current methods based on species ce
 
 # Methods
 
-```{r load-metadata}
-drake::loadd(metadata)
-lop <- dplyr::filter(metadata, study == "lopezaraiza") %>% 
-  dplyr::mutate(size = n_pla + n_pol) %$% size %>% summary() 
-bar <- dplyr::filter(metadata, study == "bartomeus") %>% 
-  dplyr::mutate(size = n_pla + n_pol) %$% size %>% summary() 
-```
 
 We used ten paired pollination communities to apply the control-theoretic approach.
 Each community pair was composed of a community invaded by a plant and a community free of the invasive species. 
