@@ -432,11 +432,11 @@ defs <- list(
   "network control" = "A network is said to be controllable if it is possible to steer it from an initial to an arbitrary final state within finite time.",
   "controllability" = "The intrinsic difficulty of controlling an ecological community. It is measured by the relative size of the minimum driver-node set, $n_D$. It also indicates the extent to which network structure can be harnessed for network control.", 
   "minimum driver-node set" = "One of the often many smallest sets of species whose abundances need to be directly managed in order to achieve full control of the community. The minimum driver-node sets can be obtained by finding all maximum matchings in a network.",
-  "maximum matching" = "A matching is a set of links that do not share a common start or end nodes; the largest possible matching is called a maximum matching.",
+  "maximum matching" = "A matching is a set of links that do not share any common start or end nodes; the largest possible matching is called a maximum matching.",
   "control configuration" = "One of the species combinations with which is possible to achieve network control. Optimal control configurations are given by the minimum driver-node sets.", 
   "control capacity" = "The relative frequency \\(\\phi\\) which with a species is part of the optimal control configurations of a network.", 
-  "critical species" = "A species with the maximum control capacity \\(\\phi=1\\)",
-  "superior node" = "A species is a superior node if it that can internally affect the abundance of other species in the network. Superior nodes make up the chains that propagate the control signals through the network.")
+  "critical species" = "A species with a maximal control capacity \\(\\phi=1\\)",
+  "superior node" = "A species is a superior node if it can internally affect the abundance of other species in the network. Superior nodes make up the chains that propagate the control signals through the network.")
 
 dplyr::data_frame(rows = c(rbind(names(defs), unlist(defs))), dummy2 = "") %>%
   dplyr::mutate(rows = kableExtra::cell_spec(rows, "latex", bold = T:F, escape = F)) %>%
