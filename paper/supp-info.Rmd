@@ -289,7 +289,7 @@ The choice of weighting can also have an impact on at the species level.
 Therefore we calculated $\phi$ and $\sigma$ and calculated it's correlation among all three weighting schemes.
 Although visitation and efficiency (pollen deposition) produce moderately different results, we found a very strong agreement between the order produced by visitation and importance which is arguably a more accurate metric of interspecific effects (Table \@ref(tab:tab-assumption-visitation)). 
 
-```{r tab-asumption-visitation}
+```{r tab-assumption-visitation}
 drake::loadd(visitation_importance_agreement)
 
 visitation_importance_agreement %>%
