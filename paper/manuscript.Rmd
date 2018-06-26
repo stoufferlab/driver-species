@@ -138,7 +138,7 @@ When this occurs, we deem both species to be equally likely to affect each other
 By basing the direction of the links on the asymmetry of their dependence, we are able to generate a network that is consistent with the dynamics of the community while satisfying the requirements of structural controllability. 
 That allows us to calculate the controllability of the networks and investigate whether there are differences between invaded and uninvaded communities. 
 
-```{r}
+```{r load-fig-example-networks}
 drake::loadd(fig_struct_control)
 ```
 
@@ -177,7 +177,7 @@ We thus use the maximum-matching algorithm to find an optimal pairing of superio
 Given the result, we can further decompose the matching into a set of paths that reveal how a control signal can flow across the links in a network to reach every node that composes it. 
 As recently shown [@liu_controllability_2011], the minimum driver node-set---those to which an external control input should be applied to make the system controllable---corresponds exactly to the *unmatched* nodes in the network (Figure \@ref(fig:fig-control-configuration)).
 
-```{r}
+```{r load-fig-control-configuration}
 drake::loadd(fig_control_config)
 ```
 
@@ -281,7 +281,7 @@ This effectively removed the rare interactions from the networks (more details i
 
 # Results
 
-```{r controllability}
+```{r controllability-calculations}
 drake::loadd(controllability, metadata, randomisations_test)
 c_m <- controllability %>% 
   filter_networks_df(metadata)
@@ -301,7 +301,7 @@ cowplot::plot_grid(plotlist = fig_emp_controllability,
                    align = "v")
 ```
 
-```{r}
+```{r cirtical-species-descriptive}
 drake::loadd(sl_characteristics)
 crit <- sl_characteristics %>% 
   filter_networks_df(metadata) %>%
