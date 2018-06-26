@@ -73,18 +73,18 @@ bar <- dplyr::filter(metadata, study == "bartomeus") %>%
 
 A major goal in ecology is to understand the roles played by different species in the biotic environment.
 Within community ecology, a complex-systems approach has led to the development of a variety analytical and simulation tools with which to compare and contrast the roles of species embedded in a network of interactions [@guimera_cartography_2005; @bascompte_assembly_2009; @stouffer_evolutionary_2012; @coux_linking_2016].
-A particularly relevant dimension of any species' role is its ability to alter the abundance of other species in the community and in turn, modifying the state of the community—since changes of this nature impact ecosystem function and biodiversity, and might have knock-on effects on other processes and services.
+A particularly relevant dimension of any species' role is its ability to alter the abundance of other species and the state of the community—since changes of this nature can have knock-on effects on ecosystem function, diversity, processes, and services.
 This ability is sometimes referred to as a species' "keystoneness" [@mills_keystone-species_1993]. 
 
 A significant proportion of the network tools used to estimate species roles in this context rely on the calculation of a species' centrality—a relative ranking of its positional importance that stems from social network research [@noah_e._friedkin_theoretical_1991]. 
 Generally speaking, central species tend to be better connected and consequently are more likely to participate in the network's food chains. 
-As species that participate in more food chains are assumed to be more likely to affect the abundance of other species, centrality metrics have often been used to identify keystone species in the community [@jordan_quantifying_2007]. 
-Centrality metrics have been shown to be useful tools to rank species in regards to the potential they have on altering the abundances of other species; especially in regards to possible secondary extinctions after the species is lost [@dunne_network_2002; @kaiser-bunbury_robustness_2010].
+Because species that participate in more chains are assumed to be more likely to affect the abundance of other species, centrality metrics have often been used to identify keystone species in the community [@jordan_quantifying_2007]. 
+Centrality metrics have been shown to be useful tools to rank species in regards to their potential to alter the abundances of other species; especially when estimating secondary extinctions that may follow the loss of a species [@dunne_network_2002; @kaiser-bunbury_robustness_2010].
 
 Despite being conceptually intuitive, the relationship between centrality and the state of the community is largely phenomenological. 
 On one hand, dramatic changes in ecosystem functioning can also occur without complete removal of a species. 
-On the other, we are often more interested in a specific state of the community that might be desirable to attain (or preserve) because of its biodiversity, resilience, functioning, or the services it provides. 
-In these cases, it might not enough to understand which species may cause a change in the community. 
+On the other, we are often interested in a *specific* state of the community that might be desirable to attain (or preserve) because of its biodiversity, resilience, functioning, or the services it provides. 
+In these cases, it might not enough to understand which species may cause *any* change in the community. 
 Rather we need to understand first, how the structure of the network can be harnessed to achieve the desired state and which species may play the largest role in this process. 
 When the state of a community is underpinned by more than a single species and we move beyond single-species removals, we expect the usefulness of centrality to diminish. 
 As a result, community ecology could arguably benefit from an alternative, perhaps more mechanistically-grounded, approach to understand how species affect each other's abundance. 
@@ -108,7 +108,8 @@ Here, we apply methods from control theory to a particular ecological problem an
 Specifically, we outline the approach using a set of ten pairs of uninvaded and invaded plant-pollinator communities. 
 We use invaded communities because there is strong empirical evidence showing that invasive species play an important role shaping the abundances of other species, something which is particularly true in these ten networks [@lopezaraizamikel_impact_2007; @bartomeus_contrasting_2008-1]. 
 This choice thus offers us an opportunity to explicitly contrast our theoretical observations with empirical evidence.
-With these networks, we first ask whether there are differences between the controllability of invaded and uninvaded networks. 
+Empirical observations indicate that steering the state of some communities—for example during ecosystem restoration or invasive species removal—can be a very difficult task [@woodford_confronting_2016]. 
+Therefore, with these networks, we first ask whether there are differences between the controllability of invaded and uninvaded networks. 
 We then expand existing methods from control theory to effectively link the *controllability* of a network with the role of particular species.
 We ask—from a control-theoretic perspective—whether there are key differences between species in the role they play at driving the state of the community and explore the ecological factors related to these differences. 
 This allows us to identify species that might be critical for network control and show that they have a larger than expected impact on the structural stability of the community. 
