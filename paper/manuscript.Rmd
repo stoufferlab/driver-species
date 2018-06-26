@@ -345,7 +345,7 @@ dplyr::bind_rows(cc_table) %>%
   knitr::kable("latex", 
                # col.names = pretty_term_names(colnames(.), "short"),
                booktabs = T,
-               caption = "Selection table of the generalised linear models of control capacity, $\\phi$. Only models with a weight larger or equal to 0.01 are shown.", 
+               caption = "Selection table of the binomial generalised linear models of species control capacity, $\\phi$. Only models with a weight larger or equal to 0.01 are shown.", 
                row.names = F, 
                digits = 2, 
                escape = F) %>%
