@@ -377,7 +377,7 @@ c_mod_table %>%
   kableExtra::kable_styling(font_size = 8)
 ```
 
-```{r tab-species-model-random, warning=FALSE}
+```{r tab-species-model-random, warning=FALSE, eval = F}
 drake::loadd(species_model_cc, species_model_superior)
 
 get_term_table <- function(x) {
@@ -406,72 +406,78 @@ tab_cc %>%
                row.names = F, 
                digits = 2, 
                escape = F) %>%
-  kableExtra::kable_styling(font_size = 8) %>%
-  kableExtra::group_rows("control capacity models", 1, nrow(tab_cc)) %>%
-  kableExtra::group_rows("superior probability models", nrow(tab_cc) + 1, nrow(tab_cc) + nrow(tab_su)) 
+  kableExtra::kable_styling(font_size = 8) #%>%
+  # kableExtra::group_rows("control capacity models", 1, nrow(tab_cc)) %>%
+  # kableExtra::group_rows("superior probability models", nrow(tab_cc) + 1, nrow(tab_cc) + nrow(tab_su)) 
 ```
 
 
 ```{r tab-model-output-species-level}
+drake::loadd(species_model_cc)
+
 best_model_cc <- species_model_cc %$%
   fixed %>%
   get_best_model() 
-best_model_su <- species_model_superior %$%
-  fixed %>%
-  get_best_model() 
+# best_model_su <- species_model_superior %$%
+  # fixed %>%
+  # get_best_model() 
 
-num_effects <- get_num_effects(best_model_cc)
+# num_effects <- get_num_effects(best_model_cc)
 
 table_df <- best_model_cc %>%
-  broom::tidy() %>%
-  dplyr::bind_rows(broom::tidy(best_model_su)) 
+  broom::tidy()# %>%
+  # dplyr::bind_rows(broom::tidy(best_model_su)) 
 
 table_df %>%
-  dplyr::mutate(group = dplyr::if_else(is.na(group), "fixed", group)) %>%
-  dplyr::select(group, term, estimate, std.error, statistic, p.value) %>%
-  dplyr::mutate(term = pretty_term_names(term)) %>%
+  # dplyr::mutate(group = dplyr::if_else(is.na(group), "fixed", group)) %>%
+  dplyr::select(term, estimate, std.error, statistic, p.value) %>%
+  dplyr::mutate(term = pretty_term_names(term)) %>% 
   knitr::kable("latex", 
-               col.names = c("effect type", "term", "estimate", "std. error", "z value", "p value"),
+               # col.names = c("effect type", "term", "estimate", "std. error", "z value", "p value"),
                booktabs = T, 
                caption = "Summary table of the control capacity model with the smallest AICc.", 
                row.names = F, 
                digits = 2, 
                escape = F) %>%
-  kableExtra::kable_styling(font_size = 8) %>%
-  kableExtra::group_rows("control capacity models", 1, purrr::reduce(num_effects, sum)) %>%
-  kableExtra::group_rows("superior probability models", purrr::reduce(num_effects, sum) + 1, nrow(table_df)) 
+  kableExtra::kable_styling(font_size = 8)# %>%
+  # kableExtra::group_rows("control capacity# models", 1, purrr::reduce(num_effects, sum)) %>%
+  # kableExtra::group_rows("superior probability models", purrr::reduce(num_effects, sum) + 1, nrow(table_df)) 
 
 ```
 
 ```{r tab-var-importance}
 cc_imp <- get_var_importance(species_model_cc$fixed) 
-su_imp <- get_var_importance(species_model_superior$fixed)
+# su_imp <- get_var_importance(species_model_superior$fixed)
 
-dplyr::bind_rows(cc_imp, su_imp) %>%
+# dplyr::bind_rows(cc_imp, su_imp) %>%
+  cc_imp %>%
   dplyr::mutate(term = pretty_term_names(term)) %>%
   knitr::kable("latex", 
                booktabs = T, 
                row.names = F, 
                digits = 2, 
                escape = F, 
-               caption = "Variable importance for each set of models. The importance is the sum of the weights of all models in which the variable was included.",
+               caption = "Variable importance for control capacity models. The importance is the sum of the weights of all models in which the variable was included.",
                linesep = '') %>%
-  kableExtra::kable_styling(font_size = 8)%>%
-  kableExtra::group_rows("control capacity models", 1, nrow(cc_imp)) %>%
-  kableExtra::group_rows("superior probability models", nrow(cc_imp) + 1, nrow(cc_imp) + nrow(su_imp))
+  kableExtra::kable_styling(font_size = 8) #%>%
+  # kableExtra::group_rows("control capacity models", 1, nrow(cc_imp)) %>%
+  # kableExtra::group_rows("superior probability models", nrow(cc_imp) + 1, nrow(cc_imp) + nrow(su_imp))
 ```
 
-```{r fig-superior, fig.width=fig_sizes()[[2]], fig.height=fig_sizes()[[1]]/2, fig.cap = "Relationship between the most important variables in the models of superior probability. The plots show the values predicted by most parsimonious model. Invasive species are depicted with solid orange circles."}
+```{r fig-superior, eval = FALSE, fig.width=fig_sizes()[[2]], fig.height=fig_sizes()[[1]]/2, fig.cap = "Relationship between the most important variables in the models of superior probability. The plots show the values predicted by most parsimonious model. Invasive species are depicted with solid orange circles."}
 drake::loadd(fig_superior)
 cowplot::plot_grid(plotlist = fig_superior, ncol = 2)
 ```
 
 
-```{r fig-species-models-degree, fig.width=fig_sizes()[[2]], fig.height=fig_sizes()[[1]]/2, fig.cap = "Relationship between degree and (a) the control capacity and (b) the probability of being a superior node. The plots show the values predicted by most parsimonious model for each response variable. The invasive species are depicted with solid orange circles."}
+```{r fig-species-models-degree, fig.width=fig_sizes()[[1]], fig.height=fig_sizes()[[1]], fig.cap = "Relationship between degree and (a) control capacity and (b) the probability of being a superior node."}
 drake::loadd(fig_models_degree)
 library(ggplot2)
-fig_models_degree %<>% add_internal_margins()
-cowplot::plot_grid(plotlist = fig_models_degree, ncol = 2)
+# fig_models_degree %<>% add_internal_margins()
+fig_models_degree  %>%
+  purrr::map(function(x) x + theme(plot.margin = grid::unit(c(1.5, 0.5, 1.5, 0.5), "mm"))) %>%
+  cowplot::plot_grid(plotlist = ., ncol = 1)
+# fig_models_degree[[1]]
 ```
 
 ```{r fig-correlogram, fig.width=fig_sizes()[[2]], fig.height=fig_sizes()[[1]], fig.cap="Mean Spearman correlation coefficients between control metrics (control capcity $\\phi$ and the likelyhood of being a superior node $\\sigma$) and centrality metrics commonly used to estimate a species' 'keystoness' (closeness centrality $l$ , betwenness $w$, eigen centrality $e$, page rank $g$ and degre $k$) in each of the networks. Purple and orange tiles indicate a positive correlation or negative correlation respectively."}
