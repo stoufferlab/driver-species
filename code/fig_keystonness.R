@@ -142,95 +142,9 @@ p2 <- plot_df_sd %>%
   
 }
 # drake::loadd(sl_char_corr, sl_characteristics, metadata)
-# drake::loadd(species_model_cc, species_model_superior)
-make_fig_control_capacity <- function(species_model_cc, sl_characteristics){
+# drake::loadd(species_model_cc)
+make_fig_control_capacity <- function(sl_characteristics){
   require(ggplot2)
- 
-  cc_model <- species_model_cc$fixed[[which.min(species_model_cc$fixed %>% purrr::map(AICcmodavg::AICc))]]
-  
-  df_cc <- species_model_cc %>%
-    extract2("df") %>%
-    modelr::add_predictions(cc_model) %>%
-    dplyr::mutate(species.strength_o = unscale(species.strength), 
-                  nestedcontribution_o = unscale(nestedcontribution))
-  
-  invasive_cc <- df_cc %>%
-    dplyr::filter(invasive)
-  
-  # df_cc1 <- expand.grid(degree = 0, 
-  #                       guild = c("pla", "pol"), 
-  #                       species.strength = 0, 
-  #                       nestedcontribution = seq(-2.5, 5, length.out = 20), 
-  #                       interaction.push.pull = 0) %>%
-  #   modelr::add_predictions(cc_model)
-  
-  p1 <- df_cc %>%
-    ggplot(aes(x = nestedcontribution_o, y = plogis(pred))) +
-    geom_point(aes(colour = guild), shape = 21, size = 1, alpha = 0.25) +
-    # scale_x_log10() + 
-    geom_smooth(aes(color = guild, fill = guild), 
-                method = "glm", 
-                method.args = list(family = "binomial"), 
-                se = T, 
-                size = 0.5, 
-                alpha = 0.2) +
-    geom_point(data = invasive_cc, aes(y = plogis(pred)), 
-               fill = my_pallete()$dark_orange,
-               colour = "black", 
-               shape = 21,
-               size = 1) +
-    scale_color_manual(values = c(my_pallete()$dark_orange, 
-                                  my_pallete()$dark_purple), 
-                       name = "", 
-                       labels = c("plants", "pollinators")) +
-    scale_fill_manual(values = c(my_pallete()$light_orange, 
-                                  my_pallete()$light_purple), 
-                      name = "", 
-                      labels = c("plants", "pollinators")) +
-    base_ggplot_theme() +
-    labs(title = "(c)", 
-         x = "contribution to nestedness", 
-         y = latex2exp::TeX("control capacity ($\\phi$)")) +
-    theme(legend.position = c(1, 0),
-          legend.justification = c(1,0),
-          legend.background = element_rect(fill = "NA"), 
-          legend.key.size = unit(0.15, "in"), 
-          plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "mm")) 
-  
-  p2 <- df_cc %>%
-    ggplot(aes(x = species.strength_o, y = plogis(pred))) +
-    geom_point(aes(colour = guild), shape = 21, size = 1, alpha = 0.25) +
-    # scale_x_log10() + 
-    geom_smooth(aes(color = guild, fill = guild), 
-                method = "glm", 
-                method.args = list(family = "binomial"), 
-                se = T, 
-                size = 0.5, 
-                alpha = 0.2) +
-    geom_point(data = invasive_cc, aes(y = plogis(pred)), 
-               fill = my_pallete()$dark_orange,
-               colour = "black", 
-               shape = 21,
-               size = 1) +
-    scale_color_manual(values = c(my_pallete()$dark_orange, 
-                                  my_pallete()$dark_purple), 
-                       name = "", 
-                       labels = c("plants", "pollinators")) +
-    scale_fill_manual(values = c(my_pallete()$light_orange, 
-                                 my_pallete()$light_purple), 
-                      name = "", 
-                      labels = c("plants", "pollinators")) +
-    scale_x_log10() + 
-    base_ggplot_theme() +
-    labs(title = "(d)", 
-         x = "visitation strength", 
-         y = latex2exp::TeX("control capacity ($\\phi$)")) +
-    theme(legend.position = c(1, 0),
-          legend.justification = c(1,0),
-          legend.background = element_rect(fill = "NA"), 
-          legend.key.size = unit(0.15, "in"),
-          plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "mm"))
-  
  
   
   p5 <- sl_characteristics %>%
@@ -276,9 +190,154 @@ make_fig_control_capacity <- function(species_model_cc, sl_characteristics){
           legend.key.size = unit(0.15, "in"),
           plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "mm"))
   
-  list(p5, p6, p1, p2) 
+  list(p5, p6) 
 }
 # drake::loadd(sl_characteristics, metadata)
+
+make_fig_species_predicted <- function(species_model_cc){
+
+  df_cc <- get_predictions_df_species_level(species_model_cc)
+  invasive_cc <- df_cc %>%
+    dplyr::filter(invasive)
+  
+  ylims <- c(0, 1)
+  
+  p1 <- partial_plot(df_cc, "pushpull_o", "plogis(pred)", "glm") + 
+    labs(title = "(a)", 
+         x = "dependence asymmetry", 
+         y = latex2exp::TeX("partial residuals")) +
+    coord_cartesian(ylim = ylims)
+  
+  p2 <- partial_plot(df_cc, "strength_o", "plogis(pred)", "glm") +
+    labs(title = "(b)", 
+         x = "visitation strength", 
+         y = latex2exp::TeX("partiall residuals")) +
+    scale_x_continuous(breaks = log(c(1,10,100)), labels = exp) +
+    coord_cartesian(ylim = ylims)
+  
+  
+  p3 <- partial_plot(df_cc, "nested_o", "plogis(pred)", "glm") +
+    labs(title = "(c)", 
+         x = "contribution to nestedness", 
+         y = latex2exp::TeX("partial residuals")) +
+    coord_cartesian(ylim = ylims)
+  
+  
+list(p1, p2, p3)  
+}
+
+
+make_fig_species_partial <- function(species_model_cc){
+  require(ggplot2)
+  df_cc <- get_predictions_df_species_level(species_model_cc)
+  invasive_cc <- df_cc %>%
+    dplyr::filter(invasive)
+  
+  add_res <- function(x, res){
+    x + res
+  }
+  
+  ylims <- c(-11, 20)
+  p1 <- partial_plot(df_cc, "pushpull_o", "I(pushpull_comp + res)", "lm") + 
+    labs(title = "(c)", 
+         x = "dependence asymmetry", 
+         y = latex2exp::TeX("partial residuals")) +
+    coord_cartesian(ylim = ylims)
+  
+  p2 <- partial_plot(df_cc, "strength_o", "I(strength_comp + res)", "lm") +
+    labs(title = "(b)", 
+         x = "visitation strength", 
+         y = latex2exp::TeX("partial residuals")) +
+    scale_x_continuous(breaks = log(c(1,10,100)), labels = exp) +
+    coord_cartesian(ylim = ylims)
+  
+  
+  p3 <- partial_plot(df_cc, "nested_o", "I(nested_comp + res)", "lm") +
+    labs(title = "(a)", 
+         x = "contribution to nestedness", 
+         y = latex2exp::TeX("partial residuals")) +
+    coord_cartesian(ylim = ylims)
+  
+  p4 <- partial_plot(df_cc, "degree_o", "I(degree_comp + res)", "lm") +
+    labs(title = "(d)", 
+         x = "degree", 
+         y = latex2exp::TeX("partiall residuals")) +
+    scale_x_continuous(breaks = log(c(1,10,100)), labels = exp) +
+    coord_cartesian(ylim = ylims)
+  
+  # cowplot::plot_grid(p1,p2,p3,p4)
+  list(p3, p2, p1, p4)
+}
+
+
+get_predictions_df_species_level <- function(species_model_cc){
+  cc_mod_average <- MuMIn::model.avg(species_model_cc$fixed)
+  
+  cc_model <- species_model_cc$fixed[[which.min(species_model_cc$fixed %>% purrr::map(AICcmodavg::AICc))]]
+  
+  species_model_cc %>%
+    extract2("df") %>%
+    modelr::add_predictions(cc_mod_average) %>%
+    dplyr::mutate(control_capacity = dplyr::case_when(
+      control_capacity == 1 ~ 0.99, 
+      control_capacity == 0 ~ 0.01, 
+      TRUE ~ control_capacity
+    ), response = qlogis(control_capacity), 
+    res = response - pred) %>% 
+    dplyr::mutate(guildpol = dplyr::if_else(guild == "pol", 1, 0), 
+                  nested_comp = beta_component(cc_mod_average, 
+                                               list(nestedcontribution, guildpol), 
+                                               c("nestedcontribution", "guildpol")),
+                  strength_comp = beta_component(cc_mod_average, 
+                                                 list(species.strength, guildpol), 
+                                                 c("species.strength", "guildpol")),
+                  pushpull_comp = beta_component(cc_mod_average, 
+                                                 list(interaction.push.pull, guildpol), 
+                                                 c("interaction.push.pull", "guildpol")), 
+                  degree_comp = beta_component(cc_mod_average, 
+                                                 list(degree, guildpol), 
+                                                 c("degree", "guildpol"))) %>%
+    dplyr::mutate(strength_o = unscale(species.strength), 
+                  nested_o = unscale(nestedcontribution), 
+                  pushpull_o = unscale(interaction.push.pull),
+                  degree_o = unscale(degree))
+
+  
+}
+
+partial_plot <- function(df, x, y, smooth_method = "lm"){
+  p <-  df %>%
+    ggplot(aes_string(x = x, y = y)) +
+    geom_hline(yintercept = 0, size = 0.25, linetype = 2) + 
+    geom_point(aes(colour = guild), shape = 21, size = 1, alpha = 0.15) +
+    geom_smooth(aes(color = guild, fill = guild), 
+                method = smooth_method,
+                method.args = list(family = "binomial"),
+                se = T, 
+                size = 0.5, 
+                alpha = 0.2) +
+    scale_color_manual(values = c(my_pallete()$dark_orange, 
+                                  my_pallete()$dark_purple), 
+                       name = "", 
+                       labels = c("plants", "pollinators")) +
+    scale_fill_manual(values = c(my_pallete()$light_orange, 
+                                 my_pallete()$light_purple), 
+                      name = "", 
+                      labels = c("plants", "pollinators")) +
+    base_ggplot_theme() +
+    theme(legend.position = c(0, 1.15),
+          legend.justification = c(0,1),
+          legend.background = element_rect(fill = "NA"), 
+          legend.key.size = unit(0.15, "in"), 
+          plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "mm")) 
+ p
+}
+
+beta_component <- function(avg, vectors, names){
+  names <- sort(names)
+  coef <- avg$coefficients["full", c("(Intercept)", names, paste(names[1], names[2], sep = ":"))]
+  coef[2] * vectors[[1]] + coef[3] * vectors[[2]] + coef[4] * vectors[[1]] * vectors[[2]]
+}
 
 make_fig_superior <- function(species_model_superior){
   ## superior
@@ -373,20 +432,9 @@ make_fig_models_degree <- function(species_model_cc, species_model_superior){
     dplyr::filter(invasive)
   
   p1 <- df_cc %>%
-    ggplot(aes(x = degree_o, y = plogis(pred))) +
-    geom_point(aes(colour = guild), shape = 21, size = 1, alpha = 0.25) +
-    # scale_x_log10() + 
-    # geom_smooth(aes(color = guild, fill = guild), 
-    #             method = "glm", 
-    #             method.args = list(family = "binomial"), 
-    #             se = T, 
-    #             size = 0.5, 
-    #             alpha = 0.2) +
-    geom_point(data = invasive_cc, aes(y = plogis(pred)), 
-               fill = my_pallete()$dark_orange,
-               colour = "black", 
-               shape = 21,
-               size = 1) +
+    ggplot(aes(x = degree_o, y = control_capacity)) +
+    geom_point(aes(colour = guild), shape = 21, size = 1, alpha = 0.25, 
+               position = position_jitter(0)) +
     scale_color_manual(values = c(my_pallete()$dark_orange, 
                                   my_pallete()$dark_purple), 
                        name = "", 
@@ -395,7 +443,8 @@ make_fig_models_degree <- function(species_model_cc, species_model_superior){
                                  my_pallete()$light_purple), 
                       name = "", 
                       labels = c("plants", "pollinators")) +
-    scale_x_log10(breaks = c(1,4,10,40)) +
+    scale_x_continuous(breaks = log(c(1,4,10, 40)), labels = exp) +
+    # scale_x_log10(breaks = c(1,4,10,40)) +
     base_ggplot_theme() +
     labs(title = "(a)", 
          x = "degree", 
@@ -405,6 +454,8 @@ make_fig_models_degree <- function(species_model_cc, species_model_superior){
           legend.background = element_rect(fill = "NA"), 
           legend.key.size = unit(0.15, "in"), 
           plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "mm")) 
+  
+  
   
   # superior
   
@@ -420,25 +471,15 @@ make_fig_models_degree <- function(species_model_cc, species_model_superior){
   
   p2 <- df_su %>%
     ggplot(aes(x = degree_o, y = plogis(pred))) +
-    geom_point(shape = 21, size = 1, colour = "grey50", alpha = 0.25) +
-    # scale_x_log10() + 
-    # geom_smooth(method = "glm", 
-    #             method.args = list(family = "binomial"), 
-    #             se = T, 
-    #             colour = "black", 
-    #             size = 0.5) +
-    geom_point(data = invasive_su, aes(y = plogis(pred)), 
-               fill = my_pallete()$dark_orange,
-               colour = "black", 
-               shape = 21,
-               size = 1) +
-    scale_x_log10(breaks = c(1,4,10,40)) +
+    geom_point(shape = 21, size = 1, colour = "grey50", alpha = 0.25, 
+               position = position_jitter(0)) +
+  scale_x_continuous(breaks = log(c(1,4,10, 40)), labels = exp) +
     base_ggplot_theme() +
     labs(title = "(b)", 
          x = "degree", 
          y = latex2exp::TeX("superior prob. ($\\sigma$)")) +
     theme(plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "mm"))
-
+  
   list(p1, p2)
 }
 

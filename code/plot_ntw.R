@@ -143,6 +143,8 @@ my_pallete <- function(){
     light_orange = "#fdb863", 
     light_purple = "#b2abd2", 
     dark_purple = "#5e3c99", 
+    dark_grey = "#636363", 
+    light_grey = "#bdbdbd", 
     light = "#f7f7f7")
 }
 
