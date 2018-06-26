@@ -432,20 +432,9 @@ make_fig_models_degree <- function(species_model_cc, species_model_superior){
     dplyr::filter(invasive)
   
   p1 <- df_cc %>%
-    ggplot(aes(x = degree_o, y = plogis(pred))) +
-    geom_point(aes(colour = guild), shape = 21, size = 1, alpha = 0.25) +
-    # scale_x_log10() + 
-    # geom_smooth(aes(color = guild, fill = guild), 
-    #             method = "glm", 
-    #             method.args = list(family = "binomial"), 
-    #             se = T, 
-    #             size = 0.5, 
-    #             alpha = 0.2) +
-    geom_point(data = invasive_cc, aes(y = plogis(pred)), 
-               fill = my_pallete()$dark_orange,
-               colour = "black", 
-               shape = 21,
-               size = 1) +
+    ggplot(aes(x = degree_o, y = control_capacity)) +
+    geom_point(aes(colour = guild), shape = 21, size = 1, alpha = 0.25, 
+               position = position_jitter(0)) +
     scale_color_manual(values = c(my_pallete()$dark_orange, 
                                   my_pallete()$dark_purple), 
                        name = "", 
@@ -454,7 +443,8 @@ make_fig_models_degree <- function(species_model_cc, species_model_superior){
                                  my_pallete()$light_purple), 
                       name = "", 
                       labels = c("plants", "pollinators")) +
-    scale_x_log10(breaks = c(1,4,10,40)) +
+    scale_x_continuous(breaks = log(c(1,4,10, 40)), labels = exp) +
+    # scale_x_log10(breaks = c(1,4,10,40)) +
     base_ggplot_theme() +
     labs(title = "(a)", 
          x = "degree", 
@@ -464,6 +454,8 @@ make_fig_models_degree <- function(species_model_cc, species_model_superior){
           legend.background = element_rect(fill = "NA"), 
           legend.key.size = unit(0.15, "in"), 
           plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "mm")) 
+  
+  
   
   # superior
   
@@ -479,25 +471,15 @@ make_fig_models_degree <- function(species_model_cc, species_model_superior){
   
   p2 <- df_su %>%
     ggplot(aes(x = degree_o, y = plogis(pred))) +
-    geom_point(shape = 21, size = 1, colour = "grey50", alpha = 0.25) +
-    # scale_x_log10() + 
-    # geom_smooth(method = "glm", 
-    #             method.args = list(family = "binomial"), 
-    #             se = T, 
-    #             colour = "black", 
-    #             size = 0.5) +
-    geom_point(data = invasive_su, aes(y = plogis(pred)), 
-               fill = my_pallete()$dark_orange,
-               colour = "black", 
-               shape = 21,
-               size = 1) +
-    scale_x_log10(breaks = c(1,4,10,40)) +
+    geom_point(shape = 21, size = 1, colour = "grey50", alpha = 0.25, 
+               position = position_jitter(0)) +
+  scale_x_continuous(breaks = log(c(1,4,10, 40)), labels = exp) +
     base_ggplot_theme() +
     labs(title = "(b)", 
          x = "degree", 
          y = latex2exp::TeX("superior prob. ($\\sigma$)")) +
     theme(plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "mm"))
-
+  
   list(p1, p2)
 }
 
