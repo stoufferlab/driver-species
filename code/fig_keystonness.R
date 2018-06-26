@@ -142,95 +142,9 @@ p2 <- plot_df_sd %>%
   
 }
 # drake::loadd(sl_char_corr, sl_characteristics, metadata)
-# drake::loadd(species_model_cc, species_model_superior)
-make_fig_control_capacity <- function(species_model_cc, sl_characteristics){
+# drake::loadd(species_model_cc)
+make_fig_control_capacity <- function(sl_characteristics){
   require(ggplot2)
- 
-  cc_model <- species_model_cc$fixed[[which.min(species_model_cc$fixed %>% purrr::map(AICcmodavg::AICc))]]
-  
-  df_cc <- species_model_cc %>%
-    extract2("df") %>%
-    modelr::add_predictions(cc_model) %>%
-    dplyr::mutate(species.strength_o = unscale(species.strength), 
-                  nestedcontribution_o = unscale(nestedcontribution))
-  
-  invasive_cc <- df_cc %>%
-    dplyr::filter(invasive)
-  
-  # df_cc1 <- expand.grid(degree = 0, 
-  #                       guild = c("pla", "pol"), 
-  #                       species.strength = 0, 
-  #                       nestedcontribution = seq(-2.5, 5, length.out = 20), 
-  #                       interaction.push.pull = 0) %>%
-  #   modelr::add_predictions(cc_model)
-  
-  p1 <- df_cc %>%
-    ggplot(aes(x = nestedcontribution_o, y = plogis(pred))) +
-    geom_point(aes(colour = guild), shape = 21, size = 1, alpha = 0.25) +
-    # scale_x_log10() + 
-    geom_smooth(aes(color = guild, fill = guild), 
-                method = "glm", 
-                method.args = list(family = "binomial"), 
-                se = T, 
-                size = 0.5, 
-                alpha = 0.2) +
-    geom_point(data = invasive_cc, aes(y = plogis(pred)), 
-               fill = my_pallete()$dark_orange,
-               colour = "black", 
-               shape = 21,
-               size = 1) +
-    scale_color_manual(values = c(my_pallete()$dark_orange, 
-                                  my_pallete()$dark_purple), 
-                       name = "", 
-                       labels = c("plants", "pollinators")) +
-    scale_fill_manual(values = c(my_pallete()$light_orange, 
-                                  my_pallete()$light_purple), 
-                      name = "", 
-                      labels = c("plants", "pollinators")) +
-    base_ggplot_theme() +
-    labs(title = "(c)", 
-         x = "contribution to nestedness", 
-         y = latex2exp::TeX("control capacity ($\\phi$)")) +
-    theme(legend.position = c(1, 0),
-          legend.justification = c(1,0),
-          legend.background = element_rect(fill = "NA"), 
-          legend.key.size = unit(0.15, "in"), 
-          plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "mm")) 
-  
-  p2 <- df_cc %>%
-    ggplot(aes(x = species.strength_o, y = plogis(pred))) +
-    geom_point(aes(colour = guild), shape = 21, size = 1, alpha = 0.25) +
-    # scale_x_log10() + 
-    geom_smooth(aes(color = guild, fill = guild), 
-                method = "glm", 
-                method.args = list(family = "binomial"), 
-                se = T, 
-                size = 0.5, 
-                alpha = 0.2) +
-    geom_point(data = invasive_cc, aes(y = plogis(pred)), 
-               fill = my_pallete()$dark_orange,
-               colour = "black", 
-               shape = 21,
-               size = 1) +
-    scale_color_manual(values = c(my_pallete()$dark_orange, 
-                                  my_pallete()$dark_purple), 
-                       name = "", 
-                       labels = c("plants", "pollinators")) +
-    scale_fill_manual(values = c(my_pallete()$light_orange, 
-                                 my_pallete()$light_purple), 
-                      name = "", 
-                      labels = c("plants", "pollinators")) +
-    scale_x_log10() + 
-    base_ggplot_theme() +
-    labs(title = "(d)", 
-         x = "visitation strength", 
-         y = latex2exp::TeX("control capacity ($\\phi$)")) +
-    theme(legend.position = c(1, 0),
-          legend.justification = c(1,0),
-          legend.background = element_rect(fill = "NA"), 
-          legend.key.size = unit(0.15, "in"),
-          plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "mm"))
-  
  
   
   p5 <- sl_characteristics %>%
@@ -276,7 +190,7 @@ make_fig_control_capacity <- function(species_model_cc, sl_characteristics){
           legend.key.size = unit(0.15, "in"),
           plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "mm"))
   
-  list(p5, p6, p1, p2) 
+  list(p5, p6) 
 }
 # drake::loadd(sl_characteristics, metadata)
 
