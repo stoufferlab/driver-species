@@ -75,7 +75,7 @@ bar <- dplyr::filter(metadata, study == "bartomeus") %>%
 
 A major goal in ecology is to understand the roles played by different species in the biotic environment.
 Within community ecology, a complex-systems approach has led to the development of a variety analytical and simulation tools with which to compare and contrast the roles of species embedded in a network of interactions [@guimera_cartography_2005; @bascompte_assembly_2009; @stouffer_evolutionary_2012; @coux_linking_2016].
-A particularly relevant dimension of any species' role is its ability to alter the abundance of other species and the state of the community—since changes of this nature can have knock-on effects on ecosystem function, diversity, processes, and services [@ref_to_daniels_tree_paper_and_jasons_reviews].
+A particularly relevant dimension of any species' role is its ability to alter the abundance of other species and the state of the community—since changes of this nature can have knock-on effects on ecosystem function, diversity, processes, and services [@thompson_food_2012; @tylianakis_global_2008; @tylianakis_conservation_2010].
 This ability is sometimes referred to as a species' "keystoneness" [@mills_keystone-species_1993]. 
 
 A significant proportion of the network tools used to estimate species roles in this context rely on the calculation of a species' centrality—a relative ranking of its positional importance that originally stems from social-network research [@noah_e._friedkin_theoretical_1991]. 
@@ -84,16 +84,17 @@ Because species that participate in more chains are assumed to be more likely to
 Centrality metrics have been shown to be useful tools to rank species in regards to their potential to alter the abundances of other species, in particular when estimating secondary extinctions that may follow the loss of a species [@dunne_network_2002; @kaiser-bunbury_robustness_2010].
 
 Despite being conceptually intuitive, the relationship between centrality and a species' presumed impact on the state of the community is largely phenomenological. 
-On one hand, substantive changes in ecosystem functioning can also occur without complete removal of a species [@needsrefs;@daniel_has_ideas]. 
+On one hand, substantive changes in ecosystem functioning can also occur without complete removal of a species [@mouillot_functional_2013; @daniel_has_ideas]. 
 On the other, we are often interested in a *specific* state of the community that might be desirable to attain (or preserve) because of its biodiversity, resilience, functioning, or the ecosystem services it provides. 
 In these cases, it might be less useful to understand which species may cause *any* change in the community. 
 Instead, we are better served by understanding how the structure of the network can be harnessed to achieve the desired state and which species may play the largest role in this targeted process. 
-When the state of a community is underpinned by more than a single species and we move beyond single-species removals, we expect the usefulness of centrality to diminish.
+When the state of a community is underpinned by more than a single species and we move beyond single-species removals, we might expect the accuracy of centrality to diminish.
 <!-- DBS: We could potentially cut the sentence above; I see the merit, but I also feel like it could annoy readers/reviewers. -->
+<!-- FDO: I made the sentence softer, do you think it's good enough? I'm happy to remove it alltogether though -->
 As a result, community ecology could arguably benefit from an alternative, perhaps more mechanistically-grounded, approach to understand how species affect each other's abundance. 
 
-Species abundances---and consequently the state of the community as a whole---are influenced by both their interactions, the specific dynamics of these interactions and the mechanisms of self-regulation [@addrefs]. 
-However, community and population dynamics can be modelled in innumerable ways, and empirical support for one versus another is often still ambiguous [@addrefs]. 
+Species abundances---and consequently the state of the community as a whole---are influenced by both their interactions, the specific dynamics of these interactions and the mechanisms of self-regulation [@lever_sudden_2014]. 
+However, community and population dynamics can be modelled in innumerable ways, and empirical support for one versus another is often still ambiguous [@holland_population_2002]. 
 The alternative approach should, therefore, ideally acknowledge ecosystem dynamics, but without being overly dependent on the particular choices of how they are characterised.
 Among the various possibilities, *control theory* appears to be a strong candidate [@isbell_human_2013]. 
 Control theory is a widely-studied branch of engineering used to determine and supervise the behaviour of dynamical systems [@motter_networkcontrology_2015]. 
@@ -103,8 +104,6 @@ Unlike centrality indices, however, this link is not based on a priori assumptio
 
 At its fundamental level, control theory first determines whether a system is controllable or not; that is, it asks if a system could ever be driven to a desired state within a finite amount of time. 
 Although the controllability of a network is a whole-system property, it has recently been shown that asking for the controllability of a complex-system is equivalent to finding a particular set of relevant nodes: the set with which is possible to control the state of the whole network [@liu_control_2016].
-Notably, control theory is consistent with the observation that to change the state of a network, more than a ranking, we need a set of nodes.
-<!-- DBS: I don't get what "more than a ranking" means above. -->
 Importantly, this set of nodes is not always unique for a given network.
 This implies that an examination of the distinct sets provides a means to connect nodes with their *general* ability to modify the system to which they belong.
 
@@ -116,11 +115,12 @@ Moreover, empirical observations indicate that steering the state of some commun
 Therefore, we first ask whether there are differences between the controllability of invaded and uninvaded networks. 
 We then expand existing methods from control theory to effectively link the *controllability* of a network with the role of its constituent species.
 We ask—from a control-theoretic perspective—whether there are key differences between species in the role they play at driving the state of the community and explore the ecological factors related to these differences. 
-This allows us to identify species that might be critical for network control and show that they have a larger than expected impact on the structural stability of the community.
+This allows us to identify species that might be critical for network control and show that they have a larger than expected impact on the stable coexistence of the community.
 <!-- DBS: Do we need to introduce structural stability before mentioning it here? -->
-Finally, we compare the proposed approach to current methods based on species centrality and show how these methods are indeed valuable but ultimately paint a limited picture in regards to the "keystoneness" of a species and its role at supporting the diversity of its community.
+<!-- FDO: Changed to stable coexistence, so maybe we can get by without further introduction -->
+Finally, we compare the proposed approach to current methods based on species centrality and show how these methods are indeed valuable but ultimately paint a limited picture in regards to the "keystoneness" of a species.
 <!-- DBS: Is "supporting the diversity" the right function to call out at this point? -->
-
+<!-- FDO: Removed that part of the sentence. I think it's fine without it -->
 
 # Materials and methods
 
