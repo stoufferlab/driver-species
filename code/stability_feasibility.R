@@ -41,12 +41,6 @@ species_level_structural_stability <- function(x, delta = 0, rho =0.1, gamma_avg
     purrr::map(~ species_structural_stability(x, ., delta = delta, rho = rho, gamma_avg = gamma_avg))
 }
 
-# r <- 0.01
-# species_structural_stability(directed_networks[[5]], 
-#                              igraph::V(directed_networks[[5]])[4],
-#                              delta = 0, rho = r,
-#                              gamma_avg = network_stability(directed_networks[[5]], rho = r))
-
 species_structural_stability <- function(x, sp, delta = 0, rho = 0.1, gamma_avg){
   x %>%
     igraph::delete_vertices(sp) %>%
@@ -124,36 +118,13 @@ interaction_matrix <- function(web, gamma_avg, rho, delta,
   da <- rowSums(web)  # pollinator degrees
   dp <- colSums(Ya %*% web)  # plant degrees
   
-  # dilution matrices
-  Zp <- make_z(web, phen)
-  Yp <- t(MASS::ginv(Zp))  # if Y is an unweighted average just take the inverse of Z
-  Yap <- Yp[1:n_phen, 1:nrow(web)] 
-  
-  dilution_numerator <- 1/Yap
-  dilution_numerator[is.infinite(dilution_numerator)] <- 0
-  dilution_numerator <- matrix(rep(colSums(dilution_numerator), SP), SP, byrow = T)
-  
-  require(foreach)
-  dilution_denominator <- foreach(i=1:dplyr::n_distinct(phen), .combine = cbind) %do% {
-    r <- rle(phen)
-    val <- r$values[i]
-    d_d <- matrix(web[phen==val, ], ncol = SP) %>%
-      colSums() %>%
-      # matrix(r$lengths[i]) %>%
-      rep(r$lengths[i]) %>%
-      matrix(ncol = r$lengths[i])
-    d_d[d_d == 0] <- 1
-    d_d
-  }
-  
-  dilution_factor <- dilution_numerator/dilution_denominator
-  
   # Calculate gammas
   gammaA <- diag(rowSums(web_sp_b)^-delta, length(rowSums(web_sp_b))) %*% web_sp_b
   gammaA <- gammaA[rep(1:SA, rle(spp_gr)$lengths), ]
   gammaP <- diag(dp^-delta) %*% t(web)
-  
-  gammaP <- gammaP * dilution_factor
+  # make NAN -> 0 because the NAN are introduced for some species that have no interaction partners and hence the degre is 0 and you end up with 0/0
+  gammaA[is.na(gammaA) | is.infinite(gammaA)] <- 0
+  gammaP[is.na(gammaP) | is.infinite(gammaP)] <- 0
   
   # assemble complete interactiob matrix
   b <- rbind(cbind(alphaA,-gammaA),cbind(-gammaP,alphaP))
