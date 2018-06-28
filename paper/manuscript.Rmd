@@ -368,9 +368,15 @@ fig_control_capacity %>%
 
 ```{r fig-species-partial, fig.width=fig_sizes()[[2]], fig.height=fig_sizes()[[1]]/2, fig.cap= "Partial-residual plots for the independent variables: (a) contribution to nestedness, (b) visitation strength, (c) asymmetry of dependences, and (d) degree. Partial-residual plots show the relationship between control capacity and each of the independent variables while acccounting for all other remaining variables. Ploted values correpond to the predictions of the weighted average of the models shown in Table \\@ref(tab:tab-model-selection-table)"}
 drake::loadd(fig_species_partial)
-fig_species_partial %>%
-  purrr::map_at(2:4, function(x) x  + theme(axis.title.y = element_blank(), axis.text.y = element_blank())) %>%
-    cowplot::plot_grid(plotlist = ., align = "h", nrow = 1, rel_widths = c(1.25, 1, 1,1))
+suppressWarnings({
+  fig_species_partial %>%
+  purrr::map_at(2:4, function(x) x  + theme(axis.title.y = element_blank(),
+                                            axis.text.y = element_blank())) %>%
+    cowplot::plot_grid(plotlist = ., 
+                       align = "h", nrow = 1, 
+                       rel_widths = c(1.25, 1, 1,1))
+})
+
 ```
 
 ```{r critical-species-test}
