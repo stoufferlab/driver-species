@@ -1,16 +1,16 @@
-get_structural_rho_sensitivity <- function(sensitivity_rho, dn){
-  purrr::map(sensitivity_rho, ~ get_all_struct(dn, rho = .))
+get_structural_rho_sensitivity <- function(sensitivity_range, dn){
+  purrr::cross(sensitivity_range) %>%
+    purrr::map(~get_all_struct(dn, .[[1]], .[[2]]))
 }
 
 
-get_all_struct <- function(directed_networks, rho){
+get_all_struct <- function(directed_networks, rho, delta = 0){
   foreach(i = 1:length(directed_networks), .combine = rbind) %dopar% {
-    cat(names(directed_networks)[i])
     gamma_critical <- network_stability(directed_networks[[i]], 
-                                        delta = 0, 
+                                        delta = delta, 
                                         rho = rho)
     species_level_structural_stability(directed_networks[[i]], 
-                                       delta = 0, 
+                                       delta = delta, 
                                        rho = rho, 
                                        gamma_avg = gamma_critical) %>% {
       dplyr::data_frame(net_name = names(directed_networks)[i], 
