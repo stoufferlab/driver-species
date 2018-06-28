@@ -516,16 +516,7 @@ DBS acknowledges the support of a Marsden Fast-Start grant and a Rutherford Disc
 
 # Author contributions
 
-<!-- DBS: Surely we had this before. Please copy it from a previous submission. -->
-All submissions with more than one author must include an Authors’ contributions statement. All persons listed as authors on a paper are expected to meet ALL of the following criteria for authorship:
-
-* substantial contributions to conception and design, or acquisition of data, or analysis and interpretation of data, or drafting the article or revising it critically for important intellectual content;
-* final approval of the version to be published;
-* agreement to be accountable for the aspects of the work that they conducted and ensuring that questions related to the accuracy or integrity of any part of their work are appropriately investigated and resolved.
-
-Acquisition of funding, provision of facilities, or supervising the research group of authors without additional contribution are not usually sufficient justifications for authorship. The statement should include an explanation of the contribution of each author. We suggest the following format for the Authors’ contributions statement:
-
-AB and CD conceived the ideas and designed methodology; CD and EF collected the data; EF and GH analysed the data; AB and CD led the writing of the manuscript. All authors contributed critically to the drafts and gave final approval for publication.
+DBS conceived the idea; all authors contributed to the development of the theoretical framework. EFC performed all analysis. EFC and DBS wrote the manuscript. All authors contributed to its revision.
 
 # Data accessibility
 
