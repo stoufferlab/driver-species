@@ -78,13 +78,14 @@ Within community ecology, a complex-systems approach has led to the development 
 A particularly relevant dimension of any species' role is its ability to alter the abundance of other species and the state of the community—since changes of this nature can have knock-on effects on ecosystem function, diversity, processes, and services [@thompson_food_2012; @tylianakis_global_2008; @tylianakis_conservation_2010].
 This ability is sometimes referred to as a species' "keystoneness" [@mills_keystone-species_1993]. 
 
-A significant proportion of the network tools used to estimate species roles in this context rely on the calculation of a species' centrality—a relative ranking of its positional importance that originally stems from social-network research [@noah_e._friedkin_theoretical_1991]. 
+A significant proportion of the network tools used to estimate species roles in this context rely on the calculation of a species' centrality—a relative ranking of its positional importance that originally stems from social-network research [@noah_e._friedkin_theoretical_1991; @martin_gonzalez_centrality_2010]. 
 Generally speaking, central species tend to be better connected and consequently are more likely to participate in the network's "food chains". 
 Because species that participate in more chains are assumed to be more likely to affect the abundance of other species, centrality metrics have often been used to identify keystone species in the community [@jordan_quantifying_2007]. 
 Centrality metrics have been shown to be useful tools to rank species in regards to their potential to alter the abundances of other species, in particular when estimating secondary extinctions that may follow the loss of a species [@dunne_network_2002; @kaiser-bunbury_robustness_2010].
 
 Despite being conceptually intuitive, the relationship between centrality and a species' presumed impact on the state of the community is largely phenomenological. 
-On one hand, substantive changes in ecosystem functioning can also occur without complete removal of a species [@mouillot_functional_2013; @daniel_has_ideas]. 
+On one hand, substantive changes in ecosystem functioning can also occur without complete removal of a species [@mouillot_functional_2013].
+<!-- Which ideas do you have (@daniel_has_ideas) -->
 On the other, we are often interested in a *specific* state of the community that might be desirable to attain (or preserve) because of its biodiversity, resilience, functioning, or the ecosystem services it provides. 
 In these cases, it might be less useful to understand which species may cause *any* change in the community. 
 Instead, we are better served by understanding how the structure of the network can be harnessed to achieve the desired state and which species may play the largest role in this targeted process. 
@@ -155,16 +156,12 @@ replayPlot(fig_struct_control$plot)
 ## Controllability
 
 A system is said to be controllable if it is possible to steer it from an initial to an arbitrary final state within finite time [@kalman_mathematical_1963]. 
-<!-- The sentence above and the sentence below both work well as leading sentences for a paragraph but neither works well as a second. Can you find somewhere to fold the one above into the paragraph (or elsewhere) or rewrite the beginning of the one below? -->
-<!-- FDO: What about now Daniel? -->
 A simple version of such a system can be described by $\frac{dx}{dt} = Ax + Bu(t)$, where the change of its state over time ($\frac{dx}{dt}$) depends on its current state *x* (for example, the species' abundances), an external time-varying input *u(t)* (the control signal), and two matrices *A* and *B*, which encode information about the network structure and how species respond to external inputs, respectively. 
 In classic control theory, determining whether this system is controllable can be achieved by checking that its controllability matrix $R= [ \begin{matrix}B & AB & A^{2}B & ...& A^{n-1}B\end{matrix} ]$ has full rank. 
 In complex systems, however, employing this rank condition, or numerical approximations of it, is infeasible because it is hard to fully parameterise *A* and *B* (either because the weight of the links changes over time or because they are difficult to measure). 
 Here, we use an approach based on the structural controllability theorem [@lin_structural_1974], which assumes that we are confident about which elements of *A* and *B* have either non-zero or zero values (there is an interaction or not), but that we less sure about the precise magnitude of the non-zero values. 
 Using this structural approach, we can find out the controllability of a system for every non-zero realisation of the parameters.
 An intuitive way to understand structural controllability is by looking at its graphical interpretation: from a topological perspective a network is structurally controllable if there are no inaccessible nodes—that is, nodes without incoming links—or dilations—*expansions* of the network (Figure \@ref(fig:fig-example-networks)b; Supporting Information Section \@ref(S-structural-controllability)).
-<!-- The last sentence of the paragraph above sticks out a bit. -->
-<!-- I rephrased it the last couple of sentences, hopefully, it flows better now -->
 
 We are often able to estimate *A* in ecological networks, as this matrix represents the interactions between species. 
 Part of the control problem thus resides in estimating a supportable estimation of *B*, which represents the links between external inputs and species. 
@@ -179,8 +176,7 @@ For example, in a network composed of jobs and job applicants, a matching is any
 Consequently, a maximum matching is an optimal pairing, one that maximises the number of applicants with jobs and the number of positions filled. 
 Admittedly, the link between matchings and structural controllability may appear far from straightforward. 
 The key is to note that the fundamental conditions of structural controllability imply that there is a one-to-one relationship between *superior* and *subordinate* nodes just like the one-to-one relationship between jobs and applicants (Figure \@ref(fig:fig-example-networks)b, bottom left). 
-<!-- DBS: I think we should at least introduce what superior and subordinate means here even if they're also defined in the figure. -->
-We thus use the maximum-matching algorithm to find an optimal pairing of superior and subordinate nodes in a manner consistent with the controllability conditions (Supporting Information Section \@ref(S-one-maximum-matching)). 
+We thus use the maximum-matching algorithm to find an optimal pairing of superior (those that can control another node) and subordinate nodes (those that can be controlled by another node) in a manner consistent with the controllability conditions (Supporting Information Section \@ref(S-one-maximum-matching)). 
 Given the result, we can further decompose the matching into a set of paths that reveal how a control signal can flow across the links in a network to reach every node within it. 
 As recently shown [@liu_controllability_2011], the minimum driver-node set---those to which an external control input should be applied to make the system controllable---corresponds exactly to the *unmatched* nodes in the network (Figure \@ref(fig:fig-control-configuration)).
 
@@ -203,11 +199,9 @@ For instance, achieving full control in a "network" in which species do not inte
 Conversely, the structure of a linear trophic chain can be harnessed to achieve full control using just one intervention targeted at the top species; a suitable control signal could then cascade through the trophic levels and reach other species in the community. 
 Specifically, drawing from the structural-controllability literature, we use the size of the minimum driver-node set relative to the total number of species $n_D = \frac{D}{N}$ as a measure of the *controllability* of a network—the extent to which the network structure can be harnessed to control the community.
 In an ecological context, external inputs can be thought of as management interventions that modify the abundance of a particular species. 
-<!-- Would the two sentences below work better after the "Finding out exactly how difficult..." sentence? -->
-<!-- I moved it to a different place where I think flows better -->
 
 After finding the minimum driver-node set in each of our networks, we wanted to test whether invasion status or other predictors are correlated to controllability. 
-We do this using a set of generalised linear models (with binomial error structure). 
+We do this using a set of generalised linear models with binomial error structure. 
 The response variable was the relative size of the minimum driver-node set $n_D$ of the twenty empirical networks (ten invaded and ten uninvaded), and we included invasion status as a predictor. 
 As predictors, we also include the network connectance, the network nestedness (NODF), the number of species [since one might naively expect to see a negative relationship between richness and controllability; @menge_indirect_1995], the network asymmetry (an indication of the balance between plant and pollinator diversity), and the interaction strength asymmetry [the asymmetry on the dependences between trophic levels; @bluthgen_specialization_2007].
 We compared models using the Akaike Information Criterion for small sample sizes (AICc). 
@@ -234,7 +228,7 @@ To calculate a species control capacity $\phi$, we must first enumerate all poss
 Unfortunately, enumerating all maximum matchings is extremely expensive from a computational perspective—a network with a couple dozen species has several hundred million unique maximum matchings. 
 To solve this problem, we employ a recently-developed algorithm that reveals the control correlations between the nodes in the graph while requiring considerably less computational resources [@zhang_input_2016]. 
 Using this algorithm, we are able to identify species that are possible control inputs—those that belong to the minimum driver-node set in at least one of the possible control configurations. 
-Here, we extend this algorithm such that it is possible to calculate a highly accurate approximation of the control capacity $\phi_i$ of every species in the network (Supporting Information Section \@ref(S-input-graph)). 
+Here, we extend this algorithm such that it is possible to calculate a highly accurate approximation of the control capacity $\phi$ of every species in the network (Supporting Information Section \@ref(S-input-graph)). 
 In the networks that contained reciprocal links (because there was no asymmetry in the dependences of a species pair), we averaged a species control capacity $\phi$ across every possible "non-reciprocal" version of the network (Supporting Information Section \@ref(S-reciprocal-links)). 
 
 We then examined how species-level properties were related to control capacity using a set of generalised linear models with binomial error structure.
@@ -242,33 +236,37 @@ These models included five predictor variables that mirror the network-level pre
 First, the species contribution to nestedness, which has been proposed as a key feature that promotes stability and robustness in mutualistic networks [@saavedra_strong_2011]. 
 Second, the species strength (the sum of a species' visits), which quantifies the strength of a species associations and is indirectly related to its abundance [@poisot_comparative_2012]. 
 Third, the direction of asymmetry which quantifies the net balance in dependencies; that is it indicates if a species affects other species more than what they affect it or not [@vazquez_species_2007]. 
-Fourth, the species degree in order to account for the innate centrality of a species.
+Fourth, the species degree in order to account for the inrinsic centrality of a species.
 Finally, we included a categorical variable for the species trophic level (plant or pollinator) and an interaction term between trophic level and the previous four variables. 
 To facilitate comparison between predictors, degree and visitation strength were log-transformed and all four continuous variables were scaled to have a mean of zero and a standard deviation of one.
 To identify the models that were best supported by the data, we first determined the most parsimonious random structure using the AICc. 
 The relative importance of variables was then assessed by looking at their effect sizes in the top-ranked models and the cumulative weight of the models in which they are present. 
 
-Our analysis revealed that some species have a control capacity $\phi_i = 1$. 
+Our analysis revealed that some species have a control capacity $\phi = 1$. 
 These species are critical to controlling their community because they are part of the minimum driver-node set in *every* control scenario. 
 In other words, it is theoretically impossible to drive the state of the community to a desired state without directly managing the abundance of these species. 
 We thus anticipate that these species have a disproportionally large impact on the community dynamics. 
 To test this hypothesis, we identified these critical species in each of the networks and investigated whether they have a larger than average impact on the stable coexistence of species in the community. 
 Within mutualistic networks, one useful measure of for how networks impact stable coexistence is called structural stability [@rohr_structural_2014]. 
-Mathematically, the structural stability $\Omega$ of a network represents the size of the parameter space (i.e., growth rates, carrying capacities, etc.) under which all species can sustain positive abundances [@saavedra_nested_2016]. 
+Mathematically, the structural stability of a network represents the size of the parameter space (i.e., growth rates, carrying capacities, etc.) under which all species can sustain positive abundances [@saavedra_nested_2016]. 
 The contribution of any given species *i* to stable coexistence can be estimated by calculating the structural stability of the community when the focal species *i* is removed. 
+To allow comparison across communities, the structural stability values were scaled within each network to have a mean of zero and a standard deviation of one.
 Given these species-specific estimates of structural stability, we then used a t-test to compare the contribution to stable coexistence of critical and non-critical species. 
 More details about the calculation of structural stability can be found in the Supporting Information Section \@ref(S-structural-stability).
 
 <!-- DBS: I think we're far too sloppy about when things like phi have subscripts and when they don't. We really should be consistent throughout. -->
+<!-- I just removed the subscripts everywhere -->
 Finally, we wanted to understand how two species-level control metrics are related to five metrics of keystoneness based on centrality. 
-For the centrality metrics, we use a species' degree, betweenness, eigen centrality, page rank, and closeness centrality. 
+For the centrality metrics, we use a species' degree, betweenness, closeness centrality [@martin_gonzalez_centrality_2010], page rank [@mcdonald-madden_using_2016], and eigen centrality [@jordano_ecological_2006]. 
 <!-- DBS: You MUST cite where these centrality metrics come from. -->
+<!-- I just chose them cause they were easy to calculate... :( -->
 The first control metric we use is a species control capacity $\phi$ described above. 
 The second metric is the probability that a focal species influences the abundance of another species internally, regardless of whether a management intervention is required in that species or not. 
 We call this the probability of being a superior node $\sigma$. 
 Because superior nodes are those at the beginning of a matched link, \(\sigma\) could be seen as a "softer" version of control capacity. 
 Conveniently, unlike the minimum driver-node set, superior species are the same for all control configurations and so in a network without reciprocal links the probability that a species is superior $\sigma$ is either 1 or 0. 
 <!-- DBS: I think that the statement above needs a reference as I don't think this is "new" here nor do I think everyone will necessarily understand why it's true without pointing them to a more formal explanation. -->
+<!-- I'm pretty sure that's the case cause that's what we get. I remember seeing it with slighlty different terminology in a paper a couple of months ago. I made a not and now I cannot find the note nor the paper... Will have another look and hopefully something will come out -->
 
 ## Testing assumptions
  
@@ -290,15 +288,17 @@ c_m <- controllability %>%
 
 The size of the minimum driver-node set relative to the number of species in each network $n_D$ ranged between $n_D = `r round(min(c_m$n_D), 2)`$ and $n_D = `r round(max(c_m$n_D), 2)`$ (median `r round(median(c_m$n_D), 2)`). 
 We found that the relative size of the minimum driver-node set of invaded communities was not significantly different from that of communities that have not been invaded (Figure \@ref(fig:fig-emp-controllability)a). 
-In contrast, there was an important negative relationship between $n_D$ and the network asymmetry (Figure \@ref(fig:fig-emp-controllability)b).
+In contrast, there was an large negative relationship between $n_D$ and the network asymmetry (Figure \@ref(fig:fig-emp-controllability)b).
 <!-- DBS: "important" doesn't mean anything statistically. was it significant? -->
+<!-- Yes it is but I'm using model evidence and effect size to assess the importance of variables as opposed to p-values -->
 Furthermore, there were also negative, albeit weaker, relationships between $n_D$ and connectance, nestedness and species richness (Table  \@ref(S-tab:tab-controllability-model-results)). 
 The relative size of the minimum driver-node set $n_D$ of empirical networks did not differ from that of a null model that roughly preserved the degree distribution and fully preserved the network connectance ($p = `r sprintf('\\num{%s}', format(randomisations_test$interactions$p.value, digits = 2))`$; Figure \@ref(fig:fig-emp-controllability)c). 
 However, empirical networks had a larger $n_D$ than null models that preserved the interactions but shuffled the direction of control of the empirical network ($p = `r sprintf('\\num{%s}', format(randomisations_test$directions$p.value, digits = 2))`$). 
 
 <!-- DBS: I don't understand the description of (b) below about the values predicted by the most parsimonious model. I think it needs more info to be fully intelligible. -->
-<!-- DBS: y-axes in (a) and (c) should be "probability density" -->
-```{r fig-emp-controllability, fig.width=fig_sizes()[[2]], fig.height=fig_sizes()[[1]]/2, fig.cap="Drivers of network controllability. (a) Probability density of the relative size of the minimum driver-node set $n_D$ in the invaded (light) and uninvaded (dark) empirical networks. (b) The relationship between the asymmetry plant/pollinator richness and $n_D$. The plot shows the values predicted by the most parsimonious model. (c) Probability density of the difference between the relative size of the minimum driver-node set of random networks and that of empirical networks. We randomised either the species visitation patterns (light line) or randomised the direction of control between a species pair (dark line). The vertical dashed lines in (a) and (c) indicate the median values of the distributions."}
+<!-- The points are actually raw values  -->
+
+```{r fig-emp-controllability, fig.width=fig_sizes()[[2]], fig.height=fig_sizes()[[1]]/2, fig.cap="Drivers of network controllability. (a) Probability density of the relative size of the minimum driver-node set $n_D$ in the invaded (light) and uninvaded (dark) empirical networks. (b) Relationship between the asymmetry plant/pollinator richness and $n_D$. (c) Probability density of the difference between the relative size of the minimum driver-node set of random networks and that of empirical networks. We randomised either the species visitation patterns (light line) or randomised the direction of control between a species pair (dark line). The vertical dashed lines in (a) and (c) indicate the median values of the distributions."}
 drake::loadd(fig_emp_controllability)
 fig_emp_controllability %>%
   purrr::map(function(x) x + theme(plot.margin = grid::unit(c(0.5, 1.5, 0.5, 1.5), "mm"))) %>% {
@@ -336,8 +336,6 @@ drake::loadd(species_model_cc)
 
 cc_table <- MuMIn::model.sel(species_model_cc$fixed) %>%
   dplyr::filter(weight > 0.01)
-# su_table <- MuMIn::model.sel(species_model_superior$fixed)%>%
-#   dplyr::filter(weight > 0.01)
 
 dplyr::bind_rows(cc_table) %>%
   dplyr::select(-logLik, - AICc) %>%
@@ -351,8 +349,6 @@ dplyr::bind_rows(cc_table) %>%
                escape = F) %>%
   kableExtra::add_header_above(c("model terms" = 10, " " = 3), escape = F) %>%
   kableExtra::kable_styling(font_size = 8) %>%
-  # kableExtra::group_rows("control capacity models", 1, nrow(cc_table)) %>%
-  # kableExtra::group_rows("superior probability models", nrow(cc_table) + 1, nrow(cc_table) + nrow(su_table)) %>%
   kableExtra::footnote(general = "intercept (int), degree ($k$), trophic level ($l$), asymmetry ($a$), contribution to nestedness ($n$), visitation strength ($s$).", 
                        general_title = "Terms: ", 
                        footnote_as_chunk = TRUE, 
@@ -360,21 +356,17 @@ dplyr::bind_rows(cc_table) %>%
                        escape = F)
 ```
 
-<!-- DBS: y-axis in (a) should be "probability density" -->
-<!-- DBS: I also *love* this plot. -->
 ```{r fig-species-level, fig.width=fig_sizes()[[2]]*2/3, fig.height=fig_sizes()[[1]]/2, fig.cap="Probability density of the control capacity $\\phi$ of (a) plants and (b) pollinators across all networks. The control capacity of all invasive species is $\\phi = 1$ and is depicted with solid circles."}
 drake::loadd(fig_control_capacity)
 fig_control_capacity[[2]] <- fig_control_capacity[[2]] +
   theme(axis.title.y = element_blank(),
         axis.text.y = element_blank())
 
-# pdf("test.pdf", width =fig_sizes()[[2]]*2/3, height = fig_sizes()[[1]])
 fig_control_capacity %>%
     cowplot::plot_grid(plotlist = ., rel_widths = c(1.21,1), align = "h")
-# dev.off()
 ```
-<!-- DBS: You never state in the methods what you mean by model-average partial residuals. If you don't explain it there, you MUST explain it here as there is a good chance that no one will invest the time required to know what is actually going on. -->
-```{r fig-species-partial, fig.width=fig_sizes()[[2]], fig.height=fig_sizes()[[1]]/2, fig.cap= "Model-averaged partial-residual plots for the relationship between control capacity and (a) contribution to nestedness, (b) visitation strength, (c) asymmetry of dependences, and (d) degree."}
+
+```{r fig-species-partial, fig.width=fig_sizes()[[2]], fig.height=fig_sizes()[[1]]/2, fig.cap= "Partial-residual plots for the relationship between control capacity and the independent variables: (a) contribution to nestedness, (b) visitation strength, (c) asymmetry of dependences, and (d) degree. Partial residual plots show the relationship between the response and each of the independent variables given that all other independent variables have been accounted for. Ploted values correpond to the predictions of the weighted average of the models shown in Table \\@ref(tab:tab-model-selection-table)"}
 drake::loadd(fig_species_partial)
 fig_species_partial %>%
   purrr::map_at(2:4, function(x) x  + theme(axis.title.y = element_blank(), axis.text.y = element_blank())) %>%
@@ -390,13 +382,11 @@ crit_test <- critical_sp_df  %$%
 ```
 
 We also found that critical species have a particularly large impact on species coexistence when compared to non-critical species.
-Indeed, the structural stability of the network was considerably reduced when these species were removed from their communities ($p = `r sprintf('\\num{%s}', format(crit_test$p.value, digits = 2))`$; Figure \@ref(fig:fig-structural-stability); Supporting Information \@ref(S-structural-stability)). 
+Indeed, the structural stability of the networks where critical species were removed was considerably to those in were non-critical speceis were removed ($p = `r sprintf('\\num{%s}', format(crit_test$p.value, digits = 2))`$; Figure \@ref(fig:fig-structural-stability); Supporting Information \@ref(S-structural-stability)). 
 <!-- DBS: I wonder if people will have a hard time understanding what these values mean. That is, the differences are clear visually but what do those values of Omega actually mean? I am almost certain a reviewer is going to nag about this. -->
+<!-- Tried to edit the results and the caption of the figure to help improve that -->
 
-<!-- DBS: y-axis should be "probability density" -->
-<!-- DBS: remove the title at the top of the figure -->
-<!-- DBS: the issue of scaling of Omega should likely appear in the methods too... -->
-```{r fig-structural-stability, fig.width=fig_sizes()[[1]], fig.height=fig_sizes()[[1]]/2, fig.cap="Probability density of the structural stability of the communities after a single focal species is removed. The structural stability after critical species have been removed (darker line) is considerable smaller than that after non-critical (redundant) species have been removed. To allow comparison across communities, the structural stability values were scaled within each network to have a mean of zero and a standard deviation of one."}
+```{r fig-structural-stability, fig.width=fig_sizes()[[1]], fig.height=fig_sizes()[[1]]/2, fig.cap="Probability density of the structural stability of the communities after a single focal species is removed. Mathematically, the structural stability of a network represents the size of the parameter space (i.e., growth rates, carrying capacities, etc.) under which all species can sustain positive abundances [@saavedra_nested_2016]. The structural stability of communities in which critical species have been removed (darker line) is considerable smaller than that of communities in which non-critical species have been removes. This indicates that critical species contribute more to the stable coexistence of their communities. To allow comparison across communities, the structural stability values were scaled within each network to have a mean of zero and a standard deviation of one."}
 drake::loadd(fig_structural_stability)
 fig_structural_stability[[1]]
 ```
@@ -413,8 +403,7 @@ correlations <- sl_char_corr %>%
 Species control capacity $\phi$ was only weakly correlated with commonly-used centrality metrics. 
 The Spearman correlation between these ranged between `r round(min(correlations$control_capacity), 2)` (with betweeness-centrality) and `r round(max(correlations$control_capacity), 2)` (with eigen-centrality). 
 On the other hand, the probability of being a superior species $\sigma$ was slightly more correlated to established centrality metrics as its Spearman correlation ranged between `r round(min(correlations$superior), 2)` (with eigen-centrality) and `r round(max(correlations$superior), 2)` (with degree; Figure \@ref(S-fig:fig-correlogram)). 
-Despite the higher correlation with species' degree, with the exception of specialists that had only one interaction, we observed many species with a low degree and a  high probability of being superior nodes (Figure \@ref(S-fig:fig-species-models-degree)b).
-<!-- DBS: Please rephrase this last sentence and/or chop it into two. It's unclear to me (at least) in particular the "with the exception" part. -->
+Despite the higher correlation with species' degree we still observed many species with a low degree and a high probability of being superior nodes (Figure \@ref(S-fig:fig-species-models-degree)b).
 
 \R{testing-assumptions-results-line} We found that using visitation as a proxy for the strength of species interactions leads to similar results than those obtained using pollinator importance [regarded as an accurate measure of the pollination service to plants; Supporting Information Section \@ref(S-visitation-as-proxy); @neeman_framework_2009]. 
 Importantly, we also found that structural stability is robust to incomplete sampling of interactions. 
@@ -478,6 +467,7 @@ Putting these observations together, our results therefore take previous finding
 
 \R{management-implications}Other conceptual differences between structural controllability and centrality metrics might provide further insight into the conservation of ecological networks. 
 First, structural controllability emphasizes that the effect a species has on the abundance of other species is not independent of the effects of other other species in their community. 
+The rankings provided by centrality metrics and other heuristics fail to account for the collective influence of several species at once. 
 Second, it demonstrates that to ensure the persistence of a community it is often necessary to consider the abundances of more than a single species, even when full control is infeasible or undesired (for example `r round(sum(crit$n_crit > 1)/nrow(crit)*100)`% of our communities contained more than one critical species). 
 Third, structural controllability explicitly acknowledges the existence of multiple management strategies and some will be better than others depending on the context.
 Approaches to prioritise species for conservation and reintroduction based on traits or centrality are still useful and are likely to overlap with species control capacity\R{extra-references-1} [@pires_friendship_2017; @devoto_understanding_2012]. 
@@ -496,9 +486,10 @@ Structural controllability assumes that the networks can be approximated using l
 The ramifications of this assumption imply that, while structural controllability is useful to identify species that are relevant for network control, it cannot be used to design the *exact* interventions that should be applied to these species in order to achieve a desired state. 
 In an ideal scenario, we would completely incorporate the species dynamics into the controllability analysis [@cornelius_realistic_2013]; the reality is that such information is rarely available in most ecological scenarios. 
 \R{data-requirements}In contrast, structural controllability only requires a quantitative approximation of the network's interactions to gain valuable insight from the community.
-Furthermore, unlike centrality metrics, the assumptions of structural controllability are explicit and the estimation of a species importance arises from a mechanistic understanding of the population dynamics between species. 
-By accounting for network dynamics (even if in a simple way), it incorporates more ecological realism even in the extreme scenario where the state of a community depends almost exclusively on nodal dynamics rather than on the topology of their interactions.
+Furthermore, while the relationship between centrality and keystoneness is based on an intuitive understanding of what a keystone species is, the assumptions of structural controllability are explicit and the estimation of a species importance arises from a mechanistic understanding of the population dynamics between species. 
+By accounting for network dynamics (even if in a simple way), structural stability incorporates more ecological realism, especially in the extreme scenario in which the state of a community is only marginally affected by the topology of their interactions.
 <!-- DBS: See what everyone else says about these last two sentences. I think they get harder and harder to follow as they evolve. -->
+<!-- Made some edits, we'll se what people say -->
 
 # Conclusions
 
