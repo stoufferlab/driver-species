@@ -94,11 +94,12 @@ controllability_plan <- drake::drake_plan(
 species_level_plan <- drake::drake_plan(
   species_empirical_coov = purrr::map_df(networks, plants_or_pols, .id = "net_name"),
   species_coovariates_df = purrr::map2_df(directed_networks, networks, get_species_coov, metrics = c("degree", "species strength", "betweenness", "closeness", "eigen", "page_rank", "nested_contribution", "interaction push pull"), .id = "net_name"), 
-  chosen_rho = 0.005,
-  structural_stability = get_all_struct(directed_networks, rho = chosen_rho), 
+  chosen_rho = sensitivity_range$rho[round(length(sensitivity_range$rho)/2)],
+  chosen_delta = sensitivity_range$delta[round(length(sensitivity_range$delta)/2)],
+  structural_stability = get_all_struct(directed_networks, rho = chosen_rho, delta = chosen_delta), 
   sigma_phi_df = purrr::map_dfr(matched_networks, get_controllability_superiorness, .id = "net_name"),
   sl_characteristics = join_sl_characteristics(sigma_phi_df, species_coovariates_df, species_empirical_coov, structural_stability),
-  rho_feasibility = get_rho_feasibility(sigma_phi_df, species_coovariates_df, species_empirical_coov,structural_rho_sensitivity, sensitivity_rho),
+  rho_feasibility = get_rho_feasibility(sigma_phi_df, species_coovariates_df, species_empirical_coov,structural_rho_sensitivity, sensitivity_range),
   sl_char_corr = species_level_characteristics_correlation(sl_characteristics, metadata, vars = c("control_capacity", "superior", "page_rank.nondirected", "eigen.nondirected", "degree", "betweenness", "closeness"), method = "spearman"),
   secondary_ext = all_secondary_extinctions(networks, sl_characteristics),
   secondary_ext_std = standardize_secondary_extinctions(secondary_ext, controllability, metadata),
@@ -109,9 +110,9 @@ species_level_plan <- drake::drake_plan(
 )
 
 test_assumption_plan <- drake::drake_plan(
-  sensitivity_rho = seq(0.001, 0.01, by = 0.001),
-  structural_rho_sensitivity = get_structural_rho_sensitivity(sensitivity_rho, directed_networks),
-  structural_rho_correlation = get_structural_sensitivity_correlation(sensitivity_rho, structural_rho_sensitivity, chosen_rho, metadata),
+  sensitivity_range = list(rho = seq(0.001, 0.01, length.out = 10), delta = seq(0, 0.5, length.out = 3)),
+  structural_rho_sensitivity = get_structural_rho_sensitivity(sensitivity_range, directed_networks),
+  structural_rho_correlation = get_structural_sensitivity_correlation(sensitivity_range, structural_rho_sensitivity, chosen_rho, metadata),
   visitation_importance_agreement = get_visitation_importance_agreement(sl_characteristics, metadata),
   metrics_subsampled = subsample_nets(networks, from = 0, to = 0.2, by = 0.01, this_method, bias = "none"), 
   strings_in_dots = "literals"
