@@ -216,7 +216,7 @@ make_fig_control_configurations <- function(en_chain, en_star, en_direction, pdf
          col =  c(get_color("matched")),
          pt.cex = 1.5,
          cex = 0.9, xjust=x_just, yjust=y_just, bty = "n")
-  legend(x_y[5,], legend = c("unmatched node (driver)"), horiz = TRUE,
+  legend(x_y[5,], legend = c("unmatched node"), horiz = TRUE,
          pch = 21, 
          pt.bg = c(get_color("unmatched")),
          col =  c(get_color("unmatched")),
@@ -244,7 +244,7 @@ make_fig_control_configurations <- function(en_chain, en_star, en_direction, pdf
     height = sum(heights)
   ))
 }
-# 
+
 # library(magrittr)
 # drake::loadd(en_chain, en_star, en_direction)
 # replayPlot(make_fig_control_configurations(en_chain, en_star, en_direction, "test.pdf")$plot)
