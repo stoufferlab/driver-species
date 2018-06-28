@@ -520,6 +520,6 @@ DBS conceived the idea; all authors contributed to the development of the theore
 
 # Data accessibility
 
-To enable readers to locate archived data from papers, we require that authors list the database and the respective accession numbers or DOIs for all data from the manuscript that has been made publicly available. Please see our editorial policies page for further information
+All data used in this manuscript have already been published by @lopezaraizamikel_impact_2007, @bartomeus_contrasting_2008-1, and @ballantyne_constructing_2015 The reader should refer to the original sources to access the data.
 
 # References
