@@ -1,3 +1,4 @@
+# drake::loadd(structural_rho_correlation, rho_feasibility)
 make_fig_rho_sensitivity <- function(structural_rho_correlation, rho_feasibility){
   require(ggplot2)
   
@@ -18,6 +19,7 @@ make_fig_rho_sensitivity <- function(structural_rho_correlation, rho_feasibility
     geom_line(aes(group = 1), colour = my_pallete()$dark_purple) + 
     base_ggplot_theme() + 
     coord_cartesian(ylim = c(-1, 1)) +
+    facet_wrap(~delta, labeller = label_both) +
     labs(title = "(a) Species contribution to coexistence", 
          x = latex2exp::TeX("interspecific competition ($\\rho$)"), 
          y = "Spearman correlation")
@@ -28,6 +30,7 @@ make_fig_rho_sensitivity <- function(structural_rho_correlation, rho_feasibility
     geom_ribbon(aes(ymin = conf_low, ymax = conf_high), 
                 fill = my_pallete()$light_purple, 
                 alpha = 0.25) +
+    facet_wrap(~delta, labeller = label_both) +
     base_ggplot_theme() +
     labs(title = "(b) Diff. crirical - redundant species", 
          x = latex2exp::TeX("interspecific competition ($\\rho$)"), 

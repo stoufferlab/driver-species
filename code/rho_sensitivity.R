@@ -1,23 +1,30 @@
 # drake::loadd(structural_rho_sensitivity, metadata)
-get_structural_sensitivity_correlation <- function(sensitivity_rho, structural_rho_sensitivity, chosen_rho = 0.005, metadata){
-  purrr::map2_dfr(structural_rho_sensitivity, sensitivity_rho, 
-              ~dplyr::mutate(.x, rho = .y)) %>% 
-    dplyr::select(net_name, sp_name, feasibility, rho) %>%
+get_structural_sensitivity_correlation <- function(sensitivity_range, structural_rho_sensitivity, chosen_rho = 0.005, metadata){
+  separator <- "---"
+  purrr::cross(sensitivity_range) %>%
+    purrr::map2_df(structural_rho_sensitivity, 
+                   ~dplyr::mutate(.y, rho = .x[[1]], delta  = .x[[2]])) %>% 
+    dplyr::select(net_name, sp_name, feasibility, rho, delta) %>%
     filter_networks_df(metadata) %>%
-    split(.$net_name) %>%
+    split(list(.$net_name, .$delta), sep = separator) %>%
     purrr::map_dfr(function(x){
       x %>%
         tidyr::spread(rho, feasibility) %>%
         dplyr::select_if(is.numeric) %>%
-        cor(.$`0.005`, ., method = "spearman") %>%
+        dplyr::select(-delta) %>%
+        cor(.[, as.character(chosen_rho)], ., method = "spearman") %>%
         extract(1, ) %>%
         dplyr::data_frame(cor = ., rho = names(.))
-    }, .id = "net_name")
+    }, .id = "net_delta") %>%
+    tidyr::separate(col = "net_delta", into = c("net_name", "delta"), sep = separator) %>%
+    dplyr::mutate(delta = as.numeric(delta))
 }
 
-# drake::loadd(sigma_phi_df, species_coovariates_df, species_empirical_coov,structural_rho_sensitivity, sensitivity_rho)
+# drake::loadd(sigma_phi_df, species_coovariates_df, species_empirical_coov,structural_rho_sensitivity, sensitivity_rho, sensitivity_range, metadata)
 # calculate the difference between critical and redundant species for several values of rho
-get_rho_feasibility <- function(sigma_phi_df, species_coovariates_df, species_empirical_coov,structural_rho_sensitivity, sensitivity_rho){
+get_rho_feasibility <- function(sigma_phi_df, species_coovariates_df, species_empirical_coov,structural_rho_sensitivity, sensitivity_range){
+  vals <- purrr::cross(sensitivity_range) %>%
+    purrr::map_dfr(~dplyr::data_frame(rho = .[[1]], delta = .[[2]]))
   structural_rho_sensitivity %>%
     purrr::map(~ join_sl_characteristics(sigma_phi_df, species_coovariates_df, species_empirical_coov, .)) %>%
     purrr::map(get_t_test_feasibility, metadata) %>%
@@ -27,9 +34,8 @@ get_rho_feasibility <- function(sigma_phi_df, species_coovariates_df, species_em
                                       conf_low = .$conf.int[1], 
                                       conf_high = .$conf.int[2], 
                                       p_value = .$p.value)) %>%
-    dplyr::mutate(rho = sensitivity_rho, 
-                  dif = critical- redundant)
-  
+    dplyr::bind_cols(vals) %>%
+    dplyr::mutate(dif = critical-redundant)
 }
 
 # get t test for a data frame with the adequate rho
