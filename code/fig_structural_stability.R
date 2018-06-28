@@ -29,8 +29,8 @@ make_fig_structural_stability <- function(critical_sp_df){
           legend.justification = c(0,1),
           legend.background = element_rect(fill = "NA"), 
           legend.key.size = unit(0.15, "in")) +
-    labs(title = "structural stability of species removal",
-         x = latex2exp::TeX("scaled structural stability ($\\Omega$)"))
+    labs(y = "probability density",
+         x = "scaled structural stability")
   
   list(p1)
 

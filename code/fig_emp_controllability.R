@@ -22,7 +22,7 @@ make_fig_emp_contollability <- function(controllability, randomisations_df, meta
           legend.justification = c(1,1),
           legend.background = element_rect(fill = "NA"), legend.key.size = unit(0.15, "in")) +
     labs(title = "(a)", 
-         y = "density")
+         y = "probability density")
   
   r <- randomisations_df %>%
     filter_networks_df(metadata) %>%
@@ -70,7 +70,8 @@ make_fig_emp_contollability <- function(controllability, randomisations_df, meta
           legend.justification = c(1,1),
           legend.background = element_rect(fill = "NA"), legend.key.size = unit(0.15, "in")) +
     labs(title = "(c)", 
-         x = expression(paste(Delta, n[D])))
+         x = expression(paste(Delta, n[D])), 
+         y = "probability density")
          
  list(p1, p3, p2)
 }
