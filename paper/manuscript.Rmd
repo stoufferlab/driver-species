@@ -510,8 +510,9 @@ Structural controllability suggests that this situation might be the exception r
 
 # Acknowledgements
 
-<!-- DBS: Surely we had this before. Please copy it from a previous submission. And definitely DON'T submit without the right acknowledgement text! -->
-A brief statement acknowledging collaborators and research assistants who do not meet the criteria for authorship described above, or acknowledging funding sources, providing relevant permit numbers (including institutional animal use permits), or giving recognition to nature reserves or other organizations that made the work possible.
+The authors thank Jane Memmott and coauthors, and eveyone that has made their data available to us, Takeuki Uno for the insight provided to find the set of all maximum matching algorithms, and Jason Tylianakis, Bernat Bramon Mora, Guadalupe Peralta, Rogini Runghen, Michelle Marraffini, Warwick Allen, Matthew Hutchinson, and Marilia Gaiarsa for feedback and valuable discussions. 
+EFC acknowledges the support from the University of Canterbury Doctoral Scholarship, the University of Canterbury Meadow Mushrooms Postgraduate Scholarship, a New Zealand International Doctoral Research Scholarship, and a travel grant from the European Space Agency. 
+DBS acknowledges the support of a Marsden Fast-Start grant and a Rutherford Discovery Fellowship, administered by the Royal Society Te Aparangi.
 
 # Author contributions
 
