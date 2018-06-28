@@ -450,7 +450,7 @@ The median size of the relative minimum driver-node set of in our dataset was $n
 This value is high when compared to other complex systems in which controllability has been investigated;  
 for instance, only gene regulation networks appear to achieve similar levels of controllability while most social, power transmission, internet, neuronal, and even metabolic networks seem to be "easier" to control ($0.1 < n_D < 0.35$) [@liu_controllability_2011]. 
 These results indicate that fully controlling ecological networks might currently be out of reach for all but the smallest communities [@motter_networkcontrology_2015]. 
-Nevertheless, structural controllability might be helpful at identifying communities in which changes in the ecological state are more likely to occur and provides solid theoretical rationale for the many difficulties encountered in the management and restoration of natural communities [@addrefs].
+Nevertheless, structural controllability might be helpful at identifying communities in which changes in the ecological state are more likely to occur and provides solid theoretical rationale for the many difficulties encountered in the management and restoration of natural communities [@woodford_confronting_2016].
 
 When controlling for network structure, we found no difference between the controllability of invaded and uninvaded networks. 
 These results suggest that the differences between the controllability across networks are instead likely to arise from differences in their structure. 
@@ -488,7 +488,7 @@ Furthermore, our observation that changes in the abundance of invasive plants (a
 However, our results also suggest that removals must be exercised with caution. 
 Not only it is hard to predict the direction in which the system will change, but we also show that critical species can underpin the coexistence of species and therefore some communities may be acutely vulnerable to their eradication [@traveset_invaders_2013; @albrecht_consequences_2014].
 
-Structural controllability assumes that the networks can be approximated using linear functional responses [@addrefs]. 
+Structural controllability assumes that the networks can be approximated using linear functional responses [@liu_control_2016]. 
 The ramifications of this assumption imply that, while structural controllability is useful to identify species that are relevant for network control, it cannot be used to design the *exact* interventions that should be applied to these species in order to achieve a desired state. 
 In an ideal scenario, we would completely incorporate the species dynamics into the controllability analysis [@cornelius_realistic_2013]; the reality is that such information is rarely available in most ecological scenarios. 
 \R{data-requirements}In contrast, structural controllability only requires a quantitative approximation of the network's interactions to gain valuable insight from the community.
