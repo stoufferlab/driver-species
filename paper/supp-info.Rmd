@@ -188,7 +188,7 @@ First,  if $x_i$ belongs to the minimum driver node set and has no adjacent node
 Second, if $x_i$ does not belong to the minimum driver node set and is not adjacent to any possible input node, then it does not part of the minimum driver node set under any control configuration. 
 Finally, if a node $x_i$ belongs to the minimum driver node set and is adjacent to another node $x_j$ in the input graph, then $x_j$ must belong to another minimum driver node to which $x_i$ does not belong, in other words, $x_i$ and $x_j$ are substitutable. 
 
-The frist and the second group have a control capacity of $\phi = 1$ and $\phi = 0$ respectively. 
+The first and the second group have a control capacity of $\phi = 1$ and $\phi = 0$ respectively. 
 Meanwhile, the third group has intermediate values of control capacity which can be calculated by computing the number of possible substitutions of a node by its control adjacent nodes. 
 As a rule of thumb, the largest the number of possible substitutions an input node has, the smaller its control capacity. 
 
@@ -208,7 +208,7 @@ However, the control capacities obtained using the input graph are not identical
 The reason for this discrepancy is that two maximum matchings might result in the same minimum driver node set. 
 Nevertheless, the results obtained using both approaches are extremely similar. 
 We compared the control capacity obtained by calculating all maximum matchings and that obtained using the input graph in `r length(cc_corr)` of our networks (those for which we were able to calculate all maximum matchings within a reasonable time). 
-The spearman correlation was very high in all cases, ranging between `r round(min(cc_corr),2)` and `r round(max(cc_corr), 2)` (median `r round(median(cc_corr), 2)`). 
+The Spearman correlation was very high in all cases, ranging between `r round(min(cc_corr),2)` and `r round(max(cc_corr), 2)` (median `r round(median(cc_corr), 2)`). 
 
 \clearpage
 
