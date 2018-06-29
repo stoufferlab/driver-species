@@ -94,8 +94,8 @@ controllability_plan <- drake::drake_plan(
 species_level_plan <- drake::drake_plan(
   species_empirical_coov = purrr::map_df(networks, plants_or_pols, .id = "net_name"),
   species_coovariates_df = purrr::map2_df(directed_networks, networks, get_species_coov, metrics = c("degree", "species strength", "betweenness", "closeness", "eigen", "page_rank", "nested_contribution", "interaction push pull"), .id = "net_name"), 
-  chosen_rho = sensitivity_range$rho[round(length(sensitivity_range$rho)/2)],
-  chosen_delta = sensitivity_range$delta[round(length(sensitivity_range$delta)/2)],
+  chosen_rho = sensitivity_range$rho[round(length(sensitivity_range$rho))],
+  chosen_delta = sensitivity_range$delta[1],
   structural_stability = get_all_struct(directed_networks, rho = chosen_rho, delta = chosen_delta), 
   sigma_phi_df = purrr::map_dfr(matched_networks, get_controllability_superiorness, .id = "net_name"),
   sl_characteristics = join_sl_characteristics(sigma_phi_df, species_coovariates_df, species_empirical_coov, structural_stability),
