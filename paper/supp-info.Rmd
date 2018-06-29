@@ -96,7 +96,7 @@ net_prop %>%
 # Structural controllability {#structural-controllability}
 
 Structural controllability avoids the limitation of not knowing the exact values of the matrices *A* and *B*. 
-Using structural controllability can be boiled down to two conditions: a system is controllable if there are no inaccessible nodes or dilations. A node is inaccessible if there are no directed paths between it and the input nodes. "Dilations are subgraphs in which a small subset of nodes attempts to rule a larger subset of nodes. In other words, there are more 'subordinates' than 'superiors'" [@liu_control_2016].
+Structural controllability boils down to two conditions: a system is controllable if there are no inaccessible nodes or dilations. A node is inaccessible if there are no directed paths between it and the input nodes. "Dilations are subgraphs in which a small subset of nodes attempts to rule a larger subset of nodes. In other words, there are more 'subordinates' than 'superiors'" [@liu_control_2016].
 
 The goal of structural controllability is to use the information contained in **A** to generate a supportable estimate of **B**.
 This focus allows us to gain insight of the inherent controllability of a network, and the roles of the species that compose it, without being overly dependent on the particular choices of how the system dynamics are modelled or characterised. 
@@ -142,7 +142,7 @@ replayPlot(fig_small_network$plot)
 
 The algorithm implemented in `max_bipartite_matching`, however, is only able to find **one** of possibly many maximum matchings in a network. 
 Though one maximum matching is enough to calculate *n~D~* and hence to provide an indication of the manageability of a community, it is not sufficient to estimate the role of individual species. 
-To do that, we need to calculate all possible maximum matchings (or, equivalently, all maximal cardinality matchings in weighted networks like ours). 
+To do that, we need to calculate all possible maximum matchings. 
 To do this, we again start from the alternative bipartite representation in Figure \@ref(fig:fig-maximum-matching-procedure)b and assign an identity to each of the links in the network.
 We will call this bipartite representation *P*. 
 We then construct the line graph of the alternative bipartite representation *L(P)* (Figure \@ref(fig:fig-all-maximum-matching)). 
@@ -152,7 +152,7 @@ Here some extra definitions are necessary.
 First, *H* is a graph with the same nodes as *L(P)* but that has a link between two nodes if and only if there is not a link in *L(P)*. 
 Second, a clique is a subset of nodes such that all pairs of them are linked. 
 Lastly, a maximal clique is a clique such that there are no cliques composed of more nodes [@Gutin2013]. 
-In this example, there are two maximal cliques: the one formed by 1, 3 and 5, and the one formed by 2, 3 and 5. 
+In this example, there are two maximal cliques. 
 The final step is then to map these cliques onto the original network to obtain all possible maximal cardinality matchings as shown in Figure \@ref(M-fig:fig-control-configuration) in the main text.
 
 ```{r}
@@ -202,7 +202,6 @@ cc_corr <- control_capacity_correlations %>%
   corr
 ```
 
-
 For larger networks, calculating the control capacities using the input graph is several orders of magnitude faster than computing all possible maximum matchings. 
 While the computation time of the input graph grows linearly with network size, the computation of all maximum matchings grows polynomially. 
 However, the control capacities obtained using the input graph are not identical to those obtained by computing all possible maximum matchings. 
@@ -250,7 +249,7 @@ replayPlot(fig_bidirectional$plot)
 We follow @rohr_structural_2014 and @saavedra_nested_2016 to calculate the structural stability of the empirical networks. 
 We first calculate the stability condition $\hat{\gamma}$ using all species in the network. 
 To calculate the contribution to stable coexistence of a given species, we removed the focal species from the network and then calculated the corresponding structural stability $\Omega$ for a level of mutualism equal to the stability condition found previously. 
-For simplicity, in the main text we show results for when there was no mutualistic trade-off $\delta = 0$ and an intermediate value of interspecific competition of $\rho = `r drake::readd(chosen_rho)`$ [@saavedra_nested_2016]. 
+For simplicity, in the main text we show results for when there is a  mutualistic trade-off of $\delta = `r drake::readd(chosen_delta)`$ and a mean interspecific competition of $\rho = `r drake::readd(chosen_rho)`$ [@saavedra_nested_2016]. 
 The choice of the parameters had only a minor impact on the relative contribution of species to stable coexistence (Figure \@ref(fig:fig-rho-sensitivity)a) and overall there was no change on our result that indicates that critical species (those with $\phi = 1$) have a larger than average contribution to stable coexistence (Figure \@ref(fig:fig-rho-sensitivity)b). 
 
 ```{r fig-rho-sensitivity, fig.width=fig_sizes()[[2]], fig.height=fig_sizes()[[1]], fig.cap="A sensitivity analysis of the impact of interspecific competition parameter $\\rho$ on structural stability reveals that the choice of parameters has a negligible impact on the results. (a) Spearman correlation coefficient of the contribution to stable coexistence of species. Lighter lines indicate the correlation coeficient for each of the twenty empirical networks. The dark line indicates the median value. (b) Difference between the conribution to stable coexistence of critical and redundant species for different values of the iterspecific competition parameters $\\rho$.", fig.pos="p", fig.align='center'}

@@ -100,7 +100,7 @@ In these cases, it might be less useful to understand which species may cause *a
 Instead, we are better served by understanding how the structure of the network can be harnessed to achieve the desired state and which species may play the largest role in this targeted process. 
 When the state of a community is underpinned by more than a single species and we move beyond single-species removals, we might expect the accuracy of centrality to diminish.
 <!-- DBS: We could potentially cut the sentence above; I see the merit, but I also feel like it could annoy readers/reviewers. -->
-<!-- FDO: I made the sentence softer, do you think it's good enough? I'm happy to remove it alltogether though -->
+<!-- FDO: I made the sentence softer, do you think it's good enough? I'm happy to remove it altogether though -->
 As a result, community ecology could arguably benefit from an alternative, perhaps more mechanistically-grounded, approach to understand how species affect each other's abundance. 
 
 Species abundances---and consequently the state of the community as a whole---are influenced by both their interactions, the specific dynamics of these interactions and the mechanisms of self-regulation [@lever_sudden_2014]. 
@@ -167,7 +167,7 @@ replayPlot(fig_struct_control$plot)
 A system is said to be controllable if it is possible to steer it from an initial to an arbitrary final state within finite time [@kalman_mathematical_1963]. 
 A simple version of such a system can be described by $\frac{dx}{dt} = Ax + Bu(t)$, where the change of its state over time ($\frac{dx}{dt}$) depends on its current state *x* (for example, the species' abundances), an external time-varying input *u(t)* (the control signal), and two matrices *A* and *B*, which encode information about the network structure and how species respond to external inputs, respectively. 
 In classic control theory, determining whether this system is controllable can be achieved by checking that its controllability matrix $R= [ \begin{matrix}B & AB & A^{2}B & ...& A^{n-1}B\end{matrix} ]$ has full rank. 
-In complex systems, however, employing this rank condition, or numerical approximations of it, is infeasible because it is hard to fully parameterise *A* and *B* (either because the weight of the links changes over time or because they are difficult to measure). 
+In complex systems, however, employing this rank condition, or numerical approximations of it is infeasible because it is hard to fully parameterise *A* and *B* (either because the weight of the links changes over time or because they are difficult to measure). 
 Here, we use an approach based on the structural controllability theorem [@lin_structural_1974], which assumes that we are confident about which elements of *A* and *B* have either non-zero or zero values (there is an interaction or not), but that we less sure about the precise magnitude of the non-zero values. 
 Using this structural approach, we can find out the controllability of a system for every non-zero realisation of the parameters.
 An intuitive way to understand structural controllability is by looking at its graphical interpretation: from a topological perspective a network is structurally controllable if there are no inaccessible nodes—that is, nodes without incoming links—or dilations—*expansions* of the network (Figure \@ref(fig:fig-example-networks)b; Supporting Information Section \@ref(S-structural-controllability)).
@@ -245,7 +245,7 @@ These models included five predictor variables that mirror the network-level pre
 First, the species contribution to nestedness, which has been proposed as a key feature that promotes stability and robustness in mutualistic networks [@saavedra_strong_2011]. 
 Second, the species strength (the sum of a species' visits), which quantifies the strength of a species associations and is indirectly related to its abundance [@poisot_comparative_2012]. 
 Third, the direction of asymmetry which quantifies the net balance in dependencies; that is it indicates if a species affects other species more than what they affect it or not [@vazquez_species_2007]. 
-Fourth, the species degree in order to account for the inrinsic centrality of a species.
+Fourth, the species degree in order to account for the intrinsic centrality of a species.
 Finally, we included a categorical variable for the species trophic level (plant or pollinator) and an interaction term between trophic level and the previous four variables. 
 To facilitate comparison between predictors, degree and visitation strength were log-transformed and all four continuous variables were scaled to have a mean of zero and a standard deviation of one.
 To identify the models that were best supported by the data, we first determined the most parsimonious random structure using the AICc. 
@@ -275,7 +275,7 @@ We call this the probability of being a superior node $\sigma$.
 Because superior nodes are those at the beginning of a matched link, \(\sigma\) could be seen as a "softer" version of control capacity. 
 Conveniently, unlike the minimum driver-node set, superior species are the same for all control configurations and so in a network without reciprocal links the probability that a species is superior $\sigma$ is either 1 or 0. 
 <!-- DBS: I think that the statement above needs a reference as I don't think this is "new" here nor do I think everyone will necessarily understand why it's true without pointing them to a more formal explanation. -->
-<!-- I'm pretty sure that's the case cause that's what we get. I remember seeing it with slighlty different terminology in a paper a couple of months ago. I made a not and now I cannot find the note nor the paper... Will have another look and hopefully something will come out -->
+<!-- I'm pretty sure that's the case cause that's what we get. I remember seeing it with slightly different terminology in a paper a couple of months ago. I made a not and now I cannot find the note nor the paper... Will have another look and hopefully, something will come out -->
 
 ## Testing assumptions
  
@@ -297,7 +297,7 @@ c_m <- controllability %>%
 
 The size of the minimum driver-node set relative to the number of species in each network $n_D$ ranged between $n_D = `r round(min(c_m$n_D), 2)`$ and $n_D = `r round(max(c_m$n_D), 2)`$ (median `r round(median(c_m$n_D), 2)`). 
 We found that the relative size of the minimum driver-node set of invaded communities was not significantly different from that of communities that have not been invaded (Figure \@ref(fig:fig-emp-controllability)a). 
-In contrast, there was an large negative relationship between $n_D$ and the network asymmetry (Figure \@ref(fig:fig-emp-controllability)b).
+In contrast, there was a large negative relationship between $n_D$ and the network asymmetry (Figure \@ref(fig:fig-emp-controllability)b).
 <!-- DBS: "important" doesn't mean anything statistically. was it significant? -->
 <!-- Yes it is but I'm using model evidence and effect size to assess the importance of variables as opposed to p-values -->
 Furthermore, there were also negative, albeit weaker, relationships between $n_D$ and connectance, nestedness and species richness (Table  \@ref(S-tab:tab-controllability-model-results)). 
@@ -397,11 +397,11 @@ crit_test <- critical_sp_df  %$%
 ```
 
 We also found that critical species have a particularly large impact on species coexistence when compared to non-critical species.
-Indeed, the structural stability of the networks where critical species were removed was considerably to those in were non-critical speceis were removed ($p = `r sprintf('\\num{%s}', format(crit_test$p.value, digits = 2))`$; Figure \@ref(fig:fig-structural-stability); Supporting Information \@ref(S-structural-stability)). 
+Indeed, the structural stability of the networks where critical species were removed was considerably to those in were non-critical species were removed ($p = `r sprintf('\\num{%s}', format(crit_test$p.value, digits = 2))`$; Figure \@ref(fig:fig-structural-stability); Supporting Information \@ref(S-structural-stability)). 
 <!-- DBS: I wonder if people will have a hard time understanding what these values mean. That is, the differences are clear visually but what do those values of Omega actually mean? I am almost certain a reviewer is going to nag about this. -->
 <!-- Tried to edit the results and the caption of the figure to help improve that -->
 
-```{r fig-structural-stability, fig.width=fig_sizes()[[1]], fig.height=fig_sizes()[[1]]/2, fig.cap="Probability density of the structural stability of the communities after a single focal species is removed. Mathematically, the structural stability of a network represents the size of the parameter space (i.e., growth rates, carrying capacities, etc.) under which all species can sustain positive abundances. The structural stability of communities in which critical species have been removed (darker line) is considerable smaller than that of communities in which non-critical species have been removes. This indicates that critical species contribute more to the stable coexistence of their communities. To allow comparison across communities, the structural stability values were scaled within each network to have a mean of zero and a standard deviation of one. We assume intermediate values of the mutualistic trade-off and mean interspecific competition : $\\delta = 0.25$, $\\rho = 0.005$ [@saavedra_nested_2016]. However, the choice of parameters does not affect the results (Supporting Information \\@ref(S-structural-stability))"}
+```{r fig-structural-stability, fig.width=fig_sizes()[[1]], fig.height=fig_sizes()[[1]]/2, fig.cap="Probability density of the structural stability of the communities after a single focal species is removed. Mathematically, the structural stability of a network represents the size of the parameter space (i.e., growth rates, carrying capacities, etc.) under which all species can sustain positive abundances. The structural stability of communities in which critical species have been removed (darker line) is considerably smaller than that of communities in which non-critical species have been removed. This indicates that critical species contribute more to the stable coexistence of their communities. To allow comparison across communities, the structural stability values were scaled within each network to have a mean of zero and a standard deviation of one. Here, we assume values of the mutualistic trade-off and mean interspecific competition of $\\delta = 0$ and $\\rho = 0.01$ respectively [@saavedra_nested_2016]. However, the choice of these parameters does not affect the results (Supporting Information \\@ref(S-structural-stability))"}
 drake::loadd(fig_structural_stability)
 fig_structural_stability[[1]]
 ```
@@ -429,7 +429,7 @@ Despite removing rare interactions and species, the relative size of the minimum
 
 Our main goal was to understand the role that species play at both modifying the abundance of the species they interact with and the state of the community as a whole. 
 To achieve that goal we applied *structural controllability*, a field at the intersection between control and complex theory that allow us to obtain two key pieces of information: the *controllability* of a network and a species *control capacity* (Table \@ref(tab:tab-glossary)). 
-<!-- DBS: Two sentences does not make a paragraph.... Please add one more that summarizes what we found. -->
+We found that the controllability of a network does not depend on its invasion status and that the species that are critical to altering the state of the community are also the ones that sustain the most the stable coexistence of species in their communities.
 
 ```{r tab-glossary}
 defs <- list(
@@ -467,7 +467,7 @@ Specifically, we found that network controllability is almost completely constra
 These two factors are particularly relevant because they govern the asymmetric nature of mutual dependences, which themselves provide the foundation of structure and stability in mutualistic networks [@bascompte_asymmetric_2006; @memmott_tolerance_2004; @astegiano_robustness_2015]. 
 
 Accordingly, our results suggest that structural controllability is closely related to the dynamic persistence of an ecological community. 
-First, we found a comparatively small but thought-provoking negative relationship between the controllability of a network and the its nestedness. 
+First, we found a comparatively small but thought-provoking negative relationship between the controllability of a network and its nestedness. 
 Previous studies indicate that nestedness promotes species coexistence and confers robustness to extinction [@bastolla_architecture_2009; @memmott_tolerance_2004] even at the expense of the dynamic stability of the mutualistic community [@saavedra_nested_2016]. 
 These observations are in agreement with our results, as we would expect the dynamic stability of a community to be correlated to the difficulty to control it. 
 Second, species' control capacity was strongly correlated to their contribution to nestedness and critical species had the largest impact to the stable coexistence of species in their communities. 
@@ -476,7 +476,7 @@ Therefore, species that play a key role at determining the state of the communit
 When controlling for a species' strength, which is indirectly a proxy of its abundance, and the net balance of its dependencies, we found that control capacity could not be easily predicted by species' degree or other metrics of centrality.
 For instance, some species with a low degree achieved the maximum control capacity and were critical for control in their communities. 
 At first glance, our findings challenge numerous studies that highlight the role that central species play in the dynamics of their communities and their utility at predicting species extinctions [@jordan_keystone_2009]. 
-However, further inspection shows that our results do not contradict these findings. 
+However, further, inspection shows that our results do not contradict these findings. 
 On the contrary, most species with a large degree also have a large control capacity and all of them were classified as superior nodes which corroborates the utility of classic centrality metrics. 
 Putting these observations together, our results therefore take previous findings one step further and suggest that centrality might paint an incomplete picture of the relevance of species.
 
@@ -504,7 +504,7 @@ In an ideal scenario, we would completely incorporate the species dynamics into 
 Furthermore, while the relationship between centrality and keystoneness is based on an intuitive understanding of what a keystone species is, the assumptions of structural controllability are explicit and the estimation of a species importance arises from a mechanistic understanding of the population dynamics between species. 
 By accounting for network dynamics (even if in a simple way), structural stability incorporates more ecological realism, especially in the extreme scenario in which the state of a community is only marginally affected by the topology of their interactions.
 <!-- DBS: See what everyone else says about these last two sentences. I think they get harder and harder to follow as they evolve. -->
-<!-- Made some edits, we'll se what people say -->
+<!-- Made some edits, we'll see what people say -->
 
 # Conclusions
 
@@ -519,7 +519,7 @@ Structural controllability suggests that this situation might be the exception r
 
 # Acknowledgements
 
-The authors thank Jane Memmott and coauthors, and eveyone that has made their data available to us, Takeuki Uno for the insight provided to find the set of all maximum matching algorithms, and Jason Tylianakis, Bernat Bramon Mora, Guadalupe Peralta, Rogini Runghen, Michelle Marraffini, Warwick Allen, Matthew Hutchinson, and Marilia Gaiarsa for feedback and valuable discussions. 
+The authors thank Jane Memmott and coauthors, and everyone that has made their data available to us, Takeuki Uno for the insight provided to find the set of all maximum matching algorithms, and Jason Tylianakis, Bernat Bramon Mora, Guadalupe Peralta, Rogini Runghen, Michelle Marraffini, Warwick Allen, Matthew Hutchinson, and Marilia Gaiarsa for feedback and valuable discussions. 
 EFC acknowledges the support from the University of Canterbury Doctoral Scholarship, the University of Canterbury Meadow Mushrooms Postgraduate Scholarship, a New Zealand International Doctoral Research Scholarship, and a travel grant from the European Space Agency. 
 DBS acknowledges the support of a Marsden Fast-Start grant and a Rutherford Discovery Fellowship, administered by the Royal Society Te Aparangi.
 
