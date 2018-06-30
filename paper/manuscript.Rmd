@@ -66,7 +66,7 @@ Centrality metrics have often been used to identify these species, which are som
 However, the relationship between centrality and keystoneness is phenomenological and largely based on an intuitive understanding of what may constitute an important species. 
 While centrality is good at predicting which species could cause the largest change in their community it says little about how these species could be used to attain (or preserve) a particular state of the community. 
 
-2. Here we introduce structural controllability an approach that allows us to quantify the extent to which network topology can be harnessed to achieve a desired state.  
+2. Here we introduce structural controllability an approach that allows us to quantify the extent to which network topology can be harnessed to achieve a desired state. 
 It also allows us to quantify a species control capacity—its relative importance—and identify the set of species that, collectively, are critical in this context.
 We illustrate the application of structural controllability with ten pairs of uninvaded and invaded plant-pollinator communities.
 
@@ -490,7 +490,7 @@ Stepping back, our results also provide support to the idea that management deci
 
 Our choice of studying invaded/uninvaded networks was based on a desire to contrast the extensive empirical evidence of the role of invasive plants with our theoretical results. 
 Without exception, we found that invasive plants were critical for network control and as such our results were in line with our expectations. 
-Invasive plants have been previously found to exacerbate the asymmetries in their communities [@aizen_invasive_2008; bartomeus_contrasting_2008-1; @henriksson_strong_2016] and to be central in their communities [@vila_invasive_2009; @palacio_generalist_2016]. 
+Invasive plants have been previously found to exacerbate the asymmetries in their communities [@aizen_invasive_2008; @bartomeus_contrasting_2008-1; @henriksson_strong_2016] and to be central in their communities [@vila_invasive_2009; @palacio_generalist_2016]. 
 We found that invasive plants are, however, unlikely to be inherently different from their native counterparts [@emer_species_2016; @stouffer_how_2014]. 
 Just like any other mutualist in our dataset, invasive plants tended to attain a high control capacity proportional to the degree to which they contribute to network persistence, are abundant, and depend little on other species. 
 Furthermore, our observation that changes in the abundance of invasive plants (and presumably all critical species) are crucial to modify the state of the community agrees with recent evidence showing that ecosystem restoration focused on the eradication of invasive plants can have transformative desirable effects in plant-pollinator communities\R{extra-references-3} [@kaiser-bunbury_ecosystem_2017]. 
