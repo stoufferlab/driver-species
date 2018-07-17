@@ -56,6 +56,11 @@ bar <- dplyr::filter(metadata, study == "bartomeus") %>%
 *Alternative titles:* 
 
 * Keystoneness, centrality, and the structural controllability of ecological networks
+* Keystone and critical species, a structural controllability perspective of ecological networks
+* The controllability of ecological networks
+* Species with high control capacity support stable coexistence of pollination communities
+* Species with high control capacity support stable coexistence of pollination networks
+* A control theory perspective: species with high control capacity support stable coexistence of pollination communities
 
 \clearpage
 
@@ -80,6 +85,8 @@ This result was true, even when controlling for its degree, abundance/interactio
 It also identifies species that are critical to sustain biodiversity and to change or maintain the state of their community and are therefore likely to be very relevant for management and conservation. 
 
 **Keywords:** Keystone species, management interventions, mutualism, network control theory, plant population and community dynamics, species importance, control capacity
+
+\clearpage
 
 # Introduction
 
