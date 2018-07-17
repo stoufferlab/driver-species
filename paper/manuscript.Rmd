@@ -202,6 +202,7 @@ This simple metric provides a general indication of how difficult controlling a 
 For instance, achieving full control in a "network" in which species do not interact at all is relatively more difficult as we would require an intervention for every single species. 
 Conversely, the structure of a linear trophic chain can be harnessed to achieve full control using just one intervention targeted at the top species; a suitable control signal could then cascade through the trophic levels and reach other species in the community. 
 Specifically, drawing from the structural-controllability literature, we use the size of the minimum driver-node set relative to the total number of species $n_D = \frac{D}{N}$ as a measure of the *controllability* of a network—the extent to which the network structure can be harnessed to control the community.
+The lower $n_D$ the more controllable the community. 
 In an ecological context, external inputs can be thought of as management interventions that modify the abundance of a particular species. 
 
 After finding the minimum driver-node set in each of our networks, we wanted to test whether invasion status or other predictors are correlated to controllability. 
@@ -451,7 +452,7 @@ dplyr::data_frame(rows = c(rbind(names(defs), unlist(defs))), dummy2 = "") %>%
 ```
   
 Our results indicate that fully controlling ecological networks might currently be out of reach for all but the smallest communities [@motter_networkcontrology_2015]. 
-Indeed, the median size of the relative minimum driver-node set in our dataset was $n_D = `r round(median(c_m$n_D),2)`$, a high value when compared to other complex systems in which controllability has been investigated. 
+Indeed, the median size of the relative minimum driver-node set in our dataset was $n_D = `r round(median(c_m$n_D),2)`$, a high value when compared to other complex systems in which controllability has been investigated (the lower $n_D$ the more controllable the community). 
 For instance, only gene regulation networks appear to achieve similar levels of controllability while most social, power transmission, Internet, neuronal, and even metabolic networks seem to be "easier" to control ($0.1 < n_D < 0.35$) [@liu_controllability_2011]. 
 Structural controllability provides solid theoretical rationale for the many difficulties encountered in the management and restoration of natural communities [@woodford_confronting_2016]. 
 Nevertheless, structural controllability might be helpful at identifying communities in which changes in the ecological state are more likely to occur
