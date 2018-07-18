@@ -249,13 +249,9 @@ To facilitate comparison between predictors, degree and visitation strength were
 To identify the models that were best supported by the data, we first determined the most parsimonious random structure using the AICc. 
 The relative importance of variables was then assessed by looking at their effect sizes in the top-ranked models and the cumulative weight of the models in which they are present. 
 
-In addition, we wanted to understand how two species-level control metrics are related to five metrics of keystoneness based on centrality. 
-For the centrality metrics, we use a species' degree, betweenness, closeness centrality [@martin_gonzalez_centrality_2010], page rank [@mcdonald-madden_using_2016], and eigen centrality [@jordano_ecological_2006]. 
-The first control metric we use is a species control capacity $\phi$ described above. 
-The second metric is the probability that a focal species influences the abundance of another species internally, regardless of whether a management intervention is required in that species or not. 
-We call this the probability of being a superior node $\sigma$. 
-Because superior nodes are those at the beginning of a matched link, \(\sigma\) could be seen as a "softer" version of control capacity. 
-Conveniently, unlike the minimum driver-node set, superior species are the same for all control configurations and so in a network without reciprocal links the probability that a species is superior $\sigma$ is either 1 or 0. 
+In addition, we wanted to understand how a species control capacity $\phi$ described above relates to metrics of keystoneness based on centrality. 
+Specifically, in each network, we calculated the species' degree, betweenness, closeness centrality [@martin_gonzalez_centrality_2010], page rank [@mcdonald-madden_using_2016], and eigen centrality [@jordano_ecological_2006]. 
+We then calculated the spearman correlation coefficient between control capacity and each of these centrality metrics. 
 
 Our analysis revealed that some species have a control capacity $\phi = 1$. 
 These species are critical to controlling their community because they are part of the minimum driver-node set in *every* control scenario. 
@@ -347,9 +343,8 @@ correlations <- sl_char_corr %>%
 ```
 
 Species control capacity $\phi$ was only weakly correlated with commonly-used centrality metrics. 
-The Spearman correlation between these ranged between `r round(min(correlations$control_capacity), 2)` (with betweeness-centrality) and `r round(max(correlations$control_capacity), 2)` (with eigen-centrality). 
-On the other hand, the probability of being a superior species $\sigma$ was slightly more correlated to established centrality metrics as its Spearman correlation ranged between `r round(min(correlations$superior), 2)` (with eigen-centrality) and `r round(max(correlations$superior), 2)` (with degree; Figure \@ref(S-fig:fig-correlogram)). 
-Despite the higher correlation with species' degree we still observed many species with a low degree and a high probability of being superior nodes (Figure \@ref(S-fig:fig-species-models-degree)b).
+The Spearman correlation between these ranged between `r round(min(correlations$control_capacity), 2)` (with betweeness-centrality) and `r round(max(correlations$control_capacity), 2)` (with eigen-centrality), see Figure \@ref(S-fig:fig-correlogram)a. 
+The correlation coefficient with degree was `r round(correlations[correlations$rowname == "degree", ]$control_capacity, 2)`, however most species with high degree also tended to attain a high control capacity (Figure \@ref(S-fig:fig-species-models-degree)a).
 
 ```{r tab-model-selection-table}
 drake::loadd(species_model_cc)
