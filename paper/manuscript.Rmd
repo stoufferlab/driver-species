@@ -53,10 +53,8 @@ bar <- dplyr::filter(metadata, study == "bartomeus") %>%
   dplyr::mutate(size = n_pla + n_pol) %$% size %>% summary() 
 ```
 
-*Alternative titles:* 
-
-* Structural controllability of ecological networks
-* Structural controllability: species with high control capacity support stable coexistence of pollination networks
+<!-- *Alternative titles:*  -->
+<!-- * Structural controllability of ecological networks -->
 
 \clearpage
 
