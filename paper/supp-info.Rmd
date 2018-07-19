@@ -1,5 +1,5 @@
 ---
-title: "Structural controllability of ecological networks"
+title: "Keystoneness, centrality, and the structural controllability of ecological networks"
 subtitle: "Supporting Information"
 author: "Fernando Cagua, Kate L. Wootton, Daniel B. Stouffer"
 classoption: a4paper

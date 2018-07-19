@@ -1,5 +1,5 @@
 ---
-title: "Species with high control capacity support stable coexistence of pollination networks"
+title: "Keystoneness, centrality, and the structural controllability of ecological networks"
 classoption: a4paper
 csl: journal-of-ecology.csl
 output: 
@@ -55,6 +55,7 @@ bar <- dplyr::filter(metadata, study == "bartomeus") %>%
 
 <!-- *Alternative titles:*  -->
 <!-- * Structural controllability of ecological networks -->
+
 
 \clearpage
 

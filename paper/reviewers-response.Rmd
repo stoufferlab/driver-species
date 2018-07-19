@@ -1,5 +1,5 @@
 ---
-title: "Structural controllability of ecological networks"
+title: "Keystoneness, centrality, and the structural controllability of ecological networks"
 subtitle: "JEcol-2017-0720 - Detailed response to comments"
 author: "Fernando Cagua, Kate L. Wootton, Daniel B. Stouffer"
 classoption: a4paper
@@ -31,7 +31,7 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE,
 ```
 
 We are thankful to the assistant editor James Ross, the editors Nicole Rafferty and David Gibson, and two anonymous reviewers for the insightful comments to improve the manuscript. 
-In the following sections, you can find a detailed response to each comment raised during the previous round of review.
+In the following sections, you can find a detailed response to each comment raised during the previous round of review. 
 
 # Editor comments
 
