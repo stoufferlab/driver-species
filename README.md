@@ -13,4 +13,3 @@ We apply structural controllability to pollination networks and are able to iden
 
 To reproduce the analyses, run `make` from a the main directory in your terminal. 
 All code was tested on a x86_64-apple-darwin15.6.0 (64-bit) platform but should run in most unix systems. 
-The code asume
