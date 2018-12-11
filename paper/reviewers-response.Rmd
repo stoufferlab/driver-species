@@ -1,6 +1,6 @@
 ---
 title: "Keystoneness, centrality, and the structural controllability of ecological networks"
-subtitle: "JEcol-2017-0720 - Detailed response to comments"
+subtitle: "JEcol-2018-0545 - Detailed response to comments"
 author: "Fernando Cagua, Kate L. Wootton, Daniel B. Stouffer"
 classoption: a4paper
 csl: journal-of-ecology.csl
@@ -30,10 +30,47 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE,
                       warning = FALSE)
 ```
 
-We are thankful to the assistant editor James Ross, the editors Nicole Rafferty and David Gibson, and two anonymous reviewers for the insightful comments to improve the manuscript. 
+We are thankful to the assistant editor James Ross, the senior editor and David Gibson, and three anonymous reviewers for the insightful comments to improve the manuscript. 
 In the following sections, you can find a detailed response to each comment raised during the previous round of review. 
 
 # Editor comments
+
+
+
+# Associate Editor's comments:
+
+
+> "I think this ms now makes much clearer the potential insights to be gained by applying control theory to interaction networks. In particular, the authors have done a nice job of explaining how their findings reinforce existing ideas in the literature on the stability of ecological networks while also acknowledging limitations. The reviewers identify a few remaining issues that should be straightforward to address. I also noticed a few issues"
+
+Thank you for the positive feedback. We have addressed all of the specific issues raised and highlight these in red text in our resubmitted manuscript. 
+
+# Reviewer comments #1
+
+> "I'd like to commend the authors to this revised version of the manuscript on "Keystoneness, centrality, and the structural controllability of ecological networks". I thoroughly enjoyed the re-written manuscript, which is now considerably more accessible and clearly targets the community of network ecologists, while not ignoring the importance of the applied relevance of the findings. Overall, I don't have any major comments. I guess the language is in parts on the casual side, yet without compromising the preciseness or clarity of the text. I noticed a few typos or style errors that the authors may want to address"
+
+We are pleased that the reviewer "thoroughly enjoyed the re-written manuscript", and appreciate the identified issues. We have addressed all issues in the text and identify these in red. We have rewritten the sentence on line 388 to improve clarity. It now reads as follows: "First, structural controllability emphasizes that the effect a species has on the abundance of other species is not independent of the effects of those other species in their community". 
+
+
+> "L23-26: in these lines, you refer to critical species, but I think the distinction between having high control capacity versus being critical needs to be defined (briefly) earlier (it is stated in L18-19 that you will quantify both control capacity and identify critical species, but it is not explained how they are distinct)."
+
+We now identify the distinction between high control capacity and being critical on lines ............. "It also allows us to quantify a species control capacity-its relative importance-and identify the set of species that, collectively, are critical-have maximum control capacity-in this context."
+
+
+# Reviewer comments #2
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------
+
+# Previous response:
 
 > "I agree with the AE and reviewers that this is an interesting and potentially important manuscript. I support the AE's decision to reject but invite resubmission for all the reasons mentioned. I encourage resubmission if you feel that you can better bring out the conceptual importance of their work for plant ecologists. If you wish to strengthen the applied focus with specific conservation recommendations then you may wish to submit to Journal of Applied Ecology. Reviewer 1 offers suggestions for both approaches. I hope that you choose the former."
 

@@ -61,25 +61,25 @@ bar <- dplyr::filter(metadata, study == "bartomeus") %>%
 
 # Abstract
 
-1. An important dimension of a species role is its ability to alter the state and maintain the diversity of its community. 
+1. An important dimension of a species' role is its ability to alter the state and maintain the diversity of its community. 
 Centrality metrics have often been used to identify these species, which are sometimes referred as "keystone" species. 
 However, the relationship between centrality and keystoneness is largely phenomenological and based mostly on our intuition regarding what constitutes an important species. 
-While centrality is useful when predicting which species extinctions could cause the largest change in a community, it says little about how these species could be used to attain or preserve a particular community state.
+While centrality is useful when predicting which species' extinctions could cause the largest change in a community, it says little about how these species could be used to attain or preserve a particular community state.
 
 2. Here we introduce structural controllability, an approach that allows us to quantify the extent to which network topology can be harnessed to achieve a desired state. 
-It also allows us to quantify a species control capacity—its relative importance—and identify the set of species that, collectively, are critical in this context.
+It also allows us to quantify a species' control capacity—its relative importance—and identify the set of species that, collectively, are critical—have maximum control capacity—in this context. 
 We illustrate the application of structural controllability with ten pairs of uninvaded and invaded plant-pollinator communities.
 
 3. We found that the controllability of a community is not dependent on its invasion status, but on the asymmetric nature of its mutual dependences. 
 While central species were also likely to have a large control capacity, centrality fails to identify species that, despite being less connected, were critical in their communities. 
-Interestingly, this set of critical species was mostly composed of plants and every invasive species in our dataset was part of it. 
+Interestingly, this set of critical species was mostly composed of plants and included every invasive species in our dataset. 
 We also found that species with high control capacity, and in particular critical species, contribute the most to the stable coexistence of their community.
 This result was true, even when controlling for its degree, abundance/interaction strength, and the relative dependence of their partners. 
 
 4. *Synthesis*: Structural controllability is strongly related to the stability of a network and measures the difficulty of managing an ecological community.
 It also identifies species that are critical to sustain biodiversity and to change or maintain the state of their community and are therefore likely to be very relevant for management and conservation. 
 
-**Keywords:** Keystone species, management interventions, mutualism, network control theory, plant population and community dynamics, species importance, control capacity, structural stability, controllability
+**Keywords:** Keystone species, management interventions, mutualism, network control theory, plant population and community dynamics, species' importance, control capacity, structural stability, controllability
 
 \clearpage
 
@@ -90,7 +90,7 @@ Within community ecology, a complex-systems approach has led to the development 
 A particularly relevant dimension of any species' role is its ability to alter the abundance of other species and the state of the community—since changes of this nature can have knock-on effects on ecosystem function, diversity, processes, and services [@thompson_food_2012; @tylianakis_global_2008; @tylianakis_conservation_2010].
 This ability is sometimes referred to as a species' "keystoneness" [@mills_keystone-species_1993]. 
 
-A significant proportion of the network tools used to estimate species roles in this context rely on the calculation of a species' centrality—a relative ranking of its positional importance that originally stems from social-network research [@noah_e._friedkin_theoretical_1991; @martin_gonzalez_centrality_2010]. 
+A significant proportion of the network tools used to estimate species' roles in this context rely on the calculation of a species' centrality—a relative ranking of its positional importance that originally stems from social-network research [@noah_e._friedkin_theoretical_1991; @martin_gonzalez_centrality_2010]. 
 Generally speaking, central species tend to be better connected and consequently are more likely to participate in the network's "food chains". 
 Because species that participate in more chains are more likely to affect the abundances of other species, centrality metrics have often been used to identify keystone species in the community [@jordan_quantifying_2007]. 
 Centrality metrics have been shown to be useful tools to rank species in regard to their potential to alter the abundances of other species, in particular when estimating the probability of secondary extinctions that may follow the loss of a species [@dunne_network_2002; @kaiser-bunbury_robustness_2010].
@@ -103,7 +103,7 @@ Instead, we are better served by understanding how the structure of the network 
 When the state of a community is underpinned by more than a single species (often the case in real communities) and we move beyond single-species removals, we might expect the accuracy of centrality to diminish.
 As a result, community ecology could arguably benefit from an alternative, perhaps more mechanistically-grounded, approach to understand how species affect each other's abundance. 
 
-Species abundances---and consequently the state of the community as a whole---are influenced both by the structure of their interactions and the dynamics of these interactions, including the mechanisms of self-regulation [@lever_sudden_2014]. 
+Species' abundances---and consequently the state of the community as a whole---are influenced both by the structure of their interactions and the dynamics of these interactions, including the mechanisms of self-regulation [@lever_sudden_2014]. 
 However, community and population dynamics can be modelled in innumerable ways, and empirical support for one versus another is often still ambiguous [@holland_population_2002]. 
 The alternative approach should, therefore, ideally acknowledge ecosystem dynamics, but without being overly dependent on the particular choices of how they are characterised.
 Among the various possibilities *structural controllability*, a branch of control theory, appears to be a strong candidate [@isbell_human_2013]. 
@@ -123,19 +123,19 @@ We use invaded communities because there is strong empirical evidence showing th
 This choice thus offers us an opportunity to explicitly contrast our theoretical observations with empirical evidence.
 Moreover, empirical observations indicate that steering the state of some communities—for example during ecosystem restoration or invasive species removal—can be a very difficult task [@woodford_confronting_2016]. 
 Therefore, we first ask whether there are differences between the controllability of invaded and uninvaded networks. 
-We then expand existing methods from control theory to effectively link the *controllability* of a network with the role of its constituent species.
+We then expand existing methods from control theory to effectively link the *controllability* (Table \@ref(tab:tab-glossary)) of a network with the role of its constituent species.
 We ask—from a control-theoretic perspective—whether there are key differences between species in the role they play at driving the state of the community and explore the ecological factors related to these differences. 
 This allows us to identify species that might be critical for network control and show that they have a larger than expected impact on the stable coexistence of the community.
-Finally, we compare the proposed approach to current methods based on species centrality and show how these methods are indeed valuable but ultimately paint a limited picture in regard to the "keystoneness" of a species.
+Finally, we compare the proposed approach to current methods based on species' centrality and show how these methods are indeed valuable but ultimately paint a limited picture in regard to the "keystoneness" of a species.
 
 # Materials and methods
 
 We used ten paired pollination communities to apply the control-theoretic approach.
 Each community pair was composed of a community invaded by a plant and a community free of the invasive species. 
 Four pairs correspond to natural or semi-natural vegetation communities in the city of Bristol, UK [@lopezaraizamikel_impact_2007]. 
-These communities are comprised of `r lop[1]`--`r lop[6]` species (mean `r round(lop[4])`), and non-invaded plots were obtained by experimentally removing all the flowers of the invasive species *Impatients grandulifera*.
+These communities comprised `r lop[1]`--`r lop[6]` species (mean `r round(lop[4])`), and non-invaded plots were obtained by experimentally removing all the flowers of the invasive species *Impatients grandulifera*.
 The other six pairs were obtained from lower diversity Mediterranean shrublands in Cap de Creus National Park, Spain [@bartomeus_contrasting_2008-1].
-These communities are comprised of `r bar[1]`--`r bar[6]` species (mean `r round(bar[4])`); in contrast to the above, uninvaded communities were obtained from plots that had not yet been colonised by either of the invasive species *Carpobrotus affine acinaciformis* or *Opuntia stricta*. The structure of all these communities was defined by the pollinator visitation frequency, which has been shown to be an appropriate surrogate for interspecific effects in pollination networks [@vazquez_interaction_2005; @bascompte_asymmetric_2006]. 
+These communities comprised `r bar[1]`--`r bar[6]` species (mean `r round(bar[4])`); in contrast to the above, uninvaded communities were obtained from plots that had not yet been colonised by either of the invasive species *Carpobrotus affine acinaciformis* or *Opuntia stricta*. The structure of all these communities was defined by the pollinator visitation frequency, which has been shown to be an appropriate surrogate for interspecific effects in pollination networks [@vazquez_interaction_2005; @bascompte_asymmetric_2006]. 
 Full details about the empirical networks can be found in the Supporting Information Section \@ref(S-empirical-networks). 
 
 The first step in applying methods of control theory is to construct a directed network that is able to provide an indication of the extent to which species affect each other's abundance. 
@@ -154,7 +154,7 @@ This allows us to calculate the controllability of the networks and investigate 
 drake::loadd(fig_struct_control)
 ```
 
-```{r fig-example-networks, fig.width=fig_struct_control$width, fig.height=fig_struct_control$height, fig.cap="The direction of control and controllability conditions. (a) To establish the direction of control, we start with a weighted visitation network (on the left). In this network, the width of the links corresponds to the frequency of visitation between animals $a_i$ and plants $p_i$, with wider links indicating more visits. Plant $p_1$ is visited exclusively by $a_1$ but $p_1$ represents only a small fraction of the floral resources exploited by $a_1$. Therefore, the population of $p_1$ is more likely to be affected by $a_1$ than vice versa. We represent this with a directed link from $a_1$ to $p_1$ in the control network (on the right). The direction of control between all other species pairs can be similarly determined by inspecting the difference between their relative dependences. (b) Once we have established the directions of control, we can determine whether the network is controllable or not. Any system defined by a directed network (with state nodes $x_i$; species populations in an ecological context) and external control inputs (nodes $u_i$, orange links) is structurally controllable if it satisfies two conditions: it has no dilations (expansions in the network) and no inaccessible nodes. The system on the top left is not controllable because there is a dilation since node $x_2$ is being used to control two nodes simultaneously; in other words, there are fewer superiors ($x_2$) than subordinates ($x_1$ and $x_3$). The network on the top right is not controllable because node $x_3$ is inaccessible for the only input node $u_1$ in the system. Both systems can be made controllable by adding an extra input node ($u_2$ in both bottom networks)."}
+```{r fig-example-networks, fig.width=fig_struct_control$width, fig.height=fig_struct_control$height, fig.cap="The direction of control and controllability conditions. (a) To establish the direction of control, we start with a weighted visitation network (on the left). In this network, the width of the links corresponds to the frequency of visitation between animals $a_i$ and plants $p_i$, with wider links indicating more visits. Plant $p_1$ is visited exclusively by $a_1$ but $p_1$ represents only a small fraction of the floral resources exploited by $a_1$. Therefore, the population of $p_1$ is more likely to be affected by $a_1$ than vice versa. We represent this with a directed link from $a_1$ to $p_1$ in the control network (on the right). The direction of control between all other species pairs can be similarly determined by inspecting the difference between their relative dependences. (b) Once we have established the directions of control, we can determine whether the network is controllable or not. Any system defined by a directed network (with state nodes $x_i$; species' populations in an ecological context) and external control inputs (nodes $u_i$, orange links) is structurally controllable if it satisfies two conditions: it has no dilations (expansions in the network) and no inaccessible nodes. The system on the top left is not controllable because there is a dilation since node $x_2$ is being used to control two nodes simultaneously; in other words, there are fewer superiors ($x_2$) than subordinates ($x_1$ and $x_3$). The network on the top right is not controllable because node $x_3$ is inaccessible for the only input node $u_1$ in the system. Both systems can be made controllable by adding an extra input node ($u_2$ in both bottom networks)."}
 replayPlot(fig_struct_control$plot)
 ```
 
@@ -219,7 +219,7 @@ In the first, we followed @vazquez_species_2007 and maintained the connectance o
 We then re-estimated the direction of control and the corresponding size of the minimum driver-node set, $n_D$. 
 For the second null model, we used the empirical directed network described above and randomly shuffled the direction of control between a species pair prior to re-estimating the size of the minimum driver-node set.
 
-## Species roles
+## Species' roles
 
 Our second objective is related to how species differ in their ability to drive the population dynamics of the community. 
 We in turn examine whether these differences are also reflected in the role species play at supporting the stable coexistence of other species in the community. 
@@ -228,29 +228,29 @@ While calculating the size of the minimum drive-node set can measure the control
 
 To answer this question, we harness the fact there may be multiple maximum matchings for a given network, and each of these maximum matchings indicates a unique combination of species with which it is possible to control the network. 
 Moreover, some species belong to these combinations more often than do others. 
-We call this property a species "control capacity", $\phi$. 
-The higher a species control capacity, the greater the likelihood that they would need to be directly managed to change (or maintain) the ecological state of their community. 
-Therefore, a species control capacity provides an estimation of their relative importance at driving the state of the community [@jia_control_2013]. 
+We call this property a species' "control capacity", $\phi$. 
+The higher a species' control capacity, the greater the likelihood that it would need to be directly managed to change (or maintain) the ecological state of their community. 
+Therefore, a species' control capacity provides an estimation of its relative importance at driving the state of the community [@jia_control_2013]. 
 
-To calculate a species control capacity $\phi$, we must first enumerate all possible maximum matchings (Supporting Information Section \@ref(S-all-maximum-matching)). 
+To calculate a species' control capacity $\phi$, we must first enumerate all possible maximum matchings (Supporting Information Section \@ref(S-all-maximum-matching)). 
 Unfortunately, enumerating all maximum matchings is extremely expensive from a computational perspective—a network with a couple dozen species has several hundred million unique maximum matchings. 
 To solve this problem, we employ a recently-developed algorithm that reveals the control correlations between the nodes in the graph while requiring considerably less computational resources [@zhang_input_2016]. 
 Using this algorithm, we are able to identify species that are possible control inputs—those that belong to the minimum driver-node set in at least one of the possible control configurations. 
 Here, we extend this algorithm such that it is possible to calculate a highly accurate approximation of the control capacity $\phi$ of every species in the network (Supporting Information Section \@ref(S-input-graph)). 
-In the networks that contained reciprocal links (because there was no asymmetry in the dependences of a species pair), we averaged a species control capacity $\phi$ across every possible "non-reciprocal" version of the network (Supporting Information Section \@ref(S-reciprocal-links)). 
+In the networks that contained reciprocal links (because there was no asymmetry in the dependences of a species pair), we averaged a species' control capacity $\phi$ across every possible "non-reciprocal" version of the network (Supporting Information Section \@ref(S-reciprocal-links)). 
 
 We then examined how species-level properties were related to control capacity using a set of generalised linear models with binomial error structure.
 These models included five predictor variables that mirror the network-level predictors. 
-First, the species contribution to nestedness, which has been proposed as a key feature that promotes stability and robustness in mutualistic networks [@saavedra_strong_2011]. 
-Second, the species strength (the sum of a species' visits), which quantifies the strength of a species associations and is indirectly related to its abundance [@poisot_comparative_2012]. 
+First, the species' contribution to nestedness, which has been proposed as a key feature that promotes stability and robustness in mutualistic networks [@saavedra_strong_2011]. 
+Second, the species' strength (the sum of a species' visits), which quantifies the strength of a species' associations and is indirectly related to its abundance [@poisot_comparative_2012]. 
 Third, the direction of asymmetry which quantifies the net balance in dependencies; that is, it indicates if a species affects other species more than what they affect it or not [@vazquez_species_2007]. 
-Fourth, the species degree in order to account for the intrinsic centrality of a species.
-Finally, we included a categorical variable for the species trophic level (plant or pollinator) and an interaction term between trophic level and the previous four variables. 
+Fourth, the species' degree in order to account for the intrinsic centrality of a species.
+Finally, we included a categorical variable for the species' trophic level (plant or pollinator) and an interaction term between trophic level and the previous four variables. 
 To facilitate comparison between predictors, degree and visitation strength were log-transformed and all four continuous variables were scaled to have a mean of zero and a standard deviation of one.
 To identify the models that were best supported by the data, we first determined the most parsimonious random structure using the AICc. 
 The relative importance of variables was then assessed by looking at their effect sizes in the top-ranked models and the cumulative weight of the models in which they are present. 
 
-In addition, we wanted to understand how a species control capacity $\phi$ described above relates to metrics of keystoneness based on centrality. 
+In addition, we wanted to understand how a species' control capacity $\phi$ described above relates to metrics of keystoneness based on centrality. 
 Specifically, in each network, we calculated the species' degree, betweenness, closeness centrality [@martin_gonzalez_centrality_2010], page rank [@mcdonald-madden_using_2016], and eigen centrality [@jordano_ecological_2006]. 
 We then calculated the spearman correlation coefficient between control capacity and each of these centrality metrics. 
 
@@ -272,7 +272,7 @@ More details about the calculation of structural stability can be found in the S
 We thus tested the sensitivity of our approach to two fundamental assumptions. 
 First, we tested that visitation is an appropriate proxy to infer interspecific effects by comparing the results obtained using visitation to two alternative metrics in a separate dataset that lacked invasive species [@ballantyne_constructing_2015]. 
 Specifically, we also calculated the controllability (the size of the minimum driver node-set) and the control capacity of networks constructed using pollinator efficiency (which measures the pollen deposition of an interaction) and pollinator importance [which accounts for both pollen deposition and visitation and hence is regarded as a more accurate estimation of the pollination service received by plants; @neeman_framework_2009]. 
-More details in the Supporting Information Section \@ref(S-visitation-as-proxy). 
+See Supporting Information Section \@ref(S-visitation-as-proxy) for more details. 
 
 Second, because interspecific dependencies themselves depend on the network topology and consequently on the accurate sampling of interactions, we tested the robustness of structural controllability to the uncertainty involved with the sampling of interactions. 
 Here, we compared the results obtained when using the full network and when randomly removing interactions from the weakest links in the network. 
@@ -323,11 +323,11 @@ ncrit_ran <- range(crit$n_crit)
 pcrit_med <- median(crit$p_crit)
 ```
 
-## Species roles
+## Species' roles
 
 Species varied widely in their control capacity (Figure \@ref(fig:fig-species-level)). 
 Pollinators had, in average, larger control capacities than plants. 
-That said, almost no pollinator was critical for network control, where a species is critical for control if it has control capacity \(\phi_i = 1\)). 
+That said, almost no pollinator was critical for network control, (where a species is critical for control if it has control capacity \(\phi_i = 1\)). 
 Plants had a multimodal distribution of control capacity with maxima at both extremes of the distribution (Figure \@ref(fig:fig-species-level)a). 
 Intriguingly, every invasive species was critical for network control in each of their communities.
 The species-level models identified a positive relationship between control capacity \(\phi\) and a species' contribution to nestedness, visitation strength, and the asymmetry of its dependences (Table \@ref(tab:tab-model-selection-table); Figure \@ref(fig:fig-species-partial); Table \@ref(S-tab:tab-model-output-species-level)). 
@@ -343,7 +343,7 @@ correlations <- sl_char_corr %>%
   dplyr::filter(!rowname %in% c("control_capacity", "superior"))
 ```
 
-Species control capacity $\phi$ was only weakly correlated with commonly-used centrality metrics. 
+Species' control capacity $\phi$ was only weakly correlated with commonly-used centrality metrics. 
 The Spearman correlation between these ranged between `r round(min(correlations$control_capacity), 2)` (with betweeness-centrality) and `r round(max(correlations$control_capacity), 2)` (with eigen-centrality), see Figure \@ref(S-fig:fig-correlogram)a. 
 The correlation coefficient with degree was `r round(correlations[correlations$rowname == "degree", ]$control_capacity, 2)`, however most species with high degree also tended to attain a high control capacity (Figure \@ref(S-fig:fig-species-models-degree)a).
 
@@ -359,7 +359,7 @@ dplyr::bind_rows(cc_table) %>%
   knitr::kable("latex", 
                # col.names = pretty_term_names(colnames(.), "short"),
                booktabs = T,
-               caption = "Selection table of the binomial generalised linear models of species control capacity, $\\phi$. Only models with a weight larger or equal to 0.01 are shown.", 
+               caption = "Selection table of the binomial generalised linear models of species' control capacity, $\\phi$. Only models with a weight larger or equal to 0.01 are shown.", 
                row.names = F, 
                digits = 2, 
                escape = F) %>%
@@ -413,15 +413,15 @@ fig_structural_stability[[1]]
 
 ## Testing assumptions
 
-\R{testing-assumptions-results-line} We found that using visitation as a proxy for the strength of species interactions leads to similar results than those obtained using pollinator importance [regarded as an accurate measure of the pollination service to plants; Supporting Information Section \@ref(S-visitation-as-proxy); @neeman_framework_2009]. 
+\R{testing-assumptions-results-line} We found that using visitation as a proxy for the strength of species' interactions leads to similar results than those obtained using pollinator importance [regarded as an accurate measure of the pollination service to plants; Supporting Information Section \@ref(S-visitation-as-proxy); @neeman_framework_2009]. 
 Importantly, we also found that structural stability is robust to incomplete sampling of interactions. 
 Indeed, we found strong agreement between results obtained using the complete empirical networks and those obtained by randomly removing the weakest interactions (Supporting Information Section \@ref(S-undersampling)). 
 Despite removing rare interactions and species, the relative size of the minimum driver-node set, the superior species, and the relative rankings of control capacity were generally maintained. Of particular note, we found that critical species in the full network were also critical in the vast majority of rarefied networks. 
 
 # Discussion
 
-Our main goal was to understand the role that species play at both modifying the abundance of the species they interact with and the state of the community as a whole. 
-To achieve that goal we applied *structural controllability*, a field at the intersection between control and complex theory that allow us to obtain two key pieces of information: the *controllability* of a network and a species *control capacity* (Table \@ref(tab:tab-glossary)). 
+Our main goal was to understand the role that species play in both modifying the abundance of the species they interact with and the state of the community as a whole. 
+To achieve that goal we applied *structural controllability*, a field at the intersection between control and complex theory that allowed us to obtain two key pieces of information: the *controllability* of a network and a species' *control capacity* (Table \@ref(tab:tab-glossary)). 
 We found that the controllability of a network does not depend on its invasion status and that the species that are critical to altering the state of the community are also the ones that most sustain the stable coexistence of species in their communities.
 
 ```{r tab-glossary}
@@ -452,11 +452,11 @@ Our results indicate that fully controlling ecological networks might currently 
 Indeed, the median size of the relative minimum driver-node set in our dataset was $n_D = `r round(median(c_m$n_D),2)`$, a high value when compared to other complex systems in which controllability has been investigated (the lower $n_D$ the more controllable the community). 
 For instance, only gene regulation networks appear to achieve similar levels of controllability while most social, power transmission, Internet, neuronal, and even metabolic networks seem to be "easier" to control ($0.1 < n_D < 0.35$) [@liu_controllability_2011]. 
 Structural controllability provides solid theoretical rationale for the many difficulties encountered in the management and restoration of natural communities [@woodford_confronting_2016]. 
-Nevertheless, structural controllability might be helpful at identifying communities in which changes in the ecological state are more likely to occur
+Nevertheless, structural controllability might be helpful at identifying communities in which changes in the ecological state are more likely to occur.
 
 The differences between the controllability across networks are likely to arise from differences in their structure rather than their invasion status. 
 Specifically, when controlling for network structure, we found no difference between the controllability of invaded and uninvaded networks. 
-instead controllability is almost completely constrained by the patterns of species richness at each trophic guild and their degree distributions [@melian_complex_2002; @bluthgen_specialization_2007]. 
+Instead controllability is almost completely constrained by the patterns of species richness at each trophic guild and their degree distributions [@melian_complex_2002; @bluthgen_specialization_2007]. 
 These two factors are particularly relevant because they govern the asymmetric nature of mutual dependences, which themselves provide the foundation of structure and stability in mutualistic networks [@bascompte_asymmetric_2006; @memmott_tolerance_2004; @astegiano_robustness_2015]. 
 
 Accordingly, our results suggest that structural controllability is closely related to the dynamic persistence of an ecological community based on two lines of evidence. 
@@ -469,36 +469,36 @@ Therefore, species that play a key role at determining the state of the communit
 When controlling for a species' strength, which is indirectly a proxy of its abundance, and the net balance of its dependencies, we found that control capacity could not be easily predicted by species' degree or other metrics of centrality.
 For instance, some species with a low degree achieved the maximum control capacity and were critical for control in their communities. 
 At first glance, our findings challenge numerous studies that highlight the role that central species play in the dynamics of their communities and their utility at predicting species extinctions [@jordan_keystone_2009]. 
-However, further, inspection shows that our results do not contradict these findings; most species with a large degree also have a large control capacity and all of them were classified as superior nodes which corroborates the utility of classic centrality metrics. 
+However, further inspection shows that our results do not contradict these findings; most species with a large degree also have a large control capacity and all of them were classified as superior nodes which corroborates the utility of classic centrality metrics. 
 Putting these observations together, our results therefore take previous findings one step further and suggest that centrality might paint an incomplete picture of the relevance of species.
 
 \R{management-implications}Other conceptual differences between structural controllability and centrality metrics provide three key insights into the conservation of ecological networks. 
-First, structural controllability emphasizes that the effect a species has on the abundance of other species is not independent of the effects of other other species in their community. 
+First, structural controllability emphasizes that the effect a species has on the abundance of other species is not independent of the effects of those other species in their community. 
 The rankings provided by centrality metrics and other heuristics fail to account for the collective influence of several species at once. 
 Second, it demonstrates that to ensure the persistence of a community it is often necessary to consider the abundances of more than a single species, even when full control is infeasible or undesired (for example `r round(sum(crit$n_crit > 1)/nrow(crit)*100)`% of our communities contained more than one critical species). 
 Third, structural controllability explicitly acknowledges the existence of multiple management strategies and some will be better than others depending on the context.
-Approaches to prioritise species for conservation and reintroduction based on traits or centrality are still useful and are likely to overlap with species control capacity\R{extra-references-1} [@pires_friendship_2017; @devoto_understanding_2012]. 
+Approaches to prioritise species for conservation and reintroduction based on traits or centrality are still useful and are likely to overlap with species' control capacity\R{extra-references-1} [@pires_friendship_2017; @devoto_understanding_2012]. 
 Stepping back, our results also provide support to the idea that management decisions should not be based on a single technique but indicate that focusing on ecosystem processes and interactions may be more effective than traditional ranking-based approaches \R{extra-references-2} [@harvey_bridging_2017]. 
 
 Our choice of studying invaded/uninvaded networks was based on a desire to contrast the extensive empirical evidence of the role of invasive plants with our theoretical results. 
 We found that invasive plants were always critical for network control and as such our results were in line with our expectations. 
 Invasive plants have been previously found to exacerbate the asymmetries in their communities [@aizen_invasive_2008; @bartomeus_contrasting_2008-1; @henriksson_strong_2016] and to be central in their communities [@vila_invasive_2009; @palacio_generalist_2016]. 
 We found that invasive plants are, however, unlikely to be inherently different from their native counterparts [@emer_species_2016; @stouffer_how_2014]. 
-Just like any other mutualist in our dataset, invasive plants tended to attain a high control capacity proportional to the degree to which they contribute to network persistence, are abundant, and depend little on other species. 
+Invasive plants tended to be important for network persistence, be abundant, and depend little on other species and, as a result, have high control capacity, just like any other mutualist in our data set with those properties.
 Furthermore, our observation that changes in the abundance of invasive plants (and presumably all critical species) are crucial to modify the state of the community agrees with recent evidence showing that ecosystem restoration focused on the eradication of invasive plants can have transformative desirable effects in plant-pollinator communities\R{extra-references-3} [@kaiser-bunbury_ecosystem_2017]. 
 However, our results also suggest that removals must be exercised with caution. 
 Not only it is hard to predict the direction in which the system will change, but we also show that critical species can underpin the coexistence of species and therefore some communities may be acutely vulnerable to their eradication [@traveset_invaders_2013; @albrecht_consequences_2014].
 
 Structural controllability assumes that the networks can be approximated using linear functional responses [@liu_control_2016]. 
 The ramifications of this assumption imply that, while structural controllability is useful to identify species that are relevant for network control, it cannot be used to design the *exact* interventions that should be applied to these species in order to achieve a desired state. 
-In an ideal scenario, we would completely incorporate the species dynamics into the controllability analysis [@cornelius_realistic_2013]; the reality is that such information is rarely available in most ecological scenarios. 
+In an ideal scenario, we would completely incorporate the species' dynamics into the controllability analysis [@cornelius_realistic_2013]; the reality is that such information is rarely available in most ecological scenarios. 
 \R{data-requirements}In contrast, structural controllability only requires a quantitative approximation of the network's interactions to gain valuable insight from the community.
-Furthermore, while the relationship between centrality and keystoneness is based on an intuitive understanding of what a keystone species is, the assumptions of structural controllability are explicit and the estimation of a species importance arises from a mechanistic understanding of the population dynamics between species. 
+Furthermore, while the relationship between centrality and keystoneness is based on an intuitive understanding of what a keystone species is, the assumptions of structural controllability are explicit and the estimation of a species' importance arises from a mechanistic understanding of the population dynamics between species. 
 By accounting for network dynamics (even if in a simple way), structural stability incorporates more ecological realism, especially in the extreme scenario in which the state of a community is only marginally affected by the topology of their interactions.
 
 # Conclusions
 
-Here we show that structural controllability can be applied in an ecological setting to gain insight into the stability of a community and the role that species play at modifying the abundance of other species and ultimately the state of the community. 
+Here we show that structural controllability can be applied in an ecological setting to gain insight into the stability of a community and the role that species play in modifying the abundance of other species and ultimately the state of the community. 
 These characteristics make structural stability an ideal framework to evaluate the effects of invasions and other types of perturbations. 
 Importantly, structural controllability can be used to identify critical species in the community that promote biodiversity and underpin the stable coexistence of species in their community.
 Collectively, critical species dominate the state of their community and therefore are likely to be highly relevant for ecosystem management and conservation. 
