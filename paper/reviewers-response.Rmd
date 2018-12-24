@@ -44,21 +44,136 @@ In the following sections, you can find a detailed response to each comment rais
 
 Thank you for the positive feedback. We have addressed all of the specific issues raised and highlight these in red text in our resubmitted manuscript. 
 
+> L9: I think here and throughout much of the text, species should be possessive when followed by a noun ("species role" should be "species' role"). The possessive is currently used in some instances but is inconsistently applied throughout the ms. 
+
+We have checked through the manuscript and corrected this where relevant. 
+
+
+> L25: ". every invasive species in our dataset was part of it ." Here it was unclear what "it" refers to (the set of critical species), and the reference to a singular dataset when you have 20 networks in total was a bit confusing to me.
+
+We have made this clearer as follows: "and included every invasive species in our dataset" (\lr{R2-our-dataset})
+
+
+> L23-26: in these lines, you refer to critical species, but I think the distinction between having high control capacity versus being critical needs to be defined (briefly) earlier (it is stated in L18-19 that you will quantify both control capacity and identify  critical species, but it is not explained how they are distinct).
+
+We now identify the distinction between high control capacity and being critical on lines \lr{R2-define-control-capacity} "It also allows us to quantify a species control capacity-its relative importance-and identify the set of species that, collectively, are critical-have maximum control capacity-in this context."
+
+
+> L27: unclear what "its" refers  to
+
+We now explicitly state "species' degree" \lr{R2-species-degree}
+
+> L111, 114: "are comprised of" should be "comprised "
+
+Thank you, we have corrected this.
+
+> L234, 235: awkward to refer to species as "they" and "their "
+
+We have changed this to "it" and "its"
+
+> L296: "More details in Supporting Information ."  is a sentence fragment.
+
+We have corrected this on line \lr{R2-sentence-fragment}
+
+> L339, 432: "at" should be "in" 
+
+Thank you, this has been corrected.
+
+> L341: "allow" should be "allowed "
+
+Thank you, this has been corrected.
+
+> L343: I am not sure about citing Table 2 for the first time in the Discussion. Might it be more useful to cite this in the Introduction ?
+
+We now introduce table 2 on line \lr{R2-ref-glossary}.
+
+>L355: missing period 
+
+Thank you for noticing this, we have inserted the missing period.
+
+
 # Reviewer comments #1
 
 > "I'd like to commend the authors to this revised version of the manuscript on "Keystoneness, centrality, and the structural controllability of ecological networks". I thoroughly enjoyed the re-written manuscript, which is now considerably more accessible and clearly targets the community of network ecologists, while not ignoring the importance of the applied relevance of the findings. Overall, I don't have any major comments. I guess the language is in parts on the casual side, yet without compromising the preciseness or clarity of the text. I noticed a few typos or style errors that the authors may want to address"
 
-We are pleased that the reviewer "thoroughly enjoyed the re-written manuscript", and appreciate the identified issues. We have addressed all issues in the text and identify these in red. We have rewritten the sentence on line 388 to improve clarity. It now reads as follows: "First, structural controllability emphasizes that the effect a species has on the abundance of other species is not independent of the effects of those other species in their community". 
+We are pleased that the reviewer "thoroughly enjoyed the re-written manuscript", and appreciate the identified issues. We have addressed all issues in the text and identify these in red.  
 
 
-> "L23-26: in these lines, you refer to critical species, but I think the distinction between having high control capacity versus being critical needs to be defined (briefly) earlier (it is stated in L18-19 that you will quantify both control capacity and identify critical species, but it is not explained how they are distinct)."
+> A few references require editing to journal style (e.g. remove initials for many citations)
 
-We now identify the distinction between high control capacity and being critical on lines ............. "It also allows us to quantify a species control capacity-its relative importance-and identify the set of species that, collectively, are critical-have maximum control capacity-in this context."
+
+>L314. open bracket missing .
+
+Thank you for pointing this out, we have inserted the missing bracket.
+
+> L358. change 'instead' to 'Instead'. L381. remove second comma 
+
+We have made both of these changes. 
+
+> L388. remove repeated 'other'. I suggest that the authors re-write this sentence to improve clarity .  
+
+We have removed the second 'other'. We have rewritten the sentence on line \lr{R2-structural-controllability} to improve clarity. It now reads as follows: "First, structural controllability emphasizes that the effect a species has on the abundance of other species is not independent of the effects of those other species in their community".
+
+> Reference list needs updating, e.g. Ne'eman et al. is not 2009 but 2010. 
+
+> Fig. S6 header of plot b). correct spelling of 'critical' 
+
+> Congratulations on this thought-provoking methodological synthesis.
+
 
 
 # Reviewer comments #2
 
 
+
+> I think the concepts presented in this manuscript are a useful addition to the literature on management of ecological networks.  I agree with the authors that it is important that the discussion surrounding what constitutes a "keystone" species should go beyond centrality metrics.  
+
+
+
+> I found the results and concepts to be generally well presented, particularly graphically, and the authors present a thorough sensitivity analysis to various assumptions.  The methods are mostly clear but there is no description of how the "likelihood of being a superior node " is calculated.  
+
+
+
+> I would suggest including clarification on the limitations of using control capacity to summarise species' importance, and examples to help the reader build an intuition regarding the control capacity metric.  As pointed out, networks that give rise to a species having a high control capacity can be quite distinct to networks that give rise to a species having a high value of particular centrality metrics.  Providing an example in the Discussion of, for instance, those species that have a control capacity of 1 but a low degree would be very useful.  
+
+
+
+> Jargon occasionally obfuscates the concepts being introduced and there are places where I thought the language used was vague (esp. if terms being used have particular meanings depending on the field you're coming from).  I would suggest clarifying, or rewording, the following :
+
+
+> * "desired control trajectory " - does this mean "final state"?
+
+We have attempted to clarify this sentence as follows: Finding out exactly how difficult it is to control a network depends strongly on the particularities of the desired control trajectory (i.e. path to the desired final state)  as well as the dynamical relationship between nodes. \lr{R2-desired-control-trajectory}
+
+> * "dynamic persistence"  (p17,l364)
+
+> * "dynamic stability " (p17, l370)
+
+> * "ecological objective" (p9) - simply 'objective' ? 
+
+We have changed this to simply 'objective', as suggested (\lr{R2-ecol-objective}).
+
+> * "central in their community " (p18, l 405)
+
+> * "inherently different " (p18, l 406). The sentence spanning lines 407-410 is quite confusing  - please clarify.  
+
+We rephrased this line as follows: "We found that it is not that invasive plants have some different mechanism for influencing the community compared to their native counterparts" \lr{R2-inherrently-different}.
+
+> * "marginally affected by the topology of their interactions"  (p19, l 430)
+
+We have rephrased this line as: "By accounting for network dynamics (even if in a simple way), structural stability incorporates more ecological realism, especially in the extreme scenario in which the structure of interactions within the community only marginally affects the community's state. Both native species and invasive plants tended to attain a high control capacity if they were important to network persistence, were abundant, and depended little on other species." \lr{R2-marginally-affected}.
+
+> * "dominate the state [of their community ]" (p19, l436 & l441)
+
+>* "species' strength " (Discussion)
+
+
+>Minor typos:
+* Figure S11 caption: "likelyhood" -> likelihood 
+* References : several references use the term "plantPollinator", or "..."
+* Figure S1b is referred to (supp. p4 ) but doesn't exist in the figure.  
+* Page 18 Line 388: "other other" 
+* "driver node density" (supp p12) -> "size of the minimum driver node set"?  
 
 
 

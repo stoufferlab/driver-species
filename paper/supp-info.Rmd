@@ -49,7 +49,7 @@ net_prop <- metadata %>%
 
 ```
 
-The networks studied had species richness ranging between `r min(net_prop$n_s_t)` and `r max(net_prop$n_s_t)` when considering only the largest component in each network). 
+The networks studied had species richness ranging between `r min(net_prop$n_s_t)` and `r max(net_prop$n_s_t)` (when considering only the largest component in each network). 
 As shown by the network asymmetry *AS* [@bluthgen_specialization_2007], the networks had a low ratio of plants to pollinators overall. 
 Furthermore, the networks had relatively low levels of nestedness [when measured using the quantitative version of the NODF index; @almeida-neto_straightforward_2011]. Details for each network can be found in the Table \@ref(tab:table-network-properties).
 
@@ -87,7 +87,7 @@ net_prop %>%
                booktabs = TRUE, 
                digits = 2, 
                linesep = c("", "\\addlinespace"),
-               caption = "Properties of the analysed plant-pollinator communities. Here show the number of species ($n_s$), the number of plants ($n_p$), the number of pollinators ($n_a$), the network connectance ($c$), the network asymmetry ($AS$), and the network nestedness (NODF index). All properties correspond to the network's largest component. British networks were assembled by Lopezaraiza-Mikel et al. (2007), Spanish were networks assembled by Bartomeus et al. (2008).") %>%
+               caption = "Properties of the analysed plant-pollinator communities. Here show the number of species ($n_s$), the number of plants ($n_p$), the number of pollinators ($n_a$), the network connectance ($C$), the network asymmetry ($AS$), and the network nestedness (NODF index). All properties correspond to the network's largest component. British networks were assembled by Lopezaraiza-Mikel et al. (2007), Spanish were networks assembled by Bartomeus et al. (2008).") %>%
   kableExtra::kable_styling(font_size = 8)
 ```
 
@@ -167,7 +167,7 @@ replayPlot(fig_all_matching$plot)
 
 ## Control adjacency and the input graph {#input-graph}
 
-The algorithm proposed by @zhang_input_2016 enable us to find all minimum driver node sets without calculating all possible maximum matchings. 
+The algorithm proposed by @zhang_input_2016 enables us to find all minimum driver node sets without calculating all possible maximum matchings. 
 The algorithm is based on the construction of the input graph of the directed network. 
 Components in the input graph reveal the correlations between nodes from a structural control perspective (Figure \@ref(fig:fig-input-graph)). 
 The input graph is constructed based on the *control adjacency* of nodes in a maximum matching. 
@@ -185,12 +185,12 @@ replayPlot(fig_input_graph$plot)
 
 In order to calculate a node's control capacity $\phi$, we harness the fact that nodes can be classified into three groups according to their role in the input graph. 
 First,  if $x_i$ belongs to the minimum driver node set and has no adjacent nodes, then it cannot be replaced and will be part of every possible control configuration. 
-Second, if $x_i$ does not belong to the minimum driver node set and is not adjacent to any possible input node, then it does not part of the minimum driver node set under any control configuration. 
+Second, if $x_i$ does not belong to the minimum driver node set and is not adjacent to any possible input node, then it does not become part of the minimum driver node set under any control configuration. 
 Finally, if a node $x_i$ belongs to the minimum driver node set and is adjacent to another node $x_j$ in the input graph, then $x_j$ must belong to another minimum driver node to which $x_i$ does not belong, in other words, $x_i$ and $x_j$ are substitutable. 
 
 The first and the second group have a control capacity of $\phi = 1$ and $\phi = 0$ respectively. 
 Meanwhile, the third group has intermediate values of control capacity which can be calculated by computing the number of possible substitutions of a node by its control adjacent nodes. 
-As a rule of thumb, the largest the number of possible substitutions an input node has, the smaller its control capacity. 
+As a rule of thumb, the larger the number of possible substitutions an input node has, the smaller its control capacity. 
 
 ```{r control-capacity-correlations}
 drake::loadd(control_capacity_correlations, this_method)
@@ -283,7 +283,7 @@ bal_nd <- controllability %>%
 
 At a network scale the driver-node density $n_D$ was consistent among the three weighting schemes (`r round(bal_nd$eff, 2)` for deposition, `r round(bal_nd$vis, 2)` for the visitation, and `r round(bal_nd$imp, 2)` for the pollinator-importance network, respectively).
 The choice of weighting can also have an impact on at the species level.
-Therefore we calculated $\phi$ and $\sigma$ and calculated it's correlation among all three weighting schemes.
+Therefore we calculated $\phi$ and $\sigma$ and calculated its correlation among all three weighting schemes.
 Although visitation and efficiency (pollen deposition) produce moderately different results, we found a very strong agreement between the order produced by visitation and importance which is arguably a more accurate metric of interspecific effects (Table \@ref(tab:tab-assumption-visitation)). 
 
 ```{r tab-assumption-visitation}
@@ -317,14 +317,14 @@ Our approach is fundamentally based on the network structure.
 Often, the majority of the interactions that make up this structure are weak; in our networks, this means that most interactions are formed by a small number of observed pollination visits, and therefore those weak interactions are less conspicuous in the field than strong ones. 
 To strengthen the case of our approach, we, therefore, evaluated the robustness of our results to simulated sampling limitations. 
 
-To do so we removed a portion of the visits, for each network, and calculated how three control metrics of the subsampled network compare to those of the full network. 
+To do so, we removed a portion of the visits, for each network, and calculated how three control metrics of the subsampled network compare to those of the full network. 
 Specifically, we calculated the difference between the relative size of the minimum driver node set $n_D$ of the subsampled and the full network, the Spearman correlation between the control capacities $\phi$ and the probability of being a superior node $\sigma$ that were obtained for the empirical network and subsamples of it. 
 Finally, we also compared the control capacity of critical species ($\phi=1$) across the different subsamples. 
 We removed up to 20% of the interactions in 1% increments. 
 We repeated the procedure for each network to obtain a total sample size of $n=400$.
 
 Overall, the results of the sensitivity analysis indicate that our approach is likely to still be useful in the absence of complete sampling. 
-Specifically, as the proportion of sampled interaction decreased, the variability of $n_D$ increased but was overall similar to that obtained when using all available interactions (Figure \@ref(fig:fig-assumption-sampling-nd)). 
+Specifically, as the proportion of sampled interactions decreased, the variability of $n_D$ increased but was overall similar to that obtained when using all available interactions (Figure \@ref(fig:fig-assumption-sampling-nd)). 
 Similarly, the correlation between $\phi$ and $\sigma$ of empirical and subsampled networks was high even for extreme levels of undersampling (Figure \@ref(fig:fig-assumption-sampling-cor)). 
 Importantly, critical species in the empirical networks were also critical species in the subsampled networks in a large majority of cases (Figure \@ref(fig:fig-assumption-sampling-crit)).
 
@@ -370,7 +370,7 @@ c_mod_table %>%
                booktabs = TRUE, 
                digits = 2, 
                linesep = c(""),
-               caption = "Model selection table based on the Akaike Information Criterion for small samples for candidate models of size of the minimum driver node set ($n_D$) in the empirical networks. There was no evidence for any of the evaluated predictors: the invasion status (inv), the network connectance (c), the network nestedness (NODF) the number of species ($n_S$) the network asymmetry ($AS_s$) or the interaction strength asymmetry ($AS_s$). Only candidate models with a weight $>0.01$ are shown.") %>%
+               caption = "Model selection table based on the Akaike Information Criterion for small samples for candidate models of size of the minimum driver node set ($n_D$) in the empirical networks. There was no evidence for any of the evaluated predictors: the invasion status (inv), the network connectance ($C$), the network nestedness (NODF) the number of species ($n_S$) the network asymmetry ($AS_s$) or the interaction strength asymmetry ($AS_s$). Only candidate models with a weight $>0.01$ are shown.") %>%
   kableExtra::kable_styling(font_size = 8)
 ```
 
