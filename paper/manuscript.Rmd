@@ -119,7 +119,7 @@ This implies that an examination of the distinct sets provides a means to connec
 
 Here, we apply methods from structural controllability to a particular ecological problem and show how it can be used to generate insight into the role of species in an ecological network. 
 Specifically, we outline the approach using a set of ten pairs of uninvaded and invaded plant-pollinator communities. 
-We use invaded communities because there is strong empirical evidence showing that invasive species play an important role shaping the abundances of other species, something which is particularly true in these ten networks [@lopezaraizamikel_impact_2007; @bartomeus_contrasting_2008-1]. 
+We use invaded communities because there is strong empirical evidence showing that invasive species play an important role shaping the abundances of other species, something which is particularly true in these ten networks [@lopezaraizamikel_impact_2007; @bartomeus_contrasting_2008]. 
 This choice thus offers us an opportunity to explicitly contrast our theoretical observations with empirical evidence.
 Moreover, empirical observations indicate that steering the state of some communities—for example during ecosystem restoration or invasive species removal—can be a very difficult task [@woodford_confronting_2016]. 
 Therefore, we first ask whether there are differences between the controllability of invaded and uninvaded networks. 
@@ -134,7 +134,7 @@ We used ten paired pollination communities to apply the control-theoretic approa
 Each community pair was composed of a community invaded by a plant and a community free of the invasive species. 
 Four pairs correspond to natural or semi-natural vegetation communities in the city of Bristol, UK [@lopezaraizamikel_impact_2007]. 
 These communities comprised `r lop[1]`--`r lop[6]` species (mean `r round(lop[4])`), and non-invaded plots were obtained by experimentally removing all the flowers of the invasive species *Impatients grandulifera*.
-The other six pairs were obtained from lower diversity Mediterranean shrublands in Cap de Creus National Park, Spain [@bartomeus_contrasting_2008-1].
+The other six pairs were obtained from lower diversity Mediterranean shrublands in Cap de Creus National Park, Spain [@bartomeus_contrasting_2008].
 These communities comprised `r bar[1]`--`r bar[6]` species (mean `r round(bar[4])`); in contrast to the above, uninvaded communities were obtained from plots that had not yet been colonised by either of the invasive species *Carpobrotus affine acinaciformis* or *Opuntia stricta*. The structure of all these communities was defined by the pollinator visitation frequency, which has been shown to be an appropriate surrogate for interspecific effects in pollination networks [@vazquez_interaction_2005; @bascompte_asymmetric_2006]. 
 Full details about the empirical networks can be found in the Supporting Information Section \@ref(S-empirical-networks). 
 
@@ -210,7 +210,7 @@ In an ecological context, external inputs can be thought of as management interv
 After finding the minimum driver-node set in each of our networks, we wanted to test whether invasion status or other predictors are correlated to controllability. 
 We do this using a set of generalised linear models with binomial error structure. 
 The response variable was the relative size of the minimum driver-node set $n_D$ of the twenty empirical networks (ten invaded and ten uninvaded), and we included invasion status as a predictor. 
-As predictors, we also include the network connectance, the network nestedness (NODF), the number of species [since one might naively expect to see a negative relationship between richness and controllability; @menge_indirect_1995], the network asymmetry (an indication of the balance between plant and pollinator diversity), and the interaction strength asymmetry [the asymmetry on the dependences between trophic levels; @bluthgen_specialization_2007].
+As predictors, we also include the network connectance, the network nestedness (NODF), the number of species [since one might naively expect to see a negative relationship between richness and controllability; @menge_indirect_1995], the network asymmetry (an indication of the balance between plant and pollinator diversity), and the interaction strength asymmetry [the asymmetry on the dependences between trophic levels; @bluthgen_specialization_2007]\R{R2-citation-with-name}.
 We compared models using the Akaike Information Criterion for small sample sizes (AICc). 
 
 In addition, we also explored whether real networks differ in their architecture from random ones in a concerted way that could impact these results. 
@@ -482,7 +482,7 @@ Stepping back, our results also provide support to the idea that management deci
 
 Our choice of studying invaded/uninvaded networks was based on a desire to contrast the extensive empirical evidence of the role of invasive plants with our theoretical results. 
 We found that invasive plants were always critical for network control and as such our results were in line with our expectations. 
-Invasive plants have been previously found to exacerbate the asymmetries in their communities [@aizen_invasive_2008; @bartomeus_contrasting_2008-1; @henriksson_strong_2016] and to be central in their communities [@vila_invasive_2009; @palacio_generalist_2016]. 
+Invasive plants have been previously found to exacerbate the asymmetries in their communities [@aizen_invasive_2008; @bartomeus_contrasting_2008; @henriksson_strong_2016] and to be central in their communities [@vila_invasive_2009; @palacio_generalist_2016]. 
 \R{R2-inherrently-different} We found that it is not that invasive plants have some different mechanism for influencing the community compared to their native counterparts [@emer_species_2016; @stouffer_how_2014]. 
 Both native species and invasive plants tended to attain a high control capacity if they were important to network persistence, were abundant, and depended little on other species. 
 Furthermore, our observation that changes in the abundance of invasive plants (and presumably all critical species) are crucial to modify the state of the community agrees with recent evidence showing that ecosystem restoration focused on the eradication of invasive plants can have transformative desirable effects in plant-pollinator communities\R{extra-references-3} [@kaiser-bunbury_ecosystem_2017]. 
@@ -519,6 +519,6 @@ DBS conceived the idea; all authors contributed to the development of the theore
 
 # Data accessibility
 
-All data used in this manuscript have already been published by @lopezaraizamikel_impact_2007, @bartomeus_contrasting_2008-1, and @ballantyne_constructing_2015 The reader should refer to the original sources to access the data.
+All data used in this manuscript have already been published by @lopezaraizamikel_impact_2007, @bartomeus_contrasting_2008, and @ballantyne_constructing_2015 The reader should refer to the original sources to access the data.
 
 # References

@@ -101,6 +101,7 @@ We are pleased that the reviewer "thoroughly enjoyed the re-written manuscript",
 
 > A few references require editing to journal style (e.g. remove initials for many citations)
 
+We have corrected all of them except on \lr{R2-citation-with-name} where the initial is used to distinguis between two authors with the same last name
 
 >L314. open bracket missing .
 
