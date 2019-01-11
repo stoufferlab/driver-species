@@ -33,62 +33,43 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE,
 We are thankful to the assistant editor James Ross, the senior editor and David Gibson, and three anonymous reviewers for the insightful comments to improve the manuscript. 
 In the following sections, you can find a detailed response to each comment raised during the previous round of review. 
 
-# Editor comments
-
-
-
 # Associate Editor's comments:
-
 
 > "I think this ms now makes much clearer the potential insights to be gained by applying control theory to interaction networks. In particular, the authors have done a nice job of explaining how their findings reinforce existing ideas in the literature on the stability of ecological networks while also acknowledging limitations. The reviewers identify a few remaining issues that should be straightforward to address. I also noticed a few issues"
 
 Thank you for the positive feedback. We have addressed all of the specific issues raised and highlight these in red text in our resubmitted manuscript. 
 
-> L9: I think here and throughout much of the text, species should be possessive when followed by a noun ("species role" should be "species' role"). The possessive is currently used in some instances but is inconsistently applied throughout the ms. 
+> "*L9*: I think here and throughout much of the text, species should be possessive when followed by a noun ("species role" should be "species' role"). The possessive is currently used in some instances but is inconsistently applied throughout the ms."
 
-We have checked through the manuscript and corrected this where relevant. 
+*Accepted and changed*. We have checked through the manuscript and corrected this where relevant. Besides *specie's role*, we also changes instances of *species' contribution*, *species' degree*, *species' control capacity*, among others. 
 
+> "*L25*: 'every invasive species in our dataset was part of it' Here it was unclear what 'it' refers to (the set of critical species), and the reference to a singular dataset when you have 20 networks in total was a bit confusing to me.
 
-> L25: ". every invasive species in our dataset was part of it ." Here it was unclear what "it" refers to (the set of critical species), and the reference to a singular dataset when you have 20 networks in total was a bit confusing to me.
+*Accepted and changed*. We have made this clearer as follows: "and included every invasive species in our dataset" (\lr{M-R2-our-dataset})
 
-We have made this clearer as follows: "and included every invasive species in our dataset" (\lr{R2-our-dataset})
+> "*L23-26*: in these lines, you refer to critical species, but I think the distinction between having high control capacity versus being critical needs to be defined (briefly) earlier (it is stated in *L18-19* that you will quantify both control capacity and identify critical species, but it is not explained how they are distinct)."
 
+*Accepted and changed*. We now identify the distinction between high control capacity and being critical on \lr{M-R2-define-control-capacity}. The text now reads "It also allows us to quantify a species control capacity-its relative importance-and identify the set of species that, collectively, are critical in this context because they have largest possible control capacity."
 
-> L23-26: in these lines, you refer to critical species, but I think the distinction between having high control capacity versus being critical needs to be defined (briefly) earlier (it is stated in L18-19 that you will quantify both control capacity and identify  critical species, but it is not explained how they are distinct).
+> "*L27*: unclear what 'its' refers  to."
 
-We now identify the distinction between high control capacity and being critical on lines \lr{R2-define-control-capacity} "It also allows us to quantify a species control capacity-its relative importance-and identify the set of species that, collectively, are critical-have maximum control capacity-in this context."
+*Accepted and changed*. We now explicitly state "species' degree" in  \lr{M-R2-species-degree}
 
+> "*L234, 235*: awkward to refer to species as 'they' and 'their'"
 
-> L27: unclear what "its" refers  to
+*Accepted and changed*. We have changed this to "it" and "its"
 
-We now explicitly state "species' degree" \lr{R2-species-degree}
+> "*L296*: 'More details in Supporting Information.' is a sentence fragment."
 
-> L111, 114: "are comprised of" should be "comprised "
+*Accepted and changed*. We have corrected this on \lr{M-R2-sentence-fragment}. The text now reads "See Supporting Information Section \@ref(S-visitation-as-proxy) for more details".
 
 > "*L343*: I am not sure about citing Table 2 for the first time in the Discussion. Might it be more useful to cite this in the Introduction?""
 
 We now introduce the glossary at the end of the introdyction on \lr{M-R2-ref-glossary}.
 
-We have changed this to "it" and "its"
+> "*L111, 114*: 'are comprised of' should be 'comprised'. *L339, 432*: 'at' should be 'in'. *L341*: 'allow' should be 'allowed'. *L355*: missing period."
 
-> L296: "More details in Supporting Information ."  is a sentence fragment.
-
-We have corrected this on line \lr{R2-sentence-fragment}
-
-> L339, 432: "at" should be "in" 
-
-Thank you, this has been corrected.
-
-> L341: "allow" should be "allowed "
-
-Thank you, this has been corrected.
-
-
-
->L355: missing period 
-
-Thank you for noticing this, we have inserted the missing period.
-
+*Accepted and changed*. Thank you for pointing out these mistakes, we corrected all of them.
 
 # Reviewer comments #1
 

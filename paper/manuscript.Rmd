@@ -67,7 +67,7 @@ However, the relationship between centrality and keystoneness is largely phenome
 While centrality is useful when predicting which species' extinctions could cause the largest change in a community, it says little about how these species could be used to attain or preserve a particular community state.
 
 2. Here we introduce structural controllability, an approach that allows us to quantify the extent to which network topology can be harnessed to achieve a desired state. 
-\R{R2-define-control-capacity} It also allows us to quantify a species' control capacity—its relative importance—and identify the set of species that, collectively, are critical—have maximum control capacity—in this context. 
+\R{R2-define-control-capacity} It also allows us to quantify a species' control capacity—its relative importance—and identify the set of species that, collectively, are critical in this context because they have largest possible control capacity. 
 We illustrate the application of structural controllability with ten pairs of uninvaded and invaded plant-pollinator communities.
 
 3. We found that the controllability of a community is not dependent on its invasion status, but on the asymmetric nature of its mutual dependences. 
