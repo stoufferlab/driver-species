@@ -128,6 +128,30 @@ We ask—from a control-theoretic perspective—whether there are key difference
 This allows us to identify species that might be critical for network control and show that they have a larger than expected impact on the stable coexistence of the community.
 Finally, we compare the proposed approach to current methods based on species' centrality and show how these methods are indeed valuable but ultimately paint a limited picture in regard to the "keystoneness" of a species.
 
+```{r tab-glossary}
+defs <- list(
+  "network control" = "A network is said to be controllable if it is possible to steer it from an initial to an arbitrary final state within finite time.",
+  "controllability" = "The intrinsic difficulty of controlling an ecological community. It is measured by the relative size of the minimum driver-node set, $n_D$. It also indicates the extent to which network structure can be harnessed for network control.", 
+  "minimum driver-node set" = "One of the sets of species whose abundances need to be directly managed in order to achieve full control of the community. The minimum driver-node sets can be obtained by finding all maximum matchings in a network.",
+  "maximum matching" = "A matching is a set of links that do not share any common start or end nodes; the largest possible matching is called a maximum matching.",
+  "control configuration" = "One of the species combinations with which is possible to achieve network control. Optimal control configurations are given by the minimum driver-node sets.", 
+  "control capacity" = "The relative frequency \\(\\phi\\) which with a species is part of the optimal control configurations of a network.", 
+  "critical species" = "A species with a maximal control capacity \\(\\phi=1\\)",
+  "superior node" = "A species is a superior node if it can internally affect the abundance of other species in the network. Superior nodes make up the chains that propagate the control signals through the network.")
+
+dplyr::data_frame(rows = c(rbind(names(defs), unlist(defs))), dummy2 = "") %>%
+  dplyr::mutate(rows = kableExtra::cell_spec(rows, "latex", bold = T:F, escape = F)) %>%
+  knitr::kable("latex", 
+               booktabs = T, 
+               col.names = NULL,
+               caption = "Glossary", 
+               escape = F, 
+               linesep = c('', '\\addlinespace')) %>% 
+  kableExtra::kable_styling(font_size = 8) %>%
+  kableExtra::add_indent(seq(2, length(defs)*2, by = 2)) %>%
+  kableExtra::column_spec(1, width = paste0(fig_sizes()[[1]], "in"))
+```
+
 # Materials and methods
 
 We used ten paired pollination communities to apply the control-theoretic approach.
@@ -423,30 +447,6 @@ Despite removing rare interactions and species, the relative size of the minimum
 Our main goal was to understand the role that species play in both modifying the abundance of the species they interact with and the state of the community as a whole. 
 To achieve that goal we applied *structural controllability*, a field at the intersection between control and complex theory that allowed us to obtain two key pieces of information: the *controllability* of a network and a species' *control capacity* (Table \@ref(tab:tab-glossary)). 
 We found that the controllability of a network does not depend on its invasion status and that the species that are critical to altering the state of the community are also the ones that most sustain the stable coexistence of species in their communities.
-
-```{r tab-glossary}
-defs <- list(
-  "network control" = "A network is said to be controllable if it is possible to steer it from an initial to an arbitrary final state within finite time.",
-  "controllability" = "The intrinsic difficulty of controlling an ecological community. It is measured by the relative size of the minimum driver-node set, $n_D$. It also indicates the extent to which network structure can be harnessed for network control.", 
-  "minimum driver-node set" = "One of the sets of species whose abundances need to be directly managed in order to achieve full control of the community. The minimum driver-node sets can be obtained by finding all maximum matchings in a network.",
-  "maximum matching" = "A matching is a set of links that do not share any common start or end nodes; the largest possible matching is called a maximum matching.",
-  "control configuration" = "One of the species combinations with which is possible to achieve network control. Optimal control configurations are given by the minimum driver-node sets.", 
-  "control capacity" = "The relative frequency \\(\\phi\\) which with a species is part of the optimal control configurations of a network.", 
-  "critical species" = "A species with a maximal control capacity \\(\\phi=1\\)",
-  "superior node" = "A species is a superior node if it can internally affect the abundance of other species in the network. Superior nodes make up the chains that propagate the control signals through the network.")
-
-dplyr::data_frame(rows = c(rbind(names(defs), unlist(defs))), dummy2 = "") %>%
-  dplyr::mutate(rows = kableExtra::cell_spec(rows, "latex", bold = T:F, escape = F)) %>%
-  knitr::kable("latex", 
-               booktabs = T, 
-               col.names = NULL,
-               caption = "Glossary", 
-               escape = F, 
-               linesep = c('', '\\addlinespace')) %>% 
-  kableExtra::kable_styling(font_size = 8) %>%
-  kableExtra::add_indent(seq(2, length(defs)*2, by = 2)) %>%
-  kableExtra::column_spec(1, width = paste0(fig_sizes()[[1]], "in"))
-```
   
 Our results indicate that fully controlling ecological networks might currently be out of reach for all but the smallest communities [@motter_networkcontrology_2015]. 
 Indeed, the median size of the relative minimum driver-node set in our dataset was $n_D = `r round(median(c_m$n_D),2)`$, a high value when compared to other complex systems in which controllability has been investigated (the lower $n_D$ the more controllable the community). 

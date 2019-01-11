@@ -65,9 +65,9 @@ We now explicitly state "species' degree" \lr{R2-species-degree}
 
 > L111, 114: "are comprised of" should be "comprised "
 
-Thank you, we have corrected this.
+> "*L343*: I am not sure about citing Table 2 for the first time in the Discussion. Might it be more useful to cite this in the Introduction?""
 
-> L234, 235: awkward to refer to species as "they" and "their "
+We now introduce the glossary at the end of the introdyction on \lr{M-R2-ref-glossary}.
 
 We have changed this to "it" and "its"
 
@@ -83,9 +83,7 @@ Thank you, this has been corrected.
 
 Thank you, this has been corrected.
 
-> L343: I am not sure about citing Table 2 for the first time in the Discussion. Might it be more useful to cite this in the Introduction ?
 
-We now introduce table 2 on line \lr{R2-ref-glossary}.
 
 >L355: missing period 
 
