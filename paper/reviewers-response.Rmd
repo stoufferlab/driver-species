@@ -73,34 +73,25 @@ We now introduce the glossary at the end of the introdyction on \lr{M-R2-ref-glo
 
 # Reviewer comments #1
 
-> "I'd like to commend the authors to this revised version of the manuscript on "Keystoneness, centrality, and the structural controllability of ecological networks". I thoroughly enjoyed the re-written manuscript, which is now considerably more accessible and clearly targets the community of network ecologists, while not ignoring the importance of the applied relevance of the findings. Overall, I don't have any major comments. I guess the language is in parts on the casual side, yet without compromising the preciseness or clarity of the text. I noticed a few typos or style errors that the authors may want to address"
+> "I'd like to commend the authors to this revised version of the manuscript on 'Keystoneness, centrality, and the structural controllability of ecological networks'. I thoroughly enjoyed the re-written manuscript, which is now considerably more accessible and clearly targets the community of network ecologists, while not ignoring the importance of the applied relevance of the findings. Overall, I don't have any major comments. I guess the language is in parts on the casual side, yet without compromising the preciseness or clarity of the text. I noticed a few typos or style errors that the authors may want to address. Congratulations on this thought-provoking methodological synthesis."
 
-We are pleased that the reviewer "thoroughly enjoyed the re-written manuscript", and appreciate the identified issues. We have addressed all issues in the text and identify these in red.  
+We are pleased that the reviewer enjoyed the re-written manuscript. We did too!. We also grateful for the typos and style errors identifyed, we have striven to correct them all. 
 
+> "A few references require editing to journal style (e.g. remove initials for many citations)"
 
-> A few references require editing to journal style (e.g. remove initials for many citations)
+*Accepted and changed*. We have corrected all citations. One of them, however, (\lr{R2-citation-with-name}) still shows an author's first name initial, as it is necessary to distinguish two authors with the same last name.
 
-We have corrected all of them except on \lr{R2-citation-with-name} where the initial is used to distinguis between two authors with the same last name
+> "*L388*: remove repeated 'other'. I suggest that the authors re-write this sentence to improve clarity."
 
->L314. open bracket missing .
+*Accepted and changed*. We have removed the second 'other'. As suggested, we have rewritten the sentence to improve clarity (\lr{M-R2-structural-controllability}). It now reads as follows: "First, structural controllability emphasizes that the effect a species has on the abundance of other species is not independent of the effects of those other species in their community".
 
-Thank you for pointing this out, we have inserted the missing bracket.
+> "Reference list needs updating, e.g. Ne'eman et al. is not 2009 but 2010."
 
-> L358. change 'instead' to 'Instead'. L381. remove second comma 
+*Accepted and changed*. Thanks for pointing this error out. We've corrected the reference. 
 
-We have made both of these changes. 
+> "*L314*: open bracket missing. *L358*: change 'instead' to 'Instead'. *L381*: remove second comma. *Fig. S6* header of plot b). correct spelling of 'critical'."
 
-> L388. remove repeated 'other'. I suggest that the authors re-write this sentence to improve clarity .  
-
-We have removed the second 'other'. We have rewritten the sentence on line \lr{R2-structural-controllability} to improve clarity. It now reads as follows: "First, structural controllability emphasizes that the effect a species has on the abundance of other species is not independent of the effects of those other species in their community".
-
-> Reference list needs updating, e.g. Ne'eman et al. is not 2009 but 2010. 
-
-> Fig. S6 header of plot b). correct spelling of 'critical' 
-
-> Congratulations on this thought-provoking methodological synthesis.
-
-
+*Accepted and changed*. Thank you for pointing this out, made all these changes as indicated.
 
 # Reviewer comments #2
 
