@@ -32,7 +32,7 @@ make_fig_rho_sensitivity <- function(structural_rho_correlation, rho_feasibility
                 alpha = 0.25) +
     facet_wrap(~delta, labeller = label_both) +
     base_ggplot_theme() +
-    labs(title = "(b) Diff. crirical - redundant species", 
+    labs(title = "(b) Diff. critical - redundant species", 
          x = latex2exp::TeX("interspecific competition ($\\rho$)"), 
          y = "structural feasibility (scaled)")
   
