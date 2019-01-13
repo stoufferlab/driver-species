@@ -123,7 +123,7 @@ We have attempted to clarify this sentence as follows: Finding out exactly how d
 
 > * "ecological objective" (p9) - simply 'objective' ? 
 
-We have changed this to simply 'objective', as suggested (\lr{R2-ecol-objective}).
+> "*References*: several references use the term 'plantPollinator', or '...'"
 
 *Accepted and changed*: We have corrected the refeerence that included 'plantPollinator' in the title. We have left the references that include an ellipsis in the author list as they are, as the Journal of Ecology Author Guidelines indicate that this is the preffered format when the reference has more than seven authors. 
 
