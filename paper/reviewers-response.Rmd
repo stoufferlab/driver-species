@@ -139,13 +139,9 @@ We have rephrased this line as: "By accounting for network dynamics (even if in 
 
 *Accepted and changed*: We are sorry for the confusion. In the species level GLM, we lumped all species from different networks together. We have modified the text in \lr{M-R2-one-lumped-model-a} and \lr{M-R2-one-lumped-model-b} to make this clearer. We actually did test for random effects in the model. We tested random effects that allowed for a random intercept for the network (but also its site, and the study it comes from). In all cases, the variance among groups was zero. This means that likely there are no differences on the distribution of control capacity between networks (or site and study) and therefore it was not necessary to include random effects in the models presented in the paper. We have corrected this omission and describe the random effects in \lr{M-R2-random-effects}.
 
+> "How were the model sets derived? Were all possible sub-models compared or was a step-wise approach used?"
 
->Minor typos:
-* Figure S11 caption: "likelyhood" -> likelihood 
-* References : several references use the term "plantPollinator", or "..."
-* Figure S1b is referred to (supp. p4 ) but doesn't exist in the figure.  
-* Page 18 Line 388: "other other" 
-* "driver node density" (supp p12) -> "size of the minimum driver node set"?  
+*Accepted and changed*: We actually compared all possible candidate models. We have edited the manuscript on \lr{M-R2-all-candidates} to include this information. 
 
 
 

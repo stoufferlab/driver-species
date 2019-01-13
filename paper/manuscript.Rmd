@@ -273,6 +273,7 @@ Finally, we included a categorical variable for the species' trophic level (plan
 To facilitate comparison between predictors, degree and visitation strength were log-transformed and all four continuous variables were scaled to have a mean of zero and a standard deviation of one.
 \R{R2-one-lumped-model-b}In these models, species from all networks were lumped together. 
 \R{R2-random-effects}We initially included random effects to account for possible variation across communities, but we found that the variance explained by these random effects was zero, and therefore random effects were not included in further analyses. 
+\R{R2-all-candidates}We then generated all possible candidate models.
 To identify the models that were best supported by the data, we first determined the most parsimonious random structure using the AICc. 
 The relative importance of variables was then assessed by looking at their effect sizes in the top-ranked models and the cumulative weight of the models in which they are present. 
 
