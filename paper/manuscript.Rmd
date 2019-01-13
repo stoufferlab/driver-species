@@ -221,7 +221,7 @@ replayPlot(fig_control_config$plot)
 ## Differences between invaded and uninvaded networks
 
 \R{R2-ecol-objective} Our first objective is to investigate whether the controllability of a community is associated with invasion status or not. 
-\R{R2-desired-control-trajectory} Finding out exactly how difficult it is to control a network depends strongly on the particularities of the desired control trajectory (i.e. path to the desired final state)  as well as the dynamical relationship between nodes. 
+\R{R2-desired-control-trajectory} Finding out exactly how difficult it is to control a network depends strongly on the particularities of the desired control trajectory (i.e. the path to the desired final state)  as well as the dynamical relationship between nodes. 
 However, we are interested in understanding the controllability of a network in a more general sense, such that it can be applied even when the precise control scenario is known only incompletely. 
 To this end, we chose an indicator that follows directly from our approach: the size of the minimum driver-node set. 
 This simple metric provides a general indication of how difficult controlling a network might be, as systems that require a large number of external inputs to be fully controlled are intuitively more difficult or costly to manage. 
