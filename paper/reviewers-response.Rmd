@@ -95,6 +95,11 @@ We are pleased that the reviewer enjoyed the re-written manuscript. We did too!.
 
 # Reviewer comments #2
 
+> "The methods are mostly clear but there is no description of how the 'likelihood of being a superior node' is calculated."
+
+*Accepted and changed*. Thanks for pointing this out. We have modified the sentence mentioning 'the likelihood of being a superior node' in the first paragraph of the secition \@ref(S-reciprocal-links) to "...and wether it is a superior node..." to avoid confusion. Then we define the 'probability of being a superior node' at the end of the section: "It is important to note that a species that is found to be a superior node under a particular control configuration, will be so in all possible control configurations for the particular non-reciprocal network. 
+We, therefore denote the average of $\sigma$ across all non-reciprocal versions as the probability of the species being a superior node in its community". 
+
 > "*L1364*: 'dynamic persistence'"
 
 *Accepted and changed*: Thank you. To avoid confussion we have removed the word 'dynamic' and now the sentence reads "...our results suggest that structural controllability is closely related to the persistence..." (\lr{M-R2-dynamic-persistence}). It conserves its meaning without loosing much precision. 

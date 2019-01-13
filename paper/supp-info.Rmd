@@ -229,7 +229,7 @@ Our procedures to find minimum driver node sets are only adequate when there are
 The proportion of reciprocal links in relatively low. 
 In fact, the proportion of species pairs that are reciprocally connected in our empirical networks is just `r round(mean(recipr$prop_bid)*100, 2)`%. 
 However, reciprocal links are not a rare occurrence as `r sum(recipr$prop_bid != 0)` out of `r nrow(recipr)` empirical networks had at least one. 
-To calculate our controllability metrics at both the network (the relative size of the minimum driver node set, $n_D$) and species level (control capacity, $\phi$, and the likelihood of being a superior node, $\sigma$) we first need to generate all possible versions of the of the network that include only non-reciprocal links (Figure \@ref(fig:fig-bidirectional)). 
+To calculate our controllability metrics at both the network (the relative size of the minimum driver node set, $n_D$) and species level (control capacity, $\phi$, and wether it is a superior node, $\sigma$) we first need to generate all possible versions of the of the network that include only non-reciprocal links (Figure \@ref(fig:fig-bidirectional)). 
 
 All of these non-reciprocal networks are as likely to be one that best represents the superior/matched relationships in the network. 
 As such, we average the three metrics ($n_D$, $\phi$, and $\sigma$) across all the networks without reciprocal links without weighting by the number of possible control configurations. 
