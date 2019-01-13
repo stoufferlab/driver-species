@@ -37,17 +37,17 @@ In the following sections, you can find a detailed response to each comment rais
 
 > "I agree that your manuscript is much improved and now only in need of relatively minor revisions. In addition to addressing the AE and reviewer's comments, please add terms related to invasive species to the keywords to aid in discoverability of your paper."
 
-Many thanks the encouraging words. We have included 'invasive species' as a keyword. To make space for this keyworkd we have removed 'controllability' which is already highlighted as part of the title.
+Many thanks for the encouraging words. We have included 'invasive species' as a keyword. To make space for this keyword we have removed 'controllability' which is already highlighted as part of the title.
 
 # Associate Editor's comments
 
-> "I think this ms now makes much clearer the potential insights to be gained by applying control theory to interaction networks. In particular, the authors have done a nice job of explaining how their findings reinforce existing ideas in the literature on the stability of ecological networks while also acknowledging limitations. The reviewers identify a few remaining issues that should be straightforward to address. I also noticed a few issues"
+> "I think this ms now makes much clearer the potential insights to be gained by applying control theory to interaction networks. In particular, the authors have done a nice job of explaining how their findings reinforce existing ideas in the literature on the stability of ecological networks while also acknowledging limitations. The reviewers identified a few remaining issues that should be straightforward to address. I also noticed a few issues"
 
 Thank you for the positive feedback. We have addressed all of the specific issues raised and highlight these in red text in our resubmitted manuscript. 
 
 > "*L9*: I think here and throughout much of the text, species should be possessive when followed by a noun ("species role" should be "species' role"). The possessive is currently used in some instances but is inconsistently applied throughout the ms."
 
-*Accepted and changed*. We have checked through the manuscript and corrected this where relevant. Besides *specie's role*, we also changes instances of *species' contribution*, *species' degree*, *species' control capacity*, among others. 
+*Accepted and changed*. We have checked through the manuscript and corrected this where relevant. Besides *specie's role*, we also changed instances of *species' contribution*, *species' degree*, *species' control capacity*, among others. 
 
 > "*L25*: 'every invasive species in our dataset was part of it' Here it was unclear what 'it' refers to (the set of critical species), and the reference to a singular dataset when you have 20 networks in total was a bit confusing to me."
 
@@ -71,7 +71,7 @@ Thank you for the positive feedback. We have addressed all of the specific issue
 
 > "*L343*: I am not sure about citing Table 2 for the first time in the Discussion. Might it be more useful to cite this in the Introduction?"
 
-*Accepted and changed*. We now introduce the glossary at the end of the introdyction on \lr{M-R2-ref-glossary}.
+*Accepted and changed*. We now introduce the glossary at the end of the introduction on \lr{M-R2-ref-glossary}.
 
 > "*L111, 114*: 'are comprised of' should be 'comprised'. *L339, 432*: 'at' should be 'in'. *L341*: 'allow' should be 'allowed'. *L355*: missing period."
 
@@ -81,7 +81,7 @@ Thank you for the positive feedback. We have addressed all of the specific issue
 
 > "I'd like to commend the authors to this revised version of the manuscript on 'Keystoneness, centrality, and the structural controllability of ecological networks'. I thoroughly enjoyed the re-written manuscript, which is now considerably more accessible and clearly targets the community of network ecologists, while not ignoring the importance of the applied relevance of the findings. Overall, I don't have any major comments. I guess the language is in parts on the casual side, yet without compromising the preciseness or clarity of the text. I noticed a few typos or style errors that the authors may want to address. Congratulations on this thought-provoking methodological synthesis."
 
-We are pleased that the reviewer enjoyed the re-written manuscript. We did too!. We also grateful for the typos and style errors identifyed, we have striven to correct them all. 
+We are pleased that the reviewer enjoyed the re-written manuscript. We did too!. We also grateful for the typos and style errors identified, we have striven to correct them all. 
 
 > "A few references require editing to journal style (e.g. remove initials for many citations)"
 
@@ -101,40 +101,58 @@ We are pleased that the reviewer enjoyed the re-written manuscript. We did too!.
 
 # Reviewer comments #2
 
+> "I think the concepts presented in this manuscript are a useful addition to the literature on management of ecological networks.  I agree with the authors that it is important that the discussion surrounding what constitutes a 'keystone' species should go beyond centrality metrics. I found the results and concepts to be generally well presented, particularly graphically, and the authors present a thorough sensitivity analysis to various assumptions.
+
+We are very thankful for the positive feedback but also for the issues highlighted. We have aimed to address them all. 
+
 > "The methods are mostly clear but there is no description of how the 'likelihood of being a superior node' is calculated."
 
-*Accepted and changed*. Thanks for pointing this out. We have modified the sentence mentioning 'the likelihood of being a superior node' in the first paragraph of the secition \@ref(S-reciprocal-links) to "...and wether it is a superior node..." to avoid confusion. Then we define the 'probability of being a superior node' at the end of the section: "It is important to note that a species that is found to be a superior node under a particular control configuration, will be so in all possible control configurations for the particular non-reciprocal network. 
+*Accepted and changed*. Thanks for pointing this out. We have modified the sentence mentioning 'the likelihood of being a superior node' in the first paragraph of the section \@ref(S-reciprocal-links) to "...and whether it is a superior node..." to avoid confusion. Then we define the 'probability of being a superior node' at the end of the section: "It is important to note that a species that is found to be a superior node under a particular control configuration, will be so in all possible control configurations for the particular non-reciprocal network. 
 We, therefore denote the average of $\sigma$ across all non-reciprocal versions as the probability of the species being a superior node in its community". 
+
+> "I would suggest including clarification on the limitations of using control capacity to summarise species' importance, and examples to help the reader build an intuition regarding the control capacity metric. As pointed out, networks that give rise to a species having a high control capacity can be quite distinct to networks that give rise to a species having a high value of particular centrality metrics.  Providing an example in the Discussion of, for instance, those species that have a control capacity of 1 but a low degree would be very useful."  
+
+*Need Daniel's input*
+
+> "Jargon occasionally obfuscates the concepts being introduced and there are places where I thought the language used was vague (esp. if terms being used have particular meanings depending on the field you're coming from). I would suggest clarifying, or rewording, the following: 'desired control trajectory' - does this mean 'final state'?""
+
+*Accepted and changed*: We have attempted to clarify this sentence as follows: Finding out exactly how difficult it is to control a network depends strongly on the particularities of the desired control trajectory (i.e. the path to the desired final state)  as well as the dynamical relationship between nodes. \lr{M-R2-desired-control-trajectory}.
 
 > "*L1364*: 'dynamic persistence'"
 
-*Accepted and changed*: Thank you. To avoid confussion we have removed the word 'dynamic' and now the sentence reads "...our results suggest that structural controllability is closely related to the persistence..." (\lr{M-R2-dynamic-persistence}). It conserves its meaning without loosing much precision. 
+*Accepted and changed*: Thank you. To avoid confusion we have removed the word 'dynamic' and now the sentence reads "...our results suggest that structural controllability is closely related to the persistence..." (\lr{M-R2-dynamic-persistence}). It conserves its meaning without losing much precision. 
 
 > "*L1370*: 'dynamic stability'"
 
-*Accepted and changed*: Contrastingly, in this case the word dynanamic distinguishes a particular facet of stability. We mean the ability of the system to return to an equilibrium state after a perturbation. We now include this definition on \lr{M-R2-dynamic-stability} to make the concept clearer.
+*Accepted and changed*: Contrastingly, in this case the word dynamic distinguishes a particular facet of stability. We mean the ability of the system to return to an equilibrium state after a perturbation. We now include this definition on \lr{M-R2-dynamic-stability} to make the concept clearer.
 
-> I think the concepts presented in this manuscript are a useful addition to the literature on management of ecological networks.  I agree with the authors that it is important that the discussion surrounding what constitutes a "keystone" species should go beyond centrality metrics.  
+> "*P9*: 'ecological objective' - simply 'objective'?" 
 
+*Accepted and changed*: We have changed this to simply 'objective', as suggested (\lr{M-R2-ecol-objective}).
 
+> "*L405*: 'central in their community'"
 
-> I found the results and concepts to be generally well presented, particularly graphically, and the authors present a thorough sensitivity analysis to various assumptions.  The methods are mostly clear but there is no description of how the "likelihood of being a superior node " is calculated.  
+*Accepted and changed*: We've changed the wording to avoid ambiguity. Now the text reads "...to attain high centrality in their communities..." (\lr{M-R2-central-in-their-communities}).
 
+> "*L406*: 'inherently different. The sentence spanning lines 407-410 is quite confusing  - please clarify.  
 
+*Accepted and changed*: We rephrased this line as follows: "We found that it is not that invasive plants have some different mechanism for influencing the community compared to their native counterparts" \lr{M-R2-inherrently-different}.
 
-> I would suggest including clarification on the limitations of using control capacity to summarise species' importance, and examples to help the reader build an intuition regarding the control capacity metric.  As pointed out, networks that give rise to a species having a high control capacity can be quite distinct to networks that give rise to a species having a high value of particular centrality metrics.  Providing an example in the Discussion of, for instance, those species that have a control capacity of 1 but a low degree would be very useful.  
+> "*L430*: 'marginally affected by the topology of their interactions'"
 
+*Accepted and changed*: We have rephrased this line as: "By accounting for network dynamics (even if in a simple way), structural stability incorporates more ecological realism, especially in the extreme scenario in which the structure of interactions within the community only marginally affects the community's state. Both native species and invasive plants tended to attain a high control capacity if they were important to network persistence, were abundant, and depended little on other species" (\lr{M-R2-marginally-affected}).
 
+> "*L436* and *L441*: 'dominate the state [of their community]'"
 
-> "*Discussion*: 'species' strength'
+*Need Daniel's input*
 
-*Accepted and changed*: In the Methods section we deine species' strength as the sum of a species' visits (\lr{M-R2-species-strength-a}). For brevity, we did not define it again in the Disussion, but now we have improved the text and briefly describe it when we mention it there too. The text now reads "When controlling for a species' visitation strength (the sum of a species' visits), which is indirectly a proxy of its abundance..." (\lr{M-R2-species-strength-b}).
+> "*Discussion*: 'species' strength'"
 
-> * "desired control trajectory " - does this mean "final state"?
+*Accepted and changed*: In the Methods section we deine species' strength as the sum of a species' visits (\lr{M-R2-species-strength-a}). For brevity, we did not define it again in the Discussion, but now we have improved the text and briefly describe it when we mention it there too. The text now reads "When controlling for a species' visitation strength (the sum of a species' visits), which is indirectly a proxy of its abundance..." (\lr{M-R2-species-strength-b}).
 
-> "'driver node density' (supp p12) -> 'size of the minimum driver node set'?"
+> "Minor typos: *Figure S11* caption: 'likelyhood' -> likelihood. *L388*: 'other other'. 'Driver node density' (supp p12) -> 'size of the minimum driver node set'?"
 
-> * "dynamic persistence"  (p17,l364)
+*Accepted and changed*: All typos have been corrected as indicated.
 
 > "*Figure S1b* is referred to (supp. p4 ) but doesn't exist in the figure"  
 
@@ -142,15 +160,17 @@ We, therefore denote the average of $\sigma$ across all non-reciprocal versions 
 
 > "*References*: several references use the term 'plantPollinator', or '...'"
 
-*Accepted and changed*: We have corrected the refeerence that included 'plantPollinator' in the title. We have left the references that include an ellipsis in the author list as they are, as the Journal of Ecology Author Guidelines indicate that this is the preffered format when the reference has more than seven authors. 
+*Accepted and changed*: We have corrected the reference that included 'plantPollinator' in the title. We have left the references that include an ellipsis in the author list as they are, as the Journal of Ecology Author Guidelines indicate that this is the preferred format when the reference has more than seven authors. 
 
-> * "inherently different " (p18, l 406). The sentence spanning lines 407-410 is quite confusing  - please clarify.  
+# Reviewer comments #3
 
-We rephrased this line as follows: "We found that it is not that invasive plants have some different mechanism for influencing the community compared to their native counterparts" \lr{R2-inherrently-different}.
+> "In the literature on ecological networks, the term keystone species has often been tossed around without any clear definition. I was pleased to read that here the authors have developed a cleaner, more effective way to identify keystone species in ecological networks than methods that have been proposed before. I think the authors have made the correct choice in emphasizing the conceptual aspects of the approach, and do so quite well. The background on control theory was complex but manageable to read and understand in this context."
 
-> * "marginally affected by the topology of their interactions"  (p19, l 430)
+We are very thankful for the positive feedback. 
 
-We have rephrased this line as: "By accounting for network dynamics (even if in a simple way), structural stability incorporates more ecological realism, especially in the extreme scenario in which the structure of interactions within the community only marginally affects the community's state. Both native species and invasive plants tended to attain a high control capacity if they were important to network persistence, were abundant, and depended little on other species." \lr{R2-marginally-affected}.
+> "Overall I found the paper well-written and sound, but there were a few questions I had that could improve clarity in the methods used. In the glm that used nD as the response variable, is there any concern that including N (number of species) as a predictor may cause a problem when the response is D/N? I can understand why this was included, but I can also imagine this resulting in models that show an effect of N when there is none (I could be wrong on this)."
+
+*Need Daniel's input*
 
 > "In the species level glm, it was not entirely clear if models were fit to each network individually or if all species were lumped together (the former is what I think was done based on my reading of the text). Regardless I wonder if it would change the results if a mixed effects model was fit to lumped data, using network as a random effect."
 
