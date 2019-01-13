@@ -465,7 +465,7 @@ These two factors are particularly relevant because they govern the asymmetric n
 Accordingly, our results suggest that structural controllability is closely related to the dynamic persistence of an ecological community based on two lines of evidence. 
 First, we found a comparatively small but thought-provoking negative relationship between the controllability of a network and its nestedness. 
 Previous studies indicate that nestedness promotes species coexistence and confers robustness to extinction [@bastolla_architecture_2009; @memmott_tolerance_2004] even at the expense of the dynamic stability of the mutualistic community [@saavedra_nested_2016]. 
-These observations are in agreement with our results, as we would expect the dynamic stability of a community to be correlated to the difficulty to control it. 
+These observations are in agreement with our results, as we would expect the dynamic stability \R{R2-dynamic-stability}(the ability to return to equilibrium after a perturbation in species abundances) of a community to be correlated to the difficulty to control it. 
 Second, species' control capacity was strongly correlated to their contribution to nestedness and critical species had the largest impact to the stable coexistence of species in their communities. 
 Therefore, species that play a key role at determining the state of the community might also be more key to "maintain the organization and diversity of their ecological communities", one of the hallmarks of keystone species [@mills_keystone-species_1993].
 
