@@ -270,7 +270,7 @@ Second,\R{R2-species-strength-a} the species' strength (the sum of a species' vi
 Third, the direction of asymmetry which quantifies the net balance in dependencies; that is, it indicates if a species affects other species more than what they affect it or not [@vazquez_species_2007]. 
 Fourth, the species' degree in order to account for the intrinsic centrality of a species.
 Finally, we included a categorical variable for the species' trophic level (plant or pollinator) and an interaction term between trophic level and the previous four variables. 
-To facilitate comparison between predictors, degree and visitation strength were log-transformed and all four continuous variables were scaled to have a mean of zero and a standard deviation of one.
+To facilitate comparison between predictors, degree and visitation strength were log-transformed and all four continuous variables were scaled to have a mean of zero and a standard deviation of one. 
 \R{R2-one-lumped-model-b}In these models, species from all networks were lumped together. 
 \R{R2-random-effects}We initially included random effects to account for possible variation across communities, but we found that the variance explained by these random effects was zero, and therefore random effects were not included in further analyses. 
 \R{R2-all-candidates}We then generated all possible candidate models.
@@ -295,7 +295,7 @@ More details about the calculation of structural stability can be found in the S
 
 ## Testing assumptions
  
-\R{testing-assumptions-line}Just like the centrality metrics, the information obtained by applying structural controllability depends on the ability of the network to accurately represent the ecological community. 
+Just like the centrality metrics, the information obtained by applying structural controllability depends on the ability of the network to accurately represent the ecological community. 
 We thus tested the sensitivity of our approach to two fundamental assumptions. 
 First, we tested that visitation is an appropriate proxy to infer interspecific effects by comparing the results obtained using visitation to two alternative metrics in a separate dataset that lacked invasive species [@ballantyne_constructing_2015]. 
 Specifically, we also calculated the controllability (the size of the minimum driver node-set) and the control capacity of networks constructed using pollinator efficiency (which measures the pollen deposition of an interaction) and pollinator importance [which accounts for both pollen deposition and visitation and hence is regarded as a more accurate estimation of the pollination service received by plants; @neeman_framework_2010]. 
@@ -440,7 +440,7 @@ fig_structural_stability[[1]]
 
 ## Testing assumptions
 
-\R{testing-assumptions-results-line} We found that using visitation as a proxy for the strength of species' interactions leads to similar results than those obtained using pollinator importance [regarded as an accurate measure of the pollination service to plants; Supporting Information Section \@ref(S-visitation-as-proxy); @neeman_framework_2010]. 
+We found that using visitation as a proxy for the strength of species' interactions leads to similar results than those obtained using pollinator importance [regarded as an accurate measure of the pollination service to plants; Supporting Information Section \@ref(S-visitation-as-proxy); @neeman_framework_2010]. 
 Importantly, we also found that structural stability is robust to incomplete sampling of interactions. 
 Indeed, we found strong agreement between results obtained using the complete empirical networks and those obtained by randomly removing the weakest interactions (Supporting Information Section \@ref(S-undersampling)). 
 Despite removing rare interactions and species, the relative size of the minimum driver-node set, the superior species, and the relative rankings of control capacity were generally maintained. Of particular note, we found that critical species in the full network were also critical in the vast majority of rarefied networks. 
@@ -475,27 +475,27 @@ At first glance, our findings challenge numerous studies that highlight the role
 However, further inspection shows that our results do not contradict these findings; most species with a large degree also have a large control capacity and all of them were classified as superior nodes which corroborates the utility of classic centrality metrics. 
 Putting these observations together, our results therefore take previous findings one step further and suggest that centrality might paint an incomplete picture of the relevance of species.
 
-\R{management-implications}Other conceptual differences between structural controllability and centrality metrics provide three key insights into the conservation of ecological networks. 
+Other conceptual differences between structural controllability and centrality metrics provide three key insights into the conservation of ecological networks. 
 \R{R2-structural-controllability} First, structural controllability emphasizes that the effect a species has on the abundance of other species is not independent of the effects of those other species in their community. 
 The rankings provided by centrality metrics and other heuristics fail to account for the collective influence of several species at once. 
 Second, it demonstrates that to ensure the persistence of a community it is often necessary to consider the abundances of more than a single species, even when full control is infeasible or undesired (for example `r round(sum(crit$n_crit > 1)/nrow(crit)*100)`% of our communities contained more than one critical species). 
 Third, structural controllability explicitly acknowledges the existence of multiple management strategies and some will be better than others depending on the context.
-Approaches to prioritise species for conservation and reintroduction based on traits or centrality are still useful and are likely to overlap with species' control capacity\R{extra-references-1} [@pires_friendship_2017; @devoto_understanding_2012]. 
-Stepping back, our results also provide support to the idea that management decisions should not be based on a single technique but indicate that focusing on ecosystem processes and interactions may be more effective than traditional ranking-based approaches \R{extra-references-2} [@harvey_bridging_2017]. 
+Approaches to prioritise species for conservation and reintroduction based on traits or centrality are still useful and are likely to overlap with species' control capacity [@pires_friendship_2017; @devoto_understanding_2012]. 
+Stepping back, our results also provide support to the idea that management decisions should not be based on a single technique but indicate that focusing on ecosystem processes and interactions may be more effective than traditional ranking-based approaches [@harvey_bridging_2017]. 
 
 Our choice of studying invaded/uninvaded networks was based on a desire to contrast the extensive empirical evidence of the role of invasive plants with our theoretical results. 
 We found that invasive plants were always critical for network control and as such our results were in line with our expectations. 
 Invasive plants have been previously found to exacerbate the asymmetries in their communities [@aizen_invasive_2008; @bartomeus_contrasting_2008; @henriksson_strong_2016] \R{R2-central-in-their-communities}and to attain high centrality in their communities [@vila_invasive_2009; @palacio_generalist_2016]. 
 \R{R2-inherrently-different} We found that it is not that invasive plants have some different mechanism for influencing the community compared to their native counterparts [@emer_species_2016; @stouffer_how_2014]. 
 Both native species and invasive plants tended to attain a high control capacity if they were important to network persistence, were abundant, and depended little on other species. 
-Furthermore, our observation that changes in the abundance of invasive plants (and presumably all critical species) are crucial to modify the state of the community agrees with recent evidence showing that ecosystem restoration focused on the eradication of invasive plants can have transformative desirable effects in plant-pollinator communities\R{extra-references-3} [@kaiser-bunbury_ecosystem_2017]. 
+Furthermore, our observation that changes in the abundance of invasive plants (and presumably all critical species) are crucial to modify the state of the community agrees with recent evidence showing that ecosystem restoration focused on the eradication of invasive plants can have transformative desirable effects in plant-pollinator communities [@kaiser-bunbury_ecosystem_2017]. 
 However, our results also suggest that removals must be exercised with caution. 
 Not only it is hard to predict the direction in which the system will change, but we also show that critical species can underpin the coexistence of species and therefore some communities may be acutely vulnerable to their eradication [@traveset_invaders_2013; @albrecht_consequences_2014].
 
 Structural controllability assumes that the networks can be approximated using linear functional responses [@liu_control_2016]. 
 The ramifications of this assumption imply that, while structural controllability is useful to identify species that are relevant for network control, it cannot be used to design the *exact* interventions that should be applied to these species in order to achieve a desired state. 
 In an ideal scenario, we would completely incorporate the species' dynamics into the controllability analysis [@cornelius_realistic_2013]; the reality is that such information is rarely available in most ecological scenarios. 
-\R{data-requirements}In contrast, structural controllability only requires a quantitative approximation of the network's interactions to gain valuable insight from the community.
+In contrast, structural controllability only requires a quantitative approximation of the network's interactions to gain valuable insight from the community.
 Furthermore, while the relationship between centrality and keystoneness is based on an intuitive understanding of what a keystone species is, the assumptions of structural controllability are explicit and the estimation of a species' importance arises from a mechanistic understanding of the population dynamics between species. 
 \R{R2-marginally-affected} By accounting for network dynamics (even if in a simple way), structural stability incorporates more ecological realism, especially in the extreme scenario in which the structure of interactions within the community only marginally affects the community's state.
 
