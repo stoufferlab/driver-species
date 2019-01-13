@@ -67,7 +67,7 @@ However, the relationship between centrality and keystoneness is largely phenome
 While centrality is useful when predicting which species' extinctions could cause the largest change in a community, it says little about how these species could be used to attain or preserve a particular community state.
 
 2. Here we introduce structural controllability, an approach that allows us to quantify the extent to which network topology can be harnessed to achieve a desired state. 
-\R{R2-define-control-capacity} It also allows us to quantify a species' control capacity—its relative importance—and identify the set of species that, collectively, are critical in this context because they have largest possible control capacity. 
+\R{R2-define-control-capacity} It also allows us to quantify a species' control capacity—its relative importance—and identify the set of species that are critical in this context because they have largest possible collective control capacity. 
 We illustrate the application of structural controllability with ten pairs of uninvaded and invaded plant-pollinator communities.
 
 3. We found that the controllability of a community is not dependent on its invasion status, but on the asymmetric nature of its mutual dependences. 
@@ -136,7 +136,7 @@ defs <- list(
   "maximum matching" = "A matching is a set of links that do not share any common start or end nodes; the largest possible matching is called a maximum matching.",
   "control configuration" = "One of the species combinations with which is possible to achieve network control. Optimal control configurations are given by the minimum driver-node sets.", 
   "control capacity" = "The relative frequency \\(\\phi\\) which with a species is part of the optimal control configurations of a network.", 
-  "critical species" = "A species with a maximal control capacity \\(\\phi=1\\)",
+  "critical species" = "A species with a maximal control capacity \\(\\phi=1\\).",
   "superior node" = "A species is a superior node if it can internally affect the abundance of other species in the network. Superior nodes make up the chains that propagate the control signals through the network.")
 
 dplyr::data_frame(rows = c(rbind(names(defs), unlist(defs))), dummy2 = "") %>%
@@ -271,7 +271,7 @@ Third, the direction of asymmetry which quantifies the net balance in dependenci
 Fourth, the species' degree in order to account for the intrinsic centrality of a species.
 Finally, we included a categorical variable for the species' trophic level (plant or pollinator) and an interaction term between trophic level and the previous four variables. 
 To facilitate comparison between predictors, degree and visitation strength were log-transformed and all four continuous variables were scaled to have a mean of zero and a standard deviation of one. 
-\R{R2-one-lumped-model-b}In these models, species from all networks were lumped together. 
+\R{R2-one-lumped-model-b}In these models, species from all networks were analysed together. 
 \R{R2-random-effects}We initially included random effects to account for possible variation across communities, but we found that the variance explained by these random effects was zero, and therefore random effects were not included in further analyses. 
 \R{R2-all-candidates}We then generated all possible candidate models.
 To identify the models that were best supported by the data, we first determined the most parsimonious random structure using the AICc. 
@@ -486,7 +486,7 @@ Stepping back, our results also provide support to the idea that management deci
 Our choice of studying invaded/uninvaded networks was based on a desire to contrast the extensive empirical evidence of the role of invasive plants with our theoretical results. 
 We found that invasive plants were always critical for network control and as such our results were in line with our expectations. 
 Invasive plants have been previously found to exacerbate the asymmetries in their communities [@aizen_invasive_2008; @bartomeus_contrasting_2008; @henriksson_strong_2016] \R{R2-central-in-their-communities}and to attain high centrality in their communities [@vila_invasive_2009; @palacio_generalist_2016]. 
-\R{R2-inherrently-different} We found that it is not that invasive plants have some different mechanism for influencing the community compared to their native counterparts [@emer_species_2016; @stouffer_how_2014]. 
+\R{R2-inherrently-different} We found, however, that it is not that invasive plants have some different mechanism for influencing the community compared to their native counterparts [@emer_species_2016; @stouffer_how_2014]. 
 Both native species and invasive plants tended to attain a high control capacity if they were important to network persistence, were abundant, and depended little on other species. 
 Furthermore, our observation that changes in the abundance of invasive plants (and presumably all critical species) are crucial to modify the state of the community agrees with recent evidence showing that ecosystem restoration focused on the eradication of invasive plants can have transformative desirable effects in plant-pollinator communities [@kaiser-bunbury_ecosystem_2017]. 
 However, our results also suggest that removals must be exercised with caution. 
@@ -504,9 +504,9 @@ Furthermore, while the relationship between centrality and keystoneness is based
 Here we show that structural controllability can be applied in an ecological setting to gain insight into the stability of a community and the role that species play in modifying the abundance of other species and ultimately the state of the community. 
 These characteristics make structural stability an ideal framework to evaluate the effects of invasions and other types of perturbations. 
 Importantly, structural controllability can be used to identify critical species in the community that promote biodiversity and underpin the stable coexistence of species in their community.
-Collectively, critical species dominate the state of their community and therefore are likely to be highly relevant for ecosystem management and conservation. 
-While useful, centrality metrics, which have often been used as a proxy for keystoneness, fail to identify some of these species, highlighting their limitations when we fully embrace the notion that ecological communities are dynamical systems.
-@paine_note_1969 showed nearly 50 years ago that one single species can dominate the state of its community. 
+Collectively, critical species have the ability to strongly influence the state of their community and therefore are likely to be highly relevant for ecosystem management and conservation. 
+While useful, centrality metrics---which have often been used as a proxy for keystoneness---fail to identify some of these species, highlighting their limitations when we fully embrace the notion that ecological communities are dynamical systems.
+@paine_note_1969 showed nearly 50 years ago that a single species can sometimes fill this role on its own. 
 Structural controllability suggests that this situation might be the exception rather than the rule. 
 We see our study as a starting point to study the controllability of ecological and socio-ecological systems where many exciting questions lie ahead.
 
