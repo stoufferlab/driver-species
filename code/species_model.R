@@ -14,12 +14,14 @@ fit_species_models <- function(sl_characteristics, metadata, response){
     # })
   
   # testing random effects
+  # Random effects for site and net name were tested but the variance explained
+  # by them was close to 0. So they were not included in the model testing
+  # random effects 
   # random_vars <- c("(nestedcontribution | guild)", "(species.strength | guild)", "(interaction.push.pull | guild)",  "(1 | site)")
   random_vars <- c("(1 | site)", "(1 | study)")
   fixed_vars <- c("species.strength", "nestedcontribution", "interaction.push.pull", "degree", "guild", "guild : degree", "guild : nestedcontribution", "guild : interaction.push.pull", "guild : species.strength")
     prefix_random <- paste0(response, " ~ ", paste(fixed_vars, collapse = " + "), " + ")
-  formulas_random <- get_model_formulas(prefix_random, random_vars) %>% 
-    set_names(., .) 
+  formulas_random <- get_model_formulas(prefix_random, random_vars) %>% {set_names(., .) }
   # models_random <- foreach(i=1:(length(formulas_random)-1)) %dopar% {
     # lme4::glmer(formulas_random[[i]], data = df, family = "binomial")
   # }
