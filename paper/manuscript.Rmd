@@ -266,7 +266,7 @@ In the networks that contained reciprocal links (because there was no asymmetry 
 \R{R2-one-lumped-model-a}We then examined how species-level properties were related to control capacity using a set of candidate generalised linear models with binomial error structure. 
 These models included five predictor variables that mirror the network-level predictors. 
 First, the species' contribution to nestedness, which has been proposed as a key feature that promotes stability and robustness in mutualistic networks [@saavedra_strong_2011]. 
-Second, the species' strength (the sum of a species' visits), which quantifies the strength of a species' associations and is indirectly related to its abundance [@poisot_comparative_2012]. 
+Second,\R{R2-species-strength-a} the species' strength (the sum of a species' visits), which quantifies the strength of a species' associations and is indirectly related to its abundance [@poisot_comparative_2012]. 
 Third, the direction of asymmetry which quantifies the net balance in dependencies; that is, it indicates if a species affects other species more than what they affect it or not [@vazquez_species_2007]. 
 Fourth, the species' degree in order to account for the intrinsic centrality of a species.
 Finally, we included a categorical variable for the species' trophic level (plant or pollinator) and an interaction term between trophic level and the previous four variables. 
@@ -467,7 +467,7 @@ These observations are in agreement with our results, as we would expect the dyn
 Second, species' control capacity was strongly correlated to their contribution to nestedness and critical species had the largest impact to the stable coexistence of species in their communities. 
 Therefore, species that play a key role at determining the state of the community might also be more key to "maintain the organization and diversity of their ecological communities", one of the hallmarks of keystone species [@mills_keystone-species_1993].
 
-When controlling for a species' strength, which is indirectly a proxy of its abundance, and the net balance of its dependencies, we found that control capacity could not be easily predicted by species' degree or other metrics of centrality.
+When controlling for a \R{R2-species-strength-b}species' visitation strength (the sum of a species' visits), which is indirectly a proxy of its abundance, and the net balance of its dependencies, we found that control capacity could not be easily predicted by species' degree or other metrics of centrality.
 For instance, some species with a low degree achieved the maximum control capacity and were critical for control in their communities. 
 At first glance, our findings challenge numerous studies that highlight the role that central species play in the dynamics of their communities and their utility at predicting species extinctions [@jordan_keystone_2009]. 
 However, further inspection shows that our results do not contradict these findings; most species with a large degree also have a large control capacity and all of them were classified as superior nodes which corroborates the utility of classic centrality metrics. 

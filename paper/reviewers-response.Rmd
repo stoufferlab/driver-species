@@ -109,8 +109,9 @@ We are pleased that the reviewer enjoyed the re-written manuscript. We did too!.
 
 
 
-> Jargon occasionally obfuscates the concepts being introduced and there are places where I thought the language used was vague (esp. if terms being used have particular meanings depending on the field you're coming from).  I would suggest clarifying, or rewording, the following :
+> "*Discussion*: 'species' strength'
 
+*Accepted and changed*: In the Methods section we deine species' strength as the sum of a species' visits (\lr{M-R2-species-strength-a}). For brevity, we did not define it again in the Disussion, but now we have improved the text and briefly describe it when we mention it there too. The text now reads "When controlling for a species' visitation strength (the sum of a species' visits), which is indirectly a proxy of its abundance..." (\lr{M-R2-species-strength-b}).
 
 > * "desired control trajectory " - does this mean "final state"?
 
