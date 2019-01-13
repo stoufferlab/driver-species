@@ -10,13 +10,11 @@ packrat/lib*/
 *.log
 *.out
 paper/manuscript\.pdf
-paper/manuscript\.tex
 paper/manuscript\.knit\.md
 paper/supp-info\.knit\.md
 paper/manuscript\.utf8\.md
 paper/supp-info\.utf8\.md
 paper/supp-info\.pdf
-paper/supp-info\.tex
 paper/manuscript_files/
 paper/supp-info_files/
 paper/supp-info\.toc
@@ -25,4 +23,3 @@ paper/reviewers-response\.pdf
 paper/reviewers-response\.utf8\.md
 paper/reviewers-response\.tex
 paper/cover-letter\.pdf
-paper/drafts_and_revisions/*/*.tex
