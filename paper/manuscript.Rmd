@@ -263,7 +263,7 @@ Using this algorithm, we are able to identify species that are possible control 
 Here, we extend this algorithm such that it is possible to calculate a highly accurate approximation of the control capacity $\phi$ of every species in the network (Supporting Information Section \@ref(S-input-graph)). 
 In the networks that contained reciprocal links (because there was no asymmetry in the dependences of a species pair), we averaged a species' control capacity $\phi$ across every possible "non-reciprocal" version of the network (Supporting Information Section \@ref(S-reciprocal-links)). 
 
-We then examined how species-level properties were related to control capacity using a set of generalised linear models with binomial error structure.
+\R{R2-one-lumped-model-a}We then examined how species-level properties were related to control capacity using a set of candidate generalised linear models with binomial error structure. 
 These models included five predictor variables that mirror the network-level predictors. 
 First, the species' contribution to nestedness, which has been proposed as a key feature that promotes stability and robustness in mutualistic networks [@saavedra_strong_2011]. 
 Second, the species' strength (the sum of a species' visits), which quantifies the strength of a species' associations and is indirectly related to its abundance [@poisot_comparative_2012]. 
@@ -271,6 +271,7 @@ Third, the direction of asymmetry which quantifies the net balance in dependenci
 Fourth, the species' degree in order to account for the intrinsic centrality of a species.
 Finally, we included a categorical variable for the species' trophic level (plant or pollinator) and an interaction term between trophic level and the previous four variables. 
 To facilitate comparison between predictors, degree and visitation strength were log-transformed and all four continuous variables were scaled to have a mean of zero and a standard deviation of one.
+\R{R2-one-lumped-model-b}In these models, species from all networks were lumped together. 
 To identify the models that were best supported by the data, we first determined the most parsimonious random structure using the AICc. 
 The relative importance of variables was then assessed by looking at their effect sizes in the top-ranked models and the cumulative weight of the models in which they are present. 
 
