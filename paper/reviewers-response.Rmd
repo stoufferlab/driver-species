@@ -95,6 +95,10 @@ We are pleased that the reviewer enjoyed the re-written manuscript. We did too!.
 
 # Reviewer comments #2
 
+> "*L1364*: 'dynamic persistence'"
+
+*Accepted and changed*: Thank you. To avoid confussion we have removed the word 'dynamic' and now the sentence reads "...our results suggest that structural controllability is closely related to the persistence..." (\lr{M-R2-dynamic-persistence}). It conserves its meaning without loosing much precision. 
+
 > "*L1370*: 'dynamic stability'"
 
 *Accepted and changed*: Contrastingly, in this case the word dynanamic distinguishes a particular facet of stability. We mean the ability of the system to return to an equilibrium state after a perturbation. We now include this definition on \lr{M-R2-dynamic-stability} to make the concept clearer.

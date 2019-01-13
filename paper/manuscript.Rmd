@@ -462,7 +462,7 @@ Specifically, when controlling for network structure, we found no difference bet
 Instead controllability is almost completely constrained by the patterns of species richness at each trophic guild and their degree distributions [@melian_complex_2002; @bluthgen_specialization_2007]. 
 These two factors are particularly relevant because they govern the asymmetric nature of mutual dependences, which themselves provide the foundation of structure and stability in mutualistic networks [@bascompte_asymmetric_2006; @memmott_tolerance_2004; @astegiano_robustness_2015]. 
 
-Accordingly, our results suggest that structural controllability is closely related to the dynamic persistence of an ecological community based on two lines of evidence. 
+\R{R2-dynamic-persistence}Accordingly, our results suggest that structural controllability is closely related to the persistence of an ecological community based on two lines of evidence. 
 First, we found a comparatively small but thought-provoking negative relationship between the controllability of a network and its nestedness. 
 Previous studies indicate that nestedness promotes species coexistence and confers robustness to extinction [@bastolla_architecture_2009; @memmott_tolerance_2004] even at the expense of the dynamic stability of the mutualistic community [@saavedra_nested_2016]. 
 These observations are in agreement with our results, as we would expect the dynamic stability \R{R2-dynamic-stability}(the ability to return to equilibrium after a perturbation in species abundances) of a community to be correlated to the difficulty to control it. 
