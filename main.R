@@ -66,7 +66,8 @@ example_plots_plan <- drake::drake_plan(
   fig_models_degree = make_fig_models_degree(species_model_cc, species_model_superior),
   fig_rho_sensitivity = make_fig_rho_sensitivity(structural_rho_correlation, rho_feasibility),
   fig_assumption_sampling = make_fig_assumption_subsampling(metrics_subsampled, metadata), 
-  fig_species_partial = make_fig_species_partial(species_model_cc)
+  fig_species_partial = make_fig_species_partial(species_model_cc), 
+  fig_asymmetry_distribution = make_fig_asymmetry_dist(directed_networks)
 )
 
 control_capacity_testing_plan <- drake::drake_plan(
@@ -123,7 +124,7 @@ reporting_plan <- drake::drake_plan(
              drake::file_out('paper/supp-info.pdf'), clean_md = FALSE),
   render_pdf(drake::knitr_in('paper/manuscript.Rmd'), 
              drake::file_out('paper/manuscript.pdf'), clean_md = FALSE),
-  render_pdf(drake::file_in('paper/reviewers-response.Rmd'),
+  render_pdf(drake::knitr_in('paper/reviewers-response.Rmd'),
              drake::file_out('paper/reviewers-response.pdf'), clean_md = FALSE, clean_tex = FALSE), 
   compile_pdf(drake::file_in('paper/cover-letter.tex'), 
               drake::file_out('paper/cover-letter.pdf'))

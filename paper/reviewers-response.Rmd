@@ -23,6 +23,9 @@ header-includes:
   - \newtcolorbox{myquote}{colback=block-gray,grow to right by=-10mm,grow to left by=-10mm, boxrule=0pt,boxsep=0pt,breakable}
 ---
 
+\renewcommand\thefigure{R\arabic{figure}}    
+\setcounter{figure}{0}   
+
 \doublespacing
 
 ```{r setup, include=FALSE}
@@ -181,4 +184,10 @@ We are very thankful for the positive feedback.
 *Accepted and changed*: We actually compared all possible candidate models. We have edited the manuscript on \lr{M-R2-all-candidates} to include this information. 
 
 > "Reciprocal links were included in the directed graph when dij = dji. Would it have any effect if there was a little wiggle room there, e.g., when the two are close but not equal?"
+
+We did not actually evaluate this When we evaluate the impact of this on our results. However, given that the interaction only a very small fraction of interactions had a small asymmetry (see Figure R1) we don't expect results to change considerably even when we include reciprocal links when the asymmetry is small but not zero.
+
+```{r fig-asymmetry, fig.width=6.3, fig.height=2, fig.cap = "Histogram of the interaction asymmetries between species. Previous research has shown that mutualistic interactions are often highly asymmetric in natural communities. Only 16.5% of interactions have asymetries smaller or equal than 0.5; 1% are smaller than 0.1."}
+drake::readd(fig_asymmetry_distribution)
+```
 
