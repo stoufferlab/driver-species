@@ -485,7 +485,7 @@ Stepping back, our results also provide support to the idea that management deci
 
 Our choice of studying invaded/uninvaded networks was based on a desire to contrast the extensive empirical evidence of the role of invasive plants with our theoretical results. 
 We found that invasive plants were always critical for network control and as such our results were in line with our expectations. 
-Invasive plants have been previously found to exacerbate the asymmetries in their communities [@aizen_invasive_2008; @bartomeus_contrasting_2008; @henriksson_strong_2016] and to be central in their communities [@vila_invasive_2009; @palacio_generalist_2016]. 
+Invasive plants have been previously found to exacerbate the asymmetries in their communities [@aizen_invasive_2008; @bartomeus_contrasting_2008; @henriksson_strong_2016] \R{R2-central-in-their-communities}and to attain high centrality in their communities [@vila_invasive_2009; @palacio_generalist_2016]. 
 \R{R2-inherrently-different} We found that it is not that invasive plants have some different mechanism for influencing the community compared to their native counterparts [@emer_species_2016; @stouffer_how_2014]. 
 Both native species and invasive plants tended to attain a high control capacity if they were important to network persistence, were abundant, and depended little on other species. 
 Furthermore, our observation that changes in the abundance of invasive plants (and presumably all critical species) are crucial to modify the state of the community agrees with recent evidence showing that ecosystem restoration focused on the eradication of invasive plants can have transformative desirable effects in plant-pollinator communities\R{extra-references-3} [@kaiser-bunbury_ecosystem_2017]. 
