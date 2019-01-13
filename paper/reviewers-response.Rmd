@@ -49,29 +49,29 @@ Thank you for the positive feedback. We have addressed all of the specific issue
 
 *Accepted and changed*. We have checked through the manuscript and corrected this where relevant. Besides *specie's role*, we also changes instances of *species' contribution*, *species' degree*, *species' control capacity*, among others. 
 
-> "*L25*: 'every invasive species in our dataset was part of it' Here it was unclear what 'it' refers to (the set of critical species), and the reference to a singular dataset when you have 20 networks in total was a bit confusing to me.
+> "*L25*: 'every invasive species in our dataset was part of it' Here it was unclear what 'it' refers to (the set of critical species), and the reference to a singular dataset when you have 20 networks in total was a bit confusing to me."
 
-*Accepted and changed*. We have made this clearer as follows: "and included every invasive species in our dataset" (\lr{M-R2-our-dataset})
+*Accepted and changed*. We have made this clearer as follows: "and included every invasive species in our dataset" (\lr{M-R2-our-dataset}).
 
 > "*L23-26*: in these lines, you refer to critical species, but I think the distinction between having high control capacity versus being critical needs to be defined (briefly) earlier (it is stated in *L18-19* that you will quantify both control capacity and identify critical species, but it is not explained how they are distinct)."
 
-*Accepted and changed*. We now identify the distinction between high control capacity and being critical on \lr{M-R2-define-control-capacity}. The text now reads "It also allows us to quantify a species control capacity-its relative importance-and identify the set of species that, collectively, are critical in this context because they have largest possible control capacity."
+*Accepted and changed*. We now identify the distinction between high control capacity and being critical on \lr{M-R2-define-control-capacity}. The text now reads "It also allows us to quantify a species control capacity-its relative importance-and identify the set of species that, collectively, are critical in this context because they have largest possible control capacity".
 
 > "*L27*: unclear what 'its' refers  to."
 
-*Accepted and changed*. We now explicitly state "species' degree" in  \lr{M-R2-species-degree}
+*Accepted and changed*. We now explicitly state "species' degree" in  \lr{M-R2-species-degree}.
 
 > "*L234, 235*: awkward to refer to species as 'they' and 'their'"
 
-*Accepted and changed*. We have changed this to "it" and "its"
+*Accepted and changed*. We have changed this to "it" and "its".
 
 > "*L296*: 'More details in Supporting Information.' is a sentence fragment."
 
 *Accepted and changed*. We have corrected this on \lr{M-R2-sentence-fragment}. The text now reads "See Supporting Information Section \@ref(S-visitation-as-proxy) for more details".
 
-> "*L343*: I am not sure about citing Table 2 for the first time in the Discussion. Might it be more useful to cite this in the Introduction?""
+> "*L343*: I am not sure about citing Table 2 for the first time in the Discussion. Might it be more useful to cite this in the Introduction?"
 
-We now introduce the glossary at the end of the introdyction on \lr{M-R2-ref-glossary}.
+*Accepted and changed*. We now introduce the glossary at the end of the introdyction on \lr{M-R2-ref-glossary}.
 
 > "*L111, 114*: 'are comprised of' should be 'comprised'. *L339, 432*: 'at' should be 'in'. *L341*: 'allow' should be 'allowed'. *L355*: missing period."
 
