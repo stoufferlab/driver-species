@@ -85,7 +85,7 @@ We are pleased that the reviewer enjoyed the re-written manuscript. We did too!.
 
 > "A few references require editing to journal style (e.g. remove initials for many citations)"
 
-*Accepted and changed*. We have corrected all citations. One of them, however, (\lr{R2-citation-with-name}) still shows an author's first name initial, as it is necessary to distinguish two authors with the same last name.
+*Accepted and changed*. We have corrected all citations. One of them, however, still shows an author's first name initial, as it is necessary to distinguish two authors with the same last name (\lr{M-R2-citation-with-name}).
 
 > "*L388*: remove repeated 'other'. I suggest that the authors re-write this sentence to improve clarity."
 
