@@ -298,7 +298,7 @@ More details about the calculation of structural stability can be found in the S
 \R{testing-assumptions-line}Just like the centrality metrics, the information obtained by applying structural controllability depends on the ability of the network to accurately represent the ecological community. 
 We thus tested the sensitivity of our approach to two fundamental assumptions. 
 First, we tested that visitation is an appropriate proxy to infer interspecific effects by comparing the results obtained using visitation to two alternative metrics in a separate dataset that lacked invasive species [@ballantyne_constructing_2015]. 
-Specifically, we also calculated the controllability (the size of the minimum driver node-set) and the control capacity of networks constructed using pollinator efficiency (which measures the pollen deposition of an interaction) and pollinator importance [which accounts for both pollen deposition and visitation and hence is regarded as a more accurate estimation of the pollination service received by plants; @neeman_framework_2009]. 
+Specifically, we also calculated the controllability (the size of the minimum driver node-set) and the control capacity of networks constructed using pollinator efficiency (which measures the pollen deposition of an interaction) and pollinator importance [which accounts for both pollen deposition and visitation and hence is regarded as a more accurate estimation of the pollination service received by plants; @neeman_framework_2010]. 
 \R{R2-sentence-fragment} See Supporting Information Section \@ref(S-visitation-as-proxy) for more details. 
 
 Second, because interspecific dependencies themselves depend on the network topology and consequently on the accurate sampling of interactions, we tested the robustness of structural controllability to the uncertainty involved with the sampling of interactions. 
@@ -440,7 +440,7 @@ fig_structural_stability[[1]]
 
 ## Testing assumptions
 
-\R{testing-assumptions-results-line} We found that using visitation as a proxy for the strength of species' interactions leads to similar results than those obtained using pollinator importance [regarded as an accurate measure of the pollination service to plants; Supporting Information Section \@ref(S-visitation-as-proxy); @neeman_framework_2009]. 
+\R{testing-assumptions-results-line} We found that using visitation as a proxy for the strength of species' interactions leads to similar results than those obtained using pollinator importance [regarded as an accurate measure of the pollination service to plants; Supporting Information Section \@ref(S-visitation-as-proxy); @neeman_framework_2010]. 
 Importantly, we also found that structural stability is robust to incomplete sampling of interactions. 
 Indeed, we found strong agreement between results obtained using the complete empirical networks and those obtained by randomly removing the weakest interactions (Supporting Information Section \@ref(S-undersampling)). 
 Despite removing rare interactions and species, the relative size of the minimum driver-node set, the superior species, and the relative rankings of control capacity were generally maintained. Of particular note, we found that critical species in the full network were also critical in the vast majority of rarefied networks. 

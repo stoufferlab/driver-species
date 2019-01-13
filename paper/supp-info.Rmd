@@ -267,7 +267,7 @@ Nevertheless, visitation is not equivalent to pollen deposition and might be ins
 We, therefore, investigated the effect of calculating the dependences using visitation or pollination effectiveness and importance---two metrics more proximate to plant reproductive success.
 We did this by comparing *(i)* the size of the minimum driver node set $n_D$ of the community, *(ii)* the species' control capacity and, *(iii)* the species' probability of being a superior node. 
 To do this, we used data collected by @ballantyne_constructing_2015 from a low diversity pollination community at a dry lowland heathland in Dorset, UK  (50° 43.7'N 2° 07.2'W). 
-First, deposition networks were quantified using the mean single visit deposition---the number of conspecific pollen grains effectively deposited on a virgin stigma during a single visit by a particular animal [@neeman_framework_2009; @king_why_2013; @ballantyne_constructing_2015]. 
+First, deposition networks were quantified using the mean single visit deposition---the number of conspecific pollen grains effectively deposited on a virgin stigma during a single visit by a particular animal [@neeman_framework_2010; @king_why_2013; @ballantyne_constructing_2015]. 
 Second, visitation networks were constructed by counting the visits to flowers during Single Visit Depositions. 
 Finally, pollinator importance networks were constructed as the product of pollinator efficiency and visit frequency. 
 
