@@ -1,0 +1,782 @@
+\documentclass[a4paper]{artikel1}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={Keystoneness, centrality, and the structural controllability of ecological networks},
+            pdfauthor={Fernando Cagua, Kate L. Wootton, Daniel B. Stouffer},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{longtable,booktabs}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+  \title{Keystoneness, centrality, and the structural controllability of
+ecological networks}
+  \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+\subtitle{Supporting Information}
+  \author{Fernando Cagua, Kate L. Wootton, Daniel B. Stouffer}
+  \preauthor{\centering\large\emph}
+  \postauthor{\par}
+  \date{}
+  \predate{}\postdate{}
+
+\usepackage{booktabs}
+\usepackage{setspace}
+\usepackage{xr}
+\externaldocument[M-]{manuscript}
+\usepackage{multirow}
+
+\usepackage{amsthm}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}{Lemma}[section]
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{corollary}{Corollary}[section]
+\newtheorem{proposition}{Proposition}[section]
+\theoremstyle{definition}
+\newtheorem{example}{Example}[section]
+\theoremstyle{definition}
+\newtheorem{exercise}{Exercise}[section]
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+\newtheorem*{solution}{Solution}
+\begin{document}
+\maketitle
+
+\renewcommand\thefigure{S\arabic{figure}}    
+
+\setcounter{figure}{0}
+
+\renewcommand\thetable{S\arabic{table}}    
+
+\setcounter{table}{0}
+
+\renewcommand{\thesection}{S\arabic{section}}
+
+\setcounter{section}{0}
+
+\doublespacing
+
+\section{Characteristics of the empirical
+networks}\label{empirical-networks}
+
+The networks studied had species richness ranging between 19 and 87
+(when considering only the largest component in each network). As shown
+by the network asymmetry \emph{AS} (N. Blüthgen, Menzel, Hovestadt,
+Fiala, \& Blüthgen, 2007), the networks had a low ratio of plants to
+pollinators overall. Furthermore, the networks had relatively low levels
+of nestedness (when measured using the quantitative version of the NODF
+index; Almeida-Neto \& Ulrich, 2011). Details for each network can be
+found in the Table \ref{tab:table-network-properties}.
+
+\begin{table}
+
+\caption{\label{tab:table-network-properties}Properties of the analysed plant-pollinator communities. Here show the number of species ($n_s$), the number of plants ($n_p$), the number of pollinators ($n_a$), the network connectance ($C$), the network asymmetry ($AS$), and the network nestedness (NODF index). All properties correspond to the network's largest component. British networks were assembled by Lopezaraiza-Mikel et al. (2007), Spanish were networks assembled by Bartomeus et al. (2008).}
+\centering
+\fontsize{8}{10}\selectfont
+\begin{tabular}[t]{rlrrrrrrl}
+\toprule
+site & invader & $n_s$ & $n_p$ & $n_a$ & $c$ & $AS$ & NODF & location\\
+\midrule
+1 & — & 35 & 9 & 26 & 0.17 & -0.49 & 8.68 & Cap de Creus, Spain\\
+1 & \textit{Carpobrotus affine} & 57 & 10 & 47 & 0.17 & -0.65 & 13.27 & Cap de Creus, Spain\\
+\addlinespace
+2 & — & 40 & 10 & 30 & 0.16 & -0.50 & 11.66 & Cap de Creus, Spain\\
+2 & \textit{Carpobrotus affine} & 38 & 11 & 27 & 0.21 & -0.42 & 15.04 & Cap de Creus, Spain\\
+\addlinespace
+3 & — & 31 & 7 & 24 & 0.19 & -0.55 & 12.91 & Cap de Creus, Spain\\
+3 & \textit{Opuntia stricta} & 33 & 8 & 25 & 0.18 & -0.52 & 9.96 & Cap de Creus, Spain\\
+\addlinespace
+4 & — & 35 & 10 & 25 & 0.17 & -0.43 & 12.43 & Cap de Creus, Spain\\
+4 & \textit{Carpobrotus affine} & 57 & 14 & 43 & 0.14 & -0.51 & 13.70 & Cap de Creus, Spain\\
+\addlinespace
+5 & — & 35 & 8 & 27 & 0.19 & -0.54 & 11.91 & Cap de Creus, Spain\\
+5 & \textit{Opuntia stricta} & 32 & 8 & 24 & 0.19 & -0.50 & 10.96 & Cap de Creus, Spain\\
+\addlinespace
+6 & — & 30 & 9 & 21 & 0.17 & -0.40 & 6.91 & Cap de Creus, Spain\\
+6 & \textit{Opuntia stricta} & 37 & 9 & 28 & 0.17 & -0.51 & 12.45 & Cap de Creus, Spain\\
+\addlinespace
+7 & — & 37 & 6 & 31 & 0.19 & -0.68 & 18.33 & Bristol, United Kingdom\\
+7 & \textit{Impatients grandulifera} & 57 & 8 & 49 & 0.20 & -0.72 & 14.36 & Bristol, United Kingdom\\
+\addlinespace
+8 & — & 48 & 5 & 43 & 0.21 & -0.79 & 5.87 & Bristol, United Kingdom\\
+8 & \textit{Impatients grandulifera} & 87 & 15 & 72 & 0.11 & -0.66 & 8.12 & Bristol, United Kingdom\\
+\addlinespace
+9 & — & 55 & 12 & 43 & 0.13 & -0.56 & 13.01 & Bristol, United Kingdom\\
+9 & \textit{Impatients grandulifera} & 86 & 11 & 75 & 0.13 & -0.74 & 13.40 & Bristol, United Kingdom\\
+\addlinespace
+10 & — & 19 & 3 & 16 & 0.38 & -0.68 & 9.99 & Bristol, United Kingdom\\
+10 & \textit{Impatients grandulifera} & 54 & 6 & 48 & 0.21 & -0.78 & 7.56 & Bristol, United Kingdom\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\clearpage
+
+\section{Structural controllability}\label{structural-controllability}
+
+Structural controllability avoids the limitation of not knowing the
+exact values of the matrices \emph{A} and \emph{B}. Structural
+controllability boils down to two conditions: a system is controllable
+if there are no inaccessible nodes or dilations. A node is inaccessible
+if there are no directed paths between it and the input nodes.
+``Dilations are subgraphs in which a small subset of nodes attempts to
+rule a larger subset of nodes. In other words, there are more
+`subordinates' than `superiors'\,'' (Liu \& Barabási, 2016).
+
+The goal of structural controllability is to use the information
+contained in \textbf{A} to generate a supportable estimate of
+\textbf{B}. This focus allows us to gain insight of the inherent
+controllability of a network, and the roles of the species that compose
+it, without being overly dependent on the particular choices of how the
+system dynamics are modelled or characterised. The trade-off of this
+approach is that, because of the assumption of linearity, structural
+controllability alone does not allow us to fully design the time-varying
+control signal \emph{u(t)} that can drive the system from one particular
+equilibrium to another. Nevertheless, the lessons gained when assuming
+linearity---at both the network and the species level---are a
+prerequisite for eventually understanding nonlinear control (Liu \&
+Barabási, 2016; Liu, Slotine, \& Barabási, 2011).
+
+\newpage
+
+\section{Maximum matching}\label{maximum-matching}
+
+\subsection{Finding a single maximum
+matching}\label{one-maximum-matching}
+
+Our approach to finding the minimum number of driver nodes relies on
+finding maximum matchings. We start with a directed network in which the
+direction of the link represents the direction of control (Figure
+\ref{fig:fig-maximum-matching-procedure} left panel). We then construct
+an alternative representation of the directed network in which each node
+of the directed network is represented by two nodes that indicate their
+outgoing and incoming links respectively (Figure
+\ref{fig:fig-maximum-matching-procedure} centre panel). Finding a
+maximum matching in this alternative representation is equivalent to
+finding the largest possible set of edges in which one node on the
+left-hand side is connected to at most one node on the right-hand side.
+To find the maximum matching we use the push-relabel algorithm
+implemented in \texttt{max\_bipartite\_matching} in the R package igraph
+1.0.1 (Csardi \& Nepusz, 2006). Once we have the matching (shown in the
+Figure \ref{fig:fig-maximum-matching-procedure} center panel) it is then
+easy to identify the roles of each node in this representation: nodes on
+the top-level that are connected to a matched link (dark purple) are
+superior while those connected to a matched link on the bottom-level are
+matched. This information can then be mapped back to the original
+representation to identify the control paths and the driver nodes in the
+network (Figure \ref{fig:fig-maximum-matching-procedure} right panel).
+
+\begin{figure}[p]
+
+{\centering \includegraphics{/Users/efc29/github/driver-species/paper/supp-info_files/figure-latex/fig-maximum-matching-procedure-1} 
+
+}
+
+\caption{Finding a maximum matching in a complex network. (left) Directed network that indicate the direction of control between species. (center) Alternative bipartite representations of the directed networks. (right) The matchings in the bipartite representation mapped back to the original network.}\label{fig:fig-maximum-matching-procedure}
+\end{figure}
+
+To further illustrate our methodology here, we also show the approach
+for the smallest of our empirical networks, the uninvaded network at
+site 10 (Table \ref{tab:table-network-properties}; Figure
+\ref{fig:fig-small-network}). This network is composed of 19 species of
+which three are non-invasive plants and the other 16 are pollinators.
+The one-to-one relationship between matched and superior nodes implies
+that in order to achieve full network controllability, most pollinators
+would be unmatched, and hence are classified as driver nodes that
+require external intervention. At the same time, both plants in the
+community, \emph{Heracleum sphondylum} and \emph{Rubus fructicosus}, and
+one of the pollinators, \emph{Orthotylus/Lygocorus}, tend to be
+classified as superior nodes.
+
+\begin{figure}
+\centering
+\includegraphics{/Users/efc29/github/driver-species/paper/supp-info_files/figure-latex/fig-small-network-1.pdf}
+\caption{\label{fig:fig-small-network}Illustration of the procedure with an
+empirical community. The visitation network (top), the number of visits
+between species pairs are shown on each link. The directed network in
+which the direction of control is determined based on the mutual
+dependences (middle). One of the possible maximum matchings of this
+network (bottom).}
+\end{figure}
+
+\subsection{Finding all possible maximum
+matchings}\label{all-maximum-matching}
+
+The algorithm implemented in \texttt{max\_bipartite\_matching}, however,
+is only able to find \textbf{one} of possibly many maximum matchings in
+a network. Though one maximum matching is enough to calculate
+\emph{n\textsubscript{D}} and hence to provide an indication of the
+manageability of a community, it is not sufficient to estimate the role
+of individual species. To do that, we need to calculate all possible
+maximum matchings. To do this, we again start from the alternative
+bipartite representation in Figure
+\ref{fig:fig-maximum-matching-procedure} (center panel) and assign an
+identity to each of the links in the network. We will call this
+bipartite representation \emph{P}. We then construct the line graph of
+the alternative bipartite representation \emph{L(P)} (Figure
+\ref{fig:fig-all-maximum-matching}). Each node in \emph{L(P)} represents
+a link in \emph{P} and these are connected to each other if and only if
+they share a common node in \emph{P}. We then calculate \emph{H}, the
+complement graph of \emph{L(P)} and identify all of its maximal cliques
+(Figure \ref{fig:fig-all-maximum-matching}). Here some extra definitions
+are necessary. First, \emph{H} is a graph with the same nodes as
+\emph{L(P)} but that has a link between two nodes if and only if there
+is not a link in \emph{L(P)}. Second, a clique is a subset of nodes such
+that all pairs of them are linked. Lastly, a maximal clique is a clique
+such that there are no cliques composed of more nodes (Gutin, 2013). In
+this example, there are two maximal cliques. The final step is then to
+map these cliques onto the original network to obtain all possible
+maximal cardinality matchings as shown in Figure
+\ref{M-fig:fig-control-configuration} in the main text.
+
+\begin{figure}
+\centering
+\includegraphics{/Users/efc29/github/driver-species/paper/supp-info_files/figure-latex/fig-all-maximum-matching-1.pdf}
+\caption{\label{fig:fig-all-maximum-matching}Finding all possible maximum
+matchings. From left to right: alternative bipartite representation of
+the directed network. Line graph of the network. The complement of the
+network. The two maximal cliques are shown in dark purple.}
+\end{figure}
+
+\clearpage
+
+\subsection{Control adjacency and the input graph}\label{input-graph}
+
+The algorithm proposed by Zhang, Lv, \& Pu (2016) enables us to find all
+minimum driver node sets without calculating all possible maximum
+matchings. The algorithm is based on the construction of the input graph
+of the directed network. Components in the input graph reveal the
+correlations between nodes from a structural control perspective (Figure
+\ref{fig:fig-input-graph}). The input graph is constructed based on the
+\emph{control adjacency} of nodes in a maximum matching. Two nodes
+\(x_i\) and \(x_j\) are said to be control adjacent if there is a node
+\(x_k\) connecting \(x_i\) and \(x_j\) with an unmatched link
+\(x_k-x_i\) and a matched link \(x_k-x_j\). For example \(a_1\) is
+control adjacent to \(a_2\) in the top panel of Figure
+\ref{fig:fig-input-graph}. If a node \(x_i\) is part of a minimum driver
+node set then every node in the same component of \(x_i\) in the input
+graph is a possible driver node.
+
+\begin{figure}
+\centering
+\includegraphics{/Users/efc29/github/driver-species/paper/supp-info_files/figure-latex/fig-input-graph-1.pdf}
+\caption{\label{fig:fig-input-graph}Input graph. Two nodes \(x_i\) and
+\(x_j\) are said to be control adjacent if there is a node \(x_k\)
+connecting \(x_i\) and \(x_j\) with an unmatched link \(x_k-x_i\) and a
+matched link \(x_k-x_j\). For example, in the top panel, \(a_1\) is
+control adjacent to \(a_2\) (via \(p_2\)), \(p_1\) is control adjacent
+to \(p_3\) (via \(a_1\)) and \(p_2\) has no control adjacent nodes. As
+\(a_1\) and \(p_2\) belong to the minimum driver node set under the
+control configuration found with the maximum matching shown, then every
+node in the same component as these two nodes is also a possible driver
+node. By combining the nodes from the components with minimum driver
+node sets is possible to enumerate the different control configurations.
+For example the network in the top panel has two possible minimum driver
+node sets \([p_2, a_1]\) and \([p_2, a_2]\) (Figure
+\ref{M-fig:fig-control-configuration}). The network in the middle panel
+has three minimum driver node sets \([x_1, x_2]\), \([x_1, x_3]\), and
+\([x_1, x_4]\). Finally the network in the bottom pannel has only one
+\([x_1]\).}
+\end{figure}
+
+In order to calculate a node's control capacity \(\phi\), we harness the
+fact that nodes can be classified into three groups according to their
+role in the input graph. First, if \(x_i\) belongs to the minimum driver
+node set and has no adjacent nodes, then it cannot be replaced and will
+be part of every possible control configuration. Second, if \(x_i\) does
+not belong to the minimum driver node set and is not adjacent to any
+possible input node, then it does not become part of the minimum driver
+node set under any control configuration. Finally, if a node \(x_i\)
+belongs to the minimum driver node set and is adjacent to another node
+\(x_j\) in the input graph, then \(x_j\) must belong to another minimum
+driver node to which \(x_i\) does not belong, in other words, \(x_i\)
+and \(x_j\) are substitutable.
+
+The first and the second group have a control capacity of \(\phi = 1\)
+and \(\phi = 0\) respectively. Meanwhile, the third group has
+intermediate values of control capacity which can be calculated by
+computing the number of possible substitutions of a node by its control
+adjacent nodes. As a rule of thumb, the larger the number of possible
+substitutions an input node has, the smaller its control capacity.
+
+For larger networks, calculating the control capacities using the input
+graph is several orders of magnitude faster than computing all possible
+maximum matchings. While the computation time of the input graph grows
+linearly with network size, the computation of all maximum matchings
+grows polynomially. However, the control capacities obtained using the
+input graph are not identical to those obtained by computing all
+possible maximum matchings. The reason for this discrepancy is that two
+maximum matchings might result in the same minimum driver node set.
+Nevertheless, the results obtained using both approaches are extremely
+similar. We compared the control capacity obtained by calculating all
+maximum matchings and that obtained using the input graph in 13 of our
+networks (those for which we were able to calculate all maximum
+matchings within a reasonable time). The Spearman correlation was very
+high in all cases, ranging between 0.89 and 1 (median 0.98).
+
+\clearpage
+
+\subsection{Networks with reciprocal links}\label{reciprocal-links}
+
+Our procedures to find minimum driver node sets are only adequate when
+there are no reciprocal (bidirectional) links in the network. The
+proportion of reciprocal links in relatively low. In fact, the
+proportion of species pairs that are reciprocally connected in our
+empirical networks is just 2.97\%. However, reciprocal links are not a
+rare occurrence as 16 out of 20 empirical networks had at least one. To
+calculate our controllability metrics at both the network (the relative
+size of the minimum driver node set, \(n_D\)) and species level (control
+capacity, \(\phi\), and wether it is a superior node, \(\sigma\)) we
+first need to generate all possible versions of the of the network that
+include only non-reciprocal links (Figure \ref{fig:fig-bidirectional}).
+
+All of these non-reciprocal networks are as likely to be one that best
+represents the superior/matched relationships in the network. As such,
+we average the three metrics (\(n_D\), \(\phi\), and \(\sigma\)) across
+all the networks without reciprocal links without weighting by the
+number of possible control configurations. It is important to note that
+a species that is found to be a superior node under a particular control
+configuration, will be so in all possible control configurations for the
+particular non-reciprocal network. We, therefore denote the average of
+\(\sigma\) across all non-reciprocal versions as the probability of the
+species being a superior node in its community.
+
+\begin{figure}
+\centering
+\includegraphics{/Users/efc29/github/driver-species/paper/supp-info_files/figure-latex/fig-bidirectional-1.pdf}
+\caption{\label{fig:fig-bidirectional}In order to calculate the
+controllability metrics for a network with reciprocal links (left), we
+first decompose the network into several versions that contain no
+reciprocal links (right). As each of these networks represents a
+different equiprobable scenario, the controllability metrics for the
+network with reciprocal links are the unweighted mean of these metrics
+across the non-reciprocal networks.}
+\end{figure}
+
+\clearpage
+
+\section{Structural stability}\label{structural-stability}
+
+We follow Rohr, Saavedra, \& Bascompte (2014) and Saavedra, Rohr,
+Olesen, \& Bascompte (2016) to calculate the structural stability of the
+empirical networks. We first calculate the stability condition
+\(\hat{\gamma}\) using all species in the network. To calculate the
+contribution to stable coexistence of a given species, we removed the
+focal species from the network and then calculated the corresponding
+structural stability \(\Omega\) for a level of mutualism equal to the
+stability condition found previously. For simplicity, in the main text
+we show results for when there is a mutualistic trade-off of
+\(\delta = 0\) and a mean interspecific competition of \(\rho = 0.01\)
+(Saavedra et al., 2016). The choice of the parameters had only a minor
+impact on the relative contribution of species to stable coexistence
+(Figure \ref{fig:fig-rho-sensitivity}a) and overall there was no change
+on our result that indicates that critical species (those with
+\(\phi = 1\)) have a larger than average contribution to stable
+coexistence (Figure \ref{fig:fig-rho-sensitivity}b).
+
+\begin{figure}[p]
+
+{\centering \includegraphics{/Users/efc29/github/driver-species/paper/supp-info_files/figure-latex/fig-rho-sensitivity-1} 
+
+}
+
+\caption{A sensitivity analysis of the impact of interspecific competition parameter $\rho$ on structural stability reveals that the choice of parameters has a negligible impact on the results. (a) Spearman correlation coefficient of the contribution to stable coexistence of species. Lighter lines indicate the correlation coeficient for each of the twenty empirical networks. The dark line indicates the median value. (b) Difference between the conribution to stable coexistence of critical and redundant species for different values of the iterspecific competition parameters $\rho$.}\label{fig:fig-rho-sensitivity}
+\end{figure}
+
+\clearpage 
+
+\section{Visitation as a proxy for species
+dependence}\label{visitation-as-proxy}
+
+Visitation frequency has been shown to be an appropriate surrogate for
+inter-specific effects in pollination networks (Bascompte, Jordano, \&
+Olesen, 2006; Vázquez, Morris, \& Jordano, 2005). Nevertheless,
+visitation is not equivalent to pollen deposition and might be
+insufficient to reflect the dependences of plants on animals and vice
+versa (Alarcón, 2010; King, Ballantyne, \& Willmer, 2013). We,
+therefore, investigated the effect of calculating the dependences using
+visitation or pollination effectiveness and importance---two metrics
+more proximate to plant reproductive success. We did this by comparing
+\emph{(i)} the size of the minimum driver node set \(n_D\) of the
+community, \emph{(ii)} the species' control capacity and, \emph{(iii)}
+the species' probability of being a superior node. To do this, we used
+data collected by G. Ballantyne, Baldock, \& Willmer (2015) from a low
+diversity pollination community at a dry lowland heathland in Dorset, UK
+(50° 43.7'N 2° 07.2'W). First, deposition networks were quantified using
+the mean single visit deposition---the number of conspecific pollen
+grains effectively deposited on a virgin stigma during a single visit by
+a particular animal (G. Ballantyne et al., 2015; King et al., 2013;
+Ne'eman, Jürgens, Newstrom-Lloyd, Potts, \& Dafni, 2010). Second,
+visitation networks were constructed by counting the visits to flowers
+during Single Visit Depositions. Finally, pollinator importance networks
+were constructed as the product of pollinator efficiency and visit
+frequency.
+
+At a network scale the size of the minimum driver node set \(n_D\) was
+consistent among the three weighting schemes (0.67 for deposition, 0.67
+for the visitation, and 0.62 for the pollinator-importance network,
+respectively). The choice of weighting can also have an impact on at the
+species level. Therefore we calculated \(\phi\) and \(\sigma\) and
+calculated its correlation among all three weighting schemes. Although
+visitation and efficiency (pollen deposition) produce moderately
+different results, we found a very strong agreement between the order
+produced by visitation and importance which is arguably a more accurate
+metric of interspecific effects (Table
+\ref{tab:tab-assumption-visitation}).
+
+\begin{table}[!h]
+
+\caption{\label{tab:tab-assumption-visitation}Spearman correlation coefficient matrix between the control capacity and the probability obtained by weighting links by the visitation, pollinator efficiency and pollinator importance.}
+\centering
+\fontsize{8}{10}\selectfont
+\begin{tabular}[t]{lrrr}
+\toprule
+ & efficiency & importance & visitation\\
+\midrule
+\addlinespace[0.3em]
+\multicolumn{4}{l}{\textbf{control capacity}}\\
+\hspace{1em}efficiency & 1.00 & 0.37 & 0.38\\
+\hspace{1em}importance & 0.37 & 1.00 & 0.86\\
+\hspace{1em}visitation & 0.38 & 0.86 & 1.00\\
+\addlinespace[0.3em]
+\multicolumn{4}{l}{\textbf{superior probability}}\\
+\hspace{1em}efficiency & 1.00 & 0.69 & 0.57\\
+\hspace{1em}importance & 0.69 & 1.00 & 0.90\\
+\hspace{1em}visitation & 0.57 & 0.90 & 1.00\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Altogether, the evidence supports the idea that visitation is a suitable
+metric to estimate the mutual dependence of species pairs. First, it is
+directly related to pollinator foraging. Second, it produces results
+within our controllability framework that are consistent with plant
+reproductive success (as estimated by the importance metric).
+
+\clearpage
+
+\section{Sensitivity to sampling}\label{undersampling}
+
+Our approach is fundamentally based on the network structure. Often, the
+majority of the interactions that make up this structure are weak; in
+our networks, this means that most interactions are formed by a small
+number of observed pollination visits, and therefore those weak
+interactions are less conspicuous in the field than strong ones. To
+strengthen the case of our approach, we, therefore, evaluated the
+robustness of our results to simulated sampling limitations.
+
+To do so, we removed a portion of the visits, for each network, and
+calculated how three control metrics of the subsampled network compare
+to those of the full network. Specifically, we calculated the difference
+between the relative size of the minimum driver node set \(n_D\) of the
+subsampled and the full network, the Spearman correlation between the
+control capacities \(\phi\) and the probability of being a superior node
+\(\sigma\) that were obtained for the empirical network and subsamples
+of it. Finally, we also compared the control capacity of critical
+species (\(\phi=1\)) across the different subsamples. We removed up to
+20\% of the interactions in 1\% increments. We repeated the procedure
+for each network to obtain a total sample size of \(n=400\).
+
+Overall, the results of the sensitivity analysis indicate that our
+approach is likely to still be useful in the absence of complete
+sampling. Specifically, as the proportion of sampled interactions
+decreased, the variability of \(n_D\) increased but was overall similar
+to that obtained when using all available interactions (Figure
+\ref{fig:fig-assumption-sampling-nd}). Similarly, the correlation
+between \(\phi\) and \(\sigma\) of empirical and subsampled networks was
+high even for extreme levels of undersampling (Figure
+\ref{fig:fig-assumption-sampling-cor}). Importantly, critical species in
+the empirical networks were also critical species in the subsampled
+networks in a large majority of cases (Figure
+\ref{fig:fig-assumption-sampling-crit}).
+
+\begin{figure}[p]
+
+{\centering \includegraphics{/Users/efc29/github/driver-species/paper/supp-info_files/figure-latex/fig-assumption-sampling-nd-1} 
+
+}
+
+\caption{Difference between the size of the minimum driver node set of the empirical network and the subsampled network. Lighter lines indicate the changes for each networks and the darker line indicates the overall trend.}\label{fig:fig-assumption-sampling-nd}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{/Users/efc29/github/driver-species/paper/supp-info_files/figure-latex/fig-assumption-sampling-cor-1.pdf}
+\caption{\label{fig:fig-assumption-sampling-cor}Spearman correlation between
+the control capacity and the probability of being a superior nodes of
+the empirical networks and subsampled networks. Lighter lines indicate
+the changes for each networks and the darker line indicates the overall
+trend.}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{/Users/efc29/github/driver-species/paper/supp-info_files/figure-latex/fig-assumption-sampling-crit-1.pdf}
+\caption{\label{fig:fig-assumption-sampling-crit}Control capacity of
+critical species (those with \(\phi = 1\) in the empirical network) in
+subsampled networks. Lighter lines indicate the changes for each
+networks and the darker line indicates the overall trend.}
+\end{figure}
+
+\clearpage
+
+\begin{table}
+
+\caption{\label{tab:tab-controllability-model-results}Model selection table based on the Akaike Information Criterion for small samples for candidate models of size of the minimum driver node set ($n_D$) in the empirical networks. The evaluated variables are: the invasion status (inv), the network connectance ($C$), the network nestedness (NODF) the number of species ($n_S$) the network asymmetry ($AS_s$) or the interaction strength asymmetry ($AS_s$). Only candidate models with a weight $>0.01$ are shown.}
+\centering
+\fontsize{8}{10}\selectfont
+\begin{tabular}[t]{rrrlrlrrrrr}
+\toprule
+(Intercept) & C & $AS_s$ & inv & $n_s$ & study & $AS_n$ & NODF & df & delta & weight\\
+\midrule
+0.89 & -0.40 & --- & --- & -0.20 & --- & -0.50 & -0.19 & 6 & 0.00 & 0.21\\
+1.07 & --- & -0.11 & --- & --- & --- & -0.31 & --- & 4 & 1.33 & 0.11\\
+0.95 & -0.38 & --- & --- & -0.20 & --- & -0.50 & --- & 5 & 1.46 & 0.10\\
+1.03 & --- & -0.10 & --- & --- & --- & -0.31 & -0.15 & 5 & 2.23 & 0.07\\
+0.84 & -0.42 & --- & --- & -0.22 & + & -0.46 & -0.20 & 7 & 2.91 & 0.05\\
+1.02 & -0.11 & -0.13 & --- & --- & --- & -0.31 & --- & 5 & 2.91 & 0.05\\
+0.98 & -0.11 & -0.12 & --- & --- & --- & -0.31 & -0.16 & 6 & 3.66 & 0.03\\
+1.07 & --- & --- & --- & --- & --- & -0.38 & --- & 3 & 3.79 & 0.03\\
+1.02 & --- & --- & --- & --- & --- & -0.38 & -0.18 & 4 & 3.90 & 0.03\\
+0.91 & -0.34 & -0.04 & --- & -0.16 & --- & -0.45 & -0.18 & 7 & 4.09 & 0.03\\
+0.97 & -0.30 & -0.06 & --- & -0.14 & --- & -0.43 & --- & 6 & 4.32 & 0.02\\
+0.90 & -0.40 & --- & --- & -0.21 & + & -0.47 & --- & 6 & 4.43 & 0.02\\
+0.88 & -0.41 & --- & + & -0.21 & --- & -0.51 & -0.20 & 7 & 4.65 & 0.02\\
+1.06 & --- & -0.12 & --- & 0.02 & --- & -0.29 & --- & 5 & 4.75 & 0.02\\
+1.07 & --- & -0.11 & + & --- & --- & -0.31 & --- & 5 & 4.93 & 0.02\\
+1.07 & --- & -0.11 & --- & --- & + & -0.31 & --- & 5 & 4.95 & 0.02\\
+0.95 & -0.38 & --- & + & -0.20 & --- & -0.51 & --- & 6 & 5.62 & 0.01\\
+1.08 & --- & --- & --- & -0.04 & --- & -0.40 & --- & 4 & 5.97 & 0.01\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}
+
+\caption{\label{tab:tab-model-output-species-level}Summary table of the control capacity model with the smallest AICc.}
+\centering
+\fontsize{8}{10}\selectfont
+\begin{tabular}[t]{lrrrr}
+\toprule
+term & estimate & std.error & statistic & p.value\\
+\midrule
+(Intercept) & -1.20 & 0.37 & -3.21 & 0.00\\
+visitation strength & 0.29 & 0.16 & 1.86 & 0.06\\
+contribution to nestedness & 0.15 & 0.14 & 1.05 & 0.29\\
+asymmetry & 0.80 & 0.25 & 3.14 & 0.00\\
+level (pol.) & 2.70 & 0.39 & 6.96 & 0.00\\
+\addlinespace
+contribution to nestedness:level (pol.) & 0.32 & 0.19 & 1.70 & 0.09\\
+asymmetry:level (pol.) & -1.98 & 0.28 & -7.17 & 0.00\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}
+
+\caption{\label{tab:tab-var-importance}Variable importance for control capacity models. The importance is the sum of the weights of all models in which the variable was included.}
+\centering
+\fontsize{8}{10}\selectfont
+\begin{tabular}[t]{lr}
+\toprule
+term & importance\\
+\midrule
+level (pol.) & 1.00\\
+asymmetry & 1.00\\
+asymmetry:level (pol.) & 1.00\\
+visitation strength & 0.93\\
+contribution to nestedness & 0.91\\
+contribution to nestedness:level (pol.) & 0.79\\
+visitation strength:level (pol.) & 0.39\\
+degree & 0.28\\
+degree:level (pol.) & 0.25\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}
+\centering
+\includegraphics{/Users/efc29/github/driver-species/paper/supp-info_files/figure-latex/fig-species-models-degree-1.pdf}
+\caption{\label{fig:fig-species-models-degree}Relationship between degree
+and (a) control capacity and (b) the probability of being a superior
+node.}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{/Users/efc29/github/driver-species/paper/supp-info_files/figure-latex/fig-correlogram-1.pdf}
+\caption{\label{fig:fig-correlogram}Mean Spearman correlation coefficients
+between control metrics (control capcity \(\phi\) and the likelihood of
+being a superior node \(\sigma\)) and centrality metrics commonly used
+to estimate a species' `keystoness' (closeness centrality \(l\) ,
+betwenness \(w\), eigen centrality \(e\), page rank \(g\) and degre
+\(k\)) in each of the networks. Purple and orange tiles indicate a
+positive correlation or negative correlation respectively.}
+\end{figure}
+
+\clearpage 
+
+\section*{References}\label{references}
+\addcontentsline{toc}{section}{References}
+
+\hypertarget{refs}{}
+\hypertarget{ref-alarcon_congruence_2010}{}
+Alarcón, R. (2010). Congruence between visitation and pollen-transport
+networks in a California plantPollinator community. \emph{Oikos},
+\emph{119}(1), 35--44.
+doi:\href{https://doi.org/10.1111/j.1600-0706.2009.17694.x}{10.1111/j.1600-0706.2009.17694.x}
+
+\hypertarget{ref-almeida-neto_straightforward_2011}{}
+Almeida-Neto, M., \& Ulrich, W. (2011). A straightforward computational
+approach for measuring nestedness using quantitative matrices.
+\emph{Environmental Modelling \& Software}, \emph{26}(2), 173--178.
+doi:\href{https://doi.org/10.1016/j.envsoft.2010.08.003}{10.1016/j.envsoft.2010.08.003}
+
+\hypertarget{ref-ballantyne_constructing_2015}{}
+Ballantyne, G., Baldock, K. C. R., \& Willmer, P. G. (2015).
+Constructing more informative plant-pollinator networks: Visitation and
+pollen deposition networks in a heathland plant community.
+\emph{Proceedings of the Royal Society B: Biological Sciences},
+\emph{282}(1814), 20151130.
+doi:\href{https://doi.org/10.1098/rspb.2015.1130}{10.1098/rspb.2015.1130}
+
+\hypertarget{ref-bascompte_asymmetric_2006}{}
+Bascompte, J., Jordano, P., \& Olesen, J. M. (2006). Asymmetric
+Coevolutionary Networks Facilitate Biodiversity Maintenance.
+\emph{Science}, \emph{312}(5772), 431--433.
+doi:\href{https://doi.org/10.1126/science.1123412}{10.1126/science.1123412}
+
+\hypertarget{ref-bluthgen_specialization_2007}{}
+Blüthgen, N., Menzel, F., Hovestadt, T., Fiala, B., \& Blüthgen, N.
+(2007). Specialization, Constraints, and Conflicting Interests in
+Mutualistic Networks. \emph{Current Biology}, \emph{17}(4), 341--346.
+doi:\href{https://doi.org/10.1016/j.cub.2006.12.039}{10.1016/j.cub.2006.12.039}
+
+\hypertarget{ref-Csardi2006a}{}
+Csardi, G., \& Nepusz, T. (2006). The igraph software package for
+complex network research. \emph{InterJournal, Complex Systems},
+\emph{1695}(5), 1--9.
+
+\hypertarget{ref-Gutin2013}{}
+Gutin, G. (2013). Independence and Cliques. In P. Zhang (Ed.),
+\emph{Handbook of Graph Theory} (Second Edi, pp. 475--489). Chapman and
+Hall/CRC.
+doi:\href{https://doi.org/10.1201/b16132-31}{10.1201/b16132-31}
+
+\hypertarget{ref-king_why_2013}{}
+King, C., Ballantyne, G., \& Willmer, P. G. (2013). Why flower
+visitation is a poor proxy for pollination: Measuring single-visit
+pollen deposition, with implications for pollination networks and
+conservation. \emph{Methods in Ecology and Evolution}, \emph{4}(9),
+811--818.
+doi:\href{https://doi.org/10.1111/2041-210X.12074}{10.1111/2041-210X.12074}
+
+\hypertarget{ref-liu_control_2016}{}
+Liu, Y.-Y., \& Barabási, A.-L. (2016). Control principles of complex
+systems. \emph{Reviews of Modern Physics}, \emph{88}(3).
+doi:\href{https://doi.org/10.1103/RevModPhys.88.035006}{10.1103/RevModPhys.88.035006}
+
+\hypertarget{ref-liu_controllability_2011}{}
+Liu, Y.-Y., Slotine, J.-J., \& Barabási, A.-L. (2011). Controllability
+of complex networks. \emph{Nature}, \emph{473}(7346), 167--173.
+doi:\href{https://doi.org/10.1038/nature10011}{10.1038/nature10011}
+
+\hypertarget{ref-neeman_framework_2010}{}
+Ne'eman, G., Jürgens, A., Newstrom-Lloyd, L., Potts, S. G., \& Dafni, A.
+(2010). A framework for comparing pollinator performance: Effectiveness
+and efficiency. \emph{Biological Reviews}, no--no.
+doi:\href{https://doi.org/10.1111/j.1469-185X.2009.00108.x}{10.1111/j.1469-185X.2009.00108.x}
+
+\hypertarget{ref-rohr_structural_2014}{}
+Rohr, R. P., Saavedra, S., \& Bascompte, J. (2014). On the structural
+stability of mutualistic systems. \emph{Science}, \emph{345}(6195),
+1253497--1253497.
+doi:\href{https://doi.org/10.1126/science.1253497}{10.1126/science.1253497}
+
+\hypertarget{ref-saavedra_nested_2016}{}
+Saavedra, S., Rohr, R. P., Olesen, J. M., \& Bascompte, J. (2016).
+Nested species interactions promote feasibility over stability during
+the assembly of a pollinator community. \emph{Ecology and Evolution},
+\emph{6}(4), 997--1007.
+doi:\href{https://doi.org/10.1002/ece3.1930}{10.1002/ece3.1930}
+
+\hypertarget{ref-vazquez_interaction_2005}{}
+Vázquez, D. P., Morris, W. F., \& Jordano, P. (2005). Interaction
+frequency as a surrogate for the total effect of animal mutualists on
+plants: Total effect of animal mutualists on plants. \emph{Ecology
+Letters}, \emph{8}(10), 1088--1094.
+doi:\href{https://doi.org/10.1111/j.1461-0248.2005.00810.x}{10.1111/j.1461-0248.2005.00810.x}
+
+\hypertarget{ref-zhang_input_2016}{}
+Zhang, X., Lv, T., \& Pu, Y. (2016). Input graph: The hidden geometry in
+controlling complex networks. \emph{Scientific Reports}, \emph{6}(1).
+doi:\href{https://doi.org/10.1038/srep38209}{10.1038/srep38209}
+
+
+\end{document}
