@@ -143,7 +143,7 @@ replayPlot(fig_small_network$plot)
 The algorithm implemented in `max_bipartite_matching`, however, is only able to find **one** of possibly many maximum matchings in a network. 
 Though one maximum matching is enough to calculate *n~D~* and hence to provide an indication of the manageability of a community, it is not sufficient to estimate the role of individual species. 
 To do that, we need to calculate all possible maximum matchings. 
-To do this, we again start from the alternative bipartite representation in Figure \@ref(fig:fig-maximum-matching-procedure)b and assign an identity to each of the links in the network.
+To do this, we again start from the alternative bipartite representation in Figure \@ref(fig:fig-maximum-matching-procedure) (center panel) and assign an identity to each of the links in the network.
 We will call this bipartite representation *P*. 
 We then construct the line graph of the alternative bipartite representation *L(P)* (Figure \@ref(fig:fig-all-maximum-matching)). 
 Each node in *L(P)* represents a link in *P* and these are connected to each other if and only if they share a common node in *P*. 

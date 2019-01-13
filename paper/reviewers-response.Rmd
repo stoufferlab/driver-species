@@ -125,9 +125,9 @@ We have attempted to clarify this sentence as follows: Finding out exactly how d
 
 > * "dynamic persistence"  (p17,l364)
 
-> * "dynamic stability " (p17, l370)
+> "*Figure S1b* is referred to (supp. p4 ) but doesn't exist in the figure"  
 
-> * "ecological objective" (p9) - simply 'objective' ? 
+*Accepted and changed*: Thanks for noticing this issue. We now refer to the figure as "Figure S1 (center panel)".
 
 > "*References*: several references use the term 'plantPollinator', or '...'"
 
