@@ -126,7 +126,7 @@ We, therefore denote the average of $\sigma$ across all non-reciprocal versions 
 
 > * "desired control trajectory " - does this mean "final state"?
 
-We have attempted to clarify this sentence as follows: Finding out exactly how difficult it is to control a network depends strongly on the particularities of the desired control trajectory (i.e. path to the desired final state)  as well as the dynamical relationship between nodes. \lr{R2-desired-control-trajectory}
+> "'driver node density' (supp p12) -> 'size of the minimum driver node set'?"
 
 > * "dynamic persistence"  (p17,l364)
 

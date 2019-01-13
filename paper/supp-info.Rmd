@@ -283,7 +283,7 @@ bal_nd <- controllability %>%
   }
 ```
 
-At a network scale the driver-node density $n_D$ was consistent among the three weighting schemes (`r round(bal_nd$eff, 2)` for deposition, `r round(bal_nd$vis, 2)` for the visitation, and `r round(bal_nd$imp, 2)` for the pollinator-importance network, respectively).
+At a network scale the size of the minimum driver node set $n_D$ was consistent among the three weighting schemes (`r round(bal_nd$eff, 2)` for deposition, `r round(bal_nd$vis, 2)` for the visitation, and `r round(bal_nd$imp, 2)` for the pollinator-importance network, respectively).
 The choice of weighting can also have an impact on at the species level.
 Therefore we calculated $\phi$ and $\sigma$ and calculated its correlation among all three weighting schemes.
 Although visitation and efficiency (pollen deposition) produce moderately different results, we found a very strong agreement between the order produced by visitation and importance which is arguably a more accurate metric of interspecific effects (Table \@ref(tab:tab-assumption-visitation)). 
