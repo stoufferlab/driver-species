@@ -44,13 +44,13 @@ Many thanks for the encouraging words. We have included 'invasive species' as a 
 
 # Associate Editor's comments
 
-> "I think this ms now makes much clearer the potential insights to be gained by applying control theory to interaction networks. In particular, the authors have done a nice job of explaining how their findings reinforce existing ideas in the literature on the stability of ecological networks while also acknowledging limitations. The reviewers identified a few remaining issues that should be straightforward to address. I also noticed a few issues"
+> "I think this ms now makes much clearer the potential insights to be gained by applying control theory to interaction networks. In particular, the authors have done a nice job of explaining how their findings reinforce existing ideas in the literature on the stability of ecological networks while also acknowledging limitations. The reviewers identified a few remaining issues that should be straightforward to address. I also noticed a few issues:"
 
 Thank you for the positive feedback. We have addressed all of the specific issues raised and highlight these in red text in our resubmitted manuscript. 
 
 > "*L9*: I think here and throughout much of the text, species should be possessive when followed by a noun ("species role" should be "species' role"). The possessive is currently used in some instances but is inconsistently applied throughout the ms."
 
-*Accepted and changed*. We have checked through the manuscript and corrected this where relevant. Besides *specie's role*, we also changed instances of *species' contribution*, *species' degree*, *species' control capacity*, among others. 
+*Accepted and changed*. We have checked through the manuscript and corrected this where relevant. Besides *species' role*, we also changed instances of *species' contribution*, *species' degree*, *species' control capacity*, among others. 
 
 > "*L25*: 'every invasive species in our dataset was part of it' Here it was unclear what 'it' refers to (the set of critical species), and the reference to a singular dataset when you have 20 networks in total was a bit confusing to me."
 
@@ -58,7 +58,7 @@ Thank you for the positive feedback. We have addressed all of the specific issue
 
 > "*L23-26*: in these lines, you refer to critical species, but I think the distinction between having high control capacity versus being critical needs to be defined (briefly) earlier (it is stated in *L18-19* that you will quantify both control capacity and identify critical species, but it is not explained how they are distinct)."
 
-*Accepted and changed*. We now identify the distinction between high control capacity and being critical on \lr{M-R2-define-control-capacity}. The text now reads "It also allows us to quantify a species control capacity-its relative importance-and identify the set of species that, collectively, are critical in this context because they have largest possible control capacity".
+*Accepted and changed*. We now identify the distinction between high control capacity and being critical on \lr{M-R2-define-control-capacity}. The text now reads "It also allows us to quantify a species' control capacity-its relative importance-and identify the set of species thatare critical in this context because they have largest possible collective control capacity".
 
 > "*L27*: unclear what 'its' refers  to."
 
@@ -78,13 +78,13 @@ Thank you for the positive feedback. We have addressed all of the specific issue
 
 > "*L111, 114*: 'are comprised of' should be 'comprised'. *L339, 432*: 'at' should be 'in'. *L341*: 'allow' should be 'allowed'. *L355*: missing period."
 
-*Accepted and changed*. Thank you for pointing out these mistakes, we corrected all of them.
+*Accepted and changed*. Thank you for pointing these out; we have corrected all of them.
 
 # Reviewer comments #1
 
 > "I'd like to commend the authors to this revised version of the manuscript on 'Keystoneness, centrality, and the structural controllability of ecological networks'. I thoroughly enjoyed the re-written manuscript, which is now considerably more accessible and clearly targets the community of network ecologists, while not ignoring the importance of the applied relevance of the findings. Overall, I don't have any major comments. I guess the language is in parts on the casual side, yet without compromising the preciseness or clarity of the text. I noticed a few typos or style errors that the authors may want to address. Congratulations on this thought-provoking methodological synthesis."
 
-We are pleased that the reviewer enjoyed the re-written manuscript. We did too!. We also grateful for the typos and style errors identified, we have striven to correct them all. 
+We are pleased that the reviewer enjoyed the re-written manuscript. We did too!. We are also grateful for the typos and style errors they have identified and have striven to correct them all. 
 
 > "A few references require editing to journal style (e.g. remove initials for many citations)"
 
@@ -92,6 +92,7 @@ We are pleased that the reviewer enjoyed the re-written manuscript. We did too!.
 
 > "*L388*: remove repeated 'other'. I suggest that the authors re-write this sentence to improve clarity."
 
+<!-- DBS: The sentence quoted below was NOT actually rewritten! All we did was remove an extra "other". -->
 *Accepted and changed*. We have removed the second 'other'. As suggested, we have rewritten the sentence to improve clarity (\lr{M-R2-structural-controllability}). It now reads as follows: "First, structural controllability emphasizes that the effect a species has on the abundance of other species is not independent of the effects of those other species in their community".
 
 > "Reference list needs updating, e.g. Ne'eman et al. is not 2009 but 2010."
@@ -100,7 +101,7 @@ We are pleased that the reviewer enjoyed the re-written manuscript. We did too!.
 
 > "*L314*: open bracket missing. *L358*: change 'instead' to 'Instead'. *L381*: remove second comma. *Fig. S6* header of plot b). correct spelling of 'critical'."
 
-*Accepted and changed*. Thank you for pointing this out, made all these changes as indicated.
+*Accepted and changed*. Thank you again. We have made all these changes as indicated.
 
 # Reviewer comments #2
 
@@ -110,20 +111,22 @@ We are very thankful for the positive feedback but also for the issues highlight
 
 > "The methods are mostly clear but there is no description of how the 'likelihood of being a superior node' is calculated."
 
-*Accepted and changed*. Thanks for pointing this out. We have modified the sentence mentioning 'the likelihood of being a superior node' in the first paragraph of the section \@ref(S-reciprocal-links) to "...and whether it is a superior node..." to avoid confusion. Then we define the 'probability of being a superior node' at the end of the section: "It is important to note that a species that is found to be a superior node under a particular control configuration, will be so in all possible control configurations for the particular non-reciprocal network. 
-We, therefore denote the average of $\sigma$ across all non-reciprocal versions as the probability of the species being a superior node in its community". 
+<!-- DBS: Don't you think they're asking for this to appear in the main text and not the supps? -->
+*Accepted and changed*. Thanks for pointing this out. We have modified the sentence mentioning 'the likelihood of being a superior node' in the first paragraph of the section \@ref(S-reciprocal-links) to "...and whether it is a superior node..." to avoid confusion. Then we define the 'probability of being a superior node' at the end of the section: "It is important to note that a species that is found to be a superior node under a particular control configuration will be so in all possible control configurations for the particular non-reciprocal network. 
+We therefore denote the average of $\sigma$ across all non-reciprocal versions as the probability of the species being a superior node in its community". 
 
 > "I would suggest including clarification on the limitations of using control capacity to summarise species' importance, and examples to help the reader build an intuition regarding the control capacity metric. As pointed out, networks that give rise to a species having a high control capacity can be quite distinct to networks that give rise to a species having a high value of particular centrality metrics.  Providing an example in the Discussion of, for instance, those species that have a control capacity of 1 but a low degree would be very useful."  
 
 *Need Daniel's input*
+<!-- DBS: Response sent to Fernando via slack. -->
 
 > "Jargon occasionally obfuscates the concepts being introduced and there are places where I thought the language used was vague (esp. if terms being used have particular meanings depending on the field you're coming from). I would suggest clarifying, or rewording, the following: 'desired control trajectory' - does this mean 'final state'?""
 
-*Accepted and changed*: We have attempted to clarify this sentence as follows: Finding out exactly how difficult it is to control a network depends strongly on the particularities of the desired control trajectory (i.e. the path to the desired final state)  as well as the dynamical relationship between nodes. \lr{M-R2-desired-control-trajectory}.
+*Accepted and changed*: We have attempted to clarify this sentence as follows: "Finding out exactly how difficult it is to control a network depends strongly on the particularities of the desired control trajectory (i.e. the path to the desired final state) as well as the dynamical relationship between nodes." (\lr{M-R2-desired-control-trajectory}).
 
 > "*L1364*: 'dynamic persistence'"
 
-*Accepted and changed*: Thank you. To avoid confusion we have removed the word 'dynamic' and now the sentence reads "...our results suggest that structural controllability is closely related to the persistence..." (\lr{M-R2-dynamic-persistence}). It conserves its meaning without losing much precision. 
+*Accepted and changed*: Thank you. To avoid confusion we have removed the word 'dynamic' and now the sentence reads "...our results suggest that structural controllability is closely related to the persistence..." (\lr{M-R2-dynamic-persistence}). This preserves meaning without sacrificing precision. 
 
 > "*L1370*: 'dynamic stability'"
 
@@ -139,19 +142,22 @@ We, therefore denote the average of $\sigma$ across all non-reciprocal versions 
 
 > "*L406*: 'inherently different. The sentence spanning lines 407-410 is quite confusing  - please clarify.  
 
+<!-- DBS: This is the wrong sentence. You are quoting the sentence prior. -->
 *Accepted and changed*: We rephrased this line as follows: "We found that it is not that invasive plants have some different mechanism for influencing the community compared to their native counterparts" \lr{M-R2-inherrently-different}.
 
 > "*L430*: 'marginally affected by the topology of their interactions'"
 
+<!-- DBS: You are quoting the wrong section here... -->
 *Accepted and changed*: We have rephrased this line as: "By accounting for network dynamics (even if in a simple way), structural stability incorporates more ecological realism, especially in the extreme scenario in which the structure of interactions within the community only marginally affects the community's state. Both native species and invasive plants tended to attain a high control capacity if they were important to network persistence, were abundant, and depended little on other species" (\lr{M-R2-marginally-affected}).
 
 > "*L436* and *L441*: 'dominate the state [of their community]'"
 
 *Need Daniel's input*
+<!-- DBS: See edits to manuscript.Rmd. -->
 
 > "*Discussion*: 'species' strength'"
 
-*Accepted and changed*: In the Methods section we deine species' strength as the sum of a species' visits (\lr{M-R2-species-strength-a}). For brevity, we did not define it again in the Discussion, but now we have improved the text and briefly describe it when we mention it there too. The text now reads "When controlling for a species' visitation strength (the sum of a species' visits), which is indirectly a proxy of its abundance..." (\lr{M-R2-species-strength-b}).
+*Accepted and changed*: In the Methods section, we define species' strength as the sum of a species' visits (\lr{M-R2-species-strength-a}). For brevity, we did not define it again in the Discussion, but now we have improved the text and briefly describe it when we mention it there too. The text now reads "When controlling for a species' visitation strength (the sum of a species' visits), which is indirectly a proxy of its abundance..." (\lr{M-R2-species-strength-b}).
 
 > "Minor typos: *Figure S11* caption: 'likelyhood' -> likelihood. *L388*: 'other other'. 'Driver node density' (supp p12) -> 'size of the minimum driver node set'?"
 
@@ -177,17 +183,20 @@ We are very thankful for the positive feedback.
 
 > "In the species level glm, it was not entirely clear if models were fit to each network individually or if all species were lumped together (the former is what I think was done based on my reading of the text). Regardless I wonder if it would change the results if a mixed effects model was fit to lumped data, using network as a random effect."
 
-*Accepted and changed*: We are sorry for the confusion. In the species level GLM, we lumped all species from different networks together. We have modified the text in \lr{M-R2-one-lumped-model-a} and \lr{M-R2-one-lumped-model-b} to make this clearer. We actually did test for random effects in the model. We tested random effects that allowed for a random intercept for the network (but also its site, and the study it comes from). In all cases, the variance among groups was zero. This means that likely there are no differences on the distribution of control capacity between networks (or site and study) and therefore it was not necessary to include random effects in the models presented in the paper. We have corrected this omission and describe the random effects in \lr{M-R2-random-effects}.
+*Accepted and changed*: We are sorry for the confusion. In the species level GLM, we lumped all species from different networks together. We have modified the text in \lr{M-R2-one-lumped-model-a} and \lr{M-R2-one-lumped-model-b} to make this clearer. Moreover, we actually did test for random effects in the model. We tested random effects that allowed for a random intercept for the network (but also its site, and the study it comes from). In all cases, the variance among groups was zero. This means that likely there are no differences on the distribution of control capacity between networks (or site and study) and therefore it was unnecessary to include random effects in the models presented in the paper. We have corrected this omission and describe the random effects in \lr{M-R2-random-effects}.
+<!-- DBS: I don't think that "possible variation across communities" (which is the text in the paper) is specific enough to say what the random effects actually would have been. -->
 
 > "How were the model sets derived? Were all possible sub-models compared or was a step-wise approach used?"
 
-*Accepted and changed*: We actually compared all possible candidate models. We have edited the manuscript on \lr{M-R2-all-candidates} to include this information. 
+*Accepted and changed*: We actually compared all possible candidate models. We have edited the manuscript on \lr{M-R2-all-candidates} to include this information.
+<!-- DBS: I think this needs a bit more explanation for reader that has never done this. As in "across the space of models with all, some, and none of the predictor variables." -->
 
 > "Reciprocal links were included in the directed graph when dij = dji. Would it have any effect if there was a little wiggle room there, e.g., when the two are close but not equal?"
 
-We did not actually evaluate this When we evaluate the impact of this on our results. However, given that the interaction only a very small fraction of interactions had a small asymmetry (see Figure R1) we don't expect results to change considerably even when we include reciprocal links when the asymmetry is small but not zero.
+Rather than add yet another layer of complexity to our manuscript and given the rapid turnaround of the revised manuscript, we did not conduct this added sensitivity check. However, we note that only a very small fraction of interactions had a small asymmetry (see Figure R1). We therefore don't expect our results to change considerably even when we include reciprocal links when the asymmetry is small but not zero.
+<!-- DBS: Why don't we say something to this effect in the main text to throw them a bit of a bone? -->
 
-```{r fig-asymmetry, fig.width=6.3, fig.height=2, fig.cap = "Histogram of the interaction asymmetries between species. Previous research has shown that mutualistic interactions are often highly asymmetric in natural communities. Only 16.5% of interactions have asymetries smaller or equal than 0.5; 1% are smaller than 0.1."}
+```{r fig-asymmetry, fig.width=6.3, fig.height=2, fig.cap = "Histogram of the interaction asymmetries between species. Previous research has shown that mutualistic interactions are often highly asymmetric in natural communities. Indeed, only 16.5% of interactions have asymmetries smaller or equal than 0.5; 1% are smaller than 0.1."}
 drake::readd(fig_asymmetry_distribution)
 ```
 
