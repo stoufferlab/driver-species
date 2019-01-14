@@ -142,13 +142,11 @@ We therefore denote the average of $\sigma$ across all non-reciprocal versions a
 
 > "*L406*: 'inherently different. The sentence spanning lines 407-410 is quite confusing  - please clarify.  
 
-<!-- DBS: This is the wrong sentence. You are quoting the sentence prior. -->
-*Accepted and changed*: We rephrased this line as follows: "We found that it is not that invasive plants have some different mechanism for influencing the community compared to their native counterparts" \lr{M-R2-inherrently-different}.
+*Accepted and changed*: We rephrased this sentences as follows: "We found that it is not that invasive plants have some different mechanism for influencing the community compared to their native counterparts. Both native species and invasive plants tended to attain a high control capacity if they were important to network persistence, were abundant, and depended little on other species" \lr{M-R2-inherrently-different}.
 
 > "*L430*: 'marginally affected by the topology of their interactions'"
 
-<!-- DBS: You are quoting the wrong section here... -->
-*Accepted and changed*: We have rephrased this line as: "By accounting for network dynamics (even if in a simple way), structural stability incorporates more ecological realism, especially in the extreme scenario in which the structure of interactions within the community only marginally affects the community's state. Both native species and invasive plants tended to attain a high control capacity if they were important to network persistence, were abundant, and depended little on other species" (\lr{M-R2-marginally-affected}).
+*Accepted and changed*: We have rephrased this line as: "By accounting for network dynamics (even if in a simple way), structural stability incorporates more ecological realism, especially in the extreme scenario in which the structure of interactions within the community only marginally affects the community's state" (\lr{M-R2-marginally-affected}).
 
 > "*L436* and *L441*: 'dominate the state [of their community]'"
 
