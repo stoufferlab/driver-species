@@ -58,7 +58,7 @@ Thank you for the positive feedback. We have addressed all of the specific issue
 
 > "*L23-26*: in these lines, you refer to critical species, but I think the distinction between having high control capacity versus being critical needs to be defined (briefly) earlier (it is stated in *L18-19* that you will quantify both control capacity and identify critical species, but it is not explained how they are distinct)."
 
-*Accepted and changed*. We now identify the distinction between high control capacity and being critical on \lr{M-R2-define-control-capacity}. The text now reads "It also allows us to quantify a species' control capacity-its relative importance-and identify the set of species thatare critical in this context because they have largest possible collective control capacity".
+*Accepted and changed*. We now identify the distinction between high control capacity and being critical on \lr{M-R2-define-control-capacity}. The text now reads "It also allows us to quantify a species' control capacity-its relative importance-and identify the set of species that are critical in this context because they have the largest possible control capacity".
 
 > "*L27*: unclear what 'its' refers  to."
 
