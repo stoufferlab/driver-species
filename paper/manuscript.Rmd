@@ -505,7 +505,7 @@ Furthermore, while the relationship between centrality and keystoneness is based
 Here we show that structural controllability can be applied in an ecological setting to gain insight into the stability of a community and the role that species play in modifying the abundance of other species and ultimately the state of the community. 
 These characteristics make structural stability an ideal framework to evaluate the effects of invasions and other types of perturbations. 
 Importantly, structural controllability can be used to identify critical species in the community that promote biodiversity and underpin the stable coexistence of species in their community.
-Collectively, critical species have the ability to strongly influence the state of their community and therefore are likely to be highly relevant for ecosystem management and conservation. 
+\R{R2-dominate}Collectively, critical species have the ability to strongly influence the state of their community and therefore are likely to be highly relevant for ecosystem management and conservation. 
 While useful, centrality metrics---which have often been used as a proxy for keystoneness---fail to identify some of these species, highlighting their limitations when we fully embrace the notion that ecological communities are dynamical systems.
 @paine_note_1969 showed nearly 50 years ago that a single species can sometimes fill this role on its own. 
 Structural controllability suggests that this situation might be the exception rather than the rule. 

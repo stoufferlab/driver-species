@@ -150,8 +150,9 @@ We also considered the suggestion about including a specific example, but we ult
 
 > "*L436* and *L441*: 'dominate the state [of their community]'"
 
-*Need Daniel's input*
-<!-- DBS: See edits to manuscript.Rmd. -->
+*Accepted and changed*: Because we don't have a proper definition, we have modified the conclusion paragraph and now the affected sentences read: "Collectively, critical species have the ability to strongly influence the state of their community and therefore are likely to be highly relevant for ecosystem management and conservation. 
+While useful, centrality metrics---which have often been used as a proxy for keystoneness---fail to identify some of these species, highlighting their limitations when we fully embrace the notion that ecological communities are dynamical systems.
+Paine (1969) showed nearly 50 years ago that a single species can sometimes fill this role on its own" (\lr{M-R2-dominate}).
 
 > "*Discussion*: 'species' strength'"
 
