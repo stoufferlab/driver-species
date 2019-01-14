@@ -191,7 +191,6 @@ Thanks for the observation. As you mention, we believe it is ok to include the s
 > "How were the model sets derived? Were all possible sub-models compared or was a step-wise approach used?"
 
 *Accepted and changed*: We actually compared all possible candidate models. We have edited the manuscript on \lr{M-R2-all-candidates} to include this information.
-<!-- DBS: I think this needs a bit more explanation for reader that has never done this. As in "across the space of models with all, some, and none of the predictor variables." -->
 
 > "Reciprocal links were included in the directed graph when dij = dji. Would it have any effect if there was a little wiggle room there, e.g., when the two are close but not equal?"
 
