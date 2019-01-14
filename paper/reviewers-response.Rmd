@@ -179,7 +179,8 @@ We are very thankful for the positive feedback.
 
 > "Overall I found the paper well-written and sound, but there were a few questions I had that could improve clarity in the methods used. In the glm that used nD as the response variable, is there any concern that including N (number of species) as a predictor may cause a problem when the response is D/N? I can understand why this was included, but I can also imagine this resulting in models that show an effect of N when there is none (I could be wrong on this)."
 
-*Need Daniel's input*
+Thanks for the observation. As you mention, we believe it is ok to include the sample size as a predictor in this model for three reasons. First, there are several instances when the probability of something occurring increases or decreases with sampling effort, etc. It *does* imply a non-linear relationship though. Second, if there were a relationship between N on D, then using D/N (as opposed to of D) as the response variable and N as a predictor would actually reduce the size of the effect of N, rather than amplify it. If on the other hand, N and D are completely decoupled, then using D/N as the response variable should affect the intercept but not the coefficient of D. Third, in any case we only found a comparatively small effect of N on D. Although it might be relevant statistically it seems to be ecologically insignificant. 
+<!-- FDO: Daniel, could you please double check this makes sense? -->
 
 > "In the species level glm, it was not entirely clear if models were fit to each network individually or if all species were lumped together (the former is what I think was done based on my reading of the text). Regardless I wonder if it would change the results if a mixed effects model was fit to lumped data, using network as a random effect."
 

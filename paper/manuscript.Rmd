@@ -232,7 +232,7 @@ The lower $n_D$ the more controllable the community.
 In an ecological context, external inputs can be thought of as management interventions that modify the abundance of a particular species. 
 
 After finding the minimum driver-node set in each of our networks, we wanted to test whether invasion status or other predictors are correlated to controllability. 
-We do this using a set of generalised linear models with binomial error structure. 
+We do this using a set of generalised linear models with Gaussian errors and a logit link function. 
 The response variable was the relative size of the minimum driver-node set $n_D$ of the twenty empirical networks (ten invaded and ten uninvaded), and we included invasion status as a predictor. 
 As predictors, we also include the network connectance, the network nestedness (NODF), the number of species [since one might naively expect to see a negative relationship between richness and controllability; @menge_indirect_1995], the network asymmetry (an indication of the balance between plant and pollinator diversity), and the interaction strength asymmetry [the asymmetry on the dependences between trophic levels; @bluthgen_specialization_2007]\R{R2-citation-with-name}.
 We compared models using the Akaike Information Criterion for small sample sizes (AICc). 
