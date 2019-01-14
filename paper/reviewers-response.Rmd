@@ -186,6 +186,7 @@ Thanks for the observation. As you mention, we believe it is ok to include the s
 
 *Accepted and changed*: We are sorry for the confusion. In the species level GLM, we lumped all species from different networks together. We have modified the text in \lr{M-R2-one-lumped-model-a} and \lr{M-R2-one-lumped-model-b} to make this clearer. Moreover, we actually did test for random effects in the model. We tested random effects that allowed for a random intercept for the network (but also its site, and the study it comes from). In all cases, the variance among groups was zero. This means that likely there are no differences on the distribution of control capacity between networks (or site and study) and therefore it was unnecessary to include random effects in the models presented in the paper. We have corrected this omission and describe the random effects in \lr{M-R2-random-effects}.
 <!-- DBS: I don't think that "possible variation across communities" (which is the text in the paper) is specific enough to say what the random effects actually would have been. -->
+<!-- FDO: I have reworded to 'We initially included random effects to account for possible variation across communities, but we found that the among-group variance was effectively zero, and therefore random effects were not included in further analyses'. Is that what you mean? -->
 
 > "How were the model sets derived? Were all possible sub-models compared or was a step-wise approach used?"
 
