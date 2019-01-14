@@ -116,8 +116,9 @@ We therefore denote the average of $\sigma$ across all non-reciprocal versions a
 
 > "I would suggest including clarification on the limitations of using control capacity to summarise species' importance, and examples to help the reader build an intuition regarding the control capacity metric. As pointed out, networks that give rise to a species having a high control capacity can be quite distinct to networks that give rise to a species having a high value of particular centrality metrics.  Providing an example in the Discussion of, for instance, those species that have a control capacity of 1 but a low degree would be very useful."  
 
-*Need Daniel's input*
-<!-- DBS: Response sent to Fernando via slack. -->
+*Partially accepted and changed*: We think that more studies are needed before we can accurately build an intuition of what constitutes a species with a high control capacity, especially in regards to other kinds of networks. 
+As such we have added a clarification in \lr{M-R2-clarification-limitations} that states "As much potential as any metric or metrics to summarise species' importance might appear to have, it's clear that we also need more empirical studies in different types of networks in order to build intuition and ground truth their usefulness". 
+We also considered the suggestion about including a specific example, but we ultimately concluded that none would be particularly didactic for a reader unfamiliar with the exact empirical context. 
 
 > "Jargon occasionally obfuscates the concepts being introduced and there are places where I thought the language used was vague (esp. if terms being used have particular meanings depending on the field you're coming from). I would suggest clarifying, or rewording, the following: 'desired control trajectory' - does this mean 'final state'?""
 

@@ -482,6 +482,7 @@ Second, it demonstrates that to ensure the persistence of a community it is ofte
 Third, structural controllability explicitly acknowledges the existence of multiple management strategies and some will be better than others depending on the context.
 Approaches to prioritise species for conservation and reintroduction based on traits or centrality are still useful and are likely to overlap with species' control capacity [@pires_friendship_2017; @devoto_understanding_2012]. 
 Stepping back, our results also provide support to the idea that management decisions should not be based on a single technique but indicate that focusing on ecosystem processes and interactions may be more effective than traditional ranking-based approaches [@harvey_bridging_2017]. 
+\R{R2-clarification-limitations}As much potential as any metric or metrics to summarise species' importance might appear to have, it's clear that we also need more empirical studies in different types of networks in order to build intuition and ground truth their usefulness. 
 
 Our choice of studying invaded/uninvaded networks was based on a desire to contrast the extensive empirical evidence of the role of invasive plants with our theoretical results. 
 We found that invasive plants were always critical for network control and as such our results were in line with our expectations. 
