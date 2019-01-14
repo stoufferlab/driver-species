@@ -92,8 +92,7 @@ We are pleased that the reviewer enjoyed the re-written manuscript. We did too!.
 
 > "*L388*: remove repeated 'other'. I suggest that the authors re-write this sentence to improve clarity."
 
-<!-- DBS: The sentence quoted below was NOT actually rewritten! All we did was remove an extra "other". -->
-*Accepted and changed*. We have removed the second 'other'. As suggested, we have rewritten the sentence to improve clarity (\lr{M-R2-structural-controllability}). It now reads as follows: "First, structural controllability emphasizes that the effect a species has on the abundance of other species is not independent of the effects of those other species in their community".
+*Accepted and changed*. We have removed the second 'other'. As suggested, we have rewritten the sentence to improve clarity (\lr{M-R2-structural-controllability}). It now reads as follows: "First, structural controllability emphasizes that the effect a species has on other species is not independent of the effects that the other species have in the community".
 
 > "Reference list needs updating, e.g. Ne'eman et al. is not 2009 but 2010."
 

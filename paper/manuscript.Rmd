@@ -476,7 +476,7 @@ However, further inspection shows that our results do not contradict these findi
 Putting these observations together, our results therefore take previous findings one step further and suggest that centrality might paint an incomplete picture of the relevance of species.
 
 Other conceptual differences between structural controllability and centrality metrics provide three key insights into the conservation of ecological networks. 
-\R{R2-structural-controllability} First, structural controllability emphasizes that the effect a species has on the abundance of other species is not independent of the effects of those other species in their community. 
+\R{R2-structural-controllability} First, structural controllability emphasizes that the effect a species has on other species is not independent of the effects that the other species have in the community. 
 The rankings provided by centrality metrics and other heuristics fail to account for the collective influence of several species at once. 
 Second, it demonstrates that to ensure the persistence of a community it is often necessary to consider the abundances of more than a single species, even when full control is infeasible or undesired (for example `r round(sum(crit$n_crit > 1)/nrow(crit)*100)`% of our communities contained more than one critical species). 
 Third, structural controllability explicitly acknowledges the existence of multiple management strategies and some will be better than others depending on the context.
