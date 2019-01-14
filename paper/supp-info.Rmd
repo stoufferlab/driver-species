@@ -234,7 +234,7 @@ To calculate our controllability metrics at both the network (the relative size 
 All of these non-reciprocal networks are as likely to be one that best represents the superior/matched relationships in the network. 
 As such, we average the three metrics ($n_D$, $\phi$, and $\sigma$) across all the networks without reciprocal links without weighting by the number of possible control configurations. 
 It is important to note that a species that is found to be a superior node under a particular control configuration will be so in all possible control configurations for the particular non-reciprocal network. 
-We therefore denote the average of $\sigma$ across all non-reciprocal versions as the probability of the species being a superior node in its community.  
+We, therefore, denote the average of $\sigma$ across all non-reciprocal versions as the probability of the species being a superior node in its community.  
 
 ```{r}
 drake::loadd(fig_bidirectional)

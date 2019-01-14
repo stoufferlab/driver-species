@@ -111,8 +111,9 @@ We are very thankful for the positive feedback but also for the issues highlight
 > "The methods are mostly clear but there is no description of how the 'likelihood of being a superior node' is calculated."
 
 <!-- DBS: Don't you think they're asking for this to appear in the main text and not the supps? -->
+<!-- FDO: The 'probability/likelihood of being a superior node' is not mentioned in the main text, not even once. It only briefly gets mentioned in the Results and the Discussion and that is more in the conceptual way of what it means to be superior node. Not on how we devise this 'likelihood' when we have multiple non-reciprocal instances of a network. Plus in the paper, we don't really get much ecological insight from it. Because it's only mentioned in the supp. info I added this there and I think that'll be fine. We can always change it if they come back to it -->
 *Accepted and changed*. Thanks for pointing this out. We have modified the sentence mentioning 'the likelihood of being a superior node' in the first paragraph of the section \@ref(S-reciprocal-links) to "...and whether it is a superior node..." to avoid confusion. Then we define the 'probability of being a superior node' at the end of the section: "It is important to note that a species that is found to be a superior node under a particular control configuration will be so in all possible control configurations for the particular non-reciprocal network. 
-We therefore denote the average of $\sigma$ across all non-reciprocal versions as the probability of the species being a superior node in its community". 
+We, therefore, denote the average of $\sigma$ across all non-reciprocal versions as the probability of the species being a superior node in its community". 
 
 > "I would suggest including clarification on the limitations of using control capacity to summarise species' importance, and examples to help the reader build an intuition regarding the control capacity metric. As pointed out, networks that give rise to a species having a high control capacity can be quite distinct to networks that give rise to a species having a high value of particular centrality metrics.  Providing an example in the Discussion of, for instance, those species that have a control capacity of 1 but a low degree would be very useful."  
 
@@ -130,7 +131,7 @@ We also considered the suggestion about including a specific example, but we ult
 
 > "*L1370*: 'dynamic stability'"
 
-*Accepted and changed*: Contrastingly, in this case the word dynamic distinguishes a particular facet of stability. We mean the ability of the system to return to an equilibrium state after a perturbation. We now include this definition on \lr{M-R2-dynamic-stability} to make the concept clearer.
+*Accepted and changed*: Contrastingly, in this case, the word dynamic distinguishes a particular facet of stability. We mean the ability of the system to return to an equilibrium state after a perturbation. We now include this definition on \lr{M-R2-dynamic-stability} to make the concept clearer.
 
 > "*P9*: 'ecological objective' - simply 'objective'?" 
 
@@ -193,10 +194,10 @@ Thanks for the observation. As you mention, we believe it is ok to include the s
 
 > "Reciprocal links were included in the directed graph when dij = dji. Would it have any effect if there was a little wiggle room there, e.g., when the two are close but not equal?"
 
-Rather than add yet another layer of complexity to our manuscript and given the rapid turnaround of the revised manuscript, we did not conduct this added sensitivity check. However, we note that only a very small fraction of interactions had a small asymmetry (see Figure R1). We therefore don't expect our results to change considerably even when we include reciprocal links when the asymmetry is small but not zero.
+Rather than add yet another layer of complexity to our manuscript and given the rapid turnaround of the revised manuscript, we did not conduct this added sensitivity check. However, we note that only a very small fraction of interactions had a small asymmetry (see Figure R1). We, therefore, don't expect our results to change considerably even when we include reciprocal links when the asymmetry is small but not zero.
 <!-- DBS: Why don't we say something to this effect in the main text to throw them a bit of a bone? -->
+<!-- FDO: Humm. I cannot find a good place to put this in the main text without having to write a half/full paragraph about it... -->
 
 ```{r fig-asymmetry, fig.width=6.3, fig.height=2, fig.cap = "Histogram of the interaction asymmetries between species. Previous research has shown that mutualistic interactions are often highly asymmetric in natural communities. Indeed, only 16.5% of interactions have asymmetries smaller or equal than 0.5; 1% are smaller than 0.1."}
 drake::readd(fig_asymmetry_distribution)
 ```
-
