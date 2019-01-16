@@ -169,7 +169,7 @@ We overcome that obstacle by noting that the extent to which species *i* affects
 This asymmetry is given by $$a(i,j) = a(j,i) = \frac{\left | d_{ij}-d_{ji} \right |}{max\left ( d_{ij}, d_{ji} \right )},$$ where the dependence of plant *i* on pollinator *j*, *d~ij~*, is the proportion of the visits from pollinator *j* compared to all pollinator visits to plant *i*. 
 Previous research has shown that mutualistic interactions are often highly asymmetric in natural communities; in other words, if a plant species is largely dependent on a pollinator species, that pollinator tends to depend rather weakly on the plant (and vice versa). 
 We therefore create a directed link from species *i* to species *j* when $d_{ij}-d_{ji} \geq 0$ to establish the most likely direction of control between a species pair (Figure \@ref(fig:fig-example-networks)a).
-Sometimes there is no observed asymmetry between species pairs ($d_{ij}=d_{ji}$), and we cannot infer a dominant direction of control. 
+\R{R2-reciprocal}Sometimes (`r round(drake::readd(proportion_bilinks), digits = 1)`% of the observed interactions in our datasets) there is no observed asymmetry between species pairs ($d_{ij}=d_{ji}$), and we cannot infer a dominant direction of control. 
 When this occurs, we deem both species to be equally likely to affect each other and leave a reciprocal interaction between them (a link from *i* to *j* and another from *j* to *i*). 
 By basing the direction of the links on the asymmetry of their dependence, we are able to generate a network that is consistent with the dynamics of the community while satisfying the requirements of structural controllability. 
 This allows us to calculate the controllability of the networks and investigate whether there are differences between invaded and uninvaded communities. 
@@ -382,7 +382,7 @@ cc_table <- MuMIn::model.sel(species_model_cc$fixed) %>%
 
 dplyr::bind_rows(cc_table) %>%
   dplyr::select(-logLik, - AICc) %>%
-  set_names(., pretty_term_names(colnames(.), "short")) %>%
+  {set_names(., pretty_term_names(colnames(.), "short"))} %>%
   knitr::kable("latex", 
                # col.names = pretty_term_names(colnames(.), "short"),
                booktabs = T,

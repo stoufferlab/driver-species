@@ -43,6 +43,7 @@ basic_analysis_plan <- drake::drake_plan(
     "ISA", 
     "weighted NODF")), 
   directed_networks = purrr::map(networks, as_directed_network, direction = "asymmetry", ties = "both", higher_level = "pol"),
+  proportion_bilinks = get_prop_bilinks(networks, directed_networks),
   strings_in_dots = "literals"
 )
 

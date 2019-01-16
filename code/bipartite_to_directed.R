@@ -89,3 +89,16 @@ replace_zeros <- function(x,y = 0){
   x
 }
 
+# get proportion of interactions with no asymmetry
+get_prop_bilinks <- function(networks, directed_networks){
+  n_bilinks <- directed_networks %>%
+    purrr::map(split_bilinks) %>%
+    purrr::map(length) %>%
+    purrr::map_dbl(log, base = 2) 
+  
+  n_links <- networks %>%
+    purrr::map(igraph::E) %>%
+    purrr::map_dbl(length)
+  
+  (sum(n_bilinks) / sum(n_links)) * 100
+}

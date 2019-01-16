@@ -198,9 +198,7 @@ Thanks for the observation. As you mention, we believe it is ok to include the s
 > "Reciprocal links were included in the directed graph when dij = dji. Would it have any effect if there was a little wiggle room there, e.g., when the two are close but not equal?"
 
 Rather than add yet another layer of complexity to our manuscript and given the rapid turnaround of the revised manuscript, we did not conduct this added sensitivity check. However, we note that only a very small fraction of interactions had a small asymmetry (see Figure R1). We, therefore, don't expect our results to change considerably even when we include reciprocal links when the asymmetry is small but not zero.
-<!-- DBS: Why don't we say something to this effect in the main text to throw them a bit of a bone? -->
-<!-- FDO: Humm. I cannot find a good place to put this in the main text without having to write a half/full paragraph about it... -->
-<!-- DBS: Why not somewhere in line 172 (in the Rmd file)? You could replace "Sometimes" with "For X% of the observed species pairs, there is no asymmetry..." -->
+We have also included the actual proportion of interactions with no asymmetry in the main text to improve clarity (\lr{M-R2-reciprocal}).
 
 ```{r fig-asymmetry, fig.width=6.3, fig.height=2, fig.cap = "Histogram of the interaction asymmetries between species. Previous research has shown that mutualistic interactions are often highly asymmetric in natural communities. Indeed, only 16.5% of interactions have asymmetries smaller or equal than 0.5; 1% are smaller than 0.1."}
 drake::readd(fig_asymmetry_distribution)
