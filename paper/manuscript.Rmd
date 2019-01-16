@@ -272,7 +272,9 @@ Fourth, the species' degree in order to account for the intrinsic centrality of 
 Finally, we included a categorical variable for the species' trophic level (plant or pollinator) and an interaction term between trophic level and the previous four variables. 
 To facilitate comparison between predictors, degree and visitation strength were log-transformed and all four continuous variables were scaled to have a mean of zero and a standard deviation of one. 
 \R{R2-one-lumped-model-b}In these models, species from all networks were analysed together. 
-\R{R2-random-effects}We initially included random effects to account for possible variation across communities, but we found that the among-group variance was effectively zero, and therefore random effects were not included in further analyses. 
+\R{R2-random-effects}We initially included random effects to account for possible variation across communities. 
+Specifically, we tested structures that allowed for a random intercept for the network, site, and the study it comes from.
+However, we found that in all cases the among-group variance was effectively zero, and therefore we did not include any random effect in further analyses. 
 \R{R2-all-candidates}We then generated all possible candidate models across the space of models with all, some, and none of the predictor variables.
 To identify the models that were best supported by the data, we first determined the most parsimonious random structure using the AICc. 
 The relative importance of variables was then assessed by looking at their effect sizes in the top-ranked models and the cumulative weight of the models in which they are present. 
