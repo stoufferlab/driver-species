@@ -1,6 +1,6 @@
 ---
 title: "Keystoneness, centrality, and the structural controllability of ecological networks"
-subtitle: "JEcol-2018-0545 - Detailed response to comments"
+subtitle: "JEcol-2018-0545.R1 - Detailed response to comments"
 author: "Fernando Cagua, Kate L. Wootton, Daniel B. Stouffer"
 classoption: a4paper
 csl: journal-of-ecology.csl
