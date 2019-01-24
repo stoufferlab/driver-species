@@ -2,7 +2,7 @@
 
 We apply structural controllability to pollination networks and are able to identify a set of species that are critical to changing the state of the community and underpin the stable coexistence of species in their communities. 
 
-This research is currently undergoing peer review. 
+This research has been accepted for publication at Journal of Ecology. 
 
 ## Summary
 
