@@ -1,7 +1,7 @@
 fig_graphical_abstract <- function(en_direction, pdf_out = NULL){
 
   
-  box_col <- "#b2abd2"
+  box_col <- my_pallete()$extra_light_purple
   
   # Prepare visitation network and directed network
   formatted_en_direction <- en_direction  %>%
@@ -19,8 +19,8 @@ fig_graphical_abstract <- function(en_direction, pdf_out = NULL){
     purrr::map(ntw_format_theme) %>%
     purrr::map(ntw_control_network_theme) %>%
     purrr::map(ntw_matched_theme) %>%
-    purrr::map(~ add_property(., element = "vertex", attr_name = "color", attr_base = "matched", 'type ~ my_pallete()$dark_orange', '!type ~ my_pallete()$light_orange', 'TRUE ~ my_pallete()$light_purple')) %>%
-    purrr::map(~ add_property(., element = "vertex", attr_name = "frame.color", attr_base = "control_type", "type == 'a' ~ 'black'", "TRUE ~ my_pallete()$light_purple")) %>%
+    purrr::map(~ add_property(., element = "vertex", attr_name = "color", attr_base = "matched", 'type ~ my_pallete()$dark_orange', '!type ~ my_pallete()$light_orange', 'TRUE ~ my_pallete()$extra_light_purple')) %>%
+    purrr::map(~ add_property(., element = "vertex", attr_name = "frame.color", attr_base = "control_type", "type == 'a' ~ 'black'", "TRUE ~ my_pallete()$extra_light_purple")) %>%
     purrr::map(~ add_property(., element = "edge", attr_name = "color", attr_base = "matched", 'type ~ my_pallete()$dark_orange', '!type ~ my_pallete()$dark_orange', 'TRUE ~ my_pallete()$dark_purple')) %>%
     purrr::map(~ add_property(., "vertex", "size", "type", "TRUE ~ 32.5"))
   
@@ -111,7 +111,7 @@ fig_graphical_abstract <- function(en_direction, pdf_out = NULL){
          lwd = 1.5, cex = 0.9, xjust=x_just, yjust=y_just, bty = "n")
   legend(x_y[3,], legend = c("control input"), horiz = TRUE,
          lty = 1, 
-         col = my_pallete()$light_purple,
+         col = my_pallete()$dark_purple,
          lwd = 1.5, cex = 0.9, xjust=0.5, yjust=y_just, bty = "n")
   
   legend(x_y[4,], legend = c("matched node"), horiz = TRUE,

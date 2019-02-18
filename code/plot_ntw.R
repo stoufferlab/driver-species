@@ -142,6 +142,7 @@ my_pallete <- function(){
   list(dark_orange = "#e66101", 
     light_orange = "#fdb863", 
     light_purple = "#b2abd2", 
+    extra_light_purple = "#d1cde4", 
     dark_purple = "#5e3c99", 
     dark_grey = "#636363", 
     light_grey = "#bdbdbd", 
