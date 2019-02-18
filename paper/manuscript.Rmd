@@ -157,7 +157,7 @@ dplyr::data_frame(rows = c(rbind(names(defs), unlist(defs))), dummy2 = "") %>%
 We used ten paired pollination communities to apply the control-theoretic approach.
 Each community pair was composed of a community invaded by a plant and a community free of the invasive species. 
 Four pairs correspond to natural or semi-natural vegetation communities in the city of Bristol, UK [@lopezaraizamikel_impact_2007]. 
-These communities comprised `r lop[1]`--`r lop[6]` species (mean `r round(lop[4])`), and non-invaded plots were obtained by experimentally removing all the flowers of the invasive species *Impatients grandulifera*.
+These communities comprised `r lop[1]`--`r lop[6]` species (mean `r round(lop[4])`), and non-invaded plots were obtained by experimentally removing all the flowers of the invasive species *Impatiens grandulifera*.
 The other six pairs were obtained from lower diversity Mediterranean shrublands in Cap de Creus National Park, Spain [@bartomeus_contrasting_2008].
 These communities comprised `r bar[1]`--`r bar[6]` species (mean `r round(bar[4])`); in contrast to the above, uninvaded communities were obtained from plots that had not yet been colonised by either of the invasive species *Carpobrotus affine acinaciformis* or *Opuntia stricta*. The structure of all these communities was defined by the pollinator visitation frequency, which has been shown to be an appropriate surrogate for interspecific effects in pollination networks [@vazquez_interaction_2005; @bascompte_asymmetric_2006]. 
 Full details about the empirical networks can be found in the Supporting Information Section \@ref(S-empirical-networks). 
