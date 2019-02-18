@@ -138,4 +138,4 @@ fig_graphical_abstract <- function(en_direction, pdf_out = NULL){
   ))
 }
 
-fig_graphical_abstract(en_direction, pdf_out = "mama.png")
+
