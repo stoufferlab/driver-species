@@ -79,7 +79,7 @@ We also found that species with high control capacity, and in particular critica
 4. *Synthesis*: Structural controllability is strongly related to the stability of a network and measures the difficulty of managing an ecological community.
 It also identifies species that are critical to sustain biodiversity and to change or maintain the state of their community and are therefore likely to be very relevant for management and conservation. 
 
-**Keywords:** Invasive species, keystone species, management interventions, mutualism, network control theory, plant population and community dynamics, species' importance, control capacity, structural stability
+**Keywords:** Invasive species, management interventions, mutualism, network control theory, plant population and community dynamics, species' importance, control capacity, structural stability
 
 \clearpage
 
