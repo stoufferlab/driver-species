@@ -95,11 +95,11 @@ make_fig_structural_control <- function(en_direction, en_structural, pdf_out = N
   # plot.new()
   ## FIGURE A
   # 10
-  standalone_text("visitation network", y = 0.25, adj = c(0.5,0), font = 2)
+  standalone_text("Visitation network", y = 0.25, adj = c(0.5,0), font = 2)
   text(0, 1, "(a)", adj = c(0.15,1.5), font = 1)
   
   # 11
-  standalone_text("direction of control", y = 0.25, adj = c(0.5,0), font = 2)
+  standalone_text("Direction of control", y = 0.25, adj = c(0.5,0), font = 2)
   
   # 12
   # standalone_vline(lty = 2)
@@ -111,14 +111,14 @@ make_fig_structural_control <- function(en_direction, en_structural, pdf_out = N
   }
   ## FIGURE B
   # 20
-  standalone_text("dilation", y = 0.5, adj = c(0.5,1), font = 1)
+  standalone_text("Dilation", y = 0.5, adj = c(0.5,1), font = 1)
   text(0, 1, "(b)", adj = c(0.15,1.5), font = 1)
   # 21
-  standalone_text("inaccessible node", y = 0.5, adj = c(0.5,1), font = 1)
+  standalone_text("Inaccessible node", y = 0.5, adj = c(0.5,1), font = 1)
   # 22
-  standalone_text("not\ncontrollable", srt = 90, font = 2)
+  standalone_text("Not\ncontrollable", srt = 90, font = 2)
   # 23
-  standalone_text("controllable", srt = 90, font = 2)
+  standalone_text("Controllable", srt = 90, font = 2)
   # 24-27
   for (i in c(4,2,5,3)){
     # if(i == 3)   text(-2.26, 1, "(b)", adj = c(0,1.3), font = 1)
@@ -141,7 +141,7 @@ make_fig_structural_control <- function(en_direction, en_structural, pdf_out = N
   # 83
   # standalone_hline(lty = 2)
   plot.new()
-  legend(0.5, 0.5,legend = c("control input"), horiz = TRUE,
+  legend(0.5, 0.5,legend = c("Control input"), horiz = TRUE,
          lty = 1, 
          col = get_color("control"),
          lwd = 1.5, cex = 0.9, xjust=0.5, yjust=0.5, bty = "n")

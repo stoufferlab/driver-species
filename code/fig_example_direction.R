@@ -82,7 +82,7 @@ make_fig_control_configurations <- function(en_chain, en_star, en_direction, pdf
   par(mar = rep(0,4), bg = "white", xpd = NA)
   
   # 31
-  standalone_text("directed network", y = 0.5, adj = c(0.5,0), font = 2)  
+  standalone_text("Directed network", y = 0.5, adj = c(0.5,0), font = 2)  
   rect(grconvertX(0, "inches", "user"),
        grconvertY(sum(heights) - heading_height - plot_1_height - desc_height, "inches", "user"),
        grconvertX(3.5, "inches", "user"),
@@ -130,7 +130,7 @@ make_fig_control_configurations <- function(en_chain, en_star, en_direction, pdf
        border = NA)
 
   # 32
-  standalone_text("maximum matchings / control configurations", y = 0.5, adj = c(0.5,0), font = 2)
+  standalone_text("Maximum matchings / Control configurations", y = 0.5, adj = c(0.5,0), font = 2)
   # 33
   # standalone_vline(lty = 2)
   # plot.new()
@@ -176,15 +176,15 @@ make_fig_control_configurations <- function(en_chain, en_star, en_direction, pdf
   y_desc <- 0.7
   standalone_text("N = 4", y = y_desc)
   
-  standalone_text(latex2exp::TeX("$matching\\,size = 3 \\;\\;\\; D = 1 \\;\\;\\; n_D = 0.25$"), y = y_desc)
+  standalone_text(latex2exp::TeX("$Matching\\,size = 3 \\;\\;\\; D = 1 \\;\\;\\; n_D = 0.25$"), y = y_desc)
   
   standalone_text("N = 4", y = y_desc)
   
-  standalone_text(latex2exp::TeX("$matching\\,size = 1 \\;\\;\\; D = 3 \\;\\;\\; n_D = 0.75$"), y = y_desc)
+  standalone_text(latex2exp::TeX("$Matching\\,size = 1 \\;\\;\\; D = 3 \\;\\;\\; n_D = 0.75$"), y = y_desc)
   
   standalone_text("N = 5", y = y_desc)
   
-  standalone_text(latex2exp::TeX("$matching\\,size = 3 \\;\\;\\; D = 2 \\;\\;\\; n_D = 0.40$"), y = y_desc)
+  standalone_text(latex2exp::TeX("$Matching\\,size = 3 \\;\\;\\; D = 2 \\;\\;\\; n_D = 0.40$"), y = y_desc)
   
   # plot.new()
   plot.new()
@@ -197,26 +197,26 @@ make_fig_control_configurations <- function(en_chain, en_star, en_direction, pdf
                c(2/3+0.025, 0.6)) %>% as.data.frame()
   x_just <- 0.5
   y_just <- 1.1
-  legend(x_y[1, ],legend = c("matched link"), horiz = TRUE,
+  legend(x_y[1, ],legend = c("Matched link"), horiz = TRUE,
          lty = 1, 
          col = get_color("matched"),
          lwd = 1.5, cex = 0.9, xjust=x_just, yjust=y_just, bty = "n")
-  legend(x_y[2,], legend = c("unmatched link"), horiz = TRUE,
+  legend(x_y[2,], legend = c("Unmatched link"), horiz = TRUE,
          lty = 1, 
          col = get_color("unmatched"),
          lwd = 1.5, cex = 0.9, xjust=x_just, yjust=y_just, bty = "n")
-  legend(x_y[3,], legend = c("control input"), horiz = TRUE,
+  legend(x_y[3,], legend = c("Control input"), horiz = TRUE,
          lty = 1, 
          col = get_color("control"),
          lwd = 1.5, cex = 0.9, xjust=0.5, yjust=y_just, bty = "n")
   
-  legend(x_y[4,], legend = c("matched node"), horiz = TRUE,
+  legend(x_y[4,], legend = c("Matched node"), horiz = TRUE,
          pch = 21, 
          pt.bg = c(get_color("matched")),
          col =  c(get_color("matched")),
          pt.cex = 1.5,
          cex = 0.9, xjust=x_just, yjust=y_just, bty = "n")
-  legend(x_y[5,], legend = c("unmatched node"), horiz = TRUE,
+  legend(x_y[5,], legend = c("Unmatched node"), horiz = TRUE,
          pch = 21, 
          pt.bg = c(get_color("unmatched")),
          col =  c(get_color("unmatched")),

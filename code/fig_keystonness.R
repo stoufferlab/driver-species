@@ -162,8 +162,8 @@ make_fig_control_capacity <- function(sl_characteristics){
     scale_color_manual(values = my_pallete()$dark_orange) +
     base_ggplot_theme() +
     labs(title = "(a) Control capacity of plants", 
-         x = latex2exp::TeX("control capacity ($\\phi$)"), 
-         y = "probability density") +
+         x = latex2exp::TeX("Control capacity ($\\phi$)"), 
+         y = "Probability density") +
     scale_y_continuous(limits = c(0,9)) +
     theme(legend.position = c(1, 0),
           legend.justification = c(1,0),
@@ -181,8 +181,8 @@ make_fig_control_capacity <- function(sl_characteristics){
     scale_color_manual(values = my_pallete()$dark_purple) +
     base_ggplot_theme() +
     labs(title = "(b) Control capacity of pollinators", 
-         x = latex2exp::TeX("control capacity ($\\phi$)"), 
-         y = "probability density") +
+         x = latex2exp::TeX("Control capacity ($\\phi$)"), 
+         y = "Probability density") +
     scale_y_continuous(limits = c(0,9)) +
     theme(legend.position = c(1, 0),
           legend.justification = c(1,0),
@@ -240,28 +240,28 @@ make_fig_species_partial <- function(species_model_cc){
   ylims <- c(-11, 20)
   p1 <- partial_plot(df_cc, "pushpull_o", "I(pushpull_comp + res)", "lm") + 
     labs(title = "(c)", 
-         x = "dependence asymmetry", 
-         y = latex2exp::TeX("partial residuals")) +
+         x = "Dependence asymmetry", 
+         y = latex2exp::TeX("Partial residuals")) +
     coord_cartesian(ylim = ylims)
   
   p2 <- partial_plot(df_cc, "strength_o", "I(strength_comp + res)", "lm") +
     labs(title = "(b)", 
-         x = "visitation strength", 
-         y = latex2exp::TeX("partial residuals")) +
+         x = "Visitation strength", 
+         y = latex2exp::TeX("Partial residuals")) +
     scale_x_continuous(breaks = log(c(1,10,100)), labels = exp) +
     coord_cartesian(ylim = ylims)
   
   
   p3 <- partial_plot(df_cc, "nested_o", "I(nested_comp + res)", "lm") +
     labs(title = "(a)", 
-         x = "contribution to nestedness", 
-         y = latex2exp::TeX("partial residuals")) +
+         x = "Contribution to nestedness", 
+         y = latex2exp::TeX("Partial residuals")) +
     coord_cartesian(ylim = ylims)
   
   p4 <- partial_plot(df_cc, "degree_o", "I(degree_comp + res)", "lm") +
     labs(title = "(d)", 
-         x = "degree", 
-         y = latex2exp::TeX("partiall residuals")) +
+         x = "Degree", 
+         y = latex2exp::TeX("Partiall residuals")) +
     scale_x_continuous(breaks = log(c(1,10,100)), labels = exp) +
     coord_cartesian(ylim = ylims)
   
@@ -319,11 +319,11 @@ partial_plot <- function(df, x, y, smooth_method = "lm"){
     scale_color_manual(values = c(my_pallete()$dark_orange, 
                                   my_pallete()$dark_purple), 
                        name = "", 
-                       labels = c("plants", "pollinators")) +
+                       labels = c("Plants", "Pollinators")) +
     scale_fill_manual(values = c(my_pallete()$light_orange, 
                                  my_pallete()$light_purple), 
                       name = "", 
-                      labels = c("plants", "pollinators")) +
+                      labels = c("Plants", "Pollinators")) +
     base_ggplot_theme() +
     theme(legend.position = c(0, 1.15),
           legend.justification = c(0,1),

@@ -8,8 +8,8 @@ make_fig_structural_stability <- function(critical_sp_df){
     dplyr::summarise_if(is.numeric, mean, na.rm = T)
   
   value <- 1
-  my.labs <- list(bquote(paste("critical species (", phi==.(value), ")")), 
-                  bquote(paste("redundant (", phi<.(value), ")")))
+  my.labs <- list(bquote(paste("Critical species (", phi ==.(value), ")")), 
+                  bquote(paste("Redundant (", phi<.(value), ")")))
   
   p1 <- st_df %>%
     ggplot(aes(x = value, colour = critical)) +
@@ -29,8 +29,8 @@ make_fig_structural_stability <- function(critical_sp_df){
           legend.justification = c(0,1),
           legend.background = element_rect(fill = "NA"), 
           legend.key.size = unit(0.15, "in")) +
-    labs(y = "probability density",
-         x = "scaled structural stability")
+    labs(y = "Probability density",
+         x = "Scaled structural stability")
   
   list(p1)
 
