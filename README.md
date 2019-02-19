@@ -1,13 +1,24 @@
-# Structural controllability of pollination networks
+# Keystoness, centrality and the structural controllability of pollination networks
+
+*__Fernando Cagua__, Kate Wooton, and Daniel Stouffer*
 
 We apply structural controllability to pollination networks and are able to identify a set of species that are critical to changing the state of the community and underpin the stable coexistence of species in their communities. 
 
-This research has been accepted for publication at Journal of Ecology. 
+<br/>
+<p align="center">
+  <img src="paper/graphical-abstract.png" alt="Graphical abstract explaining the structural controllability of networks" style="width:400px;height:400px;"/>
+</p>
+<br/>
+
+This project has been published as a peer-reviewed article at the **Journal of Ecology**. 
+Please cite as "Cagua EF, Wootton KL, Stouffer DB. Keystoneness, centrality, and the structural controllability of ecological networks. J Ecol. 2019. doi: *[10.1111/1365-2745.13147](https://doi.org/10.1111/1365-2745.13147)*."
+
+You can download a copy of the paper from the publisher page (paywalled) or, alternatively, download the [latest non-copyedited version of the paper from this repo](https://github.com/stoufferlab/driver-species/releases/latest).
 
 ## Summary
 
 1. An important dimension of a species' role is its ability to alter the state and maintain the diversity of its community. 
-Centrality metrics have often been used to identify these species, which are sometimes referred as "keystone" species. 
+Centrality metrics have often been used to identify these species, which are sometimes referred to as "keystone" species. 
 However, the relationship between centrality and keystoneness is largely phenomenological and based mostly on our intuition regarding what constitutes an important species. 
 While centrality is useful when predicting which species' extinctions could cause the largest change in a community, it says little about how these species could be used to attain or preserve a particular community state.
 
@@ -26,18 +37,30 @@ It also identifies species that are critical to sustain biodiversity and to chan
 
 **Keywords:** Invasive species, keystone species, management interventions, mutualism, network control theory, plant population and community dynamics, species' importance, control capacity, structural stability
 
-## Reproduce results
+## Reproduce the results
 
-1. Make sure that the software and hardware requirements (below) have been met
-2. Clone this repository in your machine
-3. If using RStudio, opening `driver-species.Rproj` should initialize *packrat* and install the necessary R packages. Otherwise you need to initialize packrat yourself by running `source("packrat/init.R")` or `packrat::restore()` while in the local direc (Revise)
-4. Run `make` from a the main directory in your bash terminal. 
+### 1. Check requirements
 
-### Requirements 
+1. Make sure that the software and hardware requirements (below) have been met. All code was tested on an x86_64-apple-darwin15.6.0 (64-bit) platform but should run in most UNIX systems. Requirements include:
 
 * R version 3.4.4 (2018-03-15) -- "Someone to Lean On"
 * packrat: R package version 0.4.8-1.
-* Muticore processor with 4 cores or more
+* Multicore processor with 4 cores or more
 * 8GB RAM or more
 
-All code was tested on a x86_64-apple-darwin15.6.0 (64-bit) platform but should run in most unix systems. 
+### 2. Get the code
+
+*Option A: clonning the repo*
+
+2. Clone or download this repository in your machine
+3. If using RStudio, opening `driver-species.Rproj` should initialize *packrat* and install the necessary R packages. Otherwise you need to initialize packrat yourself by running `source("packrat/init.R")` or `packrat::restore()` while in the local direc (Revise)
+
+*Option B: using the project bundle *
+
+2. Download the `packrat-bundle.tar.gz` from the [latest project release](https://github.com/stoufferlab/driver-species/releases/latest).
+3. Unbundle the project using `packrat::unbundle(bundle, where, ..., restore = TRUE)`
+
+### 3. Run analyses
+
+4. Run `make` from the main directory in your bash terminal. 
+5. Now wait... it takes a couple of hours to perform all analysis. It's OK to interrupt the process though, I use [`drake`](https://github.com/ropensci/drake) to manage the data analysis workflow. This means, that next time you attempt to build the results (using `make`) it will continue where it was left. 
