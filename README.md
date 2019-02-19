@@ -6,7 +6,7 @@ We apply structural controllability to pollination networks and are able to iden
 
 <br/>
 <p align="center">
-  <img src="paper/graphical-abstract.png" alt="Graphical abstract explaining the structural controllability of networks" style="width:400px;height:400px;"/>
+  <img src="paper/graphical-abstract-small.png" alt="Graphical abstract explaining the structural controllability of networks"/>
 </p>
 <br/>
 

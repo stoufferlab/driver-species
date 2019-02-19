@@ -1,4 +1,4 @@
-fig_graphical_abstract <- function(en_direction, pdf_out = NULL){
+fig_graphical_abstract <- function(en_direction, pdf_out = NULL, res = 320){
 
   
   box_col <- my_pallete()$extra_light_purple
@@ -41,7 +41,7 @@ fig_graphical_abstract <- function(en_direction, pdf_out = NULL){
   # x <- fig_sizes()$two_column_width/2
   x <- sum(heights)
   widths <- c(x/2, x/2)
-  png(pdf_out, width = sum(widths), height = sum(heights), units = "in", res = 320)
+  png(pdf_out, width = sum(widths), height = sum(heights), units = "in", res = res)
   if(is.null(pdf_out)) dev.control("enable")
   c(00,00,
     01,02,

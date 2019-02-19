@@ -129,7 +129,8 @@ reporting_plan <- drake::drake_plan(
              drake::file_out('paper/reviewers-response.pdf'), clean_md = FALSE, clean_tex = FALSE), 
   compile_pdf(drake::file_in('paper/cover-letter.tex'), 
               drake::file_out('paper/cover-letter.pdf')), 
-  fig_graphical_abstract(en_direction, drake::file_out("paper/graphical-abstract.png"))
+  fig_graphical_abstract(en_direction, drake::file_out("paper/graphical-abstract.png")),
+  fig_graphical_abstract(en_direction, drake::file_out("paper/graphical-abstract-small.png"), res = 150)
 )
 
 project_plan <- drake::bind_plans(
