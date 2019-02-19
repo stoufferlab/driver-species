@@ -55,7 +55,7 @@ It also identifies species that are critical to sustain biodiversity and to chan
 2. Clone or download this repository in your machine
 3. If using RStudio, opening `driver-species.Rproj` should initialize *packrat* and install the necessary R packages. Otherwise you need to initialize packrat yourself by running `source("packrat/init.R")` or `packrat::restore()` while in the local direc (Revise)
 
-*Option B: using the project bundle *
+*Option B: using the project bundle*
 
 2. Download the `packrat-bundle.tar.gz` from the [latest project release](https://github.com/stoufferlab/driver-species/releases/latest).
 3. Unbundle the project using `packrat::unbundle(bundle, where, ..., restore = TRUE)`
