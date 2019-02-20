@@ -57,7 +57,7 @@ It also identifies species that are critical to sustain biodiversity and to chan
 
 *Option B: using the project bundle*
 
-2. Download the `packrat-bundle.tar.gz` from the [latest project release](https://github.com/stoufferlab/driver-species/releases/latest).
+2. Download the `tar.gz` file from the [latest project release](https://github.com/stoufferlab/driver-species/releases/latest).
 3. Unbundle the project using `packrat::unbundle(bundle, where, ..., restore = TRUE)`
 
 ### 3. Run analyses
