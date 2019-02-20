@@ -21,7 +21,7 @@ fig_graphical_abstract <- function(en_direction, pdf_out = NULL, res = 320){
     purrr::map(ntw_matched_theme) %>%
     purrr::map(~ add_property(., element = "vertex", attr_name = "color", attr_base = "matched", 'type ~ my_pallete()$dark_orange', '!type ~ my_pallete()$light_orange', 'TRUE ~ my_pallete()$extra_light_purple')) %>%
     purrr::map(~ add_property(., element = "vertex", attr_name = "frame.color", attr_base = "control_type", "type == 'a' ~ 'black'", "TRUE ~ my_pallete()$extra_light_purple")) %>%
-    purrr::map(~ add_property(., element = "edge", attr_name = "color", attr_base = "matched", 'type ~ my_pallete()$dark_orange', '!type ~ my_pallete()$dark_orange', 'TRUE ~ my_pallete()$dark_purple')) %>%
+    purrr::map(~ add_property(., element = "edge", attr_name = "color", attr_base = "matched", 'type ~ my_pallete()$dark_orange', '!type ~ my_pallete()$light_orange', 'TRUE ~ my_pallete()$dark_purple')) %>%
     purrr::map(~ add_property(., "vertex", "size", "type", "TRUE ~ 32.5"))
   
   # Setup graphical parameters
