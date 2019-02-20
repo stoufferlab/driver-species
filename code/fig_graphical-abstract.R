@@ -19,8 +19,8 @@ fig_graphical_abstract <- function(en_direction, pdf_out = NULL, res = 320){
     purrr::map(ntw_format_theme) %>%
     purrr::map(ntw_control_network_theme) %>%
     purrr::map(ntw_matched_theme) %>%
-    purrr::map(~ add_property(., element = "vertex", attr_name = "color", attr_base = "matched", 'type ~ my_pallete()$dark_orange', '!type ~ my_pallete()$light_orange', 'TRUE ~ my_pallete()$extra_light_purple')) %>%
-    purrr::map(~ add_property(., element = "vertex", attr_name = "frame.color", attr_base = "control_type", "type == 'a' ~ 'black'", "TRUE ~ my_pallete()$extra_light_purple")) %>%
+    purrr::map(~ add_property(., element = "vertex", attr_name = "color", attr_base = "matched", 'type ~ my_pallete()$dark_orange', '!type ~ my_pallete()$light_orange', 'TRUE ~ "grey95"')) %>%
+    purrr::map(~ add_property(., element = "vertex", attr_name = "frame.color", attr_base = "control_type", "type == 'a' ~ 'black'", "TRUE ~ 'grey95'")) %>%
     purrr::map(~ add_property(., element = "edge", attr_name = "color", attr_base = "matched", 'type ~ my_pallete()$dark_orange', '!type ~ my_pallete()$light_orange', 'TRUE ~ my_pallete()$dark_purple')) %>%
     purrr::map(~ add_property(., "vertex", "size", "type", "TRUE ~ 32.5"))
   
@@ -70,7 +70,7 @@ fig_graphical_abstract <- function(en_direction, pdf_out = NULL, res = 320){
        grconvertY(legend_height, "inches", "user"),
        grconvertX(x*2, "inches", "user"),
        grconvertY(plot_2_height + legend_height + heading_height, "inches", "user"),
-       col = box_col, 
+       col = "grey95", 
        border = NA)
   
   # Next titles
