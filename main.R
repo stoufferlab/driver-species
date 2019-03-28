@@ -124,6 +124,10 @@ export_figure_data_plan <- drake::drake_plan(
   fig_emp_controllability_data = get_fig_emp_controllability_data(controllability, randomisations_df, metadata, controllability_models, controllability_model_data, network_properties), 
   saveRDS(object = fig_emp_controllability_data, 
           file = drake::file_out("data/processed/plot_data/fig_emp_controllaibility.rds"), 
+          ascii = TRUE, compress = FALSE), 
+  table_model_selection_data = get_table_model_selection_data(species_model_cc), 
+  saveRDS(object = table_model_selection_data, 
+          file = drake::file_out("data/processed/plot_data/tab_model_selection.rds"), 
           ascii = TRUE, compress = FALSE)
 )
 

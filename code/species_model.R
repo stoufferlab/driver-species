@@ -143,3 +143,14 @@ get_var_importance <- function(model_list){
     dplyr::summarise(importance = sum(AICcWt)) %>%
     dplyr::arrange(dplyr::desc(importance))
 }
+
+get_table_model_selection_data <- function(species_model_cc){
+  tab <- MuMIn::model.sel(species_model_cc$fixed) %>%
+    dplyr::filter(weight > 0.01)
+  names_tab <- names(tab)
+    
+  tab %>%# remove attributes because it stores model calls which makes the data frame gigantic
+    `attributes<-`(NULL) %>%
+    set_names(names_tab) %>%
+    tibble::as_data_frame()
+}
