@@ -5,7 +5,7 @@
 require(magrittr)
 require(foreach)
 require(doMC)
-registerDoMC(cores = 4)
+registerDoMC(cores = 1)
 
 # load functions
 f <- lapply(list.files("code", full.names = T), source)
