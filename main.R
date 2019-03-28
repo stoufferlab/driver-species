@@ -120,6 +120,13 @@ test_assumption_plan <- drake::drake_plan(
   strings_in_dots = "literals"
 )
 
+export_figure_data_plan <- drake::drake_plan(
+  fig_emp_controllability_data = get_fig_emp_controllability_data(controllability, randomisations_df, metadata, controllability_models, controllability_model_data, network_properties), 
+  saveRDS(object = fig_emp_controllability_data, 
+          file = drake::file_out("data/processed/plot_data/fig_emp_controllaibility.rds"), 
+          ascii = TRUE, compress = FALSE)
+)
+
 reporting_plan <- drake::drake_plan(
   render_pdf(drake::knitr_in('paper/supp-info.Rmd'), 
              drake::file_out('paper/supp-info.pdf'), clean_md = FALSE),
@@ -137,6 +144,7 @@ project_plan <- drake::bind_plans(
   read_data_plan, basic_analysis_plan, example_plots_plan, 
   control_capacity_testing_plan, controllability_plan, species_level_plan, 
   test_assumption_plan,
+  export_figure_data_plan,
   reporting_plan)
 project_config <- drake::drake_config(project_plan)
 drake::make(project_plan, config = project_config)

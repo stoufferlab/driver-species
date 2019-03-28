@@ -77,3 +77,40 @@ make_fig_emp_contollability <- function(controllability, randomisations_df, meta
 }
 
 # drake::loadd(controllability, metadata, randomisations_df)
+get_fig_emp_controllability_data <- function(controllability, randomisations_df, metadata, controllability_models, controllability_model_data, network_properties){
+  
+  # Panel A
+  d <- controllability %>% 
+    filter_networks_df(metadata) %>%
+    dplyr::inner_join(metadata, by = "net_name") 
+  
+  medians_d <- d %>%
+    dplyr::group_by(inv) %>%
+    dplyr::summarise(n_D = median(n_D, na.rm = T))
+  
+  # Panel B & C
+  r <- randomisations_df %>%
+    filter_networks_df(metadata) %>%
+    dplyr::mutate(delta_n_D = n_D.x - n_D.y) 
+  
+  means <- r %>%
+    dplyr::group_by(randomisation) %>%
+    dplyr::summarise(delta_n_D = median(delta_n_D, na.rm = T))
+  
+  cont_model <- controllability_models[[which.min(controllability_models %>% purrr::map(AICcmodavg::AICc))]]
+  
+  original_web_asymmetry <- network_properties %>%
+    dplyr::select(net_name, web.asymmetry) 
+  
+  df_cc <- controllability_model_data %>%
+    modelr::add_predictions(cont_model) %>% 
+    dplyr::inner_join(original_web_asymmetry, by = "net_name") %>%
+    dplyr::mutate(web.asymmetry = scale(web.asymmetry)) %>%
+    dplyr::mutate(web_asymmetry_o = unscale(web.asymmetry))
+  
+  list(d = d, 
+       medians_d = medians_d, 
+       df_cc = df_cc, 
+       r = r, 
+       means = means)
+}
