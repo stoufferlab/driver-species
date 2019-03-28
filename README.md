@@ -41,26 +41,29 @@ It also identifies species that are critical to sustain biodiversity and to chan
 
 ### 1. Check requirements
 
-1. Make sure that the software and hardware requirements (below) have been met. All code was tested on an x86_64-apple-darwin15.6.0 (64-bit) platform but should run in most UNIX systems. Requirements include:
+Make sure that the software and hardware requirements (below) have been met. All code was tested on an x86_64-apple-darwin15.6.0 (64-bit) platform but should everywhere that runs docker:
 
-* R version 3.4.4 (2018-03-15) -- "Someone to Lean On"
-* packrat: R package version 0.4.8-1.
-* Multicore processor with 4 cores or more
-* 8GB RAM or more
+* Docker 18.09 (might work on other versions but has not been tested)
+* 32GB RAM or more
 
-### 2. Get the code
+### 2. Run the docker container
 
-*Option A: clonning the repo*
+There are a couple alternatives here. The easiest one is using the following commands:
 
-2. Clone or download this repository in your machine
-3. If using RStudio, opening `driver-species.Rproj` should initialize *packrat* and install the necessary R packages. Otherwise you need to initialize packrat yourself by running `source("packrat/init.R")` or `packrat::restore()` while in the local direc (Revise)
+```
+docker build -t driver-species .
+docker run -d -e DISABLE_AUTH=true -p 8787:8787 -v $PWD:/home/rstudio/driver-species --name driver-species-container driver-species
+```
 
-*Option B: using the project bundle*
-
-2. Download the `tar.gz` file from the [latest project release](https://github.com/stoufferlab/driver-species/releases/latest).
-3. Unbundle the project using `packrat::unbundle(bundle, where, ..., restore = TRUE)`
+This script will build the container image and run it for you. In some systems you will need sudo rights. 
 
 ### 3. Run analyses
 
-4. Run `make` from the main directory in your bash terminal. 
-5. Now wait... it takes a couple of hours to perform all analysis. It's OK to interrupt the process though, I use [`drake`](https://github.com/ropensci/drake) to manage the data analysis workflow. This means, that next time you attempt to build the results (using `make`) it will continue where it was left. 
+Just run the makefile in the project directory:
+
+```
+docker exec driver-species-container make -C /home/rstudio/driver-species
+```
+
+And now wait... it takes a several of hours to perform all analysis. 
+It's OK to interrupt the process though, I use [`drake`](https://github.com/ropensci/drake) to manage the data analysis workflow. This means, that next time you attempt to run the results (using `make`) it will continue where it was left. 

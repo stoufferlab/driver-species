@@ -1,6 +1,6 @@
 
 # make sure packrat is working
-if(!packrat:::isPackratModeOn()) packrat::on()
+# if(!packrat:::isPackratModeOn()) packrat::on()
 
 require(magrittr)
 require(foreach)
