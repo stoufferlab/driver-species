@@ -128,6 +128,19 @@ export_figure_data_plan <- drake::drake_plan(
   table_model_selection_data = get_table_model_selection_data(species_model_cc), 
   saveRDS(object = table_model_selection_data, 
           file = drake::file_out("data/processed/plot_data/tab_model_selection.rds"), 
+          ascii = TRUE, compress = FALSE), 
+  saveRDS(object = sl_characteristics, 
+          file = drake::file_out("data/processed/plot_data/fig_control_capacity.rds"), 
+          ascii = TRUE, compress = FALSE),
+  saveRDS(object = metadata, 
+          file = drake::file_out("data/processed/plot_data/metadata.rds"), 
+          ascii = TRUE, compress = FALSE), 
+  fig_species_partial_data = get_predictions_df_species_level(species_model_cc), 
+  saveRDS(object = fig_species_partial_data, 
+          file = drake::file_out("data/processed/plot_data/fig_partial_effects_control_capacity.rds"), 
+          ascii = TRUE, compress = FALSE), 
+  saveRDS(object = critical_sp_df, 
+          file = drake::file_out("data/processed/plot_data/fig_structural_stability.rds"), 
           ascii = TRUE, compress = FALSE)
 )
 
