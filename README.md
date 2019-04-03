@@ -2,6 +2,10 @@
 
 *__Fernando Cagua__, Kate Wooton, and Daniel Stouffer*
 
+[![Download PDF](https://img.shields.io/badge/download-PDF-green.svg)](https://github.com/stoufferlab/driver-species/releases/download/JOE-4.1/full-paper.pdf)
+[![DOI:10.1111/1365-2745.13147](https://zenodo.org/badge/DOI/10.1111/1365-2745.13147.svg)](https://doi.org/10.1111/1365-2745.13147)
+[![GNU v3.0 license](https://img.shields.io/badge/license-GNU%20v3.0-blue.svg)](https://github.com/stoufferlab/driver-species/blob/a-better-workflow/LICENSE)
+
 We apply structural controllability to pollination networks and are able to identify a set of species that are critical to changing the state of the community and underpin the stable coexistence of species in their communities. 
 
 <br/>
