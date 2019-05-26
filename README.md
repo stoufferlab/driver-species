@@ -56,7 +56,7 @@ There are a couple alternatives here. The easiest one is using the following com
 
 ```
 docker build -t driver-species .
-docker run -d -e DISABLE_AUTH=true -p 8787:8787 -v $PWD:/home/rstudio/driver-species --name driver-species-container driver-species
+docker run -d -e DISABLE_AUTH=true -p 8787:8787 -v $PWD:/home/rstudio/driver-species driver-species-container driver-species
 ```
 
 This script will build the container image and run it for you. In some systems you will need sudo rights. 
